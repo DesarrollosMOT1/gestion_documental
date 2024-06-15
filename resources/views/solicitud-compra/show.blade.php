@@ -48,11 +48,11 @@
                                     {{ $solicitudCompra->nota }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Id Centro Costo:</strong>
+                                    <strong>Centro de Costo:</strong>
                                     {{ $solicitudCompra->id_centro_costo }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Id Referencia Gastos:</strong>
+                                    <strong>Referencia de Gastos:</strong>
                                     {{ $solicitudCompra->id_referencia_gastos }}
                                 </div>
 

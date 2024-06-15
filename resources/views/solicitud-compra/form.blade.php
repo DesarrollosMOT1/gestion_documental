@@ -3,23 +3,38 @@
         
         <div class="form-group mb-2 mb20">
             <label for="fecha_solicitud" class="form-label">{{ __('Fecha Solicitud') }}</label>
-            <input type="text" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $solicitudCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
+            <input type="date" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $solicitudCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
             {!! $errors->first('fecha_solicitud', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
-            <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
+            <label for="nombre" class="form-label">{{ __('Nombre del solicitante') }}</label>
             <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre', $solicitudCompra?->nombre) }}" id="nombre" placeholder="Nombre">
             {!! $errors->first('nombre', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="area" class="form-label">{{ __('Area') }}</label>
-            <input type="text" name="area" class="form-control @error('area') is-invalid @enderror" value="{{ old('area', $solicitudCompra?->area) }}" id="area" placeholder="Area">
-            {!! $errors->first('area', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        <div class="form-group">
+            <label for="area">Área</label>
+            <select name="area" id="area" class="form-control @error('area') is-invalid @enderror">
+                <option value="">Seleccione Área</option>
+                <option value="Administrativa" {{ old('area') == 'Administrativa' ? 'selected' : '' }}>Administrativa</option>
+                <option value="Financiera" {{ old('area') == 'Financiera' ? 'selected' : '' }}>Financiera</option>
+                <option value="Comercial" {{ old('area') == 'Comercial' ? 'selected' : '' }}>Comercial</option>
+                <option value="Operaciones" {{ old('area') == 'Operaciones' ? 'selected' : '' }}>Operaciones</option>
+            </select>
+            @error('area')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="tipo_factura" class="form-label">{{ __('Tipo Factura') }}</label>
-            <input type="text" name="tipo_factura" class="form-control @error('tipo_factura') is-invalid @enderror" value="{{ old('tipo_factura', $solicitudCompra?->tipo_factura) }}" id="tipo_factura" placeholder="Tipo Factura">
-            {!! $errors->first('tipo_factura', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        <div class="form-group">
+            <label for="tipo_factura">Tipo Factura</label>
+            <select name="tipo_factura" id="tipo_factura" class="form-control @error('tipo_factura') is-invalid @enderror">
+                <option value="">Seleccione Tipo de Factura</option>
+                <option value="CFC02" {{ old('tipo_factura') == 'CFC02' ? 'selected' : '' }}>CFC02</option>
+                <option value="CFC04" {{ old('tipo_factura') == 'CFC04' ? 'selected' : '' }}>CFC04</option>
+                <option value="CFC06" {{ old('tipo_factura') == 'CFC06' ? 'selected' : '' }}>CFC06</option>
+            </select>
+            @error('tipo_factura')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group mb-2 mb20">
             <label for="prefijo" class="form-label">{{ __('Prefijo') }}</label>
@@ -36,15 +51,30 @@
             <input type="text" name="nota" class="form-control @error('nota') is-invalid @enderror" value="{{ old('nota', $solicitudCompra?->nota) }}" id="nota" placeholder="Nota">
             {!! $errors->first('nota', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="id_centro_costo" class="form-label">{{ __('Id Centro Costo') }}</label>
-            <input type="text" name="id_centro_costo" class="form-control @error('id_centro_costo') is-invalid @enderror" value="{{ old('id_centro_costo', $solicitudCompra?->id_centro_costo) }}" id="id_centro_costo" placeholder="Id Centro Costo">
-            {!! $errors->first('id_centro_costo', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        <div class="form-group">
+            <label for="id_centro_costo">Centro de Costo</label>
+            <select name="id_centro_costo" id="id_centro_costo" class="form-control @error('id_centro_costo') is-invalid @enderror">
+                <option value="">Seleccione Centro de Costo</option>
+                @foreach ($centro_costo as $cc)
+                    <option value="{{ $cc->codigo }}">{{ $cc->codigo }}=> {{ $cc->nombre }}</option>
+                @endforeach
+            </select>
+            @error('id_centro_costo')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-        <div class="form-group mb-2 mb20">
-            <label for="id_referencia_gastos" class="form-label">{{ __('Id Referencia Gastos') }}</label>
-            <input type="text" name="id_referencia_gastos" class="form-control @error('id_referencia_gastos') is-invalid @enderror" value="{{ old('id_referencia_gastos', $solicitudCompra?->id_referencia_gastos) }}" id="id_referencia_gastos" placeholder="Id Referencia Gastos">
-            {!! $errors->first('id_referencia_gastos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+
+        <div class="form-group">
+            <label for="id_referencia_gastos">Referencia de Gastos</label>
+            <select name="id_referencia_gastos" id="id_referencia_gastos" class="form-control @error('id_referencia_gastos') is-invalid @enderror">
+                <option value="">Seleccione Referencia de Gastos</option>
+                @foreach ($referencia_gasto as $rg)
+                    <option value="{{ $rg->codigo }}">{{ $rg->codigo}} => {{ $rg->nombre }}</option>
+                @endforeach
+            </select>
+            @error('id_referencia_gastos')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
     </div>

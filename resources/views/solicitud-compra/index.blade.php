@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Inicio')
+@section('title', 'Solicitud Compras')
 
 @section('content')
 <br>
@@ -42,8 +42,8 @@
 									<th >Prefijo</th>
 									<th >Cantidad</th>
 									<th >Nota</th>
-									<th >Id Centro Costo</th>
-									<th >Id Referencia Gastos</th>
+									<th >Centro de Costo</th>
+									<th >Referencia de Gastos</th>
 
                                         <th></th>
                                     </tr>
