@@ -13,7 +13,7 @@
                             <span class="card-title">{{ __('Show') }} Referencia Gasto</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('referencia-gastos.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('referencia-gastos.index') }}"> {{ __('Atras') }}</a>
                         </div>
                     </div>
 

@@ -17,7 +17,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('centro-costos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -51,11 +51,11 @@
 
                                             <td>
                                                 <form action="{{ route('centro-costos.destroy', $centroCosto->codigo) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('centro-costos.show', $centroCosto->codigo) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('centro-costos.edit', $centroCosto->codigo) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('centro-costos.show', $centroCosto->codigo) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('centro-costos.edit', $centroCosto->codigo) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

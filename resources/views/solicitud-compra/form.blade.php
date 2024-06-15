@@ -15,10 +15,10 @@
             <label for="area">Área</label>
             <select name="area" id="area" class="form-control @error('area') is-invalid @enderror">
                 <option value="">Seleccione Área</option>
-                <option value="Administrativa" {{ old('area') == 'Administrativa' ? 'selected' : '' }}>Administrativa</option>
-                <option value="Financiera" {{ old('area') == 'Financiera' ? 'selected' : '' }}>Financiera</option>
-                <option value="Comercial" {{ old('area') == 'Comercial' ? 'selected' : '' }}>Comercial</option>
-                <option value="Operaciones" {{ old('area') == 'Operaciones' ? 'selected' : '' }}>Operaciones</option>
+                <option value="Administrativa" {{ old('area', $solicitudCompra->area) == 'Administrativa' ? 'selected' : '' }}>Administrativa</option>
+                <option value="Financiera" {{ old('area', $solicitudCompra->area) == 'Financiera' ? 'selected' : '' }}>Financiera</option>
+                <option value="Comercial" {{ old('area', $solicitudCompra->area) == 'Comercial' ? 'selected' : '' }}>Comercial</option>
+                <option value="Operaciones" {{ old('area', $solicitudCompra->area) == 'Operaciones' ? 'selected' : '' }}>Operaciones</option>
             </select>
             @error('area')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -28,9 +28,9 @@
             <label for="tipo_factura">Tipo Factura</label>
             <select name="tipo_factura" id="tipo_factura" class="form-control @error('tipo_factura') is-invalid @enderror">
                 <option value="">Seleccione Tipo de Factura</option>
-                <option value="CFC02" {{ old('tipo_factura') == 'CFC02' ? 'selected' : '' }}>CFC02</option>
-                <option value="CFC04" {{ old('tipo_factura') == 'CFC04' ? 'selected' : '' }}>CFC04</option>
-                <option value="CFC06" {{ old('tipo_factura') == 'CFC06' ? 'selected' : '' }}>CFC06</option>
+                <option value="CFC02" {{ old('tipo_factura' , $solicitudCompra->tipo_factura) == 'CFC02' ? 'selected' : '' }}>CFC02</option>
+                <option value="CFC04" {{ old('tipo_factura', $solicitudCompra->tipo_factura) == 'CFC04' ? 'selected' : '' }}>CFC04</option>
+                <option value="CFC06" {{ old('tipo_factura', $solicitudCompra->tipo_factura) == 'CFC06' ? 'selected' : '' }}>CFC06</option>
             </select>
             @error('tipo_factura')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -56,7 +56,9 @@
             <select name="id_centro_costo" id="id_centro_costo" class="form-control @error('id_centro_costo') is-invalid @enderror">
                 <option value="">Seleccione Centro de Costo</option>
                 @foreach ($centro_costo as $cc)
-                    <option value="{{ $cc->codigo }}">{{ $cc->codigo }}=> {{ $cc->nombre }}</option>
+                    <option value="{{ $cc->codigo }}" {{ old('id_centro_costo', $solicitudCompra->id_centro_costo) == $cc->codigo ? 'selected' : '' }}>
+                        {{ $cc->codigo }} => {{ $cc->nombre }}
+                    </option>
                 @endforeach
             </select>
             @error('id_centro_costo')
@@ -69,7 +71,9 @@
             <select name="id_referencia_gastos" id="id_referencia_gastos" class="form-control @error('id_referencia_gastos') is-invalid @enderror">
                 <option value="">Seleccione Referencia de Gastos</option>
                 @foreach ($referencia_gasto as $rg)
-                    <option value="{{ $rg->codigo }}">{{ $rg->codigo}} => {{ $rg->nombre }}</option>
+                    <option value="{{ $rg->codigo }}" {{ old('id_referencia_gastos', $solicitudCompra->id_referencia_gastos) == $rg->codigo ? 'selected' : '' }}>
+                        {{ $rg->codigo }} => {{ $rg->nombre }}
+                    </option>
                 @endforeach
             </select>
             @error('id_referencia_gastos')

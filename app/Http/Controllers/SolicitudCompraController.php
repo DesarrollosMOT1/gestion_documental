@@ -45,7 +45,7 @@ class SolicitudCompraController extends Controller
         SolicitudCompra::create($request->validated());
 
         return Redirect::route('solicitud-compras.index')
-            ->with('success', 'SolicitudCompra created successfully.');
+            ->with('success', 'Solicitud de Compra creada correctamente.');
     }
 
     /**
@@ -65,7 +65,10 @@ class SolicitudCompraController extends Controller
     {
         $solicitudCompra = SolicitudCompra::find($id);
 
-        return view('solicitud-compra.edit', compact('solicitudCompra'));
+        $centro_costo = CentroCosto::all();
+        $referencia_gasto = ReferenciaGasto::all();
+
+        return view('solicitud-compra.edit', compact('solicitudCompra', 'centro_costo', 'referencia_gasto'));
     }
 
     /**
@@ -76,7 +79,7 @@ class SolicitudCompraController extends Controller
         $solicitudCompra->update($request->validated());
 
         return Redirect::route('solicitud-compras.index')
-            ->with('success', 'SolicitudCompra updated successfully');
+            ->with('success', 'Solicitud de Compra actualizada correctamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -84,6 +87,6 @@ class SolicitudCompraController extends Controller
         SolicitudCompra::find($id)->delete();
 
         return Redirect::route('solicitud-compras.index')
-            ->with('success', 'SolicitudCompra deleted successfully');
+            ->with('success', 'Solicitud de Compra eliminada correctamente');
     }
 }

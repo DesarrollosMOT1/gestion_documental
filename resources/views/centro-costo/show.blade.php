@@ -13,7 +13,7 @@
                             <span class="card-title">{{ __('Show') }} Centro Costo</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('centro-costos.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('centro-costos.index') }}"> {{ __('Atras') }}</a>
                         </div>
                     </div>
 

@@ -13,7 +13,7 @@
                             <span class="card-title">{{ __('Show') }} Solicitud Compra</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('solicitud-compras.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('solicitud-compras.index') }}"> {{ __('Atras') }}</a>
                         </div>
                     </div>
 
@@ -49,11 +49,11 @@
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Centro de Costo:</strong>
-                                    {{ $solicitudCompra->id_centro_costo }}
+                                    {{ $solicitudCompra->centroCosto->nombre }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Referencia de Gastos:</strong>
-                                    {{ $solicitudCompra->id_referencia_gastos }}
+                                    {{ $solicitudCompra->referenciaGasto->nombre }}
                                 </div>
 
                     </div>
