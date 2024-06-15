@@ -50,9 +50,9 @@
 										<td >{{ $centroCosto->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('centro-costos.destroy', $centroCosto->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('centro-costos.show', $centroCosto->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('centro-costos.edit', $centroCosto->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('centro-costos.destroy', $centroCosto->codigo) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('centro-costos.show', $centroCosto->codigo) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('centro-costos.edit', $centroCosto->codigo) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>

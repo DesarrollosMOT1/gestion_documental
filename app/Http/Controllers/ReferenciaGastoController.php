@@ -40,15 +40,15 @@ class ReferenciaGastoController extends Controller
         ReferenciaGasto::create($request->validated());
 
         return Redirect::route('referencia-gastos.index')
-            ->with('success', 'ReferenciaGasto created successfully.');
+            ->with('success', 'Referencia de Gasto creada correctamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show($codigo): View
     {
-        $referenciaGasto = ReferenciaGasto::find($id);
+        $referenciaGasto = ReferenciaGasto::where('codigo', $codigo)->firstOrFail();
 
         return view('referencia-gasto.show', compact('referenciaGasto'));
     }
@@ -56,9 +56,9 @@ class ReferenciaGastoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit($codigo): View
     {
-        $referenciaGasto = ReferenciaGasto::find($id);
+        $referenciaGasto = ReferenciaGasto::where('codigo', $codigo)->firstOrFail();
 
         return view('referencia-gasto.edit', compact('referenciaGasto'));
     }
@@ -66,19 +66,21 @@ class ReferenciaGastoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ReferenciaGastoRequest $request, ReferenciaGasto $referenciaGasto): RedirectResponse
+    public function update(ReferenciaGastoRequest $request, $codigo): RedirectResponse
     {
+        $referenciaGasto = ReferenciaGasto::where('codigo', $codigo)->firstOrFail();
         $referenciaGasto->update($request->validated());
 
         return Redirect::route('referencia-gastos.index')
-            ->with('success', 'ReferenciaGasto updated successfully');
+            ->with('success', 'Referencia de Gasto actualizada correctamente');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($codigo): RedirectResponse
     {
-        ReferenciaGasto::find($id)->delete();
+        $referenciaGasto = ReferenciaGasto::where('codigo', $codigo)->firstOrFail();
+        $referenciaGasto->delete();
 
         return Redirect::route('referencia-gastos.index')
-            ->with('success', 'ReferenciaGasto deleted successfully');
+            ->with('success', 'Referencia de Gasto eliminada correctamente');
     }
 }

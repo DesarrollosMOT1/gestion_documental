@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('centro_costos', function (Blueprint $table) {
             $table->string('codigo')->primary();
             $table->string('nombre');
+            $table->timestamps();
         });
     }
 

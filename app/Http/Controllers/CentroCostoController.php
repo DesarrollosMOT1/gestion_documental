@@ -11,9 +11,6 @@ use Illuminate\View\View;
 
 class CentroCostoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
         $centroCostos = CentroCosto::paginate();
@@ -22,9 +19,6 @@ class CentroCostoController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * $centroCostos->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         $centroCosto = new CentroCosto();
@@ -32,53 +26,43 @@ class CentroCostoController extends Controller
         return view('centro-costo.create', compact('centroCosto'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CentroCostoRequest $request): RedirectResponse
     {
         CentroCosto::create($request->validated());
 
         return Redirect::route('centro-costos.index')
-            ->with('success', 'CentroCosto created successfully.');
+            ->with('success', 'Centro de Costo creada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id): View
+    public function show($codigo): View
     {
-        $centroCosto = CentroCosto::find($id);
+        $centroCosto = CentroCosto::where('codigo', $codigo)->firstOrFail();
 
         return view('centro-costo.show', compact('centroCosto'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id): View
+    public function edit($codigo): View
     {
-        $centroCosto = CentroCosto::find($id);
+        $centroCosto = CentroCosto::where('codigo', $codigo)->firstOrFail();
 
         return view('centro-costo.edit', compact('centroCosto'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(CentroCostoRequest $request, CentroCosto $centroCosto): RedirectResponse
+    public function update(CentroCostoRequest $request, $codigo): RedirectResponse
     {
+        $centroCosto = CentroCosto::where('codigo', $codigo)->firstOrFail();
         $centroCosto->update($request->validated());
 
         return Redirect::route('centro-costos.index')
-            ->with('success', 'CentroCosto updated successfully');
+            ->with('success', 'Centro de Costo actualizada correctamente');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($codigo): RedirectResponse
     {
-        CentroCosto::find($id)->delete();
+        $centroCosto = CentroCosto::where('codigo', $codigo)->firstOrFail();
+        $centroCosto->delete();
 
         return Redirect::route('centro-costos.index')
-            ->with('success', 'CentroCosto deleted successfully');
+            ->with('success', 'Centro de Costo eliminada correctamente');
     }
 }

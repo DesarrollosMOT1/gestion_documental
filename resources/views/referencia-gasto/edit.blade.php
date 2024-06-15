@@ -13,7 +13,7 @@
                         <span class="card-title">{{ __('Update') }} Referencia Gasto</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('referencia-gastos.update', $referenciaGasto->id) }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('referencia-gastos.update', $referenciaGasto->codigo) }}"  role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 

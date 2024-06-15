@@ -24,6 +24,11 @@ class CentroCosto extends Model
      *
      * @var array<int, string>
      */
+
+    protected $primaryKey = 'codigo';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    
     protected $fillable = ['codigo', 'nombre'];
 
 
