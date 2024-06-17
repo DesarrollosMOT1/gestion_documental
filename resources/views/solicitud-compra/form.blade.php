@@ -1,3 +1,7 @@
+@section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+@endsection
+
 <div class="row padding-1 p-1">
     <div class="col-md-12">
         
@@ -68,7 +72,7 @@
 
         <div class="form-group">
             <label for="id_referencia_gastos">Referencia de Gastos</label>
-            <select name="id_referencia_gastos" id="id_referencia_gastos" class="form-control @error('id_referencia_gastos') is-invalid @enderror">
+            <select name="id_referencia_gastos" id="id_referencia_gastos" class="form-control bootstrap-select @error('id_referencia_gastos') is-invalid @enderror">
                 <option value="">Seleccione Referencia de Gastos</option>
                 @foreach ($referencia_gasto as $rg)
                     <option value="{{ $rg->codigo }}" {{ old('id_referencia_gastos', $solicitudCompra->id_referencia_gastos) == $rg->codigo ? 'selected' : '' }}>
@@ -86,3 +90,45 @@
         <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
     </div>
 </div>
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+@endsection
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        // Inicializar select2 para el select de nombre de usuario
+        $('#area').selectpicker({
+            theme: 'bootstrap-5',
+            liveSearch: true,
+            allowClear: true,
+            placeholder: 'Seleccione una opcion',
+        });
+    
+        // Inicializar select2 para el select de identificación de usuario
+        $('#tipo_factura').selectpicker({
+            theme: 'bootstrap-5',
+            liveSearch: true,
+            allowClear: true,
+            placeholder: 'Seleccione una opcion',
+        });
+
+        $('#id_centro_costo').selectpicker({
+            theme: 'bootstrap-5',
+            liveSearch: true,
+            allowClear: true,
+            placeholder: 'Seleccione una opcion',
+        });
+
+        $('#id_referencia_gastos').selectpicker({
+          theme: 'bootstrap-5',
+          liveSearch: true,
+          allowClear: true,
+          placeholder: 'Seleccione una opcion',
+        });
+    });
+</script>
+
+@endsection

@@ -2,6 +2,11 @@
 
 @section('title', 'Solicitud Compras')
 
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
+@endsection
+
 @section('content')
 <br>
     <div class="container-fluid">
@@ -30,7 +35,7 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover" id="solicitud">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
@@ -42,8 +47,8 @@
 									<th >Prefijo</th>
 									<th >Cantidad</th>
 									<th >Nota</th>
-									<th >Centro de Costo</th>
-									<th >Referencia de Gastos</th>
+									<th >Centro Costo</th>
+									<th >Referencia Gastos</th>
 
                                         <th></th>
                                     </tr>
@@ -82,4 +87,61 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.foundation.min.js"></script>
+<script>
+    new DataTable('#solicitud', {
+        responsive: true,
+        autoWidth: false,
+        "language": {
+            "lengthMenu": "Mostrar " +
+                `<select class="custom-select custom-select-s form-control form-control-sm">
+                                    <option value='10'>10</option>
+                                    <option value='25'>25</option>
+                                    <option value='50'>50</option>
+                                    <option value='100'>100</option>
+                                    <option value='-1'>Todo</option>
+                                </select>` +
+                " Registros por página",
+            "zeroRecords": "Nada encontrado - disculpa",
+            "info": "Mostrando la página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar:",
+            "paginate": {
+                'next': 'Siguiente',
+                'previous': 'Anterior',
+            }
+        }
+    });
+</script>
+
+<script>
+    $('.formulario-eliminar').submit(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                /* Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success' 
+                )*/
+                this.submit();
+            }
+        })
+    });
+</script>
 @endsection
