@@ -8,12 +8,27 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ReferenciaGastoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Imports\ReferenciaGastoImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReferenciaGastoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048'
+        ]);
+
+        Excel::import(new ReferenciaGastoImport, $request->file('file'));
+
+        return redirect()->route('referencia-gastos.index')
+                         ->with('success', 'Datos importados correctamente.');
+    }
+
     public function index(Request $request): View
     {
         $referenciaGastos = ReferenciaGasto::paginate();

@@ -8,9 +8,23 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CentroCostoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Imports\centroCostoImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CentroCostoController extends Controller
 {
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048'
+        ]);
+
+        Excel::import(new centroCostoImport, $request->file('file'));
+
+        return redirect()->route('centro-costos.index')
+                         ->with('success', 'Datos importados correctamente.');
+    }
+
     public function index(Request $request): View
     {
         $centroCostos = CentroCosto::paginate();

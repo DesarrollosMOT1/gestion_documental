@@ -55,7 +55,6 @@
                                     <strong>Referencia de Gastos:</strong>
                                     {{ $solicitudCompra->referenciaGasto->nombre }}
                                 </div>
-
                     </div>
                 </div>
             </div>

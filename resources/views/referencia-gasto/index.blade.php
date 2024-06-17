@@ -14,7 +14,11 @@
                             <span id="card_title">
                                 {{ __('Referencia Gastos') }}
                             </span>
-
+                            <form action="{{ route('import-referencia') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+                                @csrf
+                                <input type="file" name="file" class="btn btn-sm btn-success ml-2" accept=".xlsx, .xls, .csv">
+                                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-upload"></i> Importar Excel</button>
+                            </form>
                              <div class="float-right">
                                 <a href="{{ route('referencia-gastos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
@@ -65,7 +69,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $referenciaGastos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

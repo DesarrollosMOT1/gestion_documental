@@ -79,7 +79,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $solicitudCompras->withQueryString()->links() !!}
             </div>
         </div>
     </div>

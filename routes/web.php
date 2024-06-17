@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ReferenciaGastoController;
+use App\Http\Controllers\CentroCostoController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -17,4 +19,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('centro-costos',App\Http\Controllers\CentroCostoController::class)->parameters(['centro-costos' => 'codigo']);
     Route::resource('referencia-gastos',App\Http\Controllers\ReferenciaGastoController::class)->parameters(['referencia-gastos' => 'codigo']);
     Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
+
+    #importaciones de datos
+    Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');
+    Route::post('centro-costos/import', [CentroCostoController::class, 'import'])->name('import-centro');
+
 });
+
