@@ -59,7 +59,7 @@
                                             <td>{{ ++$i }}</td>
                                             
 										<td >{{ $solicitudCompra->fecha_solicitud }}</td>
-										<td >{{ $solicitudCompra->nombre }}</td>
+										<td >{{ $solicitudCompra->user->name }}</td>
 										<td >{{ $solicitudCompra->area }}</td>
 										<td >{{ $solicitudCompra->tipo_factura }}</td>
 										<td >{{ $solicitudCompra->prefijo }}</td>

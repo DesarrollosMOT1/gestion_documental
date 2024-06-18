@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SolicitudCompra;
 use App\Models\CentroCosto;
 use App\Models\ReferenciaGasto;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\SolicitudCompraRequest;
@@ -33,8 +34,9 @@ class SolicitudCompraController extends Controller
 
         $centro_costo = CentroCosto::all();
         $referencia_gasto = ReferenciaGasto::all();
+        $usuarios = User::all();
 
-        return view('solicitud-compra.create', compact('solicitudCompra', 'centro_costo', 'referencia_gasto'));
+        return view('solicitud-compra.create', compact('solicitudCompra', 'centro_costo', 'referencia_gasto', 'usuarios'));
     }
 
     /**
@@ -67,8 +69,9 @@ class SolicitudCompraController extends Controller
 
         $centro_costo = CentroCosto::all();
         $referencia_gasto = ReferenciaGasto::all();
+        $usuarios = User::all();
 
-        return view('solicitud-compra.edit', compact('solicitudCompra', 'centro_costo', 'referencia_gasto'));
+        return view('solicitud-compra.edit', compact('solicitudCompra', 'centro_costo', 'referencia_gasto', 'usuarios'));
     }
 
     /**

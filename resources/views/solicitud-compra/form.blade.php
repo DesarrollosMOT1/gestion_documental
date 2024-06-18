@@ -12,8 +12,17 @@
         </div>
         <div class="form-group mb-2 mb20">
             <label for="nombre" class="form-label">{{ __('Nombre del solicitante') }}</label>
-            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre', $solicitudCompra?->nombre) }}" id="nombre" placeholder="Nombre">
-            {!! $errors->first('nombre', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <select name="nombre" class="form-control @error('nombre') is-invalid @enderror" id="nombre">
+                <option value="">Seleccione Nombre del Solicitante</option>
+                @foreach ($usuarios as $usuario)
+                    <option value="{{ $usuario->id }}" {{ old('nombre', $solicitudCompra?->nombre) == $usuario->id ? 'selected' : '' }}>
+                        {{ $usuario->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('nombre')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="area">Área</label>
@@ -99,7 +108,13 @@
 
 <script>
     $(document).ready(function() {
-        // Inicializar select2 para el select de nombre de usuario
+        // Inicializar select2 
+        $('#nombre').selectpicker({
+            theme: 'bootstrap-5',
+            liveSearch: true,
+            allowClear: true,
+            placeholder: 'Seleccione una opcion',
+        });
         $('#area').selectpicker({
             theme: 'bootstrap-5',
             liveSearch: true,

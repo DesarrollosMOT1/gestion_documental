@@ -23,7 +23,7 @@ class SolicitudCompraRequest extends FormRequest
     {
         return [
 			'fecha_solicitud' => 'required',
-			'nombre' => 'required|string',
+			'nombre' => 'required',
 			'area' => 'required|string',
 			'tipo_factura' => 'required|string',
 			'prefijo' => 'required|string',

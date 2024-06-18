@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('solicitud_compras', function (Blueprint $table) {
             $table->id();
             $table->date('fecha_solicitud');
-            $table->string('nombre');
+            $table->unsignedBigInteger('nombre');
             $table->string('area');
             $table->string('tipo_factura');
             $table->string('prefijo');
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('id_referencia_gastos'); 
             $table->timestamps();
             
+            $table->foreign('nombre')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_centro_costo')->references('codigo')->on('centro_costos')->onDelete('cascade');
             $table->foreign('id_referencia_gastos')->references('codigo')->on('referencia_gastos')->onDelete('cascade');
         });

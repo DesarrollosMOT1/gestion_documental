@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property CentroCosto $centroCosto
  * @property ReferenciaGasto $referenciaGasto
+ * @property User $user
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -52,6 +53,14 @@ class SolicitudCompra extends Model
     public function referenciaGasto()
     {
         return $this->belongsTo(\App\Models\ReferenciaGasto::class, 'id_referencia_gastos', 'codigo');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'nombre', 'id');
     }
     
 }
