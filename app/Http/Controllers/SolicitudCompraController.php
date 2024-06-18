@@ -17,6 +17,13 @@ class SolicitudCompraController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private function generatePrefix(): string
+    {
+        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
+        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
+        return $month . $year;
+    }
+
     public function index(Request $request): View
     {
         $solicitudCompras = SolicitudCompra::paginate();
@@ -31,6 +38,7 @@ class SolicitudCompraController extends Controller
     public function create(): View
     {
         $solicitudCompra = new SolicitudCompra();
+        $solicitudCompra->prefijo = $this->generatePrefix();
 
         $centro_costo = CentroCosto::all();
         $referencia_gasto = ReferenciaGasto::all();
