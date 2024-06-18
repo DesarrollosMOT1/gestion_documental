@@ -310,12 +310,18 @@ return [
             'topnav_right' => true,
         ],
         // Sidebar items:
-        ['header' => 'account_settings'],
+        ['header' => 'ADMINISTRACIÓN'],
         [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Roles',
+            'url' => 'roles',
+            'icon' => 'fas fa-fw fa-lock',
         ],
+        [
+            'text' => 'Permisos',
+            'url' => 'admin/settings',
+            'icon' => 'fas fa-fw fa-lock',
+        ],
+        ['header' => 'account_settings'],
         [
             'text' => 'change_password',
             'url' => 'admin/settings',

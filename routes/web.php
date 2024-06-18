@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('centro-costos',App\Http\Controllers\CentroCostoController::class)->parameters(['centro-costos' => 'codigo']);
     Route::resource('referencia-gastos',App\Http\Controllers\ReferenciaGastoController::class)->parameters(['referencia-gastos' => 'codigo']);
     Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
+    Route::resource('roles',App\Http\Controllers\RoleController::class);
 
     #importaciones de datos
     Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');
