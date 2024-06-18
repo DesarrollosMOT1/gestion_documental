@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
     Route::resource('roles',App\Http\Controllers\RoleController::class);
     Route::resource('permissions',App\Http\Controllers\PermissionController::class);
+    route::resource('users', App\Http\Controllers\UserController::class)->names('admin.users');
 
     #importaciones de datos
     Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');

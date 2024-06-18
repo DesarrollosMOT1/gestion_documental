@@ -13,7 +13,7 @@
                         <span class="card-title">{{ __('Update') }} Rol</span>
                     </div>
                     <div class="card-body bg-white">
-                        <h3>Nombre: {{ $role->name }}</h3>
+                        <h3>Rol: {{ $role->name }}</h3>
                         <br>
                         <p>Lista de permisos disponibles:</p>
                         <form action="{{ route('roles.update', $role->id) }}" method="POST">

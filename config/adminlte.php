@@ -312,14 +312,19 @@ return [
         // Sidebar items:
         ['header' => 'ADMINISTRACIÓN'],
         [
+            'text' => 'Usuarios',
+            'url' => 'users',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
             'text' => 'Roles',
             'url' => 'roles',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-fw fa-user-tag',
         ],
         [
             'text' => 'Permisos',
             'url' => 'permissions',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-fw fa-key',
         ],
         ['header' => 'account_settings'],
         [
