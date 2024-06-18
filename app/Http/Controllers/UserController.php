@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -51,13 +52,25 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage
-     */
     public function update(Request $request, User $user)
     {
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        if ($request->filled('password') && $request->input('password') !== $request->input('password_confirmation')) {
+            // Las contraseñas no coinciden
+            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        $user->save();
+
         $user->roles()->sync($request->roles);
-        return redirect()->route('admin.users.index')->with('success', 'Asignación de roles con éxito');
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado con éxito');
     }
 
     /**

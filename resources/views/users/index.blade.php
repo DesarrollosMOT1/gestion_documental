@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Administración de Usuarios')
+@section('title', 'Administración Usuarios')
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">

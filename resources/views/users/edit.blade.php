@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Rol')
+@section('title', 'Actualizar Usuario')
 
 @section('content')
 <br>
@@ -10,27 +10,50 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Update') }} Rol</span>
+                        <span class="card-title">{{ __('Update') }} Usuario</span>
                     </div>
-                    <div class="card-body bg-white">
-                        <p class="h5">Nombre de usuario: {{ $user->name }}</p>
-                        <br>
-                        <p>Roles disponibles:</p>
-                        <form action="{{ route('admin.users.update', $user) }}" method="POST">
+                    <div class="card-body">
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('admin.users.update', $user) }}">
                             @csrf
                             @method('PUT')
-
-                            @foreach ($roles as $role)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="roles[]"
-                                           value="{{ $role->id }}" {{ in_array($role->id, $user->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                    <label class="form-check-label">
-                                        {{ $role->name }}
-                                    </label>
-                                </div>
-                            @endforeach
-
-                        <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+    
+                            <div class="form-group">
+                                <label for="name">Nombre</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}" required>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="email">Correo electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email) }}" required>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="password">Nueva contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirmar contraseña</label>
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                            </div>
+    
+                            <div class="form-group">
+                                <label>Roles</label>
+                                @foreach ($roles as $role)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" {{ $user->roles->contains($role) ? 'checked' : '' }}>
+                                        <label class="form-check-label">{{ $role->name }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+    
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </form>
                     </div>
                 </div>
             </div>

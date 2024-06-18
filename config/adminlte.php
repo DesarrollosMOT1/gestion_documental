@@ -329,7 +329,7 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'change_password',
-            'url' => 'admin/settings',
+            'url' => 'NewPassword',
             'icon' => 'fas fa-fw fa-lock',
         ],
         ['header' => 'GESTIÓN DOCUMENTAL'],
