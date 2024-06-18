@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ver Rol')
+@section('title', 'Ver Permiso')
 
 @section('content')
 <br>
@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Rol</span>
+                            <span class="card-title">{{ __('Show') }} Permiso</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('roles.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('permissions.index') }}"> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -21,11 +21,11 @@
                         
                                 <div class="form-group mb-2 mb20">
                                     <strong>Nombre:</strong>
-                                    {{ $role->name }}
+                                    {{ $permission->name }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Guard Name:</strong>
-                                    {{ $role->guard_name }}
+                                    {{ $permission->guard_name }}
                                 </div>
 
                     </div>

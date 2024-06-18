@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('referencia-gastos',App\Http\Controllers\ReferenciaGastoController::class)->parameters(['referencia-gastos' => 'codigo']);
     Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
     Route::resource('roles',App\Http\Controllers\RoleController::class);
+    Route::resource('permissions',App\Http\Controllers\PermissionController::class);
 
     #importaciones de datos
     Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');

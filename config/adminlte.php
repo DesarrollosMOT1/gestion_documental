@@ -318,7 +318,7 @@ return [
         ],
         [
             'text' => 'Permisos',
-            'url' => 'admin/settings',
+            'url' => 'permissions',
             'icon' => 'fas fa-fw fa-lock',
         ],
         ['header' => 'account_settings'],
