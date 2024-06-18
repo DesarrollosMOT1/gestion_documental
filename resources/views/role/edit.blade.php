@@ -13,12 +13,22 @@
                         <span class="card-title">{{ __('Update') }} Rol</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('roles.update', $role->id) }}"  role="form" enctype="multipart/form-data">
-                            {{ method_field('PATCH') }}
+                        <h3>Nombre: {{ $role->name }}</h3>
+                        <br>
+                        <p>Lista de permisos disponibles:</p>
+                        <form action="{{ route('roles.update', $role->id) }}" method="POST">
                             @csrf
-
-                            @include('role.form')
-
+                            @method('PUT')
+                            @foreach ($permisos as $permiso)
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="permisos[]" value="{{ $permiso->id }}" 
+                                        {{ $role->permissions->contains($permiso->id) ? 'checked' : '' }} class="mr-1">
+                                        {{ $permiso->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                            <button type="submit" class="btn btn-primary mt-3">Enviar</button>
                         </form>
                     </div>
                 </div>

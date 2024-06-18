@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -57,19 +58,17 @@ class RoleController extends Controller
      */
     public function edit($id): View
     {
-        $role = Role::find($id);
-
-        return view('role.edit', compact('role'));
+        $role = Role::findOrFail($id);
+        $permisos = Permission::all();
+    
+        return view('role.edit', compact('role', 'permisos'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(RoleRequest $request, Role $role): RedirectResponse
+    
+    public function update(Request $request, Role $role): RedirectResponse
     {
-        $role->update($request->validated());
-
-        return Redirect::route('roles.index')
+        $role->permissions()->sync($request->input('permisos', []));
+    
+        return redirect()->route('roles.index')
             ->with('success', 'Rol actualizado correctamente');
     }
 
