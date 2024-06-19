@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ver Referencia')
+@section('title', 'Ver Linea')
 
 @section('content')
 <br>
@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Referencia Gasto</span>
+                            <span class="card-title">{{ __('Show') }} Lineas Gasto</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('referencia-gastos.index') }}"> {{ __('Atras') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('lineas-gastos.index') }}"> {{ __('Atras') }}</a>
                         </div>
                     </div>
 
@@ -21,15 +21,11 @@
                         
                                 <div class="form-group mb-2 mb20">
                                     <strong>Codigo:</strong>
-                                    {{ $referenciaGasto->codigo }}
+                                    {{ $lineasGasto->codigo }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Nombre:</strong>
-                                    {{ $referenciaGasto->nombre }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Linea:</strong>
-                                    {{ $referenciaGasto->linea }}
+                                    {{ $lineasGasto->nombre }}
                                 </div>
 
                     </div>

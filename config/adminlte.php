@@ -342,6 +342,10 @@ return [
                     'url' => 'solicitud-compras',
                 ],
                 [
+                    'text' => 'Linea de Gastos',
+                    'url' => 'lineas-gastos',
+                ],
+                [
                     'text' => 'Centros de Costos',
                     'url' => 'centro-costos',
                 ],

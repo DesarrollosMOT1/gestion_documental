@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReferenciaGasto;
+use App\Models\LineasGasto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReferenciaGastoRequest;
@@ -43,8 +44,9 @@ class ReferenciaGastoController extends Controller
     public function create(): View
     {
         $referenciaGasto = new ReferenciaGasto();
+        $lineas = LineasGasto::all();
 
-        return view('referencia-gasto.create', compact('referenciaGasto'));
+        return view('referencia-gasto.create', compact('referenciaGasto', 'lineas'));
     }
 
     /**
@@ -74,8 +76,9 @@ class ReferenciaGastoController extends Controller
     public function edit($codigo): View
     {
         $referenciaGasto = ReferenciaGasto::where('codigo', $codigo)->firstOrFail();
+        $lineas = LineasGasto::all();
 
-        return view('referencia-gasto.edit', compact('referenciaGasto'));
+        return view('referencia-gasto.edit', compact('referenciaGasto', 'lineas'));
     }
 
     /**

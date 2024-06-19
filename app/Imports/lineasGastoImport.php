@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\ReferenciaGasto;
+use App\Models\LineasGasto;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class ReferenciaGastoImport implements ToModel
+class lineasGastoImport implements ToModel
 {
     /**
     * @param array $row
@@ -14,10 +14,9 @@ class ReferenciaGastoImport implements ToModel
     */
     public function model(array $row)
     {
-        return new ReferenciaGasto([
+        return new LineasGasto([
             'codigo' => $row[0],
             'nombre' => $row[1],
-            'linea' => $row[3],
         ]);
     }
 }

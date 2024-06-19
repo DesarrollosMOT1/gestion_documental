@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('referencia_gastos', function (Blueprint $table) {
+        Schema::create('lineas_gasto', function (Blueprint $table) {
             $table->string('codigo')->primary();
             $table->string('nombre');
-            $table->string('linea');
-            $table->foreign('linea')->references('codigo')->on('lineas_gasto')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('referencia_gastos');
+        Schema::dropIfExists('lineas_gasto');
     }
 };

@@ -16,6 +16,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     #rutas principales
+    Route::resource('lineas-gastos',App\Http\Controllers\LineasGastoController::class)->parameters(['lineas-gasto' => 'codigo']);
     Route::resource('centro-costos',App\Http\Controllers\CentroCostoController::class)->parameters(['centro-costos' => 'codigo']);
     Route::resource('referencia-gastos',App\Http\Controllers\ReferenciaGastoController::class)->parameters(['referencia-gastos' => 'codigo']);
     Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
@@ -28,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
 
     #importaciones de datos
+    Route::post('linea-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-linea');
     Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');
     Route::post('centro-costos/import', [CentroCostoController::class, 'import'])->name('import-centro');
 

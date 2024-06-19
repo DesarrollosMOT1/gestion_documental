@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
 class SolicitudCompra extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.

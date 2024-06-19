@@ -5,39 +5,41 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class CentroCosto
+ * Class LineasGasto
  *
  * @property $codigo
  * @property $nombre
+ * @property $created_at
+ * @property $updated_at
  *
- * @property SolicitudCompra[] $solicitudCompras
+ * @property ReferenciaGasto[] $referenciaGastos
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class CentroCosto extends Model
+class LineasGasto extends Model
 {
     
-    protected $perPage = 2000;
+    protected $perPage = 20;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-
+    protected $table = 'lineas_gasto';
     protected $primaryKey = 'codigo';
     public $incrementing = false;
     protected $keyType = 'string';
-    
+
     protected $fillable = ['codigo', 'nombre'];
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function solicitudCompras()
+    public function referenciaGastos()
     {
-        return $this->hasMany(\App\Models\SolicitudCompra::class, 'codigo', 'id_centro_costo');
+        return $this->hasMany(\App\Models\ReferenciaGasto::class, 'codigo', 'linea');
     }
     
 }

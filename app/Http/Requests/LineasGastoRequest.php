@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReferenciaGastoRequest extends FormRequest
+class LineasGastoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class ReferenciaGastoRequest extends FormRequest
         return [
 			'codigo' => 'required|string',
 			'nombre' => 'required|string',
-			'linea' => 'required|string',
         ];
     }
 }
