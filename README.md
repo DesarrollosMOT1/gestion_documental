@@ -65,7 +65,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-# Guía Completa para Configurar y Utilizar un Proyecto Laravel
+# Guía Completa para Configurar y Utilizar el proyecto
 
 Este documento proporciona una guía completa para configurar y utilizar el proyecto, con los comandos necesarios para clonar el repositorio, configurar el entorno, manejar migraciones, generar código con Artisan y utilizar algunas librerías comunes.
 
