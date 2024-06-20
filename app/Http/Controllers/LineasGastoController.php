@@ -25,9 +25,10 @@ class LineasGastoController extends Controller
 
         Excel::import(new lineasGastoImport, $request->file('file'));
 
-        return redirect()->route('lineas-gasto.index')
+        return redirect()->route('lineas-gastos.index')
                          ->with('success', 'Datos importados correctamente.');
     }
+    
     public function index(Request $request): View
     {
         $lineasGastos = LineasGasto::paginate();

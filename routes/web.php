@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ReferenciaGastoController;
 use App\Http\Controllers\CentroCostoController;
+use App\Http\Controllers\LineasGastoController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -29,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
 
     #importaciones de datos
-    Route::post('linea-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-linea');
+    Route::post('linea-gastos/import', [LineasGastoController::class, 'import'])->name('import-linea');
     Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');
     Route::post('centro-costos/import', [CentroCostoController::class, 'import'])->name('import-centro');
 

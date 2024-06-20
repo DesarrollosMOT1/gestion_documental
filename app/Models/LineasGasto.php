@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 class LineasGasto extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.

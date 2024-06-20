@@ -20,14 +20,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ReferenciaGasto extends Model
 {
-    
     protected $perPage = 2000;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'codigo';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = ['codigo', 'nombre', 'linea'];
 
 
@@ -38,7 +40,7 @@ class ReferenciaGasto extends Model
     {
         return $this->belongsTo(\App\Models\LineasGasto::class, 'linea', 'codigo');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

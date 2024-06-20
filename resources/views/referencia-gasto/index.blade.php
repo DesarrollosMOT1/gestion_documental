@@ -58,7 +58,7 @@
                                             
 										<td >{{ $referenciaGasto->codigo }}</td>
 										<td >{{ $referenciaGasto->nombre }}</td>
-										<td >{{ $referenciaGasto->linea }}</td>
+										<td >{{ $referenciaGasto->lineasGasto->nombre }}</td>
 
                                             <td>
                                                 <form action="{{ route('referencia-gastos.destroy', $referenciaGasto->codigo) }}" method="POST">
