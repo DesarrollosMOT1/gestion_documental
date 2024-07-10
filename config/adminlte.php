@@ -355,6 +355,17 @@ return [
                 ],
             ],
         ],
+        ['header' => 'INVENTARIO'],
+        [
+            'text' => 'Cadena de suministros',
+            'icon' => 'fas fa-shopping-cart',
+            'submenu' => [
+                [
+                    'text' => 'Ejemplo',
+                    'url' => 'solicitud-compras',
+                ],
+            ],
+        ],
     ],
 
     /*
