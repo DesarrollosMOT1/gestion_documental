@@ -334,24 +334,75 @@ return [
         ],
         ['header' => 'GESTIÓN DOCUMENTAL'],
         [
-            'text' => 'Gestion de Compras',
+            'text' => 'Gestión de Compras',
             'icon' => 'fas fa-shopping-cart',
             'submenu' => [
                 [
-                    'text' => 'Solicitud de Compras',
-                    'url' => 'solicitud-compras',
+                    'text' => 'Solicitudes de Compras',
+                    'url' => 'solicitudes-compras',
+                    'icon' => 'fas fa-file-invoice',
                 ],
                 [
-                    'text' => 'Linea de Gastos',
-                    'url' => 'lineas-gastos',
+                    'text' => 'Cotizaciones',
+                    'url' => 'cotizaciones',
+                    'icon' => 'fas fa-file-signature',
                 ],
                 [
-                    'text' => 'Centros de Costos',
-                    'url' => 'centro-costos',
+                    'text' => 'Órdenes de Compras',
+                    'url' => 'ordenes-compras',
+                    'icon' => 'fas fa-file-contract',
                 ],
                 [
-                    'text' => 'Referencia de Gastos',
-                    'url' => 'referencia-gastos',
+                    'text' => 'Entradas a Inventario',
+                    'url' => 'entradas',
+                    'icon' => 'fas fa-sign-in-alt',
+                ],
+                [
+                    'text' => 'Administración',
+                    'icon' => 'fas fa-cogs',
+                    'submenu' => [
+                        [
+                            'text' => 'Clasificaciones de Centros',
+                            'url' => 'clasificaciones-centros',
+                            'icon' => 'fas fa-list-alt',
+                        ],
+                        [
+                            'text' => 'Niveles de Clasificación',
+                            'icon' => 'fas fa-layer-group',
+                            'submenu' => [
+                                [
+                                    'text' => 'Niveles Uno',
+                                    'url' => 'niveles-uno',
+                                    'icon' => 'fas fa-layer-group',
+                                ],
+                                [
+                                    'text' => 'Niveles Dos',
+                                    'url' => 'niveles-dos',
+                                    'icon' => 'fas fa-layer-group',
+                                ],
+                                [
+                                    'text' => 'Niveles Tres',
+                                    'url' => 'niveles-tres',
+                                    'icon' => 'fas fa-layer-group',
+                                ],
+                            ],
+                        ],
+                        [
+                            'text' => 'Centros de Costos',
+                            'url' => 'centros-costos',
+                            'icon' => 'fas fa-sitemap',
+                        ],
+                        [
+                            'text' => 'Terceros',
+                            'url' => 'terceros',
+                            'icon' => 'fas fa-users',
+                        ],
+                        [
+                            'text' => 'Impuestos',
+                            'url' => 'impuestos',
+                            'icon' => 'fas fa-percent',
+                        ],
+                    ],
                 ],
             ],
         ],

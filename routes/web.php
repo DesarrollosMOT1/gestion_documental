@@ -19,7 +19,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     #rutas principales
-   
     Route::resource('roles',App\Http\Controllers\RoleController::class);
     Route::resource('permissions',App\Http\Controllers\PermissionController::class);
 
@@ -27,6 +26,21 @@ Route::group(['middleware' => 'auth'], function () {
     route::resource('users', App\Http\Controllers\UserController::class)->names('admin.users');
     Route::get('/NewPassword',  [App\Http\Controllers\UserSettingsController::class,'NewPassword'])->name('NewPassword');
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
+
+    #rutas para gestion de compras
+    Route::resource('areas', App\Http\Controllers\AreaController::class);
+    Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class); 
+    Route::resource('niveles-uno', App\Http\Controllers\NivelesUnoController::class);
+    Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
+    Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
+    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class);
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class);
+    Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
+    Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
+    Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class); 
+    Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class);
+    Route::resource('entradas', App\Http\Controllers\EntradaController::class);
+
 
     #cadena de suministros
     Route::resource('productos', ProductoController::class);
