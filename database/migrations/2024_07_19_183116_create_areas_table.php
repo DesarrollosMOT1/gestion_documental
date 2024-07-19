@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lineas_gasto', function (Blueprint $table) {
-            $table->string('codigo')->primary();
+        Schema::create('areas', function (Blueprint $table) {
+            $table->id();
             $table->string('nombre');
             $table->timestamps();
         });
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lineas_gasto');
+        Schema::dropIfExists('areas');
     }
 };
