@@ -361,8 +361,8 @@ return [
             'icon' => 'fas fa-shopping-cart',
             'submenu' => [
                 [
-                    'text' => 'Ejemplo',
-                    'url' => 'solicitud-compras',
+                    'text' => 'productos',
+                    'url' => 'productos',
                 ],
             ],
         ],
