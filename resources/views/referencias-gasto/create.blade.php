@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Crear Area')
+@section('title', 'Crear Referencia Gasto')
 
 @section('content')
 <br>
@@ -10,13 +10,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Create') }} Area</span>
+                        <span class="card-title">{{ __('Create') }} Referencias Gasto</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('areas.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('referencias-gastos.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('area.form')
+                            @include('referencias-gasto.form')
 
                         </form>
                     </div>

@@ -326,6 +326,11 @@ return [
             'url' => 'permissions',
             'icon' => 'fas fa-fw fa-key',
         ],
+        [
+            'text' => 'Áreas',
+            'url' => 'areas',
+            'icon' => 'fas fa-fw fa-building',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'change_password',
@@ -372,7 +377,7 @@ return [
                             'submenu' => [
                                 [
                                     'text' => 'Niveles Uno',
-                                    'url' => 'niveles-uno',
+                                    'url' => 'niveles-unos',
                                     'icon' => 'fas fa-layer-group',
                                 ],
                                 [
@@ -386,6 +391,11 @@ return [
                                     'icon' => 'fas fa-layer-group',
                                 ],
                             ],
+                        ],
+                        [
+                            'text' => 'Referencias de gastos',
+                            'url' => 'referencias-gastos',
+                            'icon' => 'fas fa-dollar-sign',
                         ],
                         [
                             'text' => 'Centros de Costos',

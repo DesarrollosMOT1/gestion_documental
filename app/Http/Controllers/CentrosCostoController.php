@@ -46,9 +46,9 @@ class CentrosCostoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show($codigo): View
     {
-        $centrosCosto = CentrosCosto::find($id);
+        $centrosCosto = CentrosCosto::find($codigo);
 
         return view('centros-costo.show', compact('centrosCosto'));
     }
@@ -56,9 +56,9 @@ class CentrosCostoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit($codigo): View
     {
-        $centrosCosto = CentrosCosto::find($id);
+        $centrosCosto = CentrosCosto::find($codigo);
 
         return view('centros-costo.edit', compact('centrosCosto'));
     }
@@ -74,9 +74,9 @@ class CentrosCostoController extends Controller
             ->with('success', 'CentrosCosto updated successfully');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy($codigo): RedirectResponse
     {
-        CentrosCosto::find($id)->delete();
+        CentrosCosto::find($codigo)->delete();
 
         return Redirect::route('centros-costos.index')
             ->with('success', 'CentrosCosto deleted successfully');

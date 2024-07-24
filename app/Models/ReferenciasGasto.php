@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class CentroCosto
+ * Class ReferenciasGasto
  *
  * @property $codigo
  * @property $nombre
+ * @property $created_at
+ * @property $updated_at
  *
- * @property SolicitudCompra[] $solicitudCompras
+ * @property NivelesTre[] $nivelesTres
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class CentroCosto extends Model
+class ReferenciasGasto extends Model
 {
     
     protected $perPage = 2000;
@@ -35,9 +37,9 @@ class CentroCosto extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function solicitudCompras()
+    public function nivelesTres()
     {
-        return $this->hasMany(\App\Models\SolicitudCompra::class, 'codigo', 'id_centro_costo');
+        return $this->hasMany(\App\Models\NivelesTres::class, 'codigo', 'id_referencias_gastos');
     }
     
 }

@@ -21,13 +21,18 @@ use Illuminate\Database\Eloquent\Model;
 class CentrosCosto extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+    protected $primaryKey = 'codigo';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = ['codigo', 'nombre', 'id_clasificaciones_centros'];
 
 

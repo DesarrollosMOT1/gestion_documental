@@ -1,10 +1,9 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
-@section('template_title')
-    {{ __('Create') }} Tercero
-@endsection
+@section('title', 'Crear Rol')
 
 @section('content')
+<br>
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">

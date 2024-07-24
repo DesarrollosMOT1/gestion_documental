@@ -1,10 +1,14 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
-@section('template_title')
-    Terceros
+@section('title', 'Terceros')
+
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
 @endsection
 
 @section('content')
+<br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -18,7 +22,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('terceros.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>

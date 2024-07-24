@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Cotizaciones')
+@section('title', 'Referencia Gasto')
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
@@ -17,12 +17,12 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Cotizaciones') }}
+                                {{ __('Referencias Gastos') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('cotizaciones.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                <a href="{{ route('referencias-gastos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -40,32 +40,24 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Fecha Cotizacion</th>
+									<th >Codigo</th>
 									<th >Nombre</th>
-									<th >Valor</th>
-									<th >Condiciones Pago</th>
-									<th >Descuento</th>
-									<th >Id Terceros</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cotizaciones as $cotizacione)
+                                    @foreach ($referenciasGastos as $referenciasGasto)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-										<td >{{ $cotizacione->fecha_cotizacion }}</td>
-										<td >{{ $cotizacione->nombre }}</td>
-										<td >{{ $cotizacione->valor }}</td>
-										<td >{{ $cotizacione->condiciones_pago }}</td>
-										<td >{{ $cotizacione->descuento }}</td>
-										<td >{{ $cotizacione->id_terceros }}</td>
+										<td >{{ $referenciasGasto->codigo }}</td>
+										<td >{{ $referenciasGasto->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('cotizaciones.destroy', $cotizacione->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('cotizaciones.show', $cotizacione->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('cotizaciones.edit', $cotizacione->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('referencias-gastos.destroy', $referenciasGasto->codigo) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('referencias-gastos.show', $referenciasGasto->codigo) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('referencias-gastos.edit', $referenciasGasto->codigo) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
@@ -78,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $cotizaciones->withQueryString()->links() !!}
+                {!! $referenciasGastos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

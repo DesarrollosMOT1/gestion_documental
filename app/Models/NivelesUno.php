@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class NivelesUno extends Model
 {
+    protected $table = 'niveles_uno';
     
     protected $perPage = 20;
 
@@ -44,7 +45,7 @@ class NivelesUno extends Model
      */
     public function nivelesDos()
     {
-        return $this->hasMany(\App\Models\NivelesDo::class, 'id', 'id_niveles_uno');
+        return $this->hasMany(\App\Models\NivelesDos::class, 'id', 'id_niveles_uno');
     }
     
 }

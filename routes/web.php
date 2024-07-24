@@ -30,10 +30,13 @@ Route::group(['middleware' => 'auth'], function () {
     #rutas para gestion de compras
     Route::resource('areas', App\Http\Controllers\AreaController::class);
     Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class); 
-    Route::resource('niveles-uno', App\Http\Controllers\NivelesUnoController::class);
+    Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
     Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
-    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class);
+    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
+    Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
+    
+
     Route::resource('terceros', App\Http\Controllers\TerceroController::class);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
     Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);

@@ -1,10 +1,9 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
-@section('template_title')
-    {{ __('Update') }} Area
-@endsection
+@section('title', 'Editar Area')
 
 @section('content')
+<br>
     <section class="content container-fluid">
         <div class="">
             <div class="col-md-12">
