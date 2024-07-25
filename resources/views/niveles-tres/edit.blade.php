@@ -17,7 +17,7 @@
                             {{ method_field('PATCH') }}
                             @csrf
 
-                            @include('niveles-tre.form')
+                            @include('niveles-tres.form')
 
                         </form>
                     </div>

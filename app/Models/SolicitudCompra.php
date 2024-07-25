@@ -44,7 +44,7 @@ class SolicitudCompra extends Model
      */
     public function centroCosto()
     {
-        return $this->belongsTo(\App\Models\CentroCosto::class, 'id_centro_costo', 'codigo');
+        return $this->belongsTo(\App\Models\CentrosCosto::class, 'id_centro_costo', 'codigo');
     }
     
     /**
@@ -61,6 +61,11 @@ class SolicitudCompra extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'nombre', 'id');
+    }
+
+    public function solicitudesCompra()
+    {
+        return $this->belongsTo(SolicitudesCompra::class, 'id_solicitudes_compra', 'id');
     }
     
 }

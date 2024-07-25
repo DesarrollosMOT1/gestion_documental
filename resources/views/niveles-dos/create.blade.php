@@ -16,7 +16,7 @@
                         <form method="POST" action="{{ route('niveles-dos.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('niveles-do.form')
+                            @include('niveles-dos.form')
 
                         </form>
                     </div>

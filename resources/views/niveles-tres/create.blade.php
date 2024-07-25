@@ -16,7 +16,7 @@
                         <form method="POST" action="{{ route('niveles-tres.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('niveles-tre.form')
+                            @include('niveles-tres.form')
 
                         </form>
                     </div>

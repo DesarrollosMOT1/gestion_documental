@@ -25,3 +25,8 @@
         </div>
     </section>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
+@endpush
+

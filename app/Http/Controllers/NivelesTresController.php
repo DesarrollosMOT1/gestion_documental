@@ -18,7 +18,7 @@ class NivelesTresController extends Controller
     {
         $nivelesTres = NivelesTres::paginate();
 
-        return view('niveles-tre.index', compact('nivelesTres'))
+        return view('niveles-tres.index', compact('nivelesTres'))
             ->with('i', ($request->input('page', 1) - 1) * $nivelesTres->perPage());
     }
 
@@ -29,7 +29,7 @@ class NivelesTresController extends Controller
     {
         $nivelesTre = new NivelesTres();
 
-        return view('niveles-tre.create', compact('nivelesTre'));
+        return view('niveles-tres.create', compact('nivelesTre'));
     }
 
     /**
@@ -50,7 +50,7 @@ class NivelesTresController extends Controller
     {
         $nivelesTre = NivelesTres::find($id);
 
-        return view('niveles-tre.show', compact('nivelesTre'));
+        return view('niveles-tres.show', compact('nivelesTre'));
     }
 
     /**
@@ -60,7 +60,7 @@ class NivelesTresController extends Controller
     {
         $nivelesTre = NivelesTres::find($id);
 
-        return view('niveles-tre.edit', compact('nivelesTre'));
+        return view('niveles-tres.edit', compact('nivelesTre'));
     }
 
     /**

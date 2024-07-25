@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Nivel dos')
+@section('title', 'Nivel Tres')
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">

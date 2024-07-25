@@ -8,12 +8,24 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SolicitudesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\CentrosCosto;
+use App\Models\NivelesTres;
+use App\Models\SolicitudesElemento;
 
 class SolicitudesCompraController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    private function generatePrefix(): string
+    {
+        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
+        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
+        return $month . $year;
+    }
+    
     public function index(Request $request): View
     {
         $solicitudesCompras = SolicitudesCompra::paginate();
@@ -28,8 +40,12 @@ class SolicitudesCompraController extends Controller
     public function create(): View
     {
         $solicitudesCompra = new SolicitudesCompra();
+        $solicitudesCompra->prefijo = $this->generatePrefix();
+        $users = User::all();
+        $nivelesTres = NivelesTres::all();
+        $centrosCostos = CentrosCosto::all();
 
-        return view('solicitudes-compra.create', compact('solicitudesCompra'));
+        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesTres', 'centrosCostos'));
     }
 
     /**
@@ -37,11 +53,27 @@ class SolicitudesCompraController extends Controller
      */
     public function store(SolicitudesCompraRequest $request): RedirectResponse
     {
-        SolicitudesCompra::create($request->validated());
-
+        $validated = $request->validated();
+    
+        // Crear la solicitud de compra
+        $solicitudesCompra = SolicitudesCompra::create($validated);
+    
+        // Crear los elementos de solicitud
+        $elements = $request->input('elements', []);
+        foreach ($elements as $element) {
+            $solicitudesCompra->solicitudesElementos()->create([
+                'id_niveles_tres' => $element['id_niveles_tres'],
+                'id_centros_costos' => $element['id_centros_costos'],
+                'cantidad' => $element['cantidad'],
+                'estado' => $element['estado'],
+                'id_solicitudes_compra' => $solicitudesCompra->id,
+            ]);
+        }
+    
         return Redirect::route('solicitudes-compras.index')
             ->with('success', 'SolicitudesCompra created successfully.');
     }
+    
 
     /**
      * Display the specified resource.
