@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\CentrosCosto;
+use App\Models\NivelesUno;
+use App\Models\NivelesDos;
 use App\Models\NivelesTres;
 use App\Models\SolicitudesElemento;
 
@@ -42,11 +44,26 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $users = User::all();
-        $nivelesTres = NivelesTres::all();
+        $nivelesUno = NivelesUno::all(); // Obtener todos los niveles uno
         $centrosCostos = CentrosCosto::all();
-
-        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesTres', 'centrosCostos'));
+    
+        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos'));
     }
+    
+    public function getNivelesDos($idNivelUno)
+    {
+        $nivelesDos = NivelesDos::where('id_niveles_uno', $idNivelUno)->get();
+        return response()->json($nivelesDos);
+    }
+
+    public function getNivelesTres($idNivelDos)
+    {
+        $nivelesTres = NivelesTres::where('id_niveles_dos', $idNivelDos)->get();
+        return response()->json($nivelesTres);
+    }
+
+    
+
 
     /**
      * Store a newly created resource in storage.

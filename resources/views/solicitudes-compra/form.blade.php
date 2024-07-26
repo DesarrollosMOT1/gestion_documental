@@ -43,12 +43,26 @@
 
     <div class="col-md-6">
         <div class="form-group mb-2 mb20">
-            <label for="select_id_niveles_tres" class="form-label">{{ __('Niveles Tres') }}</label>
-            <select id="select_id_niveles_tres" class="form-control">
+            <label for="select_niveles_uno" class="form-label">{{ __('Nivel Uno') }}</label>
+            <select id="select_niveles_uno" class="form-control">
                 <option selected>Seleccione una opción</option>
-                @foreach($nivelesTres as $nivelTres)
-                    <option value="{{ $nivelTres->id }}">{{ $nivelTres->nombre }}</option>
+                @foreach($nivelesUno as $nivelUno)
+                    <option value="{{ $nivelUno->id }}">{{ $nivelUno->nombre }}</option>
                 @endforeach
+            </select>
+        </div>
+        
+        <div class="form-group mb-2 mb20">
+            <label for="select_niveles_dos" class="form-label">{{ __('Nivel Dos') }}</label>
+            <select id="select_niveles_dos" class="form-control">
+                <option selected>Seleccione una opción</option>
+            </select>
+        </div>
+        
+        <div class="form-group mb-2 mb20">
+            <label for="select_niveles_tres" class="form-label">{{ __('Nivel Tres') }}</label>
+            <select id="select_niveles_tres" class="form-control">
+                <option selected>Seleccione una opción</option>
             </select>
         </div>
 

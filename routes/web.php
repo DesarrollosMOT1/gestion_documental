@@ -35,7 +35,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
     Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
-    
+
+    Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);
+    Route::get('/api/niveles-tres/{idNivelDos}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesTres']);
+
 
     Route::resource('terceros', App\Http\Controllers\TerceroController::class);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
