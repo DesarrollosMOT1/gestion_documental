@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SolicitudCompra extends Model
 {
+    protected $table = 'solicitudes_compras'; 
     
     protected $perPage = 2000;
 
@@ -63,9 +64,9 @@ class SolicitudCompra extends Model
         return $this->belongsTo(\App\Models\User::class, 'nombre', 'id');
     }
 
-    public function solicitudesCompra()
+    public function solicitudesElemento()
     {
-        return $this->belongsTo(SolicitudesCompra::class, 'id_solicitudes_compra', 'id');
+        return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id_solicitudes_compra', 'id');
     }
     
 }

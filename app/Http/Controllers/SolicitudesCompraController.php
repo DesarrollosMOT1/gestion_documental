@@ -13,6 +13,7 @@ use App\Models\CentrosCosto;
 use App\Models\NivelesUno;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
+use App\Models\SolicitudCompra;
 use App\Models\SolicitudesElemento;
 
 class SolicitudesCompraController extends Controller
@@ -97,10 +98,13 @@ class SolicitudesCompraController extends Controller
      */
     public function show($id): View
     {
-        $solicitudesCompra = SolicitudesCompra::find($id);
-
+        $solicitudesCompra = SolicitudCompra::with('solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto')
+                                            ->findOrFail($id);
+    
         return view('solicitudes-compra.show', compact('solicitudesCompra'));
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
