@@ -105,6 +105,16 @@ class SolicitudesCompraController extends Controller
         return view('solicitudes-compra.show', compact('solicitudesCompra'));
     }
 
+    public function actualizarEstado(Request $request, $id)
+    {
+        $elemento = SolicitudesElemento::findOrFail($id);
+        $elemento->estado = $request->input('estado');
+        $elemento->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
 
 
     /**

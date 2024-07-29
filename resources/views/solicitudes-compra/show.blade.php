@@ -60,7 +60,11 @@
                                         <td>{{ $elemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                         <td>{{ $elemento->centrosCosto->nombre ?? 'N/A' }}</td>
                                         <td>{{ $elemento->cantidad }}</td>
-                                        <td>{{ $elemento->estado }}</td>
+                                        <td>
+                                            <input type="checkbox" class="estado-checkbox" 
+                                                   data-id="{{ $elemento->id }}" 
+                                                   {{ $elemento->estado ? 'checked' : '' }}>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -76,3 +80,7 @@
     </div>
 </section>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/solicitudes-compra/actualizarEstado.js') }}"></script>
+@endpush
