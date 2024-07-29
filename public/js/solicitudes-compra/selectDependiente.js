@@ -33,46 +33,6 @@ function initializeSelects() {
     });
 }
 
-function handleAddElement() {
-    const selectNivelesTres = document.getElementById('select_niveles_tres');
-    const selectCentrosCostos = document.getElementById('select_id_centros_costos');
-    const inputCantidad = document.getElementById('input_cantidad');
-    const elementsTableBody = document.getElementById('elementsTableBody');
-    const noElementsRow = document.getElementById('noElementsRow');
-
-    if (selectNivelesTres.value !== "Seleccione una opción" &&
-        selectCentrosCostos.value !== "Seleccione una opción" &&
-        inputCantidad.value !== "") {
-
-        const newRow = document.createElement('tr');
-
-        newRow.innerHTML = `
-            <td>${selectNivelesTres.options[selectNivelesTres.selectedIndex].text}</td>
-            <td>${selectCentrosCostos.options[selectCentrosCostos.selectedIndex].text}</td>
-            <td>${inputCantidad.value}</td>
-            <td><button type="button" class="btn btn-danger btn-sm remove-element">Eliminar</button></td>
-        `;
-
-        elementsTableBody.appendChild(newRow);
-
-        selectNivelesTres.selectedIndex = 0;
-        selectCentrosCostos.selectedIndex = 0;
-        inputCantidad.value = "";
-
-        noElementsRow.style.display = 'none';
-
-        newRow.querySelector('.remove-element').addEventListener('click', function() {
-            elementsTableBody.removeChild(newRow);
-            if (elementsTableBody.children.length === 0) {
-                noElementsRow.style.display = '';
-            }
-        });
-    } else {
-        alert('Por favor complete todos los campos antes de agregar.');
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     initializeSelects();
-    document.getElementById('addElement').addEventListener('click', handleAddElement);
 });

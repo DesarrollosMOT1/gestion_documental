@@ -72,10 +72,10 @@ class SolicitudesCompraController extends Controller
     public function store(SolicitudesCompraRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-    
+
         // Crear la solicitud de compra
         $solicitudesCompra = SolicitudesCompra::create($validated);
-    
+
         // Crear los elementos de solicitud
         $elements = $request->input('elements', []);
         foreach ($elements as $element) {
@@ -83,14 +83,15 @@ class SolicitudesCompraController extends Controller
                 'id_niveles_tres' => $element['id_niveles_tres'],
                 'id_centros_costos' => $element['id_centros_costos'],
                 'cantidad' => $element['cantidad'],
-                'estado' => $element['estado'],
+                'estado' => $element['estado'] ?? null,
                 'id_solicitudes_compra' => $solicitudesCompra->id,
             ]);
         }
-    
+
         return Redirect::route('solicitudes-compras.index')
             ->with('success', 'SolicitudesCompra created successfully.');
     }
+
     
 
     /**

@@ -17,11 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_users');
             $table->string('prefijo');
             $table->text('descripcion');
-            $table->string('estado_solicitud');
-            $table->date('fecha_estado');
+            $table->string('estado_solicitud')->nullable(); 
+            $table->date('fecha_estado')->nullable(); 
             $table->timestamps();
             $table->foreign('id_users')->references('id')->on('users');
-        });
+        });        
     }
 
     /**

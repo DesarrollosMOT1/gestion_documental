@@ -12,11 +12,13 @@ function updateTableMessage() {
 }
 
 document.getElementById('addElement').addEventListener('click', function() {
-    const nivelesTres = document.getElementById('select_id_niveles_tres');
+    const nivelesTres = document.getElementById('select_niveles_tres');
     const centrosCostos = document.getElementById('select_id_centros_costos');
     const cantidad = document.getElementById('input_cantidad').value;
 
-    if (cantidad && nivelesTres.value !== 'Seleccione una opción' && centrosCostos.value !== 'Seleccione una opción') {
+    // Validar solo en addElemento.js
+    if (cantidad && nivelesTres.value !== 'Seleccione una opción' && centrosCostos.value !== 'Seleccione una opción' &&
+        nivelesTres.value !== '' && centrosCostos.value !== '') {
         const nivelesTresText = nivelesTres.options[nivelesTres.selectedIndex].text;
         const centrosCostosText = centrosCostos.options[centrosCostos.selectedIndex].text;
         const nivelesTresValue = nivelesTres.value;
@@ -39,7 +41,9 @@ document.getElementById('addElement').addEventListener('click', function() {
         elementIndex++;
 
         // Resetear los campos de entrada
-        document.getElementById('select_id_niveles_tres').value = 'Seleccione una opción';
+        document.getElementById('select_niveles_uno').value = 'Seleccione una opción';
+        document.getElementById('select_niveles_dos').value = 'Seleccione una opción';
+        document.getElementById('select_niveles_tres').value = 'Seleccione una opción';
         document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
         document.getElementById('input_cantidad').value = '';
 

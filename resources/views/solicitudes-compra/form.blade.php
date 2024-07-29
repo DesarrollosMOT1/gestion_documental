@@ -61,10 +61,10 @@
         
         <div class="form-group mb-2 mb20">
             <label for="select_niveles_tres" class="form-label">{{ __('Nivel Tres') }}</label>
-            <select id="select_niveles_tres" class="form-control">
+            <select id="select_niveles_tres" name="id_niveles_tres" class="form-control">
                 <option selected>Seleccione una opción</option>
             </select>
-        </div>
+        </div>        
 
         <div class="form-group mb-2 mb20">
             <label for="select_id_centros_costos" class="form-label">{{ __('Centros Costos') }}</label>
