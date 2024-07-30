@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CotizacioneRequest extends FormRequest
+class OrdenesCompraCotizacioneRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class CotizacioneRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'fecha_cotizacion' => 'required',
-			'nombre' => 'required|string',
-			'valor' => 'required',
-			'condiciones_pago' => 'required|string',
-			'id_terceros' => 'required|string',
-            'solicitudes_ids' => 'required|string',
+			'id_ordenes_compras' => 'required',
+			'id_solicitudes_cotizaciones' => 'required',
+			'id_entradas' => 'required',
         ];
     }
 }
