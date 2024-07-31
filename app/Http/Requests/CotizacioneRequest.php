@@ -27,7 +27,6 @@ class CotizacioneRequest extends FormRequest
 			'valor' => 'required',
 			'condiciones_pago' => 'required|string',
 			'id_terceros' => 'required|string',
-            'solicitudes_ids' => 'required|string',
         ];
     }
 }

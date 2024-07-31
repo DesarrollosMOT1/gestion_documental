@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CotizacioneRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\SolicitudesCotizacione;
+use App\Models\SolicitudesCompra;
+use App\Models\Impuesto;
+use App\Models\SolicitudesElemento;
 
 class CotizacioneController extends Controller
 {
@@ -25,23 +29,47 @@ class CotizacioneController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    
     public function create(): View
     {
         $cotizacione = new Cotizacione();
+        $solicitudes_compras = SolicitudesCompra::all();
+        $impuestos = Impuesto::all();
 
-        return view('cotizacione.create', compact('cotizacione'));
+        return view('cotizacione.create', compact('cotizacione', 'solicitudes_compras', 'impuestos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CotizacioneRequest $request): RedirectResponse
     {
-        Cotizacione::create($request->validated());
+        $cotizacion = Cotizacione::create($request->validated());
+
+        foreach ($request->elementos as $elemento) {
+            SolicitudesCotizacione::create([
+                'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
+                'id_cotizaciones' => $cotizacion->id,
+                'cantidad' => $elemento['cantidad'],
+                'id_impuestos' => $elemento['id_impuestos'],
+                'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                'estado' => '0',
+                'precio' => $elemento['precio'],
+            ]);
+        }
 
         return Redirect::route('cotizaciones.index')
-            ->with('success', 'Cotizacione created successfully.');
+            ->with('success', 'Cotización creada exitosamente.');
     }
+
+    public function getElementosMultiple(Request $request)
+    {
+        $solicitudes = $request->input('solicitudes', []);
+        $elementos = SolicitudesElemento::with('nivelesTres')
+            ->whereIn('id_solicitudes_compra', $solicitudes)
+            ->where('estado', '1')
+            ->get();
+
+        return response()->json($elementos);
+    }
+
 
     /**
      * Display the specified resource.

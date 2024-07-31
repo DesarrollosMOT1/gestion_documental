@@ -15,6 +15,7 @@ use App\Models\NivelesDos;
 use App\Models\NivelesTres;
 use App\Models\SolicitudCompra;
 use App\Models\SolicitudesElemento;
+use App\Models\Impuesto;
 
 class SolicitudesCompraController extends Controller
 {
@@ -33,7 +34,9 @@ class SolicitudesCompraController extends Controller
     {
         $solicitudesCompras = SolicitudesCompra::paginate();
 
-        return view('solicitudes-compra.index', compact('solicitudesCompras'))
+        $impuestos = Impuesto::all();
+
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 
@@ -99,7 +102,7 @@ class SolicitudesCompraController extends Controller
      */
     public function show($id): View
     {
-        $solicitudesCompra = SolicitudCompra::with('solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto')
+        $solicitudesCompra = SolicitudesCompra::with('solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto')
                                             ->findOrFail($id);
     
         return view('solicitudes-compra.show', compact('solicitudesCompra'));

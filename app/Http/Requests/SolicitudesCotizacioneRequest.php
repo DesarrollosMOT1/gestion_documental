@@ -26,6 +26,7 @@ class SolicitudesCotizacioneRequest extends FormRequest
 			'id_cotizaciones' => 'required',
 			'cantidad' => 'required',
 			'id_impuestos' => 'required',
+            'precio' => 'required',
 			'estado' => 'required|string',
         ];
     }

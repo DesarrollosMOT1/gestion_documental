@@ -28,6 +28,8 @@ class SolicitudesCompra extends Model
     
     protected $perPage = 20;
 
+    protected $table = 'solicitudes_compras'; 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -55,9 +57,9 @@ class SolicitudesCompra extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function solicitudesElementos()
+    public function solicitudesElemento()
     {
-        return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id', 'id_solicitudes_compra');
+        return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id_solicitudes_compra', 'id');
     }
     
 }

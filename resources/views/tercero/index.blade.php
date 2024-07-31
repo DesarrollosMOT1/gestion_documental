@@ -57,9 +57,9 @@
 										<td >{{ $tercero->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('terceros.destroy', $tercero->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('terceros.show', $tercero->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('terceros.edit', $tercero->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('terceros.destroy', $tercero->nit) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('terceros.show', $tercero->nit) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('terceros.edit', $tercero->nit) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
