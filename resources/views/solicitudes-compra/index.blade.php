@@ -63,7 +63,7 @@
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $solicitudesCompra->fecha_solicitud }}</td>
-                                            <td>{{ $solicitudesCompra->id_users }}</td>
+                                            <td>{{ $solicitudesCompra->user->name }}</td>
                                             <td>{{ $solicitudesCompra->prefijo }}</td>
                                             <td>{{ $solicitudesCompra->descripcion }}</td>
                                             <td>{{ $solicitudesCompra->estado_solicitud }}</td>
@@ -116,6 +116,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/cotizaciones/generarCotizaciones.js') }}"></script>
+    <script src="{{ asset('js/cotizaciones/actualizarValorCotizacion.js') }}"></script>
     <script>
         var impuestos = @json($impuestos);
         var csrfToken = '{{ csrf_token() }}';

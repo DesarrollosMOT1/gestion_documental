@@ -12,6 +12,7 @@ use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesCompra;
 use App\Models\Impuesto;
 use App\Models\SolicitudesElemento;
+use App\Models\Tercero;
 
 class CotizacioneController extends Controller
 {

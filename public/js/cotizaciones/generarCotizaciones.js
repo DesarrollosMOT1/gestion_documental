@@ -56,18 +56,21 @@ $(document).ready(function() {
                                     <div class="col-md-3">
                                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
                                         <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${elemento.id_solicitudes_compra}">
-                                        <p class="text-start">Elemento: ${elemento.niveles_tres.nombre}</p>
+                                        <label for="NombreElemento" class="form-label">Elemento: ${elemento.niveles_tres.nombre}</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" required>
+                                        <label for="Cantidad" class="form-label">Cantidad</label>
+                                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required>
                                     </div>
                                     <div class="col-md-3">
+                                    <label for="Impuestos" class="form-label">Impuestos</label>
                                         <select name="elementos[${index}][id_impuestos]" class="form-control" required>
                                             <option value="">Seleccione un impuesto</option>
                                             ${impuestosOptions}
                                         </select>
                                     </div>
                                     <div class="col-md-3">
+                                        <label for="Precio" class="form-label">Precio</label>
                                         <input type="number" step="0.01" name="elementos[${index}][precio]" class="form-control" placeholder="Precio" required>
                                     </div>
                                 </div>

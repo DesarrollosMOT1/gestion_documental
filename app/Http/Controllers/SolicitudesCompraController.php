@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\SolicitudesCompra;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use App\Models\SolicitudCompra;
 use App\Models\SolicitudesElemento;
 use App\Models\Impuesto;
 use App\Models\Cotizacione;
+use App\Models\Tercero;
 
 class SolicitudesCompraController extends Controller
 {
@@ -34,12 +36,12 @@ class SolicitudesCompraController extends Controller
     public function index(Request $request): View
     {
         $solicitudesCompras = SolicitudesCompra::paginate();
-
         $impuestos = Impuesto::all();
-
         $cotizacione = new Cotizacione();
+        $terceros = Tercero::all();
+        $fechaActual = Carbon::now()->toDateString();
 
-        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos' ,'cotizacione'))
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos' ,'cotizacione', 'terceros', 'fechaActual'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 
@@ -53,8 +55,9 @@ class SolicitudesCompraController extends Controller
         $users = User::all();
         $nivelesUno = NivelesUno::all(); // Obtener todos los niveles uno
         $centrosCostos = CentrosCosto::all();
+        $fechaActual = Carbon::now()->toDateString();
     
-        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos'));
+        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos', 'fechaActual'));
     }
     
     public function getNivelesDos($idNivelUno)

@@ -17,7 +17,7 @@
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
         <div class="form-group mb-2">
             <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotizacion') }}</label>
-            <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $cotizacione?->fecha_cotizacion) }}" id="fecha_cotizacion" placeholder="Fecha Cotizacion">
+            <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $fechaActual) }}" id="fecha_cotizacion" placeholder="Fecha Cotizacion">
             {!! $errors->first('fecha_cotizacion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2">
@@ -27,22 +27,34 @@
         </div>
         <div class="form-group mb-2">
             <label for="valor" class="form-label">{{ __('Valor') }}</label>
-            <input type="text" name="valor" class="form-control @error('valor') is-invalid @enderror" value="{{ old('valor', $cotizacione?->valor) }}" id="valor" placeholder="Valor">
+            <input type="text" name="valor" class="form-control @error('valor') is-invalid @enderror" value="{{ old('valor', $cotizacione?->valor) }}" id="valor" placeholder="Valor" readonly>
             {!! $errors->first('valor', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2">
             <label for="condiciones_pago" class="form-label">{{ __('Condiciones Pago') }}</label>
-            <input type="text" name="condiciones_pago" class="form-control @error('condiciones_pago') is-invalid @enderror" value="{{ old('condiciones_pago', $cotizacione?->condiciones_pago) }}" id="condiciones_pago" placeholder="Condiciones Pago">
+            <select name="condiciones_pago" class="form-control @error('condiciones_pago') is-invalid @enderror" id="condiciones_pago">
+                <option value="">{{ __('Seleccione una opción') }}</option>
+                <option value="30 días" {{ old('condiciones_pago', $cotizacione?->condiciones_pago) == '30 días' ? 'selected' : '' }}>30 días</option>
+                <option value="contado" {{ old('condiciones_pago', $cotizacione?->condiciones_pago) == 'contado' ? 'selected' : '' }}>Contado</option>
+                <option value="crédito" {{ old('condiciones_pago', $cotizacione?->condiciones_pago) == 'crédito' ? 'selected' : '' }}>Crédito</option>
+            </select>
             {!! $errors->first('condiciones_pago', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
+        </div>        
         <div class="form-group mb-2">
             <label for="descuento" class="form-label">{{ __('Descuento') }}</label>
-            <input type="text" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento', $cotizacione?->descuento) }}" id="descuento" placeholder="Descuento">
+            <input type="number" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento', $cotizacione?->descuento) }}" id="descuento" placeholder="Descuento">
             {!! $errors->first('descuento', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2">
-            <label for="id_terceros" class="form-label">{{ __('Id Terceros') }}</label>
-            <input type="text" name="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" value="{{ old('id_terceros', $cotizacione?->id_terceros) }}" id="id_terceros" placeholder="Id Terceros">
+            <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
+            <select name="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" id="id_terceros">
+                <option value="" disabled selected>Seleccione un tercero</option>
+                @foreach($terceros as $tercero)
+                    <option value="{{ $tercero->id }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->id ? 'selected' : '' }}>
+                        {{ $tercero->nombre }}
+                    </option>
+                @endforeach
+            </select>
             {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>

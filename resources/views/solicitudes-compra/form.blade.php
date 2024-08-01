@@ -2,7 +2,7 @@
     <div class="col-md-6">
         <div class="form-group mb-2 mb20">
             <label for="fecha_solicitud" class="form-label">{{ __('Fecha Solicitud') }}</label>
-            <input type="date" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $solicitudesCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
+            <input type="date" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $fechaActual, $solicitudesCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
             {!! $errors->first('fecha_solicitud', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
