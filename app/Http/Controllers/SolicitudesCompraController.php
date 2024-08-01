@@ -16,6 +16,7 @@ use App\Models\NivelesTres;
 use App\Models\SolicitudCompra;
 use App\Models\SolicitudesElemento;
 use App\Models\Impuesto;
+use App\Models\Cotizacione;
 
 class SolicitudesCompraController extends Controller
 {
@@ -36,7 +37,9 @@ class SolicitudesCompraController extends Controller
 
         $impuestos = Impuesto::all();
 
-        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos'))
+        $cotizacione = new Cotizacione();
+
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos' ,'cotizacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 

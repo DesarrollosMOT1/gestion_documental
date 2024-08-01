@@ -102,73 +102,7 @@
                     @csrf
                     <div class="row padding-1 p-1">
                         <div class="col-md-12">
-                            <div class="form-group mb-2 mb20">
-                                <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotizacion') }}</label>
-                                <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion') }}" id="fecha_cotizacion">
-                                @error('fecha_cotizacion')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-2 mb20">
-                                <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
-                                <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" id="nombre" placeholder="Nombre">
-                                @error('nombre')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-2 mb20">
-                                <label for="valor" class="form-label">{{ __('Valor') }}</label>
-                                <input type="number" name="valor" class="form-control @error('valor') is-invalid @enderror" value="{{ old('valor') }}" id="valor" placeholder="Valor">
-                                @error('valor')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-2 mb20">
-                                <label for="condiciones_pago" class="form-label">{{ __('Condiciones Pago') }}</label>
-                                <input type="text" name="condiciones_pago" class="form-control @error('condiciones_pago') is-invalid @enderror" value="{{ old('condiciones_pago') }}" id="condiciones_pago" placeholder="Condiciones Pago">
-                                @error('condiciones_pago')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-2 mb20">
-                                <label for="descuento" class="form-label">{{ __('Descuento') }}</label>
-                                <input type="number" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento') }}" id="descuento" placeholder="Descuento">
-                                @error('descuento')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-2 mb20">
-                                <label for="id_terceros" class="form-label">{{ __('Id Terceros') }}</label>
-                                <input type="text" name="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" value="{{ old('id_terceros') }}" id="id_terceros" placeholder="Id Terceros">
-                                @error('id_terceros')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <!-- Tabla para mostrar el detalle de las solicitudes seleccionadas -->
-                            <div class="col-md-12 mt-4">
-                                <h6>Solicitudes seleccionadas:</h6>
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Prefijo</th>
-                                            <th>Descripción</th>
-                                            <th>Fecha Solicitud</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="solicitudes_seleccionadas_tabla">
-                                        <!-- Aquí se cargarán dinámicamente las solicitudes seleccionadas -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="elementos_container" class="col-md-12 mt-4">
-                            <h6>Elementos de las solicitudes:</h6>
-                            <!-- Aquí se cargarán dinámicamente los elementos de la solicitud -->
-                        </div>
-                        <div class="col-md-12 mt20 mt-2">
-                            <button id="btnEnviar" type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                        </div>
+                            @include('cotizacione.form', ['cotizacione' => new \App\Models\Cotizacione])
                     </div>
                 </form>
             </div>

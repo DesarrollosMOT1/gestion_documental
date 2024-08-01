@@ -1,6 +1,6 @@
 <div class="row padding-1 p-1">
     <div class="col-md-12">
-        
+        <!-- Formulario principal -->
         <div class="form-group mb-2 mb20">
             <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotizacion') }}</label>
             <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $cotizacione?->fecha_cotizacion) }}" id="fecha_cotizacion" placeholder="Fecha Cotizacion">
@@ -32,8 +32,32 @@
             {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
-    </div>
-    <div class="col-md-12 mt20 mt-2">
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+        <!-- Tabla para mostrar el detalle de las solicitudes seleccionadas -->
+        <div class="col-md-12 mt-4">
+            <h6>Solicitudes seleccionadas:</h6>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Prefijo</th>
+                        <th>Descripción</th>
+                        <th>Fecha Solicitud</th>
+                    </tr>
+                </thead>
+                <tbody id="solicitudes_seleccionadas_tabla">
+                    <!-- Aquí se cargarán dinámicamente las solicitudes seleccionadas -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Contenedor para los elementos de las solicitudes -->
+        <div id="elementos_container" class="col-md-12 mt-4">
+            <h6>Elementos de las solicitudes:</h6>
+            <!-- Aquí se cargarán dinámicamente los elementos de la solicitud -->
+        </div>
+
+        <!-- Botón de envío -->
+        <div class="col-md-12 mt20 mt-2">
+            <button id="btnEnviar" type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+        </div>
     </div>
 </div>
