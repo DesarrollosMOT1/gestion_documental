@@ -1,5 +1,6 @@
 <div class="row padding-1 p-1">
     <div class="col-md-6">
+        <h4 class="mb-3">Información General</h4>
         <div class="form-group mb-2 mb20">
             <label for="fecha_solicitud" class="form-label">{{ __('Fecha Solicitud') }}</label>
             <input type="date" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $fechaActual, $solicitudesCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
@@ -24,7 +25,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
+            <text type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
@@ -42,6 +43,7 @@
     </div>
 
     <div class="col-md-6">
+        <h4 class="mb-3">Elementos de la Solicitud</h4>
         <div class="form-group mb-2 mb20">
             <label for="select_niveles_uno" class="form-label">{{ __('Nivel Uno') }}</label>
             <select id="select_niveles_uno" class="form-control">
@@ -81,11 +83,13 @@
             <input type="number" id="input_cantidad" class="form-control" placeholder="Cantidad">
         </div>
 
-        <button type="button" id="addElement" class="btn btn-secondary">{{ __('Agregar Elemento') }}</button>
+        <button type="button" id="addElement" class="btn btn-secondary mb-3">
+            <i class="fas fa-plus"></i> {{ __('Agregar Elemento') }}
+        </button>
 
         <!-- Tabla para mostrar los elementos agregados -->
-        <div class="table-responsive mt-3">
-            <table class="table">
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>{{ __('Elemento') }}</th>
@@ -95,9 +99,8 @@
                     </tr>
                 </thead>
                 <tbody id="elementsTableBody">
-                    <!-- Mensaje cuando no hay elementos -->
                     <tr id="noElementsRow">
-                        <td colspan="5" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
+                        <td colspan="4" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
                     </tr>
                 </tbody>
             </table>

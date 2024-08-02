@@ -1,52 +1,129 @@
 @extends('adminlte::page')
 
-@section('title', 'Ver Cotizacion')
+@section('title', 'Ver Cotización')
 
 @section('content')
-<br>
-    <section class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Cotizacione</span>
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="m-0">Detalles de la Cotización</h3>
+            <a class="btn btn-primary btn-sm" href="{{ route('cotizaciones.index') }}">Atrás</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Información General -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información General</h5>
                         </div>
-                        <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('cotizaciones.index') }}"> {{ __('Back') }}</a>
+                        <div class="card-body">
+                            <p><strong>Fecha Cotización:</strong> {{ $cotizacione->fecha_cotizacion }}</p>
+                            <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
+                            <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
+                            <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>
+                            <p><strong>Descuento:</strong> {{ $cotizacione->descuento }}</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card-body bg-white">
-                        
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Fecha Cotizacion:</strong>
-                                    {{ $cotizacione->fecha_cotizacion }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Nombre:</strong>
-                                    {{ $cotizacione->nombre }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Valor:</strong>
-                                    {{ $cotizacione->valor }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Condiciones Pago:</strong>
-                                    {{ $cotizacione->condiciones_pago }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Descuento:</strong>
-                                    {{ $cotizacione->descuento }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Id Terceros:</strong>
-                                    {{ $cotizacione->id_terceros }}
-                                </div>
+                <!-- Información del Tercero -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-user mr-2"></i>Información del Tercero</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>NIT:</strong> {{ $cotizacione->tercero->nit }}</p>
+                            <p><strong>Tipo de factura:</strong> {{ $cotizacione->tercero->tipo_factura ?? 'N/A' }}</p>
+                            <p><strong>Nombre:</strong> {{ $cotizacione->tercero->nombre ?? 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Solicitudes de Compra Relacionadas -->
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-shopping-cart mr-2"></i>Solicitudes de Compra Relacionadas</h5>
+                        </div>
+                        <div class="card-body">
+                            @if($solicitudesUnicas->isNotEmpty())
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha Solicitud</th>
+                                                <th>Prefijo</th>
+                                                <th>Descripción</th>
+                                                <th>Estado Solicitud</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($solicitudesUnicas as $solicitudCotizacion)
+                                                <tr>
+                                                    <td>{{ $solicitudCotizacion->solicitudesCompra->fecha_solicitud ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->solicitudesCompra->prefijo ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
+                                                    <td>
+                                                        <span class="badge badge-{{ $solicitudCotizacion->solicitudesCompra->estado_solicitud === 'Aprobado' ? 'success' : 'warning' }}">
+                                                            {{ $solicitudCotizacion->solicitudesCompra->estado_solicitud ?? 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <p class="text-muted">No hay solicitudes de compra asociadas a esta cotización.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Elementos Cotizados -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-list mr-2"></i>Elementos Cotizados</h5>
+                        </div>
+                        <div class="card-body">
+                            @if($cotizacione->solicitudesCotizaciones->isNotEmpty())
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Elemento</th>
+                                                <th>Impuesto</th>
+                                                <th>Estado</th>
+                                                <th>Precio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($cotizacione->solicitudesCotizaciones as $solicitudCotizacion)
+                                                <tr>
+                                                    <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
+                                                    <td>
+                                                        <span class="badge badge-{{ $solicitudCotizacion->estado === 'Aprobado' ? 'success' : 'info' }}">
+                                                            {{ $solicitudCotizacion->estado ?? 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <p class="text-muted">No hay elementos cotizados asociados a esta cotización.</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 @endsection

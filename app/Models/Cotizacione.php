@@ -27,6 +27,8 @@ class Cotizacione extends Model
     
     protected $perPage = 20;
 
+    protected $table = 'cotizaciones'; 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +50,7 @@ class Cotizacione extends Model
      */
     public function solicitudesCotizaciones()
     {
-        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id', 'id_cotizaciones');
+        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id_cotizaciones', 'id');
     }
     
 }

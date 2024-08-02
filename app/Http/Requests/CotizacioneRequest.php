@@ -26,6 +26,7 @@ class CotizacioneRequest extends FormRequest
 			'nombre' => 'required|string',
 			'valor' => 'required',
 			'condiciones_pago' => 'required|string',
+            'descuento' => 'nullable|numeric',
 			'id_terceros' => 'required|string',
         ];
     }

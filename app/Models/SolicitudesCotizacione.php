@@ -30,6 +30,8 @@ class SolicitudesCotizacione extends Model
     
     protected $perPage = 20;
 
+    protected $table = 'solicitudes_cotizaciones'; 
+
     /**
      * The attributes that are mass assignable.
      *

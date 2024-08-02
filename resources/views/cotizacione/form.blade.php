@@ -50,7 +50,7 @@
             <select name="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" id="id_terceros">
                 <option value="" disabled selected>Seleccione un tercero</option>
                 @foreach($terceros as $tercero)
-                    <option value="{{ $tercero->id }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->id ? 'selected' : '' }}>
+                    <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
                         {{ $tercero->nombre }}
                     </option>
                 @endforeach

@@ -75,12 +75,19 @@ class CotizacioneController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show($id)
     {
-        $cotizacione = Cotizacione::find($id);
-
-        return view('cotizacione.show', compact('cotizacione'));
-    }
+        // Encuentra la cotización por ID e incluye las relaciones necesarias
+        $cotizacione = Cotizacione::with([
+            'solicitudesCotizaciones.solicitudesElemento.nivelesTres', 
+            'solicitudesCotizaciones.impuesto'
+        ])->findOrFail($id);
+        
+        // Filtra las solicitudes únicas por su ID
+        $solicitudesUnicas = $cotizacione->solicitudesCotizaciones->unique('id_solicitudes_compras');
+    
+        return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas'));
+    }    
 
     /**
      * Show the form for editing the specified resource.

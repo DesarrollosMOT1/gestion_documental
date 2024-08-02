@@ -19,12 +19,6 @@
                             <span id="card_title">
                                 {{ __('Cotizaciones') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('cotizaciones.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -45,7 +39,7 @@
 									<th >Valor</th>
 									<th >Condiciones Pago</th>
 									<th >Descuento</th>
-									<th >Id Terceros</th>
+									<th >Tercero</th>
 
                                         <th></th>
                                     </tr>
@@ -60,12 +54,12 @@
 										<td >{{ $cotizacione->valor }}</td>
 										<td >{{ $cotizacione->condiciones_pago }}</td>
 										<td >{{ $cotizacione->descuento }}</td>
-										<td >{{ $cotizacione->id_terceros }}</td>
+										<td >{{ $cotizacione->tercero->nombre }}</td>
 
                                             <td>
                                                 <form action="{{ route('cotizaciones.destroy', $cotizacione->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('cotizaciones.show', $cotizacione->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('cotizaciones.edit', $cotizacione->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('cotizaciones.show', $cotizacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('cotizaciones.edit', $cotizacione->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
