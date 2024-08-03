@@ -47,7 +47,7 @@
                                         </th>
                                         <th>No</th>
                                         <th>Fecha Solicitud</th>
-                                        <th>Id Users</th>
+                                        <th>Usuario</th>
                                         <th>Prefijo</th>
                                         <th>Descripcion</th>
                                         <th>Estado Solicitud</th>

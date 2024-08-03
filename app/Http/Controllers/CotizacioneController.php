@@ -89,6 +89,16 @@ class CotizacioneController extends Controller
         return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas'));
     }    
 
+    public function actualizarEstado(Request $request, $id)
+    {
+        $elemento = SolicitudesCotizacione::findOrFail($id);
+        $elemento->estado = $request->input('estado');
+        $elemento->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      */

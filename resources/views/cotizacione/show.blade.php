@@ -106,9 +106,9 @@
                                                     <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
                                                     <td>
-                                                        <span class="badge badge-{{ $solicitudCotizacion->estado === 'Aprobado' ? 'success' : 'info' }}">
-                                                            {{ $solicitudCotizacion->estado ?? 'N/A' }}
-                                                        </span>
+                                                        <input type="checkbox" class="estado-checkbox" 
+                                                               data-id="{{ $solicitudCotizacion->id }}" 
+                                                               {{ $solicitudCotizacion->estado === '1' ? 'checked' : '' }}>
                                                     </td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
                                                 </tr>
@@ -127,3 +127,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
+@endpush

@@ -70,7 +70,7 @@ $(document).ready(function() {
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="Precio" class="form-label">Precio</label>
+                                        <label for="Precio" class="form-label">Precio Unitario</label>
                                         <input type="number" step="0.01" name="elementos[${index}][precio]" class="form-control" placeholder="Precio" required>
                                     </div>
                                 </div>
