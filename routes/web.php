@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/get-elementos-multiple', [App\Http\Controllers\CotizacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
 
-    Route::resource('terceros', App\Http\Controllers\TerceroController::class);
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
     Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
     Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class); 

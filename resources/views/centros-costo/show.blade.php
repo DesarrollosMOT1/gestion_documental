@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Centros Costo</span>
+                            <span class="card-title">{{ __('Show') }} Centros de Costos</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('centros-costos.index') }}"> {{ __('Atras') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('centros-costos.index') }}"> {{ __('Atrás') }}</a>
                         </div>
                     </div>
 
@@ -28,7 +28,7 @@
                                     {{ $centrosCosto->nombre }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Id Clasificaciones Centros:</strong>
+                                    <strong>Clasificacion Centro:</strong>
                                     {{ $centrosCosto->clasificacionesCentro->nombre }}
                                 </div>
 

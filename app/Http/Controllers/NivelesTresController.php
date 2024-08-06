@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NivelesTresRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\NivelesDos;
+use App\Models\ReferenciasGasto;
 
 class NivelesTresController extends Controller
 {
@@ -28,8 +30,10 @@ class NivelesTresController extends Controller
     public function create(): View
     {
         $nivelesTre = new NivelesTres();
-
-        return view('niveles-tres.create', compact('nivelesTre'));
+        $nivelesDos = NivelesDos::all(); // Obtener todos los niveles dos
+        $referenciasGastos = ReferenciasGasto::all(); // Obtener todas las referencias de gastos
+    
+        return view('niveles-tres.create', compact('nivelesTre', 'nivelesDos', 'referenciasGastos'));
     }
 
     /**
@@ -59,8 +63,10 @@ class NivelesTresController extends Controller
     public function edit($id): View
     {
         $nivelesTre = NivelesTres::find($id);
-
-        return view('niveles-tres.edit', compact('nivelesTre'));
+        $nivelesDos = NivelesDos::all(); // Obtener todos los niveles dos
+        $referenciasGastos = ReferenciasGasto::all(); // Obtener todas las referencias de gastos
+    
+        return view('niveles-tres.edit', compact('nivelesTre', 'nivelesDos', 'referenciasGastos'));
     }
 
     /**

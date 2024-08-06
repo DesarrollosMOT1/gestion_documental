@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NivelesUnoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\ClasificacionesCentro;
 
 class NivelesUnoController extends Controller
 {
@@ -28,8 +29,9 @@ class NivelesUnoController extends Controller
     public function create(): View
     {
         $nivelesUno = new NivelesUno();
-
-        return view('niveles-uno.create', compact('nivelesUno'));
+        $clasificacionesCentros = ClasificacionesCentro::all(); // Obtener todas las clasificaciones de centros
+    
+        return view('niveles-uno.create', compact('nivelesUno', 'clasificacionesCentros'));
     }
 
     /**
@@ -59,8 +61,9 @@ class NivelesUnoController extends Controller
     public function edit($id): View
     {
         $nivelesUno = NivelesUno::find($id);
-
-        return view('niveles-uno.edit', compact('nivelesUno'));
+        $clasificacionesCentros = ClasificacionesCentro::all(); // Obtener todas las clasificaciones de centros
+    
+        return view('niveles-uno.edit', compact('nivelesUno', 'clasificacionesCentros'));
     }
 
     /**

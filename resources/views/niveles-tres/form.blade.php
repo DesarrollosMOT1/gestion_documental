@@ -7,15 +7,31 @@
             {!! $errors->first('nombre', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
-            <label for="id_niveles_dos" class="form-label">{{ __('Id Niveles Dos') }}</label>
-            <input type="text" name="id_niveles_dos" class="form-control @error('id_niveles_dos') is-invalid @enderror" value="{{ old('id_niveles_dos', $nivelesTre?->id_niveles_dos) }}" id="id_niveles_dos" placeholder="Id Niveles Dos">
+            <label for="id_niveles_dos" class="form-label">{{ __('Nivel Dos') }}</label>
+            <select name="id_niveles_dos" class="form-control @error('id_niveles_dos') is-invalid @enderror" id="id_niveles_dos">
+                <option value="">{{ __('Seleccione un nivel dos') }}</option>
+                @foreach($nivelesDos as $nivelDos)
+                    <option value="{{ $nivelDos->id }}" {{ old('id_niveles_dos', $nivelesTre?->id_niveles_dos) == $nivelDos->id ? 'selected' : '' }}>
+                        {{ $nivelDos->nombre }}
+                    </option>
+                @endforeach
+            </select>
             {!! $errors->first('id_niveles_dos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
+        
         <div class="form-group mb-2 mb20">
-            <label for="id_referencias_gastos" class="form-label">{{ __('Id Referencias Gastos') }}</label>
-            <input type="text" name="id_referencias_gastos" class="form-control @error('id_referencias_gastos') is-invalid @enderror" value="{{ old('id_referencias_gastos', $nivelesTre?->id_referencias_gastos) }}" id="id_referencias_gastos" placeholder="Id Referencias Gastos">
+            <label for="id_referencias_gastos" class="form-label">{{ __('Referencia Gasto') }}</label>
+            <select name="id_referencias_gastos" class="form-control @error('id_referencias_gastos') is-invalid @enderror" id="id_referencias_gastos">
+                <option value="">{{ __('Seleccione una referencia de gasto') }}</option>
+                @foreach($referenciasGastos as $referenciaGasto)
+                    <option value="{{ $referenciaGasto->codigo }}" {{ old('id_referencias_gastos', $nivelesTre?->id_referencias_gastos) == $referenciaGasto->codigo ? 'selected' : '' }}>
+                        {{ $referenciaGasto->nombre }}
+                    </option>
+                @endforeach
+            </select>
             {!! $errors->first('id_referencias_gastos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
+        
 
     </div>
     <div class="col-md-12 mt20 mt-2">

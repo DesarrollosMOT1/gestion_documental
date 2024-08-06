@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Niveles Do</span>
+                            <span class="card-title">{{ __('Show') }} Niveles Dos</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('niveles-dos.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('niveles-dos.index') }}"> {{ __('Atrás') }}</a>
                         </div>
                     </div>
 
@@ -24,8 +24,8 @@
                                     {{ $nivelesDo->nombre }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Id Niveles Uno:</strong>
-                                    {{ $nivelesDo->id_niveles_uno }}
+                                    <strong>Nivel Uno:</strong>
+                                    {{ $nivelesDo->nivelesUno->nombre }}
                                 </div>
 
                     </div>

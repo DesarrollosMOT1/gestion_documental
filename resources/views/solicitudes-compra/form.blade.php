@@ -25,7 +25,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <text type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
+            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 

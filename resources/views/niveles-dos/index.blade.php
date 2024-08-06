@@ -22,7 +22,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('niveles-dos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -41,7 +41,7 @@
                                         <th>No</th>
                                         
 									<th >Nombre</th>
-									<th >Id Niveles Uno</th>
+									<th >Nivel Uno</th>
 
                                         <th></th>
                                     </tr>
@@ -52,7 +52,7 @@
                                             <td>{{ ++$i }}</td>
                                             
 										<td >{{ $nivelesDo->nombre }}</td>
-										<td >{{ $nivelesDo->id_niveles_uno }}</td>
+										<td >{{ $nivelesDo->nivelesUno->nombre }}</td>
 
                                             <td>
                                                 <form action="{{ route('niveles-dos.destroy', $nivelesDo->id) }}" method="POST">

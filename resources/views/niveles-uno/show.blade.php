@@ -13,7 +13,7 @@
                             <span class="card-title">{{ __('Show') }} Niveles Uno</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('niveles-unos.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('niveles-unos.index') }}"> {{ __('Atrás') }}</a>
                         </div>
                     </div>
 
@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Id Clasificaciones Centros:</strong>
-                                    {{ $nivelesUno->id_clasificaciones_centros }}
+                                    {{ $nivelesUno->clasificacionesCentro->nombre }}
                                 </div>
 
                     </div>

@@ -21,6 +21,8 @@ class ReferenciasGasto extends Model
     
     protected $perPage = 2000;
 
+    protected $table = 'referencias_gastos'; 
+
     /**
      * The attributes that are mass assignable.
      *

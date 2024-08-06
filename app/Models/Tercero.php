@@ -27,6 +27,11 @@ class Tercero extends Model
      *
      * @var array<int, string>
      */
+
+    protected $primaryKey = 'nit';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = ['nit', 'tipo_factura', 'nombre'];
 
 

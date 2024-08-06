@@ -10,7 +10,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Update') }} Niveles Do</span>
+                        <span class="card-title">{{ __('Update') }} Niveles Dos</span>
                     </div>
                     <div class="card-body bg-white">
                         <form method="POST" action="{{ route('niveles-dos.update', $nivelesDo->id) }}"  role="form" enctype="multipart/form-data">

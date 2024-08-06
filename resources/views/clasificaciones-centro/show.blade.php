@@ -13,7 +13,7 @@
                             <span class="card-title">{{ __('Show') }} Clasificaciones Centro</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('clasificaciones-centros.index') }}"> {{ __('Back') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('clasificaciones-centros.index') }}"> {{ __('Atrás') }}</a>
                         </div>
                     </div>
 
@@ -24,8 +24,8 @@
                                     {{ $clasificacionesCentro->nombre }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Id Areas:</strong>
-                                    {{ $clasificacionesCentro->id_areas }}
+                                    <strong>Area:</strong>
+                                    {{ $clasificacionesCentro->area->nombre }}
                                 </div>
 
                     </div>

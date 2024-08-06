@@ -7,10 +7,17 @@
             {!! $errors->first('nombre', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
-            <label for="id_areas" class="form-label">{{ __('Id Areas') }}</label>
-            <input type="text" name="id_areas" class="form-control @error('id_areas') is-invalid @enderror" value="{{ old('id_areas', $clasificacionesCentro?->id_areas) }}" id="id_areas" placeholder="Id Areas">
+            <label for="id_areas" class="form-label">{{ __('Area') }}</label>
+            <select name="id_areas" class="form-control @error('id_areas') is-invalid @enderror" id="id_areas">
+                <option value="">{{ __('Seleccione un área') }}</option>
+                @foreach($areas as $area)
+                    <option value="{{ $area->id }}" {{ old('id_areas', $clasificacionesCentro?->id_areas) == $area->id ? 'selected' : '' }}>
+                        {{ $area->nombre }}
+                    </option>
+                @endforeach
+            </select>
             {!! $errors->first('id_areas', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
+        </div>        
 
     </div>
     <div class="col-md-12 mt20 mt-2">

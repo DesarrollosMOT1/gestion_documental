@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ClasificacionesCentroRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Area;
 
 class ClasificacionesCentroController extends Controller
 {
@@ -28,8 +29,9 @@ class ClasificacionesCentroController extends Controller
     public function create(): View
     {
         $clasificacionesCentro = new ClasificacionesCentro();
+        $areas = Area::all(); // Obtener todas las áreas
 
-        return view('clasificaciones-centro.create', compact('clasificacionesCentro'));
+        return view('clasificaciones-centro.create', compact('clasificacionesCentro', 'areas'));
     }
 
     /**
@@ -59,8 +61,9 @@ class ClasificacionesCentroController extends Controller
     public function edit($id): View
     {
         $clasificacionesCentro = ClasificacionesCentro::find($id);
-
-        return view('clasificaciones-centro.edit', compact('clasificacionesCentro'));
+        $areas = Area::all(); // Obtener todas las áreas
+    
+        return view('clasificaciones-centro.edit', compact('clasificacionesCentro', 'areas'));
     }
 
     /**

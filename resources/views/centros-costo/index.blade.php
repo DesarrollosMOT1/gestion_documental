@@ -22,7 +22,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('centros-costos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -42,7 +42,7 @@
                                         
 									<th >Codigo</th>
 									<th >Nombre</th>
-									<th >Id Clasificaciones Centros</th>
+									<th >Clasificacion Centro</th>
 
                                         <th></th>
                                     </tr>

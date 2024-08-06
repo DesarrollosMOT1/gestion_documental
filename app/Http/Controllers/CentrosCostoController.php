@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CentrosCostoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\ClasificacionesCentro;
 
 class CentrosCostoController extends Controller
 {
@@ -28,8 +29,9 @@ class CentrosCostoController extends Controller
     public function create(): View
     {
         $centrosCosto = new CentrosCosto();
-
-        return view('centros-costo.create', compact('centrosCosto'));
+        $clasificacionesCentros = ClasificacionesCentro::all();
+    
+        return view('centros-costo.create', compact('centrosCosto', 'clasificacionesCentros'));
     }
 
     /**
@@ -59,8 +61,9 @@ class CentrosCostoController extends Controller
     public function edit($codigo): View
     {
         $centrosCosto = CentrosCosto::find($codigo);
-
-        return view('centros-costo.edit', compact('centrosCosto'));
+        $clasificacionesCentros = ClasificacionesCentro::all();
+    
+        return view('centros-costo.edit', compact('centrosCosto', 'clasificacionesCentros'));
     }
 
     /**

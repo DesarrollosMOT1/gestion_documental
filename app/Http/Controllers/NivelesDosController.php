@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NivelesDosRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\NivelesUno;
 
 class NivelesDosController extends Controller
 {
@@ -28,8 +29,9 @@ class NivelesDosController extends Controller
     public function create(): View
     {
         $nivelesDo = new NivelesDos();
-
-        return view('niveles-dos.create', compact('nivelesDo'));
+        $nivelesUnos = NivelesUno::all(); // Obtener todos los niveles uno
+    
+        return view('niveles-dos.create', compact('nivelesDo', 'nivelesUnos'));
     }
 
     /**
@@ -59,8 +61,9 @@ class NivelesDosController extends Controller
     public function edit($id): View
     {
         $nivelesDo = NivelesDos::find($id);
-
-        return view('niveles-dos.edit', compact('nivelesDo'));
+        $nivelesUnos = NivelesUno::all(); // Obtener todos los niveles uno
+    
+        return view('niveles-dos.edit', compact('nivelesDo', 'nivelesUnos'));
     }
 
     /**
