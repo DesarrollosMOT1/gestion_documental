@@ -56,7 +56,6 @@
                                                 <th>Fecha Solicitud</th>
                                                 <th>Prefijo</th>
                                                 <th>Descripción</th>
-                                                <th>Estado Solicitud</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -65,11 +64,6 @@
                                                     <td>{{ $solicitudCotizacion->solicitudesCompra->fecha_solicitud ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->solicitudesCompra->prefijo ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <span class="badge badge-{{ $solicitudCotizacion->solicitudesCompra->estado_solicitud === 'Aprobado' ? 'success' : 'warning' }}">
-                                                            {{ $solicitudCotizacion->solicitudesCompra->estado_solicitud ?? 'N/A' }}
-                                                        </span>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id_users
  * @property $prefijo
  * @property $descripcion
- * @property $estado_solicitud
- * @property $fecha_estado
  * @property $created_at
  * @property $updated_at
  *
@@ -35,7 +33,7 @@ class SolicitudesCompra extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_solicitud', 'id_users', 'prefijo', 'descripcion', 'estado_solicitud', 'fecha_estado'];
+    protected $fillable = ['fecha_solicitud', 'id_users', 'prefijo', 'descripcion'];
 
 
     /**

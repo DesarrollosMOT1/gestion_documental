@@ -50,8 +50,6 @@
                                         <th>Usuario</th>
                                         <th>Prefijo</th>
                                         <th>Descripcion</th>
-                                        <th>Estado Solicitud</th>
-                                        <th>Fecha Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -66,10 +64,6 @@
                                             <td>{{ $solicitudesCompra->user->name }}</td>
                                             <td>{{ $solicitudesCompra->prefijo }}</td>
                                             <td>{{ $solicitudesCompra->descripcion }}</td>
-                                            <td><span class="badge badge-{{ $solicitudesCompra->estado_solicitud === 'Aprobado' ? 'success' : 'warning' }}">
-                                                {{ $solicitudesCompra->estado_solicitud }}
-                                            </span></td>
-                                            <td>{{ $solicitudesCompra->fecha_estado }}</td>
                                             <td>
                                                 <form action="{{ route('solicitudes-compras.destroy', $solicitudesCompra->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('solicitudes-compras.show', $solicitudesCompra->id) }}"><i class="fa fa-fw fa-eye"></i></a>

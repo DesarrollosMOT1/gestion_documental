@@ -29,17 +29,6 @@
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
-        <div class="form-group mb-2 mb20">
-            <label for="estado_solicitud" class="form-label">{{ __('Estado Solicitud') }}</label>
-            <input type="text" name="estado_solicitud" class="form-control @error('estado_solicitud') is-invalid @enderror" value="{{ old('estado_solicitud', $solicitudesCompra?->estado_solicitud) }}" id="estado_solicitud" placeholder="Estado Solicitud">
-            {!! $errors->first('estado_solicitud', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-
-        <div class="form-group mb-2 mb20">
-            <label for="fecha_estado" class="form-label">{{ __('Fecha Estado') }}</label>
-            <input type="date" name="fecha_estado" class="form-control @error('fecha_estado') is-invalid @enderror" value="{{ old('fecha_estado', $solicitudesCompra?->fecha_estado) }}" id="fecha_estado" placeholder="Fecha Estado">
-            {!! $errors->first('fecha_estado', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
     </div>
 
     <div class="col-md-6">

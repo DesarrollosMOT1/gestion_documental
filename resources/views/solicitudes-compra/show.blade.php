@@ -21,12 +21,6 @@
                             <p><strong>Fecha Solicitud:</strong> {{ $solicitudesCompra->fecha_solicitud }}</p>
                             <p><strong>Prefijo:</strong> {{ $solicitudesCompra->prefijo }}</p>
                             <p><strong>Descripción:</strong> {{ $solicitudesCompra->descripcion }}</p>
-                            <p><strong>Estado Solicitud:</strong> 
-                                <span class="badge badge-{{ $solicitudesCompra->estado_solicitud === 'Aprobado' ? 'success' : 'warning' }}">
-                                    {{ $solicitudesCompra->estado_solicitud }}
-                                </span>
-                            </p>
-                            <p><strong>Fecha Estado:</strong> {{ $solicitudesCompra->fecha_estado }}</p>
                         </div>
                     </div>
                 </div>

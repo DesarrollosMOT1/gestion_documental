@@ -26,8 +26,6 @@ class SolicitudesCompraRequest extends FormRequest
 			'id_users' => 'required',
 			'prefijo' => 'required|string',
 			'descripcion' => 'required|string',
-			'estado_solicitud' => 'required|string',
-			'fecha_estado' => 'required',
         ];
     }
 }
