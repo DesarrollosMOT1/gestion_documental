@@ -117,6 +117,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearOrdenModal">
+                Crear Orden de Compra
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="crearOrdenModal" tabindex="-1" aria-labelledby="crearOrdenLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="crearOrdenLabel">Crear Orden de Compra</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ route('ordenes-compras.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_solicitudes_cotizaciones[]" value="{{ $solicitudCotizacion->id }}">
+                            <!-- El resto del formulario -->
+                            <div class="modal-body">
+                                @include('ordenes-compra.form')
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

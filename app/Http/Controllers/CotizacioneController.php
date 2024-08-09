@@ -12,7 +12,7 @@ use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesCompra;
 use App\Models\Impuesto;
 use App\Models\SolicitudesElemento;
-use App\Models\Tercero;
+use App\Models\OrdenesCompra;
 
 class CotizacioneController extends Controller
 {
@@ -85,9 +85,13 @@ class CotizacioneController extends Controller
         
         // Filtra las solicitudes únicas por su ID
         $solicitudesUnicas = $cotizacione->solicitudesCotizaciones->unique('id_solicitudes_compras');
+        
+        // Crea una nueva instancia de OrdenesCompra
+        $ordenesCompra = new OrdenesCompra();
     
-        return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas'));
-    }    
+        return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas', 'ordenesCompra'));
+    }
+    
 
     public function actualizarEstado(Request $request, $id)
     {

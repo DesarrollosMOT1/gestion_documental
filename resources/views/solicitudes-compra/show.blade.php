@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Compra</h3>
-            <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-compras.index') }}">Volver</a>
+            <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-compras.index') }}">Atrás</a>
         </div>
         <div class="card-body">
             <div class="row">

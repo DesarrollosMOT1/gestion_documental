@@ -3,17 +3,17 @@
         
         <div class="form-group mb-2 mb20">
             <label for="fecha_emision" class="form-label">{{ __('Fecha Emision') }}</label>
-            <input type="text" name="fecha_emision" class="form-control @error('fecha_emision') is-invalid @enderror" value="{{ old('fecha_emision', $ordenesCompra?->fecha_emision) }}" id="fecha_emision" placeholder="Fecha Emision">
+            <input type="date" name="fecha_emision" class="form-control @error('fecha_emision') is-invalid @enderror" value="{{ old('fecha_emision', $ordenesCompra?->fecha_emision) }}" id="fecha_emision" placeholder="Fecha Emision">
             {!! $errors->first('fecha_emision', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="subtotal" class="form-label">{{ __('Subtotal') }}</label>
-            <input type="text" name="subtotal" class="form-control @error('subtotal') is-invalid @enderror" value="{{ old('subtotal', $ordenesCompra?->subtotal) }}" id="subtotal" placeholder="Subtotal">
+            <input type="text" name="subtotal" class="form-control @error('subtotal') is-invalid @enderror" value="{{ old('subtotal', $ordenesCompra?->subtotal) }}" id="subtotal" placeholder="Subtotal" readonly>
             {!! $errors->first('subtotal', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="total" class="form-label">{{ __('Total') }}</label>
-            <input type="text" name="total" class="form-control @error('total') is-invalid @enderror" value="{{ old('total', $ordenesCompra?->total) }}" id="total" placeholder="Total">
+            <input type="text" name="total" class="form-control @error('total') is-invalid @enderror" value="{{ old('total', $ordenesCompra?->total) }}" id="total" placeholder="Total" readonly>
             {!! $errors->first('total', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
