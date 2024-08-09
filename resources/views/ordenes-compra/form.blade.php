@@ -8,12 +8,12 @@
         </div>
         <div class="form-group mb-2 mb20">
             <label for="subtotal" class="form-label">{{ __('Subtotal') }}</label>
-            <input type="text" name="subtotal" class="form-control @error('subtotal') is-invalid @enderror" value="{{ old('subtotal', $ordenesCompra?->subtotal) }}" id="subtotal" placeholder="Subtotal" readonly>
+            <input type="text" name="subtotal" class="form-control @error('subtotal') is-invalid @enderror" value="{{ old('subtotal', $ordenesCompra?->subtotal) }}" id="subtotal" placeholder="Subtotal">
             {!! $errors->first('subtotal', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="total" class="form-label">{{ __('Total') }}</label>
-            <input type="text" name="total" class="form-control @error('total') is-invalid @enderror" value="{{ old('total', $ordenesCompra?->total) }}" id="total" placeholder="Total" readonly>
+            <input type="text" name="total" class="form-control @error('total') is-invalid @enderror" value="{{ old('total', $ordenesCompra?->total) }}" id="total" placeholder="Total">
             {!! $errors->first('total', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">

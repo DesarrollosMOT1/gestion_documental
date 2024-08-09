@@ -83,13 +83,16 @@ class CotizacioneController extends Controller
             'solicitudesCotizaciones.impuesto'
         ])->findOrFail($id);
         
-        // Filtra las solicitudes únicas por su ID
+        // Filtra las solicitudes únicas por su ID de compra
         $solicitudesUnicas = $cotizacione->solicitudesCotizaciones->unique('id_solicitudes_compras');
+    
+        // Filtra las solicitudes de cotización con estado 1
+        $solicitudesAprobadas = $cotizacione->solicitudesCotizaciones->where('estado', 1);
         
         // Crea una nueva instancia de OrdenesCompra
         $ordenesCompra = new OrdenesCompra();
     
-        return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas', 'ordenesCompra'));
+        return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas', 'ordenesCompra', 'solicitudesAprobadas'));
     }
     
 

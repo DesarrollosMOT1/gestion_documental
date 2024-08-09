@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\OrdenesCompraCotizacione;
 
 class OrdenesCompraController extends Controller
 {
@@ -37,10 +38,19 @@ class OrdenesCompraController extends Controller
      */
     public function store(OrdenesCompraRequest $request): RedirectResponse
     {
-        OrdenesCompra::create($request->validated());
-
+        // Crea una nueva orden de compra
+        $orden = OrdenesCompra::create($request->validated());
+    
+        // Asocia las solicitudes de cotización con la nueva orden de compra
+        foreach ($request->input('id_solicitudes_cotizaciones') as $idSolicitudCotizacion) {
+            OrdenesCompraCotizacione::create([
+                'id_ordenes_compras' => $orden->id,
+                'id_solicitudes_cotizaciones' => $idSolicitudCotizacion,
+            ]);
+        }
+    
         return Redirect::route('ordenes-compras.index')
-            ->with('success', 'OrdenesCompra created successfully.');
+            ->with('success', 'Orden de Compra creada exitosamente.');
     }
 
     /**

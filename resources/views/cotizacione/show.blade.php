@@ -135,8 +135,9 @@
                         </div>
                         <form action="{{ route('ordenes-compras.store') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="id_solicitudes_cotizaciones[]" value="{{ $solicitudCotizacion->id }}">
-                            <!-- El resto del formulario -->
+                            @foreach ($solicitudesAprobadas as $solicitudCotizacion)
+                                <input type="text" name="id_solicitudes_cotizaciones[]" value="{{ $solicitudCotizacion->id }}">
+                            @endforeach
                             <div class="modal-body">
                                 @include('ordenes-compra.form')
                             </div>
