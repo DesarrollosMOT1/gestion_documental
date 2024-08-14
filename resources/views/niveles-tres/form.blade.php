@@ -31,6 +31,11 @@
             </select>
             {!! $errors->first('id_referencias_gastos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
+        <!-- Checkbox de Inventario -->
+        <div class="form-group mb-2 mb20">
+            <label for="inventario" class="form-label">{{ __('Inventario') }}</label>
+            <input type="checkbox" name="inventario" id="inventario" value="1" {{ old('inventario', $nivelesTre?->inventario) ? 'checked' : '' }}>
+        </div>
         
 
     </div>

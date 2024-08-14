@@ -9,6 +9,8 @@ use App\Http\Requests\NivelesUnoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\ClasificacionesCentro;
+use App\Models\NivelesDos;
+use App\Models\NivelesTres;
 
 class NivelesUnoController extends Controller
 {
@@ -39,7 +41,14 @@ class NivelesUnoController extends Controller
      */
     public function store(NivelesUnoRequest $request): RedirectResponse
     {
-        NivelesUno::create($request->validated());
+        $nivelesUno = NivelesUno::create($request->validated());
+
+        if ($request->inventario) {
+            NivelesDos::where('id_niveles_uno', $nivelesUno->id)->update(['inventario' => true]);
+            NivelesTres::whereIn('id_niveles_dos', function ($query) use ($nivelesUno) {
+                $query->select('id')->from('niveles_dos')->where('id_niveles_uno', $nivelesUno->id);
+            })->update(['inventario' => true]);
+        }
 
         return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesUno created successfully.');
@@ -72,6 +81,13 @@ class NivelesUnoController extends Controller
     public function update(NivelesUnoRequest $request, NivelesUno $nivelesUno): RedirectResponse
     {
         $nivelesUno->update($request->validated());
+
+        if ($request->inventario) {
+            NivelesDos::where('id_niveles_uno', $nivelesUno->id)->update(['inventario' => true]);
+            NivelesTres::whereIn('id_niveles_dos', function ($query) use ($nivelesUno) {
+                $query->select('id')->from('niveles_dos')->where('id_niveles_uno', $nivelesUno->id);
+            })->update(['inventario' => true]);
+        }
 
         return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesUno updated successfully');

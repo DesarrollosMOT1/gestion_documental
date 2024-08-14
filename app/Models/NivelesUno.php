@@ -29,7 +29,7 @@ class NivelesUno extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre', 'id_clasificaciones_centros'];
+    protected $fillable = ['nombre', 'id_clasificaciones_centros', 'inventario'];
 
 
     /**
@@ -37,7 +37,7 @@ class NivelesUno extends Model
      */
     public function clasificacionesCentro()
     {
-        return $this->belongsTo(\App\Models\ClasificacionesCentro::class, 'id_clasificaciones_centros', 'id');
+        return $this->belongsTo(\App\Models\ClasificacionesCentro::class, 'id_clasificaciones_centros', 'id', 'inventario');
     }
     
     /**
@@ -45,7 +45,7 @@ class NivelesUno extends Model
      */
     public function nivelesDos()
     {
-        return $this->hasMany(\App\Models\NivelesDos::class, 'id', 'id_niveles_uno');
+        return $this->hasMany(\App\Models\NivelesDos::class, 'id', 'id_niveles_uno', 'inventario');
     }
     
 }

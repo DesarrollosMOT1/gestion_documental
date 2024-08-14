@@ -9,6 +9,7 @@ use App\Http\Requests\NivelesDosRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\NivelesUno;
+use App\Models\NivelesTres;
 
 class NivelesDosController extends Controller
 {
@@ -39,10 +40,14 @@ class NivelesDosController extends Controller
      */
     public function store(NivelesDosRequest $request): RedirectResponse
     {
-        NivelesDos::create($request->validated());
+        $nivelesDos = NivelesDos::create($request->validated());
+
+        if ($request->inventario) {
+            NivelesTres::where('id_niveles_dos', $nivelesDos->id)->update(['inventario' => true]);
+        }
 
         return Redirect::route('niveles-dos.index')
-            ->with('success', 'NivelesDo created successfully.');
+            ->with('success', 'NivelesDos created successfully.');
     }
 
     /**
@@ -69,12 +74,16 @@ class NivelesDosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(NivelesDosRequest $request, NivelesDos $nivelesDo): RedirectResponse
+    public function update(NivelesDosRequest $request, NivelesDos $nivelesDos): RedirectResponse
     {
-        $nivelesDo->update($request->validated());
+        $nivelesDos->update($request->validated());
+
+        if ($request->inventario) {
+            NivelesTres::where('id_niveles_dos', $nivelesDos->id)->update(['inventario' => true]);
+        }
 
         return Redirect::route('niveles-dos.index')
-            ->with('success', 'NivelesDo updated successfully');
+            ->with('success', 'NivelesDos updated successfully');
     }
 
     public function destroy($id): RedirectResponse
