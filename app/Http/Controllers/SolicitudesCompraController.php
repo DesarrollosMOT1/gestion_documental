@@ -88,7 +88,7 @@ class SolicitudesCompraController extends Controller
         // Crear los elementos de solicitud
         $elements = $request->input('elements', []);
         foreach ($elements as $element) {
-            $solicitudesCompra->solicitudesElementos()->create([
+            $solicitudesCompra->solicitudesElemento()->create([
                 'id_niveles_tres' => $element['id_niveles_tres'],
                 'id_centros_costos' => $element['id_centros_costos'],
                 'cantidad' => $element['cantidad'],
