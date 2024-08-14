@@ -80,15 +80,26 @@ class NivelesUnoController extends Controller
      */
     public function update(NivelesUnoRequest $request, NivelesUno $nivelesUno): RedirectResponse
     {
+        // Establece el valor de inventario a `false` si no está presente en la solicitud
+        $nivelesUno->inventario = $request->has('inventario');
+    
+        // Guarda los cambios en la base de datos
         $nivelesUno->update($request->validated());
-
-        if ($request->inventario) {
+    
+        // Si el checkbox está marcado, actualiza los niveles subordinados a true
+        if ($request->has('inventario')) {
             NivelesDos::where('id_niveles_uno', $nivelesUno->id)->update(['inventario' => true]);
             NivelesTres::whereIn('id_niveles_dos', function ($query) use ($nivelesUno) {
                 $query->select('id')->from('niveles_dos')->where('id_niveles_uno', $nivelesUno->id);
             })->update(['inventario' => true]);
+        } else {
+            // Si el checkbox está desmarcado, actualiza los niveles subordinados a false
+            NivelesDos::where('id_niveles_uno', $nivelesUno->id)->update(['inventario' => false]);
+            NivelesTres::whereIn('id_niveles_dos', function ($query) use ($nivelesUno) {
+                $query->select('id')->from('niveles_dos')->where('id_niveles_uno', $nivelesUno->id);
+            })->update(['inventario' => false]);
         }
-
+    
         return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesUno updated successfully');
     }

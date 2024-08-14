@@ -24,7 +24,7 @@ class NivelesDosRequest extends FormRequest
         return [
 			'nombre' => 'required|string',
 			'id_niveles_uno' => 'required',
-            'inventario' => 'required',
+            'inventario' => 'nullable|boolean',
         ];
     }
 }

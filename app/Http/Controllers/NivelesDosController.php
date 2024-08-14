@@ -40,14 +40,10 @@ class NivelesDosController extends Controller
      */
     public function store(NivelesDosRequest $request): RedirectResponse
     {
-        $nivelesDos = NivelesDos::create($request->validated());
-
-        if ($request->inventario) {
-            NivelesTres::where('id_niveles_dos', $nivelesDos->id)->update(['inventario' => true]);
-        }
+        NivelesDos::create($request->validated());
 
         return Redirect::route('niveles-dos.index')
-            ->with('success', 'NivelesDos created successfully.');
+            ->with('success', 'NivelesDo created successfully.');
     }
 
     /**
@@ -74,14 +70,22 @@ class NivelesDosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(NivelesDosRequest $request, NivelesDos $nivelesDos): RedirectResponse
+    public function update(NivelesDosRequest $request, NivelesDos $nivelesDo): RedirectResponse
     {
-        $nivelesDos->update($request->validated());
-
-        if ($request->inventario) {
-            NivelesTres::where('id_niveles_dos', $nivelesDos->id)->update(['inventario' => true]);
+        // Establece el valor de inventario a `false` si no está presente en la solicitud
+        $nivelesDo->inventario = $request->has('inventario');
+    
+        // Guarda los cambios en la base de datos
+        $nivelesDo->update($request->validated());
+    
+        // Si el checkbox está marcado, actualiza los niveles tres subordinados a true
+        if ($request->has('inventario')) {
+            NivelesTres::where('id_niveles_dos', $nivelesDo->id)->update(['inventario' => true]);
+        } else {
+            // Si el checkbox está desmarcado, actualiza los niveles tres subordinados a false
+            NivelesTres::where('id_niveles_dos', $nivelesDo->id)->update(['inventario' => false]);
         }
-
+    
         return Redirect::route('niveles-dos.index')
             ->with('success', 'NivelesDos updated successfully');
     }

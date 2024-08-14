@@ -25,7 +25,7 @@ class NivelesTresRequest extends FormRequest
 			'nombre' => 'required|string',
 			'id_niveles_dos' => 'required',
 			'id_referencias_gastos' => 'required|string',
-            'inventario' => 'required',
+            'inventario' => 'nullable|boolean',
         ];
     }
 }

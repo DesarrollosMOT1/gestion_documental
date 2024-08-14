@@ -28,7 +28,7 @@ class NivelesDos extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre', 'id_niveles_uno'];
+    protected $fillable = ['nombre', 'id_niveles_uno', 'inventario'];
 
 
     /**
@@ -44,7 +44,7 @@ class NivelesDos extends Model
      */
     public function nivelesTres()
     {
-        return $this->hasMany(\App\Models\NivelesTres::class, 'id', 'id_niveles_dos');
+        return $this->hasMany(\App\Models\NivelesTres::class, 'id_niveles_dos', 'id');
     }
     
 }

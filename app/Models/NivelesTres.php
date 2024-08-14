@@ -30,7 +30,7 @@ class NivelesTres extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre', 'id_niveles_dos', 'id_referencias_gastos'];
+    protected $fillable = ['nombre', 'id_niveles_dos', 'id_referencias_gastos', 'inventario'];
 
 
     /**
