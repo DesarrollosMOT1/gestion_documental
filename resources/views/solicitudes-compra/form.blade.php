@@ -34,6 +34,14 @@
     <div class="col-md-6">
         <h4 class="mb-3">Elementos de la Solicitud</h4>
         <div class="form-group mb-2 mb20">
+            <label for="reset_options" class="form-label">{{ __('Opciones de limpieza de campos') }}</label>
+            <select id="reset_options" class="form-control">
+                <option value="all">Limpiar todos los campos</option>
+                <option value="partial">Limpiar sólo cantidad y centro de costos</option>
+                <option value="none">No limpiar campos</option>
+            </select>
+        </div>        
+        <div class="form-group mb-2 mb20">
             <label for="select_niveles_uno" class="form-label">{{ __('Nivel Uno') }}</label>
             <select id="select_niveles_uno" class="form-control">
                 <option selected>Seleccione una opción</option>

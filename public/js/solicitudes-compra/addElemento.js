@@ -15,8 +15,8 @@ document.getElementById('addElement').addEventListener('click', function() {
     const nivelesTres = document.getElementById('select_niveles_tres');
     const centrosCostos = document.getElementById('select_id_centros_costos');
     const cantidad = document.getElementById('input_cantidad').value;
+    const resetOption = document.getElementById('reset_options').value;
 
-    // Validar solo en addElemento.js
     if (cantidad && nivelesTres.value !== 'Seleccione una opción' && centrosCostos.value !== 'Seleccione una opción' &&
         nivelesTres.value !== '' && centrosCostos.value !== '') {
         const nivelesTresText = nivelesTres.options[nivelesTres.selectedIndex].text;
@@ -40,14 +40,20 @@ document.getElementById('addElement').addEventListener('click', function() {
         document.getElementById('elementsTableBody').insertAdjacentHTML('beforeend', newRow);
         elementIndex++;
 
-        // Resetear los campos de entrada
-        document.getElementById('select_niveles_uno').value = 'Seleccione una opción';
-        document.getElementById('select_niveles_dos').value = 'Seleccione una opción';
-        document.getElementById('select_niveles_tres').value = 'Seleccione una opción';
-        document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
-        document.getElementById('input_cantidad').value = '';
+        // Lógica para limpiar campos basada en la opción seleccionada
+        if (resetOption === 'all') {
+            document.getElementById('select_niveles_uno').value = 'Seleccione una opción';
+            document.getElementById('select_niveles_dos').value = 'Seleccione una opción';
+            document.getElementById('select_niveles_tres').value = 'Seleccione una opción';
+            document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
+            document.getElementById('input_cantidad').value = '';
+        } else if (resetOption === 'partial') {
+            document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
+            document.getElementById('input_cantidad').value = '';
+        }
+        
+        // No se necesita ninguna acción si la opción es "none"
 
-        // Actualizar el mensaje de la tabla
         updateTableMessage();
     } else {
         alert('Por favor, complete todos los campos antes de agregar un elemento.');
@@ -58,9 +64,7 @@ function removeElement(index) {
     const row = document.getElementById(`element-${index}`);
     row.remove();
 
-    // Actualizar el mensaje de la tabla
     updateTableMessage();
 }
 
-// Inicializar el mensaje de la tabla
 updateTableMessage();
