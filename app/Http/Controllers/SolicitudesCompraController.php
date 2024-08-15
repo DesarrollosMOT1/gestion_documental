@@ -14,7 +14,6 @@ use App\Models\CentrosCosto;
 use App\Models\NivelesUno;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
-use App\Models\SolicitudCompra;
 use App\Models\SolicitudesElemento;
 use App\Models\Impuesto;
 use App\Models\Cotizacione;
@@ -68,7 +67,9 @@ class SolicitudesCompraController extends Controller
 
     public function getNivelesTres($idNivelDos)
     {
-        $nivelesTres = NivelesTres::where('id_niveles_dos', $idNivelDos)->get();
+        $nivelesTres = NivelesTres::where('id_niveles_dos', $idNivelDos)
+            ->select('id', 'nombre', 'inventario')
+            ->get();
         return response()->json($nivelesTres);
     }
 
