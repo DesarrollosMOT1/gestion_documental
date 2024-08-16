@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
     Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
+    Route::resource('consolidaciones', App\Http\Controllers\ConsolidacioneController::class);
     Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
 
