@@ -39,7 +39,9 @@
 									<th >Valor</th>
 									<th >Condiciones Pago</th>
 									<th >Descuento</th>
-									<th >Tercero</th>
+									<th >Id Terceros</th>
+									<th >Fecha Inicio Vigencia</th>
+									<th >Fecha Fin Vigencia</th>
 
                                         <th></th>
                                     </tr>
@@ -54,7 +56,9 @@
 										<td >{{ $cotizacione->valor }}</td>
 										<td >{{ $cotizacione->condiciones_pago }}</td>
 										<td >{{ $cotizacione->descuento }}</td>
-										<td >{{ $cotizacione->tercero->nombre }}</td>
+										<td >{{ $cotizacione->id_tercero->nombre }}</td>
+                                        <td >{{ $cotizacione->fecha_inicio_vigencia }}</td>
+										<td >{{ $cotizacione->fecha_fin_vigencia }}</td>
 
                                             <td>
                                                 <form action="{{ route('cotizaciones.destroy', $cotizacione->id) }}" method="POST">

@@ -57,6 +57,16 @@
             </select>
             {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
+        <div class="form-group mb-2 mb20">
+            <label for="fecha_inicio_vigencia" class="form-label">{{ __('Fecha Inicio Vigencia') }}</label>
+            <input type="text" name="fecha_inicio_vigencia" class="form-control @error('fecha_inicio_vigencia') is-invalid @enderror" value="{{ old('fecha_inicio_vigencia', $cotizacione?->fecha_inicio_vigencia) }}" id="fecha_inicio_vigencia" placeholder="Fecha Inicio Vigencia">
+            {!! $errors->first('fecha_inicio_vigencia', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
+        <div class="form-group mb-2 mb20">
+            <label for="fecha_fin_vigencia" class="form-label">{{ __('Fecha Fin Vigencia') }}</label>
+            <input type="text" name="fecha_fin_vigencia" class="form-control @error('fecha_fin_vigencia') is-invalid @enderror" value="{{ old('fecha_fin_vigencia', $cotizacione?->fecha_fin_vigencia) }}" id="fecha_fin_vigencia" placeholder="Fecha Fin Vigencia">
+            {!! $errors->first('fecha_fin_vigencia', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
     </div>
 
     <!-- Solicitudes Seleccionadas -->

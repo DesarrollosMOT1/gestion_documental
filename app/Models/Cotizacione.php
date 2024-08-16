@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id_terceros
  * @property $created_at
  * @property $updated_at
+ * @property $fecha_inicio_vigencia
+ * @property $fecha_fin_vigencia
  *
  * @property Tercero $tercero
  * @property SolicitudesCotizacione[] $solicitudesCotizaciones
@@ -34,7 +36,7 @@ class Cotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'descuento', 'id_terceros'];
+    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'descuento', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
 
 
     /**

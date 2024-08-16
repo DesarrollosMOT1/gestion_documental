@@ -23,6 +23,8 @@
                             <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
                             <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>
                             <p><strong>Descuento:</strong> {{ $cotizacione->descuento }}</p>
+                            <p><strong>Descuento:</strong> {{ $cotizacione->fecha_inicio_vigencia ?? 'N/A' }}</p>
+                            <p><strong>Descuento:</strong> {{ $cotizacione->fecha_fin_vigencia ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>
