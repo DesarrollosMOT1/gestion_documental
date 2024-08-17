@@ -59,5 +59,10 @@ class SolicitudesCompra extends Model
     {
         return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id_solicitudes_compra', 'id');
     }
+
+    public function consolidaciones()
+    {
+        return $this->hasMany(\App\Models\Consolidacione::class, 'id_solicitudes_compras', 'id');
+    }
     
 }

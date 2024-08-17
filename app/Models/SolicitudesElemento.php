@@ -58,5 +58,10 @@ class SolicitudesElemento extends Model
     {
         return $this->belongsTo(\App\Models\SolicitudesCompra::class, 'id_solicitudes_compra', 'id');
     }
+
+    public function consolidaciones()
+    {
+        return $this->hasMany(\App\Models\Consolidacione::class, 'id_solicitud_elemento', 'id');
+    }
     
 }
