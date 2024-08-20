@@ -25,6 +25,8 @@ class NivelesTres extends Model
     
     protected $perPage = 20;
 
+    protected $table = 'niveles_tres';
+
     /**
      * The attributes that are mass assignable.
      *

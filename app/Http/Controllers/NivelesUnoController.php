@@ -21,7 +21,11 @@ class NivelesUnoController extends Controller
     {
         $nivelesUnos = NivelesUno::paginate();
 
-        return view('niveles-uno.index', compact('nivelesUnos'))
+        $clasificacionesCentros = ClasificacionesCentro::all();
+        $nivelesUno = new NivelesUno();
+        
+
+        return view('niveles-uno.index', compact('nivelesUnos', 'clasificacionesCentros', 'nivelesUno'))
             ->with('i', ($request->input('page', 1) - 1) * $nivelesUnos->perPage());
     }
 

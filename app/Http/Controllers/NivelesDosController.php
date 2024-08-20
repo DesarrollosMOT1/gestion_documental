@@ -42,7 +42,7 @@ class NivelesDosController extends Controller
     {
         NivelesDos::create($request->validated());
 
-        return Redirect::route('niveles-dos.index')
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesDo created successfully.');
     }
 
@@ -86,7 +86,7 @@ class NivelesDosController extends Controller
             NivelesTres::where('id_niveles_dos', $nivelesDo->id)->update(['inventario' => false]);
         }
     
-        return Redirect::route('niveles-dos.index')
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesDos updated successfully');
     }
 
@@ -94,7 +94,7 @@ class NivelesDosController extends Controller
     {
         NivelesDos::find($id)->delete();
 
-        return Redirect::route('niveles-dos.index')
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesDo deleted successfully');
     }
 }

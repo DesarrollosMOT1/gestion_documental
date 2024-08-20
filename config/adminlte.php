@@ -372,25 +372,9 @@ return [
                             'icon' => 'fas fa-list-alt',
                         ],
                         [
-                            'text' => 'Niveles de Clasificación',
+                            'text' => 'Niveles Jerárquicos',
+                            'url' => 'niveles-unos',
                             'icon' => 'fas fa-layer-group',
-                            'submenu' => [
-                                [
-                                    'text' => 'Niveles Uno',
-                                    'url' => 'niveles-unos',
-                                    'icon' => 'fas fa-layer-group',
-                                ],
-                                [
-                                    'text' => 'Niveles Dos',
-                                    'url' => 'niveles-dos',
-                                    'icon' => 'fas fa-layer-group',
-                                ],
-                                [
-                                    'text' => 'Niveles Tres',
-                                    'url' => 'niveles-tres',
-                                    'icon' => 'fas fa-layer-group',
-                                ],
-                            ],
                         ],
                         [
                             'text' => 'Referencias de gastos',

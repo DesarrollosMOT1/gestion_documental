@@ -10,7 +10,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Create') }} Niveles Do</span>
+                        <span class="card-title">{{ __('Create') }} Niveles Dos</span>
                     </div>
                     <div class="card-body bg-white">
                         <form method="POST" action="{{ route('niveles-dos.store') }}"  role="form" enctype="multipart/form-data">

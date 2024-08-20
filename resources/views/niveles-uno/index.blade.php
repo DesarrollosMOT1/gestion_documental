@@ -16,11 +16,6 @@
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span id="card_title">{{ __('Niveles Jerárquicos') }}</span>
-                        <div class="float-right">
-                            <a href="{{ route('niveles-unos.create') }}" class="btn btn-primary btn-sm float-right" data-placement="left">
-                                {{ __('Crear Nuevo') }}
-                            </a>
-                        </div>
                     </div>
                 </div>
 
@@ -28,11 +23,21 @@
                     <div class="row">
                         <!-- Columna Nivel Uno -->
                         <div class="col-md-4">
-                            <h5 class="mb-3">Nivel Uno</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Nivel Uno</h5>
+                                <a href="{{ route('niveles-unos.create') }}" class="btn btn-primary btn-sm">
+                                    {{ __('Crear Nuevo') }}
+                                </a>
+                            </div>
+                            
                             <div class="list-group" id="nivelesUnoList">
                                 @foreach ($nivelesUnos as $nivelUno)
                                     <a href="#" class="list-group-item list-group-item-action" data-id="{{ $nivelUno->id }}">
                                         {{ $nivelUno->nombre }}
+                                        <!-- Enlace de edición -->
+                                        <a href="{{ route('niveles-unos.edit', $nivelUno->id) }}" class="btn btn-warning btn-sm float-right" data-placement="left">
+                                            {{ __('Editar') }}
+                                        </a>
                                     </a>
                                 @endforeach
                             </div>
@@ -40,7 +45,14 @@
 
                         <!-- Columna Nivel Dos -->
                         <div class="col-md-4">
-                            <h5 class="mb-3">Nivel Dos</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Nivel Dos</h5>
+                                <a href="{{ route('niveles-dos.create') }}" class="btn btn-primary btn-sm">
+                                    {{ __('Crear Nuevo') }}
+                                </a>
+                            </div>
+
+                            <!-- Lista de niveles dos -->
                             <div class="list-group" id="nivelesDosList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel uno aún.</div>
                             </div>
@@ -48,7 +60,14 @@
 
                         <!-- Columna Nivel Tres -->
                         <div class="col-md-4">
-                            <h5 class="mb-3">Nivel Tres</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Nivel Tres</h5>
+                                <a href="{{ route('niveles-tres.create') }}" class="btn btn-primary btn-sm">
+                                    {{ __('Crear Nuevo') }}
+                                </a>
+                            </div>
+
+                            <!-- Lista de niveles tres -->
                             <div class="list-group" id="nivelesTresList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel dos aún.</div>
                             </div>

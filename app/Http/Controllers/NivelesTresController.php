@@ -43,7 +43,7 @@ class NivelesTresController extends Controller
     {
         NivelesTres::create($request->validated());
 
-        return Redirect::route('niveles-tres.index')
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesTres created successfully.');
     }
 
@@ -72,19 +72,23 @@ class NivelesTresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(NivelesTresRequest $request, NivelesTres $nivelesTres): RedirectResponse
+    public function update(NivelesTresRequest $request, $id): RedirectResponse
     {
-        $nivelesTres->update($request->validated());
-
-        return Redirect::route('niveles-tres.index')
+        $nivelesTres = NivelesTres::findOrFail($id);
+        $data = $request->validated();
+        $data['inventario'] = $request->has('inventario') ? 1 : 0;
+    
+        $nivelesTres->update($data);
+    
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesTres updated successfully');
-    }
+    }    
 
     public function destroy($id): RedirectResponse
     {
         NivelesTres::find($id)->delete();
 
-        return Redirect::route('niveles-tres.index')
+        return Redirect::route('niveles-unos.index')
             ->with('success', 'NivelesTre deleted successfully');
     }
 }
