@@ -19,10 +19,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     #rutas principales
-    Route::resource('lineas-gastos',App\Http\Controllers\LineasGastoController::class)->parameters(['lineas-gasto' => 'codigo']);
-    Route::resource('centro-costos',App\Http\Controllers\CentroCostoController::class)->parameters(['centro-costos' => 'codigo']);
-    Route::resource('referencia-gastos',App\Http\Controllers\ReferenciaGastoController::class)->parameters(['referencia-gastos' => 'codigo']);
-    Route::resource('solicitud-compras',App\Http\Controllers\SolicitudCompraController::class);
     Route::resource('roles',App\Http\Controllers\RoleController::class);
     Route::resource('permissions',App\Http\Controllers\PermissionController::class);
 
@@ -31,10 +27,30 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/NewPassword',  [App\Http\Controllers\UserSettingsController::class,'NewPassword'])->name('NewPassword');
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
 
-    #importaciones de datos
-    Route::post('linea-gastos/import', [LineasGastoController::class, 'import'])->name('import-linea');
-    Route::post('referencia-gastos/import', [ReferenciaGastoController::class, 'import'])->name('import-referencia');
-    Route::post('centro-costos/import', [CentroCostoController::class, 'import'])->name('import-centro');
+    #rutas para gestion de compras
+    Route::resource('areas', App\Http\Controllers\AreaController::class);
+    Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class); 
+    Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
+    Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
+    Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
+    Route::resource('consolidaciones', App\Http\Controllers\ConsolidacioneController::class);
+    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
+    Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
+
+    Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);
+    Route::get('/api/niveles-tres/{idNivelDos}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesTres']);
+    Route::post('/solicitudes-compras/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesCompraController::class, 'actualizarEstado'])->name('solicitudes-compras.actualizar-estado');
+    Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
+
+    Route::post('/get-elementos-multiple', [App\Http\Controllers\CotizacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
+
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
+    Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
+    Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
+    Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class); 
+    Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class);
+    Route::resource('entradas', App\Http\Controllers\EntradaController::class);
+
 
     #cadena de suministros
     Route::resource('productos', ProductoController::class);

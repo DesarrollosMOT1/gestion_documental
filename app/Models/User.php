@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function area()
+    {
+        return $this->belongsTo(\App\Models\Area::class, 'id_area', 'id');
+    }
 }
