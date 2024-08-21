@@ -22,10 +22,10 @@ class ConsolidacioneRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'id_solicitudes_compras' => 'required',
-			'id_solicitud_elemento' => 'required',
-			'estado' => 'required',
-			'cantidad' => 'required',
+            'elementos.*.id_solicitudes_compras' => 'required|integer',
+            'elementos.*.id_solicitud_elemento' => 'required|integer',
+            'elementos.*.estado' => 'required|integer',
+            'elementos.*.cantidad' => 'required|integer|min:1',
         ];
     }
 }

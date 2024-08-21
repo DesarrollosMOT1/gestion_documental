@@ -38,11 +38,22 @@ class ConsolidacioneController extends Controller
      */
     public function store(ConsolidacioneRequest $request): RedirectResponse
     {
-        Consolidacione::create($request->validated());
-
-        return Redirect::route('consolidaciones.index')
-            ->with('success', 'Consolidacione created successfully.');
-    }
+        $data = $request->validated();
+        $elementos = $request->input('elementos', []);
+    
+        foreach ($elementos as $elemento) {
+            Consolidacione::create([
+                'user_id' => auth()->id(),
+                'id_solicitudes_compras' => $elemento['id_solicitudes_compras'],
+                'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                'estado' => 0,
+                'cantidad' => $elemento['cantidad'],
+            ]);
+        }
+    
+        return Redirect::route('solicitudes-compras.index')
+            ->with('success', 'Consolidación creada exitosamente.');
+    }    
 
     public function getElementosMultiple(Request $request)
     {
@@ -54,6 +65,7 @@ class ConsolidacioneController extends Controller
 
         return response()->json($elementos);
     }
+
 
     /**
      * Display the specified resource.

@@ -22,7 +22,7 @@
 
                              <div class="float-right">  
                                 <!-- Botón para Generar Consolidación -->
-                                <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#consolidacionModal">
+                                <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#consolidacionModal" disabled>
                                     {{ __('Generar Consolidación') }}
                                 </button>        
                                 <a href="{{ route('solicitudes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
@@ -113,6 +113,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/consolidaciones/generarConsolidaciones.js') }}"></script>
     <script>
+        var usuarios = @json($users);
         var csrfToken = '{{ csrf_token() }}';
     </script>
 @endpush
