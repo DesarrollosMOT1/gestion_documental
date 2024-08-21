@@ -21,10 +21,10 @@
                             </span>
 
                              <div class="float-right">  
-                                <!-- Deshabilitar el botón por defecto -->
-                                <button type="button" id="btnGenerarCotizacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#cotizacionModal" disabled>
-                                    {{ __('Generar Cotización') }}
-                                </button>              
+                                <!-- Botón para Generar Consolidación -->
+                                <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#consolidacionModal">
+                                    {{ __('Generar Consolidación') }}
+                                </button>        
                                 <a href="{{ route('solicitudes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
@@ -85,20 +85,20 @@
         </div>
     </div>
 
-<!-- Modal -->
-<div class="modal fade" id="cotizacionModal" tabindex="-1" aria-labelledby="cotizacionModalLabel" aria-hidden="true">
+<!-- Modal para Consolidación -->
+<div class="modal fade" id="consolidacionModal" tabindex="-1" aria-labelledby="consolidacionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="cotizacionModalLabel">{{ __('Generar Cotización') }}</h5>
+                <h5 class="modal-title" id="consolidacionModalLabel">{{ __('Generar Consolidación') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="cotizacionForm" method="POST" action="{{ route('cotizaciones.store') }}">
+                <form id="consolidacionForm" method="POST" action="{{ route('consolidaciones.store') }}">
                     @csrf
                     <div class="row padding-1 p-1">
                         <div class="col-md-12">
-                            @include('cotizacione.form', ['cotizacione' => new \App\Models\Cotizacione])
+                            @include('consolidacione.form', ['consolidacione' => new \App\Models\Consolidacione])
                     </div>
                 </form>
             </div>
@@ -111,10 +111,8 @@
 @push('js')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/cotizaciones/generarCotizaciones.js') }}"></script>
-    <script src="{{ asset('js/cotizaciones/actualizarValorCotizacion.js') }}"></script>
+    <script src="{{ asset('js/consolidaciones/generarConsolidaciones.js') }}"></script>
     <script>
-        var impuestos = @json($impuestos);
         var csrfToken = '{{ csrf_token() }}';
     </script>
 @endpush

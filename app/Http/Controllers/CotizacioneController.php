@@ -60,17 +60,6 @@ class CotizacioneController extends Controller
             ->with('success', 'Cotización creada exitosamente.');
     }
 
-    public function getElementosMultiple(Request $request)
-    {
-        $solicitudes = $request->input('solicitudes', []);
-        $elementos = SolicitudesElemento::with('nivelesTres')
-            ->whereIn('id_solicitudes_compra', $solicitudes)
-            ->where('estado', '1')
-            ->get();
-
-        return response()->json($elementos);
-    }
-
 
     /**
      * Display the specified resource.

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Consolidacione
  *
  * @property $id
+ * @property $user_id
  * @property $id_solicitudes_compras
  * @property $id_solicitud_elemento
  * @property $estado
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property SolicitudesCompra $solicitudesCompra
  * @property SolicitudesElemento $solicitudesElemento
+ * @property User $user
  * @property ElementosConsolidado[] $elementosConsolidados
  * @property SolicitudesCotizacione[] $solicitudesCotizaciones
  * @package App
@@ -32,7 +34,7 @@ class Consolidacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
+    protected $fillable = ['user_id', 'id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
 
 
     /**
@@ -49,6 +51,14 @@ class Consolidacione extends Model
     public function solicitudesElemento()
     {
         return $this->belongsTo(\App\Models\SolicitudesElemento::class, 'id_solicitud_elemento', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     }
     
     /**

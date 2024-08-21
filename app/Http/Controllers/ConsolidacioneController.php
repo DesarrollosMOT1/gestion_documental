@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consolidacione;
+use App\Models\SolicitudesElemento;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConsolidacioneRequest;
@@ -41,6 +42,17 @@ class ConsolidacioneController extends Controller
 
         return Redirect::route('consolidaciones.index')
             ->with('success', 'Consolidacione created successfully.');
+    }
+
+    public function getElementosMultiple(Request $request)
+    {
+        $solicitudes = $request->input('solicitudes', []);
+        $elementos = SolicitudesElemento::with('nivelesTres')
+            ->whereIn('id_solicitudes_compra', $solicitudes)
+            ->where('estado', '1')
+            ->get();
+
+        return response()->json($elementos);
     }
 
     /**

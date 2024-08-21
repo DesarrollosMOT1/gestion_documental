@@ -20,6 +20,10 @@
                     <div class="card-body bg-white">
                         
                                 <div class="form-group mb-2 mb20">
+                                    <strong>User Id:</strong>
+                                    {{ $consolidacione->user_id }}
+                                </div>
+                                <div class="form-group mb-2 mb20">
                                     <strong>Id Solicitudes Compras:</strong>
                                     {{ $consolidacione->id_solicitudes_compras }}
                                 </div>

@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/solicitudes-compras/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesCompraController::class, 'actualizarEstado'])->name('solicitudes-compras.actualizar-estado');
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
 
-    Route::post('/get-elementos-multiple', [App\Http\Controllers\CotizacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
+    Route::post('/get-elementos-multiple', [App\Http\Controllers\ConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
 
     Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);

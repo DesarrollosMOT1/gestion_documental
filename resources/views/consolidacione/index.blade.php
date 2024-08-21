@@ -40,6 +40,7 @@
                                     <tr>
                                         <th>No</th>
                                         
+									<th >User Id</th>
 									<th >Id Solicitudes Compras</th>
 									<th >Id Solicitud Elemento</th>
 									<th >Estado</th>
@@ -53,6 +54,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
+										<td >{{ $consolidacione->user_id }}</td>
 										<td >{{ $consolidacione->id_solicitudes_compras }}</td>
 										<td >{{ $consolidacione->id_solicitud_elemento }}</td>
 										<td >{{ $consolidacione->estado }}</td>

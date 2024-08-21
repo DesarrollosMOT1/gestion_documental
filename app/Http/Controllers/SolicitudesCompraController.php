@@ -34,13 +34,11 @@ class SolicitudesCompraController extends Controller
     
     public function index(Request $request): View
     {
-        $solicitudesCompras = SolicitudesCompra::paginate();
-        $impuestos = Impuesto::all();
-        $cotizacione = new Cotizacione();
-        $terceros = Tercero::all();
+        $solicitudesCompras = SolicitudesCompra::with('solicitudesElemento')->paginate();
         $fechaActual = Carbon::now()->toDateString();
-
-        return view('solicitudes-compra.index', compact('solicitudesCompras', 'impuestos' ,'cotizacione', 'terceros', 'fechaActual'))
+        $users = User::all();
+    
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'fechaActual', 'users'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 
