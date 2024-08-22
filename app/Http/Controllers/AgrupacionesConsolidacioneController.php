@@ -86,6 +86,15 @@ class AgrupacionesConsolidacioneController extends Controller
         return view('agrupaciones-consolidacione.show', compact('agrupacionesConsolidacione'));
     }
 
+    public function actualizarEstado(Request $request, $id)
+    {
+        $consolidacion = Consolidacione::findOrFail($id);
+        $consolidacion->estado = $request->input('estado');
+        $consolidacion->save();
+
+        return response()->json(['success' => true]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

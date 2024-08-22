@@ -20,11 +20,6 @@
                                 {{ __('Agrupaciones Consolidaciones') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('agrupaciones-consolidaciones.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
