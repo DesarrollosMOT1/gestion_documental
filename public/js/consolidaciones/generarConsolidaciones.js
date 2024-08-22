@@ -1,6 +1,9 @@
 $(document).ready(function() {
     const csrfToken = $('meta[name="csrf-token"]').attr('content'); // Token CSRF
 
+    // Obtener el ID de la agrupación 
+    const agrupacionId = $('#agrupacion_id').val(); 
+
     // Eventos para los checkboxes de selección
     $('#select_all').change(function() {
         $('.select_item').prop('checked', $(this).prop('checked'));
@@ -77,57 +80,35 @@ $(document).ready(function() {
 
     // Actualizar el formulario de consolidación con los elementos obtenidos
     function actualizarFormularioConsolidacion(data) {
-        const userSelect = generarSelectUsuarios();
-        let html = userSelect;
+        let html = `
+            <input type="hidden" name="agrupacion_id" value="${agrupacionId}">
+        `;
 
         data.forEach(function(elemento, index) {
             html += generarElementoHTML(elemento, index);
         });
 
         $('#formularioConsolidacionContainer').html(html);
-        configurarEventoUserSelect();
-    }
-
-    // Generar HTML del select de usuarios
-    function generarSelectUsuarios() {
-        const usuariosOptions = usuarios.map(user => `<option value="${user.id}">${user.name}</option>`).join('');
-        return `
-            <div class="row mb-3">
-                <label for="user_id" class="form-label">Usuario</label>
-                <select id="userSelect" class="form-control">
-                    ${usuariosOptions}
-                </select>
-            </div>
-        `;
     }
 
     // Generar HTML para cada elemento
     function generarElementoHTML(elemento, index) {
         return `
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
-                    <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${elemento.id_solicitudes_compra}">
-                    <label class="form-label">Elemento: ${elemento.niveles_tres.nombre}</label>
+            <div class="col-md-6 col-lg-4">
+                <div class="card p-2 mb-3">
+                    <div class="card-body">
+                        <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
+                        <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${elemento.id_solicitudes_compra}">
+                        <label class="form-label">Elemento: ${elemento.niveles_tres.nombre}</label>
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
+                        <input type="hidden" name="elementos[${index}][estado]" value="0">
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label">Cantidad</label>
-                    <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required>
-                </div>
-                <input type="hidden" name="elementos[${index}][estado]" value="0">
             </div>
         `;
     }
 
-    // Configurar evento de cambio del select de usuario
-    function configurarEventoUserSelect() {
-        $('#userSelect').change(function() {
-            const selectedUserId = $(this).val();
-            $('input[name^="elementos["][name$="[user_id]"]').val(selectedUserId);
-        });
-    }
-
-    // Mostrar un mensaje de error en el formulario
     function mostrarError(mensaje) {
         $('#formularioConsolidacionContainer').html(`
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -137,18 +118,35 @@ $(document).ready(function() {
         `);
     }
 
-    // Limpiar el formulario de consolidación
     function limpiarFormularioConsolidacion() {
         $('#formularioConsolidacionContainer').html('');
     }
 
-    // Habilitar o deshabilitar el botón de generar consolidación
     function toggleGenerateButton(enable) {
         $('#btnGenerarConsolidacion').prop('disabled', !enable);
     }
 
-    // Evento al mostrar el modal
     $('#consolidacionModal').on('show.bs.modal', function() {
         actualizarSolicitudesYElementos();
+    });
+
+    // Agregar SweetAlert2 para confirmación antes de enviar
+    $('#btnEnviar').on('click', function(e) {
+        e.preventDefault(); // Evitar el envío inmediato del formulario
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Deseas crear esta consolidación?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, crear',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, enviar el formulario
+                $(this).closest('form').submit();
+            }
+        });
     });
 });

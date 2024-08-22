@@ -7,6 +7,7 @@ use App\Models\SolicitudesCompra;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\SolicitudesCompraRequest;
+use App\Models\AgrupacionesConsolidacione;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\User;
@@ -37,8 +38,9 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompras = SolicitudesCompra::with('solicitudesElemento')->paginate();
         $fechaActual = Carbon::now()->toDateString();
         $users = User::all();
+        $agrupacionesConsolidacione = new AgrupacionesConsolidacione();
     
-        return view('solicitudes-compra.index', compact('solicitudesCompras', 'fechaActual', 'users'))
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'fechaActual', 'users', 'agrupacionesConsolidacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 

@@ -91,14 +91,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="consolidacionModalLabel">{{ __('Generar Consolidación') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" inert aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="consolidacionForm" method="POST" action="{{ route('consolidaciones.store') }}">
+                <form id="consolidacionForm" method="POST" action="{{ route('agrupaciones-consolidaciones.store') }}">
                     @csrf
                     <div class="row padding-1 p-1">
                         <div class="col-md-12">
-                            @include('consolidacione.form', ['consolidacione' => new \App\Models\Consolidacione])
+                            @include('agrupaciones-consolidacione.form', ['agrupaciones-consolidaciones' => new \App\Models\AgrupacionesConsolidacione])
                     </div>
                 </form>
             </div>

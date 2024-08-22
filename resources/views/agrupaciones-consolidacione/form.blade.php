@@ -12,7 +12,27 @@
 <div class="tab-content" id="formTabsContent">
     <!-- Información General -->
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-        <div id="formularioConsolidacionContainer">
+        <br>
+        <h4 class="mb-3">Información General</h4>
+        <div class="form-group mb-2 mb20">
+            <label for="user_id" class="form-label">{{ __('Usuario') }}</label>
+            <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" {{ old('user_id', $agrupacionesConsolidacione?->user_id) == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+            {!! $errors->first('user_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
+        <div class="form-group mb-2 mb20">
+            <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotizacion') }}</label>
+            <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $agrupacionesConsolidacione?->fecha_cotizacion) }}" id="fecha_cotizacion" placeholder="Fecha Cotizacion">
+            {!! $errors->first('fecha_cotizacion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
+        <br>
+        <h4 class="mb-3">Elementos a consolidar</h4>
+        <div id="formularioConsolidacionContainer" class="row">
             <!-- Aquí se cargarán dinámicamente los formularios -->
         </div>
     </div>
@@ -41,3 +61,7 @@
 <div class="col-md-12 mt20 mt-2">
     <button id="btnEnviar" type="submit" class="btn btn-primary">{{ __('Enviar') }}</button>
 </div>
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush

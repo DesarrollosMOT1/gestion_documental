@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Consolidaciones')
+@section('title', 'Agrupaciones Consolidaciones')
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
@@ -17,11 +17,11 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Consolidaciones') }}
+                                {{ __('Agrupaciones Consolidaciones') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('consolidaciones.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('agrupaciones-consolidaciones.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
@@ -40,33 +40,27 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >User Id</th>
-									<th >Id Solicitudes Compras</th>
-									<th >Id Solicitud Elemento</th>
-									<th >Estado</th>
-									<th >Cantidad</th>
+									<th >Usuario</th>
+									<th >Fecha Cotizacion</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($consolidaciones as $consolidacione)
+                                    @foreach ($agrupacionesConsolidaciones as $agrupacionesConsolidacione)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-										<td >{{ $consolidacione->user_id }}</td>
-										<td >{{ $consolidacione->id_solicitudes_compras }}</td>
-										<td >{{ $consolidacione->id_solicitud_elemento }}</td>
-										<td >{{ $consolidacione->estado }}</td>
-										<td >{{ $consolidacione->cantidad }}</td>
+										<td >{{ $agrupacionesConsolidacione->user->name }}</td>
+										<td >{{ $agrupacionesConsolidacione->fecha_cotizacion }}</td>
 
                                             <td>
-                                                <form action="{{ route('consolidaciones.destroy', $consolidacione->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('consolidaciones.show', $consolidacione->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('consolidaciones.edit', $consolidacione->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('agrupaciones-consolidaciones.edit', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -76,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $consolidaciones->withQueryString()->links() !!}
+                {!! $agrupacionesConsolidaciones->withQueryString()->links() !!}
             </div>
         </div>
     </div>

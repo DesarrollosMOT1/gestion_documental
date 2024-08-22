@@ -34,7 +34,7 @@ class Consolidacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['user_id', 'id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
+    protected $fillable = ['agrupacion_id','id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
 
 
     /**
@@ -56,10 +56,6 @@ class Consolidacione extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
-    {
-        return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
-    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -76,5 +72,9 @@ class Consolidacione extends Model
     {
         return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id', 'id_consolidacion');
     }
-    
+
+    public function agrupacioneConsolidaciones()
+    {
+        return $this->hasMany(\App\Models\AgrupacionesConsolidacione::class, 'id', 'agrupacion_id');
+    }
 }

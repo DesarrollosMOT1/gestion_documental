@@ -33,16 +33,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
     Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
-    Route::resource('consolidaciones', App\Http\Controllers\ConsolidacioneController::class);
     Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
+    Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class);
 
     Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);
     Route::get('/api/niveles-tres/{idNivelDos}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesTres']);
     Route::post('/solicitudes-compras/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesCompraController::class, 'actualizarEstado'])->name('solicitudes-compras.actualizar-estado');
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
 
-    Route::post('/get-elementos-multiple', [App\Http\Controllers\ConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
+    Route::post('/get-elementos-multiple', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
 
     Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);

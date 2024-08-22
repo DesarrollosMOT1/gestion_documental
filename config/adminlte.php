@@ -348,6 +348,11 @@ return [
                     'icon' => 'fas fa-file-invoice',
                 ],
                 [
+                    'text' => 'Consolidaciones',
+                    'url' => 'agrupaciones-consolidaciones',
+                    'icon' => 'fas fa-archive mr-2',
+                ],
+                [
                     'text' => 'Cotizaciones',
                     'url' => 'cotizaciones',
                     'icon' => 'fas fa-file-signature',
