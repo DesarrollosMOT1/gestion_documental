@@ -79,14 +79,45 @@ $(document).ready(function() {
 
     // Actualizar el formulario de consolidación con los elementos obtenidos
     function actualizarFormularioConsolidacion(data) {
-        let html = `
-            <input type="hidden" name="agrupacion_id" value="${agrupacionId}">
-        `;
-
-        data.forEach(function(elemento, index) {
+        let html = `<input type="hidden" name="agrupacion_id" value="${agrupacionId}">`;
+    
+        // Crear un objeto para consolidar los elementos por nivel_tres
+        const elementosConsolidados = {};
+    
+        // Recorrer los elementos y agrupar por nivel_tres
+        data.forEach(function(elemento) {
+            const nivelTresId = elemento.niveles_tres.id;
+    
+            if (!elementosConsolidados[nivelTresId]) {
+                // Si el nivel_tres aún no existe, crear un nuevo grupo
+                elementosConsolidados[nivelTresId] = {
+                    id: elemento.id,
+                    id_solicitudes_compra: elemento.id_solicitudes_compra,
+                    nivel_tres_nombre: elemento.niveles_tres.nombre,
+                    cantidad: elemento.cantidad,
+                    elementos_originales: [{
+                        id_solicitud_elemento: elemento.id,
+                        id_solicitudes_compra: elemento.id_solicitudes_compra,
+                        cantidad: elemento.cantidad
+                    }]
+                };
+            } else {
+                // Si ya existe, sumar la cantidad y agregar a elementos_originales
+                elementosConsolidados[nivelTresId].cantidad += elemento.cantidad;
+                elementosConsolidados[nivelTresId].elementos_originales.push({
+                    id_solicitud_elemento: elemento.id,
+                    id_solicitudes_compra: elemento.id_solicitudes_compra,
+                    cantidad: elemento.cantidad
+                });
+            }
+        });
+    
+        // Generar el HTML con los elementos consolidados
+        Object.keys(elementosConsolidados).forEach(function(key, index) {
+            const elemento = elementosConsolidados[key];
             html += generarElementoHTML(elemento, index);
         });
-
+    
         $('#formularioConsolidacionContainer').html(html);
 
         // Agregar funcionalidad para eliminar elementos
@@ -101,16 +132,26 @@ $(document).ready(function() {
 
     // Generar HTML para cada elemento
     function generarElementoHTML(elemento, index) {
+        let elementosOriginalesHTML = '';
+        elemento.elementos_originales.forEach((el, i) => {
+            elementosOriginalesHTML += `
+                <input type="hidden" name="elementos[${index}][elementos_originales][${i}][id_solicitud_elemento]" value="${el.id_solicitud_elemento}">
+                <input type="hidden" name="elementos[${index}][elementos_originales][${i}][id_solicitudes_compra]" value="${el.id_solicitudes_compra}">
+                <input type="hidden" name="elementos[${index}][elementos_originales][${i}][cantidad]" value="${el.cantidad}">
+            `;
+        });
+    
         return `
             <div class="col-md-6 col-lg-4">
                 <div class="card p-2 mb-3">
                     <div class="card-body">
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
-                        <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${elemento.id_solicitudes_compra}">
-                        <label class="form-label">Elemento: ${elemento.niveles_tres.nombre}</label>
+                        <input type="hidden" name="elementos[${index}][id_solicitudes_compra]" value="${elemento.id_solicitudes_compra}">
+                        <label class="form-label">Elemento: ${elemento.nivel_tres_nombre}</label>
                         <label class="form-label">Cantidad</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
+                        ${elementosOriginalesHTML}
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
                 </div>

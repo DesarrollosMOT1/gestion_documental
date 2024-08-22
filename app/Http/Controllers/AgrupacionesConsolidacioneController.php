@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SolicitudesElemento;
+use App\Models\ElementosConsolidado;
 use App\Models\Consolidacione;
 use App\Models\AgrupacionesConsolidacione;
 use Illuminate\Http\RedirectResponse;
@@ -37,26 +38,58 @@ class AgrupacionesConsolidacioneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(AgrupacionesConsolidacioneRequest $request): RedirectResponse
     {
         // Guardar la agrupación de consolidación
         $agrupacion = AgrupacionesConsolidacione::create($request->validated());
     
+        if (!$agrupacion) {
+            return Redirect::route('agrupaciones-consolidaciones.index')
+                ->with('error', 'No se pudo crear la agrupación de consolidación.');
+        }
+    
         // Obtener los elementos del request
         $elementos = $request->input('elementos', []);
     
-        // Iterar y guardar cada elemento en la tabla Consolidaciones
         foreach ($elementos as $elemento) {
-            Consolidacione::create([
-                'agrupacion_id' => $agrupacion->id,
-                'id_solicitudes_compras' => $elemento['id_solicitudes_compras'],
-                'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
-                'estado' => 0, // Estado fijo como 0
-                'cantidad' => $elemento['cantidad'],
-            ]);
+            $elementosOriginales = $elemento['elementos_originales'] ?? [];
+            
+            // Verificar si realmente hubo consolidación (más de un elemento original)
+            if (count($elementosOriginales) > 1) {
+                $consolidacion = Consolidacione::create([
+                    'agrupacion_id' => $agrupacion->id,
+                    'id_solicitudes_compras' => $elemento['id_solicitudes_compra'],
+                    'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                    'estado' => 0,
+                    'cantidad' => $elemento['cantidad'],
+                ]);
+    
+                if (!$consolidacion) {
+                    return Redirect::route('agrupaciones-consolidaciones.index')
+                        ->with('error', 'No se pudo crear la consolidación.');
+                }
+    
+                // Registrar la trazabilidad de cada elemento original
+                foreach ($elementosOriginales as $elementoOriginal) {
+                    ElementosConsolidado::create([
+                        'id_consolidacion' => $consolidacion->id,
+                        'id_solicitud_compra' => $elementoOriginal['id_solicitudes_compra'],
+                        'id_solicitud_elemento' => $elementoOriginal['id_solicitud_elemento'],
+                    ]);
+                }
+            } else {
+                // Si no hubo consolidación, crear una entrada normal en Consolidacione
+                Consolidacione::create([
+                    'agrupacion_id' => $agrupacion->id,
+                    'id_solicitudes_compras' => $elemento['id_solicitudes_compra'],
+                    'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                    'estado' => 0,
+                    'cantidad' => $elemento['cantidad'],
+                ]);
+            }
         }
     
-        // Redireccionar con mensaje de éxito
         return Redirect::route('agrupaciones-consolidaciones.index')
             ->with('success', 'Agrupación de consolidación creada exitosamente.');
     }
