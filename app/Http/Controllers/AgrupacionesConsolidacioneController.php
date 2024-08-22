@@ -109,11 +109,12 @@ class AgrupacionesConsolidacioneController extends Controller
      */
     public function show($id): View
     {
-        // Cargar agrupaciones junto con consolidaciones, solicitudes de compra, y elementos
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
             'consolidaciones.solicitudesCompra.user', 
             'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
+            'consolidaciones.elementosConsolidados.solicitudesCompra',
+            'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
         return view('agrupaciones-consolidacione.show', compact('agrupacionesConsolidacione'));

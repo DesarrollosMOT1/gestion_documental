@@ -62,7 +62,7 @@ class Consolidacione extends Model
      */
     public function elementosConsolidados()
     {
-        return $this->hasMany(\App\Models\ElementosConsolidado::class, 'id', 'id_consolidacion');
+        return $this->hasMany(\App\Models\ElementosConsolidado::class, 'id_consolidacion', 'id');
     }
     
     /**

@@ -65,52 +65,99 @@
                     </div>
                 </div>
 
-                <!-- Consolidaciones Asociadas -->
-                <div class="col-12 mb-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title m-0"><i class="fas fa-list mr-2"></i>Consolidaciones Asociadas</h5>
-                        </div>
-                        <div class="card-body">
-                            @if($agrupacionesConsolidacione->consolidaciones->isNotEmpty())
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Consolidación</th>
-                                                <th>Solicitud de Compra</th>
-                                                <th>Elemento Consolidado</th>
-                                                <th>Cantidad</th>
-                                                <th>Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
-                                                <tr>
-                                                    <td>{{ $consolidacion->id }}</td>
-                                                    <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
-                                                    <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $consolidacion->cantidad }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="estado-checkbox"
-                                                            data-id="{{ $consolidacion->id }}"
-                                                            {{ $consolidacion->estado == 1 ? 'checked' : '' }}>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @else
-                                <p class="text-muted">No hay consolidaciones asociadas a esta agrupación.</p>
-                            @endif
-                        </div>
+    <!-- Consolidaciones Asociadas -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title m-0"><i class="fas fa-list mr-2"></i>Consolidaciones Asociadas</h5>
+            </div>
+            <div class="card-body">
+                @if($agrupacionesConsolidacione->consolidaciones->isNotEmpty())
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID Consolidación</th>
+                                    <th>Solicitud de Compra</th>
+                                    <th>Elemento Consolidado</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
+                                    <tr>
+                                        <td>{{ $consolidacion->id }}</td>
+                                        <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
+                                        <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
+                                        <td>{{ $consolidacion->cantidad }}</td>
+                                        <td>
+                                            <input type="checkbox" class="estado-checkbox"
+                                                data-id="{{ $consolidacion->id }}"
+                                                {{ $consolidacion->estado == 1 ? 'checked' : '' }}>
+                                        </td>
+                                        <td>
+                                            @if($consolidacion->elementosConsolidados->count() > 0)
+                                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidacion->id }}">
+                                                    Ver Elementos Consolidados
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                @else
+                    <p class="text-muted">No hay consolidaciones asociadas a esta agrupación.</p>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modales para Elementos Consolidados -->
+@foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
+    @if($consolidacion->elementosConsolidados->count() > 0)
+        <div class="modal fade" id="modalElementosConsolidados{{ $consolidacion->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $consolidacion->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel{{ $consolidacion->id }}">Elementos Consolidados - Consolidación {{ $consolidacion->id }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID Solicitud</th>
+                                    <th>Elemento</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($consolidacion->elementosConsolidados as $elementoConsolidado)
+                                    <tr>
+                                        <td>{{ $elementoConsolidado->solicitudesCompra->id }}</td>
+                                        <td>{{ $elementoConsolidado->solicitudesElemento->nivelesTres->nombre }}</td>
+                                        <td>{{ $elementoConsolidado->solicitudesElemento->cantidad }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
+
 @endsection
 
 @push('js')
