@@ -69,7 +69,6 @@ $(document).ready(function() {
             },
             success: function(data) {
                 actualizarFormularioConsolidacion(data);
-                toggleGenerateButton(true);
             },
             error: function() {
                 mostrarError('No se pueden generar consolidaciones porque las solicitudes seleccionadas no tienen elementos aprobados.');
@@ -89,6 +88,15 @@ $(document).ready(function() {
         });
 
         $('#formularioConsolidacionContainer').html(html);
+
+        // Agregar funcionalidad para eliminar elementos
+        $('.btn-eliminar').on('click', function() {
+            $(this).closest('.card').remove();
+            toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0);
+        });
+
+        // Habilitar o deshabilitar el botón de enviar
+        toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0);
     }
 
     // Generar HTML para cada elemento
@@ -103,6 +111,7 @@ $(document).ready(function() {
                         <label class="form-label">Cantidad</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
+                        <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
                 </div>
             </div>
@@ -123,6 +132,7 @@ $(document).ready(function() {
     }
 
     function toggleGenerateButton(enable) {
+        $('#btnEnviar').prop('disabled', !enable);
         $('#btnGenerarConsolidacion').prop('disabled', !enable);
     }
 
