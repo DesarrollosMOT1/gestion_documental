@@ -18,16 +18,10 @@
                     </div>
 
                     <div class="card-body bg-white">
-                        
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Nombre:</strong>
-                                    {{ $nivelesUno->nombre }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Id Clasificaciones Centros:</strong>
-                                    {{ $nivelesUno->clasificacionesCentro->nombre }}
-                                </div>
-
+                        <div class="form-group mb-2 mb20">
+                            <strong>Nombre:</strong>
+                                {{ $nivelesUno->nombre }}
+                        </div>
                     </div>
                 </div>
             </div>

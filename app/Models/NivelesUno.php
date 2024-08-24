@@ -29,16 +29,8 @@ class NivelesUno extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre', 'id_clasificaciones_centros', 'inventario'];
+    protected $fillable = ['nombre', 'inventario'];
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function clasificacionesCentro()
-    {
-        return $this->belongsTo(\App\Models\ClasificacionesCentro::class, 'id_clasificaciones_centros', 'id', 'inventario');
-    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

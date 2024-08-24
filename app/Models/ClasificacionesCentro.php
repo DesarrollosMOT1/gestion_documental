@@ -48,12 +48,5 @@ class ClasificacionesCentro extends Model
         return $this->hasMany(\App\Models\CentrosCosto::class, 'id', 'id_clasificaciones_centros');
     }
     
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function nivelesUnos()
-    {
-        return $this->hasMany(\App\Models\NivelesUno::class, 'id', 'id_clasificaciones_centros');
-    }
     
 }
