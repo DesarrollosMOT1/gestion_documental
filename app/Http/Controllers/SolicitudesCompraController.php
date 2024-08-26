@@ -35,7 +35,34 @@ class SolicitudesCompraController extends Controller
     
     public function index(Request $request): View
     {
-        $solicitudesCompras = SolicitudesCompra::with('solicitudesElemento')->paginate();
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->can($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno permitidos
+        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+    
+        // Obtener las solicitudes de compra que tienen al menos un SolicitudesElemento relacionado con los NivelesUno permitidos
+        $solicitudesCompras = SolicitudesCompra::whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+            $query->whereIn('id', $nivelesUnoIds);
+        })
+        ->with('solicitudesElemento')
+        ->paginate();
+    
         $fechaActual = Carbon::now()->toDateString();
         $users = User::all();
         $agrupacionesConsolidacione = new AgrupacionesConsolidacione();
@@ -43,6 +70,7 @@ class SolicitudesCompraController extends Controller
         return view('solicitudes-compra.index', compact('solicitudesCompras', 'fechaActual', 'users', 'agrupacionesConsolidacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -52,9 +80,29 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $users = User::all();
-        $nivelesUno = NivelesUno::all(); // Obtener todos los niveles uno
         $centrosCostos = CentrosCosto::all();
         $fechaActual = Carbon::now()->toDateString();
+    
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->can($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno con base en los permisos del usuario
+        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
     
         return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos', 'fechaActual'));
     }
@@ -109,8 +157,34 @@ class SolicitudesCompraController extends Controller
      */
     public function show($id): View
     {
-        $solicitudesCompra = SolicitudesCompra::with('solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto')
-                                            ->findOrFail($id);
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->can($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno permitidos
+        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+    
+        // Obtener los elementos filtrados por nivel uno permitido
+        $solicitudesCompra = SolicitudesCompra::with(['solicitudesElemento' => function($query) use ($nivelesUnoIds) {
+            $query->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                $query->whereIn('id', $nivelesUnoIds);
+            });
+        }, 'solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto'])
+        ->findOrFail($id);
     
         return view('solicitudes-compra.show', compact('solicitudesCompra'));
     }

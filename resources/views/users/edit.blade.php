@@ -51,6 +51,17 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            <!-- Nueva sección para permisos -->
+                            <div class="form-group">
+                                <label>Permisos</label>
+                                @foreach ($permissions as $permission)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ $user->permissions->contains($permission) ? 'checked' : '' }}>
+                                        <label class="form-check-label">{{ $permission->name }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
     
                             <button type="submit" class="btn btn-primary">Actualizar</button>
                         </form>
