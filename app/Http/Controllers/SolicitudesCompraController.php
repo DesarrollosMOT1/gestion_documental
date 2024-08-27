@@ -48,7 +48,7 @@ class SolicitudesCompraController extends Controller
         // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
         $nivelesPermitidos = [];
         foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->can($permiso)) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
                 $nivelesPermitidos[] = $nombre;
             }
         }
@@ -96,7 +96,7 @@ class SolicitudesCompraController extends Controller
         // Obtener los nombres de los niveles uno según los permisos del usuario
         $nivelesPermitidos = [];
         foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->can($permiso)) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
                 $nivelesPermitidos[] = $nombre;
             }
         }
@@ -106,6 +106,7 @@ class SolicitudesCompraController extends Controller
     
         return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos', 'fechaActual'));
     }
+    
     
     public function getNivelesDos($idNivelUno)
     {
@@ -170,7 +171,7 @@ class SolicitudesCompraController extends Controller
         // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
         $nivelesPermitidos = [];
         foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->can($permiso)) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
                 $nivelesPermitidos[] = $nombre;
             }
         }
@@ -178,7 +179,7 @@ class SolicitudesCompraController extends Controller
         // Obtener los niveles uno permitidos
         $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
     
-        // Obtener los elementos filtrados por nivel uno permitido
+        // Obtener la solicitud de compra con los elementos filtrados por nivel uno permitido
         $solicitudesCompra = SolicitudesCompra::with(['solicitudesElemento' => function($query) use ($nivelesUnoIds) {
             $query->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
                 $query->whereIn('id', $nivelesUnoIds);

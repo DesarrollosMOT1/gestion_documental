@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleController extends Controller
 {
@@ -39,6 +41,9 @@ class RoleController extends Controller
     {
         Role::create($request->validated());
 
+        // Restablecer el caché de permisos
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         return Redirect::route('roles.index')
             ->with('success', 'Rol creado correctamente.');
     }
@@ -63,18 +68,30 @@ class RoleController extends Controller
     
         return view('role.edit', compact('role', 'permisos'));
     }
-    
+
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Role $role): RedirectResponse
     {
         $role->permissions()->sync($request->input('permisos', []));
+
+        // Restablecer el caché de permisos
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return redirect()->route('roles.index')
             ->with('success', 'Rol actualizado correctamente');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id): RedirectResponse
     {
         Role::find($id)->delete();
+
+        // Restablecer el caché de permisos
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         return Redirect::route('roles.index')
             ->with('success', 'Rol eliminado correctamente');

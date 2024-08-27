@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AgrupacionesConsolidacioneRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\NivelesUno;
+use Spatie\Permission\Models\Permission;
 
 class AgrupacionesConsolidacioneController extends Controller
 {
@@ -97,13 +99,40 @@ class AgrupacionesConsolidacioneController extends Controller
     public function getElementosMultiple(Request $request)
     {
         $solicitudes = $request->input('solicitudes', []);
+        
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+
+        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+
+        // Obtener los niveles uno permitidos
+        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+
+        // Obtener los elementos filtrados por nivel uno permitido y estado
         $elementos = SolicitudesElemento::with('nivelesTres')
             ->whereIn('id_solicitudes_compra', $solicitudes)
             ->where('estado', '1')
+            ->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                $query->whereIn('id', $nivelesUnoIds);
+            })
             ->get();
 
         return response()->json($elementos);
     }
+
     /**
      * Display the specified resource.
      */
