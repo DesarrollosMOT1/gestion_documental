@@ -18,6 +18,12 @@
                         <span id="card_title">
                             {{ __('Usuarios') }}
                         </span>
+
+                        <div class="float-right">
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                              {{ __('Crear Nuevo') }}
+                            </a>
+                          </div>
                     </div>
                 </div>
                 @if ($message = Session::get('success'))
