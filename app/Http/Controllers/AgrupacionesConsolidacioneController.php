@@ -138,27 +138,71 @@ class AgrupacionesConsolidacioneController extends Controller
         return response()->json($elementos);
     }
 
-    public function storeSolicitudesCompra(SolicitudesCompraRequest $request): RedirectResponse
+    public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse
     {
         $validated = $request->validated();
-
+    
         // Crear la solicitud de compra
         $solicitudesCompra = SolicitudesCompra::create($validated);
-
-        // Crear los elementos de solicitud
+    
+        // Obtener la agrupación de consolidaciones
+        $agrupacion = AgrupacionesConsolidacione::findOrFail($agrupacionesConsolidacioneId);
+    
+        // Crear los elementos de solicitud y consolidar
         $elements = $request->input('elements', []);
         foreach ($elements as $element) {
-            $solicitudesCompra->solicitudesElemento()->create([
+            // Crear SolicitudesElemento
+            $solicitudElemento = $solicitudesCompra->solicitudesElemento()->create([
                 'id_niveles_tres' => $element['id_niveles_tres'],
                 'id_centros_costos' => $element['id_centros_costos'],
                 'cantidad' => $element['cantidad'],
-                'estado' => $element['estado'] ?? null,
+                'estado' => 1,
                 'id_solicitudes_compra' => $solicitudesCompra->id,
             ]);
+    
+            // Buscar una consolidación existente con el mismo nivel_tres
+            $consolidacionExistente = Consolidacione::where('agrupacion_id', $agrupacion->id)
+                ->whereHas('solicitudesElemento', function ($query) use ($element) {
+                    $query->where('id_niveles_tres', $element['id_niveles_tres']);
+                })
+                ->first();
+    
+            if ($consolidacionExistente) {
+                // Actualizar la cantidad consolidada
+                $cantidadTotal = $consolidacionExistente->cantidad + $element['cantidad'];
+                $consolidacionExistente->update([
+                    'cantidad' => $cantidadTotal,
+                ]);
+    
+                // Obtener el SolicitudesElemento original
+                $solicitudElementoOriginal = $consolidacionExistente->solicitudesElemento;
+    
+                // Agregar a ElementosConsolidado para mantener la trazabilidad de ambas solicitudes
+                ElementosConsolidado::create([
+                    'id_consolidacion' => $consolidacionExistente->id,
+                    'id_solicitud_compra' => $consolidacionExistente->id_solicitudes_compras,
+                    'id_solicitud_elemento' => $solicitudElementoOriginal->id,
+                ]);
+    
+                ElementosConsolidado::create([
+                    'id_consolidacion' => $consolidacionExistente->id,
+                    'id_solicitud_compra' => $solicitudesCompra->id,
+                    'id_solicitud_elemento' => $solicitudElemento->id,
+                ]);
+            } else {
+                // Crear nueva Consolidacione sin consolidar
+                Consolidacione::create([
+                    'agrupacion_id' => $agrupacion->id,
+                    'id_solicitudes_compras' => $solicitudesCompra->id,
+                    'id_solicitud_elemento' => $solicitudElemento->id,
+                    'estado' => 0,
+                    'cantidad' => $element['cantidad'],
+                ]);
+            }
         }
-
-        return Redirect::route('solicitudes-compras.index')
-            ->with('success', 'Solicitud de compra creada exitosamente.');
+    
+        return Redirect::route('agrupaciones-consolidaciones.show', $agrupacion->id)
+            ->with('success', 'Solicitud de compra creada y consolidada exitosamente.');
     }
 
 
@@ -201,8 +245,10 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
+
+        $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
     
-        return view('agrupaciones-consolidacione.show', compact('agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno'));
+        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno'));
     }
 
     private function generatePrefix(): string

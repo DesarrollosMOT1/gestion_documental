@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $updated_at
  *
  * @property CentrosCosto $centrosCosto
- * @property NivelesTre $nivelesTre
+ * @property NivelesTres $nivelesTres
  * @property SolicitudesCompra $solicitudesCompra
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder

@@ -132,7 +132,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="solicitudCompraForm" method="POST" action="{{ route('solicitudes-compras.store') }}">
+                <form action="{{ route('agrupaciones-consolidacione.storeSolicitudesCompra', $agrupacion->id) }}" method="POST">
                     @csrf
                     <div class="row padding-1 p-1">
                         <div class="col-md-12">
