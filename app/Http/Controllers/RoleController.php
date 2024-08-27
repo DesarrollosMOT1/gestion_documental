@@ -30,8 +30,9 @@ class RoleController extends Controller
     public function create(): View
     {
         $role = new Role();
+        $permisos = Permission::all();
 
-        return view('role.create', compact('role'));
+        return view('role.create', compact('role', 'permisos'));
     }
 
     /**
@@ -39,11 +40,13 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request): RedirectResponse
     {
-        Role::create($request->validated());
-
-        // Restablecer el caché de permisos
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web' 
+        ]);
+        $role->permissions()->sync($request->input('permisos', []));
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
+    
         return Redirect::route('roles.index')
             ->with('success', 'Rol creado correctamente.');
     }
@@ -72,11 +75,10 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role): RedirectResponse
+    public function update(RoleRequest $request, Role $role): RedirectResponse
     {
+        $role->update(['name' => $request->name]);
         $role->permissions()->sync($request->input('permisos', []));
-
-        // Restablecer el caché de permisos
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return redirect()->route('roles.index')

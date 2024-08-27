@@ -37,11 +37,15 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request): RedirectResponse
     {
-        Permission::create($request->validated());
+        Permission::create([
+            'name' => $request->name,
+            'guard_name' => 'web' // Asumimos que usarás el guard 'web' por defecto
+        ]);
 
         return Redirect::route('permissions.index')
-            ->with('success', 'Permission created successfully.');
+            ->with('success', 'Permiso creado correctamente.');
     }
+
 
     /**
      * Display the specified resource.
@@ -68,10 +72,10 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission): RedirectResponse
     {
-        $permission->update($request->validated());
+        $permission->update(['name' => $request->name]);
 
         return Redirect::route('permissions.index')
-            ->with('success', 'Permission updated successfully');
+            ->with('success', 'Permiso actualizado correctamente');
     }
 
     public function destroy($id): RedirectResponse

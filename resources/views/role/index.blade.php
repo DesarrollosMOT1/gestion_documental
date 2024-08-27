@@ -41,7 +41,6 @@
                                         <th>No</th>
                                         
 									<th >Nombre</th>
-									<th >Guard Name</th>
 
                                         <th></th>
                                     </tr>
@@ -52,7 +51,6 @@
                                             <td>{{ ++$i }}</td>
                                             
 										<td >{{ $role->name }}</td>
-										<td >{{ $role->guard_name }}</td>
 
                                             <td>
                                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST">

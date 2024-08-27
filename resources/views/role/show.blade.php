@@ -23,10 +23,6 @@
                                     <strong>Nombre:</strong>
                                     {{ $role->name }}
                                 </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Guard Name:</strong>
-                                    {{ $role->guard_name }}
-                                </div>
 
                     </div>
                 </div>

@@ -8,27 +8,39 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name ?? '') }}" required>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $user->name ?? '') }}" required>
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email ?? '') }}" required>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email ?? '') }}" required>
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="password">{{ isset($user) ? 'Nueva contraseña' : 'Contraseña' }}</label>
-                    <input type="password" class="form-control" id="password" name="password" {{ !isset($user) ? 'required' : '' }}>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" {{ !isset($user) ? 'required' : '' }}>
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="password_confirmation">Confirmar contraseña</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ !isset($user) ? 'required' : '' }}>
+                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" {{ !isset($user) ? 'required' : '' }}>
+                    @error('password_confirmation')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="id_area">Área</label>
-                    <select class="form-control" id="id_area" name="id_area">
+                    <select class="form-control @error('id_area') is-invalid @enderror" id="id_area" name="id_area">
                         <option value="">Seleccione un área</option>
                         @foreach ($areas as $area)
                             <option value="{{ $area->id }}" {{ (old('id_area', $user->id_area ?? '') == $area->id) ? 'selected' : '' }}>
@@ -36,6 +48,9 @@
                             </option>
                         @endforeach
                     </select>
+                    @error('id_area')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>

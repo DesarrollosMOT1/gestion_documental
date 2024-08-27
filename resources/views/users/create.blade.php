@@ -17,7 +17,6 @@
             @endif
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
-
                 @include('users.form')
             </form>
         </div>
