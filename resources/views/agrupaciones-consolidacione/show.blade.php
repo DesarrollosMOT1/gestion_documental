@@ -8,6 +8,10 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Agrupación de Consolidaciones</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('agrupaciones-consolidaciones.index') }}">Atrás</a>
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#createSolicitudesCompraModal">
+                Crear Solicitud de Compra
+            </button>
         </div>
         <div class="card-body">
             <div class="row">
@@ -117,7 +121,34 @@
     </div>
 </div>
 
-<!-- Modales para Elementos Consolidados -->
+<!-- Modal para el formulario de creación -->
+<div class="modal fade" id="createSolicitudesCompraModal" tabindex="-1" role="dialog" aria-labelledby="createSolicitudesCompraModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSolicitudesCompraModalLabel">Crear Solicitud de Compra</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="solicitudCompraForm" method="POST" action="{{ route('solicitudes-compras.store') }}">
+                    @csrf
+                    <div class="row padding-1 p-1">
+                        <div class="col-md-12">
+                            @include('solicitudes-compra.form', ['solicitudesCompra' => $solicitudesCompra])
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Elementos Consolidados -->
 @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
     @if($consolidacion->elementosConsolidados->count() > 0)
         <div class="modal fade" id="modalElementosConsolidados{{ $consolidacion->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $consolidacion->id }}" aria-hidden="true">
@@ -162,4 +193,7 @@
 
 @push('js')
     <script src="{{ asset('js/consolidaciones/actualizarEstado.js') }}"></script>
+    <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
 @endpush

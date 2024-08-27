@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SolicitudesElemento;
+use App\Models\SolicitudesCompra;
+use App\Models\User;
+use App\Models\CentrosCosto;
+use Carbon\Carbon;
+use App\Http\Requests\SolicitudesCompraRequest;
 use App\Models\ElementosConsolidado;
 use App\Models\Consolidacione;
 use App\Models\AgrupacionesConsolidacione;
@@ -133,11 +138,62 @@ class AgrupacionesConsolidacioneController extends Controller
         return response()->json($elementos);
     }
 
+    public function storeSolicitudesCompra(SolicitudesCompraRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        // Crear la solicitud de compra
+        $solicitudesCompra = SolicitudesCompra::create($validated);
+
+        // Crear los elementos de solicitud
+        $elements = $request->input('elements', []);
+        foreach ($elements as $element) {
+            $solicitudesCompra->solicitudesElemento()->create([
+                'id_niveles_tres' => $element['id_niveles_tres'],
+                'id_centros_costos' => $element['id_centros_costos'],
+                'cantidad' => $element['cantidad'],
+                'estado' => $element['estado'] ?? null,
+                'id_solicitudes_compra' => $solicitudesCompra->id,
+            ]);
+        }
+
+        return Redirect::route('solicitudes-compras.index')
+            ->with('success', 'Solicitud de compra creada exitosamente.');
+    }
+
+
     /**
      * Display the specified resource.
      */
     public function show($id): View
     {
+        $solicitudesCompra = new SolicitudesCompra();
+        $solicitudesCompra->prefijo = $this->generatePrefix();
+        $users = User::all();
+        $centrosCostos = CentrosCosto::all();
+        $fechaActual = Carbon::now()->toDateString();
+
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno con base en los permisos del usuario
+        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
+
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
             'consolidaciones.solicitudesCompra.user', 
             'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
@@ -146,9 +202,15 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
-        return view('agrupaciones-consolidacione.show', compact('agrupacionesConsolidacione'));
+        return view('agrupaciones-consolidacione.show', compact('agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno'));
     }
 
+    private function generatePrefix(): string
+    {
+        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
+        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
+        return $month . $year;
+    }
     public function actualizarEstado(Request $request, $id)
     {
         $consolidacion = Consolidacione::findOrFail($id);

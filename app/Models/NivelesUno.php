@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $updated_at
  *
  * @property ClasificacionesCentro $clasificacionesCentro
- * @property NivelesDo[] $nivelesDos
+ * @property NivelesDos[] $nivelesDos
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -37,7 +37,7 @@ class NivelesUno extends Model
      */
     public function nivelesDos()
     {
-        return $this->hasMany(\App\Models\NivelesDos::class, 'id', 'id_niveles_uno', 'inventario');
+        return $this->hasMany(\App\Models\NivelesDos::class, 'id', 'id_niveles_uno');
     }
     
 }
