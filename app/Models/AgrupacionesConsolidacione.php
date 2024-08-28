@@ -28,7 +28,7 @@ class AgrupacionesConsolidacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['user_id', 'fecha_cotizacion'];
+    protected $fillable = ['user_id', 'fecha_consolidacion'];
 
 
     /**

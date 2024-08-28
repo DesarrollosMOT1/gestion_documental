@@ -23,7 +23,7 @@
                         </div>
                         <div class="card-body">
                             <p><strong>Usuario:</strong> {{ $agrupacionesConsolidacione->user->name }}</p>
-                            <p><strong>Fecha Cotización:</strong> {{ $agrupacionesConsolidacione->fecha_cotizacion }}</p>
+                            <p><strong>Fecha Consolidacion:</strong> {{ $agrupacionesConsolidacione->fecha_consolidacion }}</p>
                         </div>
                     </div>
                 </div>

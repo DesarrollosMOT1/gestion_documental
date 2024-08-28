@@ -23,7 +23,7 @@ class AgrupacionesConsolidacioneRequest extends FormRequest
     {
         return [
 			'user_id' => 'required',
-			'fecha_cotizacion' => 'required',
+			'fecha_consolidacion' => 'required',
         ];
     }
 }
