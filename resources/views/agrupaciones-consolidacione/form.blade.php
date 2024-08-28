@@ -61,7 +61,3 @@
 <div class="col-md-12 mt20 mt-2">
     <button id="btnEnviar" type="submit" class="btn btn-primary">{{ __('Enviar') }}</button>
 </div>
-
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@endpush

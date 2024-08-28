@@ -29,7 +29,7 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
@@ -76,7 +76,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $cotizaciones->withQueryString()->links() !!}
             </div>
         </div>
     </div>

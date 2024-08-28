@@ -33,7 +33,7 @@
                 @endif
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover" id="usuarios">
+                        <table class="table table-striped table-hover datatable">
                             <thead class="thead">
                                 <tr>
                                     <th>No</th>
@@ -66,37 +66,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('js')
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.foundation.min.js"></script>
-<script>
-    new DataTable('#usuarios', {
-        responsive: true,
-        autoWidth: false,
-        "language": {
-            "lengthMenu": "Mostrar " +
-                `<select class="custom-select custom-select-s form-control form-control-sm">
-                                <option value='10'>10</option>
-                                <option value='25'>25</option>
-                                <option value='50'>50</option>
-                                <option value='100'>100</option>
-                                <option value='-1'>Todo</option>
-                            </select>` +
-                " Registros por página",
-            "zeroRecords": "Nada encontrado - disculpa",
-            "info": "Mostrando la página _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar:",
-            "paginate": {
-                'next': 'Siguiente',
-                'previous': 'Anterior',
-            }
-        }
-    });
-</script>
 @endsection

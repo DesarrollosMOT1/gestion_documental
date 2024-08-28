@@ -30,13 +30,13 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
                                         
 									<th >Usuario</th>
-									<th >Fecha Cotizacion</th>
+									<th >Fecha Consolidacion</th>
 
                                         <th></th>
                                     </tr>
@@ -47,7 +47,7 @@
                                             <td>{{ ++$i }}</td>
                                             
 										<td >{{ $agrupacionesConsolidacione->user->name }}</td>
-										<td >{{ $agrupacionesConsolidacione->fecha_cotizacion }}</td>
+										<td >{{ $agrupacionesConsolidacione->fecha_consolidacion }}</td>
 
                                             <td>
                                                 <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" method="POST">
@@ -65,7 +65,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $agrupacionesConsolidaciones->withQueryString()->links() !!}
             </div>
         </div>
     </div>

@@ -2,11 +2,6 @@
 
 @section('title', 'Solicitudes Compra')
 
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
-
 @section('content')
 <br>
     <div class="container-fluid">
@@ -39,7 +34,7 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>
@@ -80,7 +75,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $solicitudesCompras->withQueryString()->links() !!}
             </div>
         </div>
     </div>
@@ -109,8 +103,6 @@
 @endsection
 
 @push('js')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/consolidaciones/generarConsolidaciones.js') }}"></script>
     <script>
         var usuarios = @json($users);

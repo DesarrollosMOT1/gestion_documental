@@ -1,5 +1,4 @@
 @if (session('updateClave'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
             title: 'Éxito',
@@ -12,7 +11,6 @@
 @endif
 
 @if (session('updateName'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
             title: 'Éxito',
@@ -25,7 +23,6 @@
 @endif
 
 @if (session('updateEmail'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
             title: 'Éxito',
@@ -38,7 +35,6 @@
 @endif
 
 @if (session('claveIncorrecta'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
             title: 'Error',
@@ -51,7 +47,6 @@
 @endif
 
 @if (session('clavemenor'))
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         Swal.fire({
             title: 'Advertencia',
