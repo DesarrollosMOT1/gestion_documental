@@ -23,7 +23,6 @@ class NivelesUnoRequest extends FormRequest
     {
         return [
 			'nombre' => 'required|string',
-			'id_clasificaciones_centros' => 'required',
             'inventario' => 'nullable|boolean',
         ];
     }
