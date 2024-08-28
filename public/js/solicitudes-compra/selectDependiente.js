@@ -7,10 +7,11 @@ function fetchNivel(url, targetSelect, callback) {
             return response.json();
         })
         .then(data => {
-            targetSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+            let options = '<option selected>Seleccione una opción</option>';
             data.forEach(function(item) {
-                targetSelect.innerHTML += `<option value="${item.id}" data-inventario="${item.inventario}">${item.nombre}</option>`;
+                options += `<option value="${item.id}" data-inventario="${item.inventario}">${item.nombre}</option>`;
             });
+            $(targetSelect).html(options).trigger('change'); // Actualiza el select y dispara el evento change
             if (callback) callback(data);
         })
         .catch(error => {
@@ -19,36 +20,60 @@ function fetchNivel(url, targetSelect, callback) {
 }
 
 function initializeSelects() {
-    const selectNivelesUno = document.getElementById('select_niveles_uno');
-    const selectNivelesDos = document.getElementById('select_niveles_dos');
-    const selectNivelesTres = document.getElementById('select_niveles_tres');
-    const selectCentrosCostos = document.getElementById('select_id_centros_costos');
+    const selectNivelesUno = $('#select_niveles_uno');
+    const selectNivelesDos = $('#select_niveles_dos');
+    const selectNivelesTres = $('#select_niveles_tres');
+    const selectCentrosCostos = $('#select_id_centros_costos');
 
-    selectNivelesUno.addEventListener('change', function() {
+    // Inicializar Select2 en los selects dependientes
+    selectNivelesUno.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Seleccione una opción',
+        allowClear: true
+    });
+
+    selectNivelesDos.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Seleccione una opción',
+        allowClear: true
+    });
+
+    selectNivelesTres.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Seleccione una opción',
+        allowClear: true
+    });
+
+    selectCentrosCostos.select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Seleccione una opción',
+        allowClear: true
+    });
+
+    selectNivelesUno.on('change', function() {
         const idNivelUno = this.value;
-        fetchNivel(`/api/niveles-dos/${idNivelUno}`, selectNivelesDos);
+        fetchNivel(`/api/niveles-dos/${idNivelUno}`, selectNivelesDos[0]);
     });
 
-    selectNivelesDos.addEventListener('change', function() {
+    selectNivelesDos.on('change', function() {
         const idNivelDos = this.value;
-        fetchNivel(`/api/niveles-tres/${idNivelDos}`, selectNivelesTres, handleNivelTresChange);
+        fetchNivel(`/api/niveles-tres/${idNivelDos}`, selectNivelesTres[0], handleNivelTresChange);
     });
 
-    function handleNivelTresChange(data) {
-        selectNivelesTres.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const isInventario = selectedOption.getAttribute('data-inventario') === '1';
+    function handleNivelTresChange() {
+        selectNivelesTres.on('change', function() {
+            const selectedOption = $(this).find(':selected');
+            const isInventario = selectedOption.data('inventario') === 1;
 
             if (isInventario) {
-                selectCentrosCostos.value = '11011';
-                selectCentrosCostos.disabled = true;
+                selectCentrosCostos.val('11011').trigger('change').prop('disabled', true);
             } else {
-                selectCentrosCostos.disabled = false;
+                selectCentrosCostos.prop('disabled', false).trigger('change');
             }
         });
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     initializeSelects();
 });

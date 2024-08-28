@@ -67,7 +67,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="select_id_centros_costos" class="form-label">{{ __('Centros Costos') }}</label>
-            <select id="select_id_centros_costos" class="form-control">
+            <select id="select_id_centros_costos" class="form-control select2">
                 <option selected>Seleccione una opción</option>
                 @foreach($centrosCostos as $centroCosto)
                     <option value="{{ $centroCosto->codigo }}">{{ $centroCosto->nombre }}</option>
