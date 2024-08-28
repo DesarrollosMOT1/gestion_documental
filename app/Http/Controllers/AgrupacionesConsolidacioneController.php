@@ -174,21 +174,24 @@ class AgrupacionesConsolidacioneController extends Controller
                     'cantidad' => $cantidadTotal,
                 ]);
     
-                // Obtener el SolicitudesElemento original
-                $solicitudElementoOriginal = $consolidacionExistente->solicitudesElemento;
+                // Verificar si ya existe un registro en ElementosConsolidado para esta consolidación
+                $elementoConsolidadoExistente = ElementosConsolidado::where('id_consolidacion', $consolidacionExistente->id)->exists();
     
-                // Agregar a ElementosConsolidado para mantener la trazabilidad de ambas solicitudes
-                ElementosConsolidado::create([
-                    'id_consolidacion' => $consolidacionExistente->id,
-                    'id_solicitud_compra' => $consolidacionExistente->id_solicitudes_compras,
-                    'id_solicitud_elemento' => $solicitudElementoOriginal->id,
-                ]);
-    
+                // Solo crear un nuevo registro en ElementosConsolidado para la nueva solicitud
                 ElementosConsolidado::create([
                     'id_consolidacion' => $consolidacionExistente->id,
                     'id_solicitud_compra' => $solicitudesCompra->id,
                     'id_solicitud_elemento' => $solicitudElemento->id,
                 ]);
+    
+                // Si no existía un registro previo, crear uno para la consolidación original
+                if (!$elementoConsolidadoExistente) {
+                    ElementosConsolidado::create([
+                        'id_consolidacion' => $consolidacionExistente->id,
+                        'id_solicitud_compra' => $consolidacionExistente->id_solicitudes_compras,
+                        'id_solicitud_elemento' => $consolidacionExistente->id_solicitud_elemento,
+                    ]);
+                }
             } else {
                 // Crear nueva Consolidacione sin consolidar
                 Consolidacione::create([
