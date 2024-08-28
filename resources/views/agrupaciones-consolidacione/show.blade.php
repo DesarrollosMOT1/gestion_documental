@@ -84,7 +84,7 @@
                                     <th>ID Consolidación</th>
                                     <th>Solicitud de Compra</th>
                                     <th>Elemento Consolidado</th>
-                                    <th>Cantidad</th>
+                                    <th>Cantidad Unidad</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -166,7 +166,7 @@
                                 <tr>
                                     <th>ID Solicitud</th>
                                     <th>Elemento</th>
-                                    <th>Cantidad</th>
+                                    <th>Cantidad Unidad</th>
                                 </tr>
                             </thead>
                             <tbody>

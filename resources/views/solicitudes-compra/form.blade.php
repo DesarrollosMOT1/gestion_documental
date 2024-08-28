@@ -76,8 +76,8 @@
         </div>
 
         <div class="form-group mb-2 mb20">
-            <label for="input_cantidad" class="form-label">{{ __('Cantidad') }}</label>
-            <input type="number" id="input_cantidad" class="form-control" placeholder="Cantidad">
+            <label for="input_cantidad" class="form-label">{{ __('Cantidad Unidad') }}</label>
+            <input type="number" id="input_cantidad" class="form-control" placeholder="Cantidad Unidad">
         </div>
 
         <button type="button" id="addElement" class="btn btn-secondary mb-3">
@@ -91,7 +91,7 @@
                     <tr>
                         <th>{{ __('Elemento') }}</th>
                         <th>{{ __('Centro Costo') }}</th>
-                        <th>{{ __('Cantidad') }}</th>
+                        <th>{{ __('Cantidad Unidad') }}</th>
                         <th>{{ __('Acciones') }}</th>
                     </tr>
                 </thead>

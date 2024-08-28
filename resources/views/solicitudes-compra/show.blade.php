@@ -54,7 +54,7 @@
                                             <tr>
                                                 <th>Elemento</th>
                                                 <th>Centro de Costos</th>
-                                                <th>Cantidad</th>
+                                                <th>Cantidad Unidad</th>
                                                 <th>Estado</th>
                                             </tr>
                                         </thead>

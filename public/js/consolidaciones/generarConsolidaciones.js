@@ -148,7 +148,7 @@ $(document).ready(function() {
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compra]" value="${elemento.id_solicitudes_compra}">
                         <label class="form-label">Elemento: ${elemento.nivel_tres_nombre}</label>
-                        <label class="form-label">Cantidad</label>
+                        <label class="form-label">Cantidad Unidad:</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         ${elementosOriginalesHTML}
