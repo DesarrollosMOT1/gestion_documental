@@ -40,7 +40,7 @@ class ReferenciasGastoController extends Controller
         ReferenciasGasto::create($request->validated());
 
         return Redirect::route('referencias-gastos.index')
-            ->with('success', 'ReferenciasGasto created successfully.');
+            ->with('success', 'Referencia Gasto creada exitosamente.');
     }
 
     /**
@@ -71,7 +71,7 @@ class ReferenciasGastoController extends Controller
         $referenciasGasto->update($request->validated());
 
         return Redirect::route('referencias-gastos.index')
-            ->with('success', 'ReferenciasGasto updated successfully');
+            ->with('success', 'Referencia Gasto actualizada exitosamente');
     }
 
     public function destroy($codigo): RedirectResponse
@@ -79,6 +79,6 @@ class ReferenciasGastoController extends Controller
         ReferenciasGasto::find($codigo)->delete();
 
         return Redirect::route('referencias-gastos.index')
-            ->with('success', 'ReferenciasGasto deleted successfully');
+            ->with('success', 'ReferenciasGasto eliminada exitosamente');
     }
 }

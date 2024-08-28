@@ -44,7 +44,7 @@ class NivelesTresController extends Controller
         NivelesTres::create($request->validated());
 
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesTres created successfully.');
+            ->with('success', 'Nivel Tres creado exitosamente.');
     }
 
     /**
@@ -81,7 +81,7 @@ class NivelesTresController extends Controller
         $nivelesTres->update($data);
     
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesTres updated successfully');
+            ->with('success', 'Nivel Tres actualizado exitosamente');
     }    
 
     public function destroy($id): RedirectResponse
@@ -89,6 +89,6 @@ class NivelesTresController extends Controller
         NivelesTres::find($id)->delete();
 
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesTre deleted successfully');
+            ->with('success', 'Nivele Tres eliminado exitosamente');
     }
 }

@@ -42,7 +42,7 @@ class ClasificacionesCentroController extends Controller
         ClasificacionesCentro::create($request->validated());
 
         return Redirect::route('clasificaciones-centros.index')
-            ->with('success', 'ClasificacionesCentro created successfully.');
+            ->with('success', 'Clasificacion Centro creada exitosamente.');
     }
 
     /**
@@ -74,7 +74,7 @@ class ClasificacionesCentroController extends Controller
         $clasificacionesCentro->update($request->validated());
 
         return Redirect::route('clasificaciones-centros.index')
-            ->with('success', 'ClasificacionesCentro updated successfully');
+            ->with('success', 'Clasificacion Centro actualizada exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -82,6 +82,6 @@ class ClasificacionesCentroController extends Controller
         ClasificacionesCentro::find($id)->delete();
 
         return Redirect::route('clasificaciones-centros.index')
-            ->with('success', 'ClasificacionesCentro deleted successfully');
+            ->with('success', 'ClasificacionesCentro eliminada exitosamente');
     }
 }

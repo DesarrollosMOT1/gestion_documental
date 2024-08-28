@@ -27,9 +27,7 @@
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
-                        <div class="alert alert-success m-4">
-                            <p>{{ $message }}</p>
-                        </div>
+                        <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                     @endif
 
                     <div class="card-body bg-white">
@@ -60,12 +58,12 @@
                                             <td>{{ $solicitudesCompra->prefijo }}</td>
                                             <td>{{ $solicitudesCompra->descripcion }}</td>
                                             <td>
-                                                <form action="{{ route('solicitudes-compras.destroy', $solicitudesCompra->id) }}" method="POST">
+                                                <form action="{{ route('solicitudes-compras.destroy', $solicitudesCompra->id) }}" class="delete-form" method="POST">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('solicitudes-compras.show', $solicitudesCompra->id) }}"><i class="fa fa-fw fa-eye"></i></a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('solicitudes-compras.edit', $solicitudesCompra->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -104,8 +102,4 @@
 
 @push('js')
     <script src="{{ asset('js/consolidaciones/generarConsolidaciones.js') }}"></script>
-    <script>
-        var usuarios = @json($users);
-        var csrfToken = '{{ csrf_token() }}';
-    </script>
 @endpush

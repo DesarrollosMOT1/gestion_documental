@@ -29,7 +29,9 @@
                                     {{ __('Crear Nuevo') }}
                                 </a>
                             </div>
-                            
+                            @if ($message = Session::get('success'))
+                                <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+                            @endif
                             <div class="list-group" id="nivelesUnoList">
                                 @foreach ($nivelesUnos as $nivelUno)
                                     <a href="#" class="list-group-item list-group-item-action" data-id="{{ $nivelUno->id }}">

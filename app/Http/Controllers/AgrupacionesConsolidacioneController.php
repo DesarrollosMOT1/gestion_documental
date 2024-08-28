@@ -287,7 +287,7 @@ class AgrupacionesConsolidacioneController extends Controller
         $agrupacionesConsolidacione->update($request->validated());
 
         return Redirect::route('agrupaciones-consolidaciones.index')
-            ->with('success', 'AgrupacionesConsolidacione updated successfully');
+            ->with('success', 'Agrupacion Consolidacion actualizada exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -295,6 +295,6 @@ class AgrupacionesConsolidacioneController extends Controller
         AgrupacionesConsolidacione::find($id)->delete();
 
         return Redirect::route('agrupaciones-consolidaciones.index')
-            ->with('success', 'AgrupacionesConsolidacione deleted successfully');
+            ->with('success', 'Agrupacion Consolidacion eliminada exitosamente');
     }
 }

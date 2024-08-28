@@ -40,7 +40,7 @@ class ImpuestoController extends Controller
         Impuesto::create($request->validated());
 
         return Redirect::route('impuestos.index')
-            ->with('success', 'Impuesto created successfully.');
+            ->with('success', 'Impuesto creado exitosamente.');
     }
 
     /**
@@ -71,7 +71,7 @@ class ImpuestoController extends Controller
         $impuesto->update($request->validated());
 
         return Redirect::route('impuestos.index')
-            ->with('success', 'Impuesto updated successfully');
+            ->with('success', 'Impuesto actualizado exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -79,6 +79,6 @@ class ImpuestoController extends Controller
         Impuesto::find($id)->delete();
 
         return Redirect::route('impuestos.index')
-            ->with('success', 'Impuesto deleted successfully');
+            ->with('success', 'Impuesto eliminado exitosamente');
     }
 }

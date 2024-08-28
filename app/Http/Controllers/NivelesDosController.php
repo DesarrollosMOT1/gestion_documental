@@ -43,7 +43,7 @@ class NivelesDosController extends Controller
         NivelesDos::create($request->validated());
 
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesDo created successfully.');
+            ->with('success', 'Nivel Dos creado exitosamente.');
     }
 
     /**
@@ -87,7 +87,7 @@ class NivelesDosController extends Controller
         }
     
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesDos updated successfully');
+            ->with('success', 'Nivel Dos actualizado exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -95,6 +95,6 @@ class NivelesDosController extends Controller
         NivelesDos::find($id)->delete();
 
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesDo deleted successfully');
+            ->with('success', 'Nivel Dos eliminado exitosamente');
     }
 }

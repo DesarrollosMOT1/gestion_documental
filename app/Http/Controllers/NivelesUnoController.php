@@ -105,7 +105,7 @@ class NivelesUnoController extends Controller
         }
     
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesUno updated successfully');
+            ->with('success', 'Nivel Uno actualizado exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -113,6 +113,6 @@ class NivelesUnoController extends Controller
         NivelesUno::find($id)->delete();
 
         return Redirect::route('niveles-unos.index')
-            ->with('success', 'NivelesUno deleted successfully');
+            ->with('success', 'Nivel Uno eliminado exitosamente');
     }
 }

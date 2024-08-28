@@ -42,7 +42,7 @@ class CentrosCostoController extends Controller
         CentrosCosto::create($request->validated());
 
         return Redirect::route('centros-costos.index')
-            ->with('success', 'CentrosCosto created successfully.');
+            ->with('success', 'Centro Costo creado exitosamente.');
     }
 
     /**
@@ -74,7 +74,7 @@ class CentrosCostoController extends Controller
         $centrosCosto->update($request->validated());
 
         return Redirect::route('centros-costos.index')
-            ->with('success', 'CentrosCosto updated successfully');
+            ->with('success', 'Centro Costo actualizado exitosamente');
     }
 
     public function destroy($codigo): RedirectResponse
@@ -82,6 +82,6 @@ class CentrosCostoController extends Controller
         CentrosCosto::find($codigo)->delete();
 
         return Redirect::route('centros-costos.index')
-            ->with('success', 'CentrosCosto deleted successfully');
+            ->with('success', 'Centro Costo eliminado exitosamente');
     }
 }

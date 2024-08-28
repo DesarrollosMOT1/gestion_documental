@@ -40,7 +40,7 @@ class TerceroController extends Controller
         Tercero::create($request->validated());
 
         return Redirect::route('terceros.index')
-            ->with('success', 'Tercero created successfully.');
+            ->with('success', 'Tercero creado exitosamente.');
     }
 
     /**
@@ -71,7 +71,7 @@ class TerceroController extends Controller
         $tercero->update($request->validated());
 
         return Redirect::route('terceros.index')
-            ->with('success', 'Tercero updated successfully');
+            ->with('success', 'Tercero actualizado exitosamente');
     }
 
     public function destroy($nit): RedirectResponse
@@ -79,6 +79,6 @@ class TerceroController extends Controller
         Tercero::find($nit)->delete();
 
         return Redirect::route('terceros.index')
-            ->with('success', 'Tercero deleted successfully');
+            ->with('success', 'Tercero eliminado exitosamente');
     }
 }

@@ -48,7 +48,7 @@ class RoleController extends Controller
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return Redirect::route('roles.index')
-            ->with('success', 'Rol creado correctamente.');
+            ->with('success', 'Rol creado exitosamente.');
     }
 
     /**
@@ -82,7 +82,7 @@ class RoleController extends Controller
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return redirect()->route('roles.index')
-            ->with('success', 'Rol actualizado correctamente');
+            ->with('success', 'Rol actualizado exitosamente');
     }
 
     /**
@@ -96,6 +96,6 @@ class RoleController extends Controller
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         return Redirect::route('roles.index')
-            ->with('success', 'Rol eliminado correctamente');
+            ->with('success', 'Rol eliminado exitosamente');
     }
 }

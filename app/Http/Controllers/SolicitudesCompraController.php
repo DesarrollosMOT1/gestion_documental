@@ -148,7 +148,7 @@ class SolicitudesCompraController extends Controller
         }
 
         return Redirect::route('solicitudes-compras.index')
-            ->with('success', 'SolicitudesCompra created successfully.');
+            ->with('success', 'Solicitud Compra creada creada.');
     }
 
     
@@ -220,7 +220,7 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompra->update($request->validated());
 
         return Redirect::route('solicitudes-compras.index')
-            ->with('success', 'SolicitudesCompra updated successfully');
+            ->with('success', 'Solicitud Compra actualizada exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -228,6 +228,6 @@ class SolicitudesCompraController extends Controller
         SolicitudesCompra::find($id)->delete();
 
         return Redirect::route('solicitudes-compras.index')
-            ->with('success', 'SolicitudesCompra deleted successfully');
+            ->with('success', 'Solicitud Compra eliminada exitosamente');
     }
 }

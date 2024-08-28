@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $updated_at
  *
  * @property NivelesUno $nivelesUno
- * @property NivelesTre[] $nivelesTres
+ * @property NivelesTres[] $nivelesTres
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */

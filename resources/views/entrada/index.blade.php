@@ -28,9 +28,7 @@
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
-                        <div class="alert alert-success m-4">
-                            <p>{{ $message }}</p>
-                        </div>
+                        <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                     @endif
 
                     <div class="card-body bg-white">
@@ -63,12 +61,12 @@
 										<td >{{ $entrada->estado }}</td>
 
                                             <td>
-                                                <form action="{{ route('entradas.destroy', $entrada->id) }}" method="POST">
+                                                <form action="{{ route('entradas.destroy', $entrada->id) }}" class="delete-form" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('entradas.show', $entrada->id) }}"><i class="fa fa-fw fa-eye"></i></a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('entradas.edit', $entrada->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

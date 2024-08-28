@@ -113,7 +113,7 @@ class CotizacioneController extends Controller
         $cotizacione->update($request->validated());
 
         return Redirect::route('cotizaciones.index')
-            ->with('success', 'Cotizacione updated successfully');
+            ->with('success', 'Cotizacion actualizada exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -121,6 +121,6 @@ class CotizacioneController extends Controller
         Cotizacione::find($id)->delete();
 
         return Redirect::route('cotizaciones.index')
-            ->with('success', 'Cotizacione deleted successfully');
+            ->with('success', 'Cotizacion eliminada exitosamente');
     }
 }

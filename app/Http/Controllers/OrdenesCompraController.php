@@ -81,7 +81,7 @@ class OrdenesCompraController extends Controller
         $ordenesCompra->update($request->validated());
 
         return Redirect::route('ordenes-compras.index')
-            ->with('success', 'OrdenesCompra updated successfully');
+            ->with('success', 'Orden de Compra actualizada exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -89,6 +89,6 @@ class OrdenesCompraController extends Controller
         OrdenesCompra::find($id)->delete();
 
         return Redirect::route('ordenes-compras.index')
-            ->with('success', 'OrdenesCompra deleted successfully');
+            ->with('success', 'OrdenesCompra eliminada exitosamente');
     }
 }

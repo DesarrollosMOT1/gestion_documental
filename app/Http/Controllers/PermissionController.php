@@ -43,7 +43,7 @@ class PermissionController extends Controller
         ]);
 
         return Redirect::route('permissions.index')
-            ->with('success', 'Permiso creado correctamente.');
+            ->with('success', 'Permiso creado exitosamente.');
     }
 
 
@@ -75,7 +75,7 @@ class PermissionController extends Controller
         $permission->update(['name' => $request->name]);
 
         return Redirect::route('permissions.index')
-            ->with('success', 'Permiso actualizado correctamente');
+            ->with('success', 'Permiso actualizado exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -83,6 +83,6 @@ class PermissionController extends Controller
         Permission::find($id)->delete();
 
         return Redirect::route('permissions.index')
-            ->with('success', 'Permission deleted successfully');
+            ->with('success', 'Permission eliminado exitosamente');
     }
 }

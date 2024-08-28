@@ -13,6 +13,9 @@
                 Crear Solicitud de Compra
             </button>
         </div>
+        @if ($message = Session::get('success'))
+            <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+        @endif
         <div class="card-body">
             <div class="row">
                 <!-- Información de la Agrupación -->

@@ -39,7 +39,7 @@ class UserController extends Controller
         $user->roles()->sync($request->roles);
         $user->permissions()->sync($request->permissions);
     
-        return redirect()->route('admin.users.index')->with('success', 'Usuario creado con éxito');
+        return redirect()->route('admin.users.index')->with('success', 'Usuario creado exitosamente');
     }
 
     public function show(string $id)
@@ -70,7 +70,7 @@ class UserController extends Controller
         $user->roles()->sync($request->roles);
         $user->permissions()->sync($request->permissions);
     
-        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado con éxito');
+        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado exitosamente');
     }
 
     public function destroy($id): RedirectResponse
@@ -78,6 +78,6 @@ class UserController extends Controller
         User::find($id)->delete();
 
         return Redirect::route('admin.users.index')
-            ->with('success', 'Usuario eliminado correctamente');
+            ->with('success', 'Usuario eliminado exitosamente');
     }
 }

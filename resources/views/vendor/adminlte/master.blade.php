@@ -98,6 +98,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <script src="{{ asset('js/datatable-config.js') }}"></script>
         <script src="{{ asset('js/select2-config.js') }}"></script>
+        <script src="{{ asset('js/sweetalert2-config.js') }}"></script>
     @else
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $created_at
  * @property $updated_at
  *
- * @property NivelesDo $nivelesDo
+ * @property NivelesDos $nivelesDo
  * @property ReferenciasGasto $referenciasGasto
  * @property SolicitudesElemento[] $solicitudesElementos
  * @package App
