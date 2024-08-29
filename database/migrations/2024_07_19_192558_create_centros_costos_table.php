@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('centros_costos', function (Blueprint $table) {
-            $table->string('codigo')->primary();
+            $table->id();
+            $table->string('codigo_mekano');
             $table->string('nombre');
             $table->unsignedBigInteger('id_clasificaciones_centros');
             $table->foreign('id_clasificaciones_centros')->references('id')->on('clasificaciones_centros');

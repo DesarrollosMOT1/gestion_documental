@@ -3,7 +3,6 @@
 @section('title', 'Editar Centro Costo')
 
 @section('content')
-<br>
     <section class="content container-fluid">
         <div class="">
             <div class="col-md-12">

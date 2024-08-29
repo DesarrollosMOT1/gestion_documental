@@ -2,10 +2,6 @@
 
 @section('title', 'Centro Costo')
 
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
 
 @section('content')
 <br>
@@ -38,7 +34,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Codigo</th>
+									<th >Codigo Mekano</th>
 									<th >Nombre</th>
 									<th >Clasificacion Centro</th>
 
@@ -50,14 +46,14 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-										<td >{{ $centrosCosto->codigo }}</td>
+										<td >{{ $centrosCosto->codigo_mekano }}</td>
 										<td >{{ $centrosCosto->nombre }}</td>
 										<td >{{ $centrosCosto->clasificacionesCentro->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('centros-costos.destroy', $centrosCosto->codigo) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('centros-costos.show', $centrosCosto->codigo) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('centros-costos.edit', $centrosCosto->codigo) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form action="{{ route('centros-costos.destroy', $centrosCosto->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('centros-costos.show', $centrosCosto->id) }}"></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('centros-costos.edit', $centrosCosto->id) }}"></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
@@ -70,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                {!! $centrosCostos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class CentrosCosto
  *
- * @property $codigo
+ * @property $id
+ * @property $codigo_mekano
  * @property $nombre
  * @property $id_clasificaciones_centros
  * @property $created_at
@@ -28,12 +29,7 @@ class CentrosCosto extends Model
      *
      * @var array<int, string>
      */
-
-    protected $primaryKey = 'codigo';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    protected $fillable = ['codigo', 'nombre', 'id_clasificaciones_centros'];
+    protected $fillable = ['codigo_mekano', 'nombre', 'id_clasificaciones_centros'];
 
 
     /**
@@ -49,7 +45,7 @@ class CentrosCosto extends Model
      */
     public function solicitudesElementos()
     {
-        return $this->hasMany(\App\Models\SolicitudesElemento::class, 'codigo', 'id_centros_costos');
+        return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id', 'id_centros_costos');
     }
     
 }

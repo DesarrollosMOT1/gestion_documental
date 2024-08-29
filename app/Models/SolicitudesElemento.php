@@ -40,7 +40,7 @@ class SolicitudesElemento extends Model
      */
     public function centrosCosto()
     {
-        return $this->belongsTo(\App\Models\CentrosCosto::class, 'id_centros_costos', 'codigo');
+        return $this->belongsTo(\App\Models\CentrosCosto::class, 'id_centros_costos', 'id');
     }
     
     /**
