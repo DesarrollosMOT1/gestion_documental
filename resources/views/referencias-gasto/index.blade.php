@@ -38,7 +38,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Codigo</th>
+									<th >Codigo Mekano</th>
 									<th >Nombre</th>
 
                                         <th></th>
@@ -49,13 +49,13 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-										<td >{{ $referenciasGasto->codigo }}</td>
+										<td >{{ $referenciasGasto->codigo_mekano }}</td>
 										<td >{{ $referenciasGasto->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('referencias-gastos.destroy', $referenciasGasto->codigo) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('referencias-gastos.show', $referenciasGasto->codigo) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('referencias-gastos.edit', $referenciasGasto->codigo) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form action="{{ route('referencias-gastos.destroy', $referenciasGasto->id) }}" class="delete-form" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('referencias-gastos.show', $referenciasGasto->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('referencias-gastos.edit', $referenciasGasto->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
@@ -68,6 +68,7 @@
                         </div>
                     </div>
                 </div>
+                {!! $referenciasGastos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

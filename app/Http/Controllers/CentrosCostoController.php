@@ -9,6 +9,8 @@ use App\Http\Requests\CentrosCostoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\ClasificacionesCentro;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CentrosCostosImport;
 
 class CentrosCostoController extends Controller
 {
@@ -82,5 +84,17 @@ class CentrosCostoController extends Controller
 
         return Redirect::route('centros-costos.index')
             ->with('success', 'Centro Costo eliminado exitosamente');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+
+        Excel::import(new CentrosCostosImport, $request->file('file')->store('temp'));
+
+        return redirect()->route('centros-costos.index')
+                        ->with('success', 'Los datos de centros de costos han sido importados correctamente.');
     }
 }

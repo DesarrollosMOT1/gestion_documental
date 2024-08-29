@@ -20,8 +20,8 @@
                     <div class="card-body bg-white">
                         
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Codigo:</strong>
-                                    {{ $referenciasGasto->codigo }}
+                                    <strong>Codigo Mekano:</strong>
+                                    {{ $referenciasGasto->codigo_mekano }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
                                     <strong>Nombre:</strong>

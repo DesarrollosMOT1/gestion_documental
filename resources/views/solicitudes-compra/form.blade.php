@@ -70,7 +70,7 @@
             <select id="select_id_centros_costos" class="form-control select2">
                 <option selected>Seleccione una opción</option>
                 @foreach($centrosCostos as $centroCosto)
-                    <option value="{{ $centroCosto->codigo }}">{{ $centroCosto->nombre }}</option>
+                <option value="{{ $centroCosto->id }}">{{ $centroCosto->codigo_mekano }} - {{ $centroCosto->nombre }}</option>
                 @endforeach
             </select>
         </div>

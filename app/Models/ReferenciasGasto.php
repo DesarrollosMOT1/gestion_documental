@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class ReferenciasGasto
  *
- * @property $codigo
+ * @property $id
+ * @property $codigo_mekano
  * @property $nombre
  * @property $created_at
  * @property $updated_at
@@ -21,19 +22,12 @@ class ReferenciasGasto extends Model
     
     protected $perPage = 2000;
 
-    protected $table = 'referencias_gastos'; 
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-
-    protected $primaryKey = 'codigo';
-    public $incrementing = false;
-    protected $keyType = 'string';
-    
-    protected $fillable = ['codigo', 'nombre'];
+    protected $fillable = ['codigo_mekano', 'nombre'];
 
 
     /**
@@ -41,7 +35,7 @@ class ReferenciasGasto extends Model
      */
     public function nivelesTres()
     {
-        return $this->hasMany(\App\Models\NivelesTres::class, 'codigo', 'id_referencias_gastos');
+        return $this->hasMany(\App\Models\NivelesTres::class, 'id', 'id_referencias_gastos');
     }
     
 }

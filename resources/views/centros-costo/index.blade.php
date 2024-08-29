@@ -16,11 +16,16 @@
                                 {{ __('Centros Costos') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('centros-costos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                            <div class="float-right d-flex align-items-center">
+                                <form action="{{ route('centros-costos.import') }}" method="POST" enctype="multipart/form-data" class="d-flex mr-2">
+                                    @csrf
+                                    <input type="file" class="form-control mr-2" name="file" aria-label="Upload" required>
+                                    <button class="btn btn-secondary" type="submit">Importar</button>
+                                </form>
+                                <a href="{{ route('centros-costos.create') }}" class="btn btn-primary btn-sm" data-placement="left">
+                                    {{ __('Crear Nuevo') }}
                                 </a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -51,9 +56,9 @@
 										<td >{{ $centrosCosto->clasificacionesCentro->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('centros-costos.destroy', $centrosCosto->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('centros-costos.show', $centrosCosto->id) }}"></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('centros-costos.edit', $centrosCosto->id) }}"></a>
+                                                <form action="{{ route('centros-costos.destroy', $centrosCosto->id) }}" class="delete-form" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('centros-costos.show', $centrosCosto->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('centros-costos.edit', $centrosCosto->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>

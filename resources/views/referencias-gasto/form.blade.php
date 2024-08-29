@@ -2,9 +2,9 @@
     <div class="col-md-12">
         
         <div class="form-group mb-2 mb20">
-            <label for="codigo" class="form-label">{{ __('Codigo') }}</label>
-            <input type="text" name="codigo" class="form-control @error('codigo') is-invalid @enderror" value="{{ old('codigo', $referenciasGasto?->codigo) }}" id="codigo" placeholder="Codigo">
-            {!! $errors->first('codigo', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <label for="codigo_mekano" class="form-label">{{ __('Codigo Mekano') }}</label>
+            <input type="text" name="codigo_mekano" class="form-control @error('codigo_mekano') is-invalid @enderror" value="{{ old('codigo_mekano', $referenciasGasto?->codigo_mekano) }}" id="codigo_mekano" placeholder="Codigo Mekano">
+            {!! $errors->first('codigo_mekano', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="nombre" class="form-label">{{ __('Nombre') }}</label>

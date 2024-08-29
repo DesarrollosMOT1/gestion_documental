@@ -64,10 +64,20 @@ function initializeSelects() {
         selectNivelesTres.on('change', function() {
             const selectedOption = $(this).find(':selected');
             const isInventario = selectedOption.data('inventario') === 1;
-
+    
+            // Si el inventario está marcado
             if (isInventario) {
-                selectCentrosCostos.val('11011').trigger('change').prop('disabled', true);
+                // Busca el centro de costo con codigo_mekano igual a 11011
+                let centroCostoMekano = $('#select_id_centros_costos option').filter(function() {
+                    return $(this).text().includes('11011');
+                });
+    
+                if (centroCostoMekano.length > 0) {
+                    // Selecciona el centro de costo con el código Mekano 11011
+                    selectCentrosCostos.val(centroCostoMekano.val()).trigger('change').prop('disabled', true);
+                }
             } else {
+                // Habilita el select si el inventario no está marcado
                 selectCentrosCostos.prop('disabled', false).trigger('change');
             }
         });

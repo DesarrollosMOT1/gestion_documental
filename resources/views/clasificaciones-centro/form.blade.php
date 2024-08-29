@@ -8,7 +8,7 @@
         </div>
         <div class="form-group mb-2 mb20">
             <label for="id_areas" class="form-label">{{ __('Area') }}</label>
-            <select name="id_areas" class="form-control @error('id_areas') is-invalid @enderror" id="id_areas">
+            <select name="id_areas" class="form-control select2 @error('id_areas') is-invalid @enderror" id="id_areas">
                 <option value="">{{ __('Seleccione un área') }}</option>
                 @foreach($areas as $area)
                     <option value="{{ $area->id }}" {{ old('id_areas', $clasificacionesCentro?->id_areas) == $area->id ? 'selected' : '' }}>

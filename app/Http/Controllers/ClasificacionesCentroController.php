@@ -9,6 +9,8 @@ use App\Http\Requests\ClasificacionesCentroRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Area;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ClasificacionesCentroImport;
 
 class ClasificacionesCentroController extends Controller
 {
@@ -83,5 +85,17 @@ class ClasificacionesCentroController extends Controller
 
         return Redirect::route('clasificaciones-centros.index')
             ->with('success', 'ClasificacionesCentro eliminada exitosamente');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+
+        Excel::import(new ClasificacionesCentroImport, $request->file('file')->store('temp'));
+
+        return redirect()->route('clasificaciones-centros.index')
+                        ->with('success', 'Las clasificaciones de centros han sido importadas correctamente.');
     }
 }

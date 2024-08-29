@@ -12,7 +12,7 @@
             {!! $errors->first('nombre', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <label for="id_clasificaciones_centros" class="form-label">{{ __('Clasificación Centro') }}</label>
-        <select name="id_clasificaciones_centros" class="form-control @error('id_clasificaciones_centros') is-invalid @enderror" id="id_clasificaciones_centros">
+        <select name="id_clasificaciones_centros" class="form-control select2 @error('id_clasificaciones_centros') is-invalid @enderror" id="id_clasificaciones_centros">
             <option value="">{{ __('Seleccione una clasificación') }}</option>
             @foreach($clasificacionesCentros as $clasificacion)
                 <option value="{{ $clasificacion->id }}" {{ old('id_clasificaciones_centros', $centrosCosto?->id_clasificaciones_centros) == $clasificacion->id ? 'selected' : '' }}>

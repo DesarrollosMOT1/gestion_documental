@@ -15,9 +15,9 @@ class NivelesTresImport implements ToCollection
 
         foreach ($rows as $row) {
             NivelesTres::updateOrCreate(
-                ['id' => $row[0]], // Buscar por ID
+                ['nombre' => $row[1]], 
                 [
-                    'nombre' => $row[1], 
+                    
                     'id_niveles_dos' => (int) $row[2],
                     'id_referencias_gastos' => $row[3],
                     'inventario' => (int) $row[4]

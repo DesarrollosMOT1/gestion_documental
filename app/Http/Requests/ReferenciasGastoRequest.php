@@ -22,7 +22,7 @@ class ReferenciasGastoRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'codigo' => 'required|string',
+			'codigo_mekano' => 'required|string',
 			'nombre' => 'required|string',
         ];
     }

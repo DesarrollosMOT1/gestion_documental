@@ -15,9 +15,10 @@ class ReferenciasGastoImport implements ToCollection
 
         foreach ($rows as $row) {
             ReferenciasGasto::updateOrCreate(
-                ['codigo' => $row[0]], // Buscar por código
+                ['codigo_mekano' => $row[1]], // Buscar por id
                 [
-                    'nombre' => $row[1]
+                    'codigo_mekano' => $row[1],
+                    'nombre' => $row[2]
                 ]
             );
         }

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('referencias_gastos', function (Blueprint $table) {
-            $table->string('codigo')->primary();
+            $table->id();
+            $table->string('codigo_mekano');
             $table->string('nombre');
             $table->timestamps();
         });

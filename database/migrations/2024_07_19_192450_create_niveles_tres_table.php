@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->unsignedBigInteger('id_niveles_dos');
-            $table->string('id_referencias_gastos');
+            $table->unsignedBigInteger('id_referencias_gastos');
             $table->timestamps();
 
             $table->foreign('id_niveles_dos')->references('id')->on('niveles_dos');
-            $table->foreign('id_referencias_gastos')->references('codigo')->on('referencias_gastos');
+            $table->foreign('id_referencias_gastos')->references('id')->on('referencias_gastos');
         });
     }
 

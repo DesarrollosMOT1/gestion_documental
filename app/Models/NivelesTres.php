@@ -48,7 +48,7 @@ class NivelesTres extends Model
      */
     public function referenciasGasto()
     {
-        return $this->belongsTo(\App\Models\referenciasGasto::class, 'id_referencias_gastos', 'codigo');
+        return $this->belongsTo(\App\Models\referenciasGasto::class, 'id_referencias_gastos', 'id');
     }
     
     /**

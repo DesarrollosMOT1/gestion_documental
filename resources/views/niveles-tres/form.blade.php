@@ -8,7 +8,7 @@
         </div>
         <div class="form-group mb-2 mb20">
             <label for="id_niveles_dos" class="form-label">{{ __('Nivel Dos') }}</label>
-            <select name="id_niveles_dos" class="form-control @error('id_niveles_dos') is-invalid @enderror" id="id_niveles_dos">
+            <select name="id_niveles_dos" class="form-control select2 @error('id_niveles_dos') is-invalid @enderror" id="id_niveles_dos">
                 <option value="">{{ __('Seleccione un nivel dos') }}</option>
                 @foreach($nivelesDos as $nivelDos)
                     <option value="{{ $nivelDos->id }}" {{ old('id_niveles_dos', $nivelesTre?->id_niveles_dos) == $nivelDos->id ? 'selected' : '' }}>

@@ -19,9 +19,8 @@ class NivelesUnoImport implements ToCollection
 
         foreach ($rows as $row) {
             NivelesUno::updateOrCreate(
-                ['id' => $row[0]], // Buscar por ID
+                ['nombre' => $row[1]],  
                 [
-                    'nombre' => $row[1], 
                     'inventario' => (int) $row[2]
                 ]
             );

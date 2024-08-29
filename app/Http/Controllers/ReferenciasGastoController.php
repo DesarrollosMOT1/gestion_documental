@@ -48,9 +48,9 @@ class ReferenciasGastoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($codigo): View
+    public function show($id): View
     {
-        $referenciasGasto = ReferenciasGasto::find($codigo);
+        $referenciasGasto = ReferenciasGasto::find($id);
 
         return view('referencias-gasto.show', compact('referenciasGasto'));
     }
@@ -58,9 +58,9 @@ class ReferenciasGastoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($codigo): View
+    public function edit($id): View
     {
-        $referenciasGasto = ReferenciasGasto::find($codigo);
+        $referenciasGasto = ReferenciasGasto::find($id);
 
         return view('referencias-gasto.edit', compact('referenciasGasto'));
     }
@@ -76,9 +76,9 @@ class ReferenciasGastoController extends Controller
             ->with('success', 'Referencia Gasto actualizada exitosamente');
     }
 
-    public function destroy($codigo): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
-        ReferenciasGasto::find($codigo)->delete();
+        ReferenciasGasto::find($id)->delete();
 
         return Redirect::route('referencias-gastos.index')
             ->with('success', 'ReferenciasGasto eliminada exitosamente');

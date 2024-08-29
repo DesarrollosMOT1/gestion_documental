@@ -15,9 +15,8 @@ class NivelesDosImport implements ToCollection
 
         foreach ($rows as $row) {
             NivelesDos::updateOrCreate(
-                ['id' => $row[0]], // Buscar por ID
+                ['nombre' => $row[1]],  // Buscar por ID
                 [
-                    'nombre' => $row[1], 
                     'id_niveles_uno' => (int) $row[2], // Ajusta según la relación con niveles uno
                     'inventario' => (int) $row[3]
                 ]

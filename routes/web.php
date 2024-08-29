@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('niveles-unos/import', [App\Http\Controllers\NivelesUnoController::class, 'import'])->name('niveles-unos.import');
     route::post('niveles-dos/import', [App\Http\Controllers\NivelesDosController::class, 'import'])->name('niveles-dos.import');Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
     Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
+    route::post('centros-costos/import', [App\Http\Controllers\CentrosCostoController::class, 'import'])->name('centros-costos.import');
+    route::post('clasificaciones-centros/import', [App\Http\Controllers\ClasificacionesCentroController::class, 'import'])->name('clasificaciones-centros.import');
 
     #rutas principales
     Route::resource('roles',App\Http\Controllers\RoleController::class);
@@ -32,7 +34,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/NewPassword',  [App\Http\Controllers\UserSettingsController::class,'NewPassword'])->name('NewPassword');
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
     route::post('referencias-gastos/import', [App\Http\Controllers\ReferenciasGastoController::class, 'import'])->name('referencias-gastos.import');
-    
     #rutas para gestion de compras
     Route::resource('areas', App\Http\Controllers\AreaController::class);
     Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class); 
