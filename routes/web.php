@@ -18,6 +18,11 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    #rutas de  excel
+    Route::post('niveles-unos/import', [App\Http\Controllers\NivelesUnoController::class, 'import'])->name('niveles-unos.import');
+    route::post('niveles-dos/import', [App\Http\Controllers\NivelesDosController::class, 'import'])->name('niveles-dos.import');Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
+    Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
+
     #rutas principales
     Route::resource('roles',App\Http\Controllers\RoleController::class);
     Route::resource('permissions',App\Http\Controllers\PermissionController::class);
@@ -26,7 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
     route::resource('users', App\Http\Controllers\UserController::class)->names('admin.users');
     Route::get('/NewPassword',  [App\Http\Controllers\UserSettingsController::class,'NewPassword'])->name('NewPassword');
     Route::post('/change/password',  [App\Http\Controllers\UserSettingsController::class,'changePassword'])->name('changePassword');
-
+    route::post('referencias-gastos/import', [App\Http\Controllers\ReferenciasGastoController::class, 'import'])->name('referencias-gastos.import');
+    
     #rutas para gestion de compras
     Route::resource('areas', App\Http\Controllers\AreaController::class);
     Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class); 
@@ -54,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class); 
     Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class);
     Route::resource('entradas', App\Http\Controllers\EntradaController::class);
+
 
 
     #cadena de suministros

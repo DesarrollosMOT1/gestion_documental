@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\NivelesUno;
 use App\Models\NivelesTres;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\NivelesDosImport;
 
 class NivelesDosController extends Controller
 {
@@ -97,4 +99,17 @@ class NivelesDosController extends Controller
         return Redirect::route('niveles-unos.index')
             ->with('success', 'Nivel Dos eliminado exitosamente');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+
+        Excel::import(new NivelesDosImport, $request->file('file')->store('temp'));
+
+        return redirect()->route('niveles-unos.index')
+                         ->with('success', 'Los datos han sido importados correctamente.');
+    }
+
 }

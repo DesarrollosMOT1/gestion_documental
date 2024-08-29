@@ -18,7 +18,9 @@
                         <span id="card_title">{{ __('Niveles Jerárquicos') }}</span>
                     </div>
                 </div>
-
+                @if ($message = Session::get('success'))
+                    <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+                @endif
                 <div class="card-body bg-white">
                     <div class="row">
                         <!-- Columna Nivel Uno -->
@@ -29,6 +31,15 @@
                                     {{ __('Crear Nuevo') }}
                                 </a>
                             </div>
+                            <!-- Importar nivel uno -->
+                            <form action="{{ route('niveles-unos.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <button class="btn btn-secondary" type="submit">Importar</button>
+                                </div>
+                                <br>
+                            </form>
                             @if ($message = Session::get('success'))
                                 <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                             @endif
@@ -53,8 +64,15 @@
                                     {{ __('Crear Nuevo') }}
                                 </a>
                             </div>
-
-                            <!-- Lista de niveles dos -->
+                            <!-- Importar nivel dos -->
+                            <form action="{{ route('niveles-dos.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <button class="btn btn-secondary" type="submit">Importar</button>
+                                </div>
+                                <br>
+                            </form>
                             <div class="list-group" id="nivelesDosList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel uno aún.</div>
                             </div>
@@ -64,12 +82,18 @@
                         <div class="col-md-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Nivel Tres</h5>
-                                <a href="{{ route('niveles-tres.create') }}" class="btn btn-primary btn-sm">
-                                    {{ __('Crear Nuevo') }}
-                                </a>
+                                <a href="{{ route('niveles-tres.create') }}" class="btn btn-primary btn-sm">{{ __('Crear Nuevo') }}</a>
                             </div>
 
                             <!-- Lista de niveles tres -->
+                            <form action="{{ route('niveles-tres.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <button class="btn btn-secondary" type="submit">Importar</button>
+                                </div>
+                                <br>
+                            </form>
                             <div class="list-group" id="nivelesTresList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel dos aún.</div>
                             </div>

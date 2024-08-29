@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $created_at
  * @property $updated_at
  *
- * @property NivelesTre[] $nivelesTres
+ * @property NivelesTres[] $nivelesTres
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */

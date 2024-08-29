@@ -11,6 +11,8 @@ use Illuminate\View\View;
 use App\Models\ClasificacionesCentro;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\NivelesUnoImport;
 
 class NivelesUnoController extends Controller
 {
@@ -114,5 +116,19 @@ class NivelesUnoController extends Controller
 
         return Redirect::route('niveles-unos.index')
             ->with('success', 'Nivel Uno eliminado exitosamente');
+    }
+
+    public function import(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+    
+        // Importar el archivo
+        Excel::import(new NivelesUnoImport, $request->file('file')->store('temp'));
+    
+        return redirect()->route('niveles-unos.index')
+                         ->with('success', 'Los datos han sido importados correctamente.');
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ReferenciasGastoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ReferenciasGastoImport;
 
 class ReferenciasGastoController extends Controller
 {
@@ -81,4 +83,17 @@ class ReferenciasGastoController extends Controller
         return Redirect::route('referencias-gastos.index')
             ->with('success', 'ReferenciasGasto eliminada exitosamente');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+
+        Excel::import(new ReferenciasGastoImport, $request->file('file')->store('temp'));
+
+        return redirect()->route('referencias-gastos.index')
+                         ->with('success', 'Los datos han sido importados correctamente.');
+    }
+
 }

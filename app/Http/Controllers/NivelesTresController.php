@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\NivelesDos;
 use App\Models\ReferenciasGasto;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\NivelesTresImport;
 
 class NivelesTresController extends Controller
 {
@@ -90,5 +92,17 @@ class NivelesTresController extends Controller
 
         return Redirect::route('niveles-unos.index')
             ->with('success', 'Nivele Tres eliminado exitosamente');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+
+        Excel::import(new NivelesTresImport, $request->file('file')->store('temp'));
+
+        return redirect()->route('niveles-unos.index')
+                         ->with('success', 'Los datos han sido importados correctamente.');
     }
 }
