@@ -42,13 +42,13 @@ document.getElementById('addElement').addEventListener('click', function() {
 
         // Lógica para limpiar campos basada en la opción seleccionada
         if (resetOption === 'all') {
-            document.getElementById('select_niveles_uno').value = 'Seleccione una opción';
-            document.getElementById('select_niveles_dos').value = 'Seleccione una opción';
-            document.getElementById('select_niveles_tres').value = 'Seleccione una opción';
-            document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
+            $('#select_niveles_uno').val(null).trigger('change');
+            $('#select_niveles_dos').val(null).trigger('change');
+            $('#select_niveles_tres').val(null).trigger('change');
+            $('#select_id_centros_costos').val(null).trigger('change');
             document.getElementById('input_cantidad').value = '';
         } else if (resetOption === 'partial') {
-            document.getElementById('select_id_centros_costos').value = 'Seleccione una opción';
+            $('#select_id_centros_costos').val(null).trigger('change');
             document.getElementById('input_cantidad').value = '';
         }
         
