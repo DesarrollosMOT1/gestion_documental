@@ -43,7 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
     Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class);
-
+    Route::resource('solicitudes-ofertas', App\Http\Controllers\SolicitudesOfertaController::class);
+    
     Route::post('agrupaciones-consolidacione/{agrupacionesConsolidacioneId}/solicitudes-compra', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'storeSolicitudesCompra'])->name('agrupaciones-consolidacione.storeSolicitudesCompra');
 
     Route::post('/consolidaciones/actualizar-estado/{id}', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'actualizarEstado']);

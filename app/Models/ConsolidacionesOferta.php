@@ -5,26 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Consolidacione
+ * Class ConsolidacionesOferta
  *
  * @property $id
- * @property $user_id
+ * @property $cantidad
+ * @property $estado
  * @property $id_solicitudes_compras
  * @property $id_solicitud_elemento
- * @property $estado
- * @property $cantidad
+ * @property $id_consolidaciones
  * @property $created_at
  * @property $updated_at
  *
+ * @property Consolidacione $consolidacione
  * @property SolicitudesCompra $solicitudesCompra
  * @property SolicitudesElemento $solicitudesElemento
- * @property User $user
- * @property ElementosConsolidado[] $elementosConsolidados
  * @property SolicitudesCotizacione[] $solicitudesCotizaciones
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Consolidacione extends Model
+class ConsolidacionesOferta extends Model
 {
     
     protected $perPage = 20;
@@ -34,9 +33,17 @@ class Consolidacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['agrupacion_id','id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
+    protected $fillable = ['cantidad', 'estado', 'id_solicitudes_compras', 'id_solicitud_elemento', 'id_consolidaciones'];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function consolidacione()
+    {
+        return $this->belongsTo(\App\Models\Consolidacione::class, 'id_consolidaciones', 'id');
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -54,20 +61,11 @@ class Consolidacione extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function elementosConsolidados()
+    public function solicitudesCotizaciones()
     {
-        return $this->hasMany(\App\Models\ElementosConsolidado::class, 'id_consolidacion', 'id');
+        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id', 'id_consolidaciones_oferta');
     }
     
-
-    public function agrupacioneConsolidaciones()
-    {
-        return $this->hasMany(\App\Models\AgrupacionesConsolidacione::class, 'id', 'agrupacion_id');
-    }
 }

@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\SolicitudesOferta;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use App\Http\Requests\SolicitudesOfertaRequest;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
+
+class SolicitudesOfertaController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): View
+    {
+        $solicitudesOfertas = SolicitudesOferta::paginate();
+
+        return view('solicitudes-oferta.index', compact('solicitudesOfertas'))
+            ->with('i', ($request->input('page', 1) - 1) * $solicitudesOfertas->perPage());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
+    {
+        $solicitudesOferta = new SolicitudesOferta();
+
+        return view('solicitudes-oferta.create', compact('solicitudesOferta'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(SolicitudesOfertaRequest $request): RedirectResponse
+    {
+        SolicitudesOferta::create($request->validated());
+
+        return Redirect::route('solicitudes-ofertas.index')
+            ->with('success', 'SolicitudesOferta created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id): View
+    {
+        $solicitudesOferta = SolicitudesOferta::find($id);
+
+        return view('solicitudes-oferta.show', compact('solicitudesOferta'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id): View
+    {
+        $solicitudesOferta = SolicitudesOferta::find($id);
+
+        return view('solicitudes-oferta.edit', compact('solicitudesOferta'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(SolicitudesOfertaRequest $request, SolicitudesOferta $solicitudesOferta): RedirectResponse
+    {
+        $solicitudesOferta->update($request->validated());
+
+        return Redirect::route('solicitudes-ofertas.index')
+            ->with('success', 'SolicitudesOferta updated successfully');
+    }
+
+    public function destroy($id): RedirectResponse
+    {
+        SolicitudesOferta::find($id)->delete();
+
+        return Redirect::route('solicitudes-ofertas.index')
+            ->with('success', 'SolicitudesOferta deleted successfully');
+    }
+}

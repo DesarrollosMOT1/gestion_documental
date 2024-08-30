@@ -37,7 +37,7 @@ class SolicitudesCotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_consolidacion','id_solicitudes_compras', 'id_cotizaciones', 'cantidad', 'id_impuestos', 'id_solicitud_elemento', 'precio','estado'];
+    protected $fillable = ['id_consolidaciones_oferta','id_solicitudes_compras', 'id_cotizaciones', 'cantidad', 'id_impuestos', 'id_solicitud_elemento', 'precio','estado'];
 
 
     /**
@@ -80,9 +80,9 @@ class SolicitudesCotizacione extends Model
         return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id', 'id_solicitudes_cotizaciones');
     }
 
-    public function consolidacion()
+    public function consolidacionOferta()
     {
-        return $this->belongsTo(\App\Models\Consolidacione::class, 'id_consolidacion', 'id');
+        return $this->belongsTo(\App\Models\ConsolidacionesOferta::class, 'id_consolidaciones_oferta', 'id');
     }
     
 }
