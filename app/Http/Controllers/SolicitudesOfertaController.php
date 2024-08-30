@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SolicitudesOfertaRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\ConsolidacionesOferta;
+use App\Models\Consolidacione;
 
 class SolicitudesOfertaController extends Controller
 {
@@ -37,10 +39,37 @@ class SolicitudesOfertaController extends Controller
      */
     public function store(SolicitudesOfertaRequest $request): RedirectResponse
     {
-        SolicitudesOferta::create($request->validated());
-
+        $solicitudOferta = SolicitudesOferta::create($request->validated());
+    
+        // Guardar los elementos asociados a la solicitud de oferta
+        $elementos = $request->input('elementos', []);
+    
+        foreach ($elementos as $elemento) {
+            ConsolidacionesOferta::create([
+                'id_solicitudes_compras' => $elemento['id_solicitudes_compras'],
+                'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                'id_consolidaciones' => $elemento['id_consolidaciones'],
+                'estado' => $elemento['estado'],
+                'cantidad' => $elemento['cantidad'],
+            ]);
+        }
+    
         return Redirect::route('solicitudes-ofertas.index')
-            ->with('success', 'SolicitudesOferta created successfully.');
+            ->with('success', 'Solicitud de oferta creada exitosamente.');
+    }    
+
+    public function getConsolidacionesDetalles(Request $request)
+    {
+        $consolidacionesIds = $request->input('consolidaciones', []);
+        $consolidaciones = Consolidacione::with([
+            'solicitudesCompra',
+            'solicitudesElemento.nivelesTres'
+        ])
+            ->whereIn('id', $consolidacionesIds)
+            ->where('estado', '1')
+            ->get();
+    
+        return response()->json($consolidaciones);
     }
 
     /**

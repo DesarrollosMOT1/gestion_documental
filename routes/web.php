@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
 
     Route::post('/get-elementos-multiple', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
+    route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
     Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);

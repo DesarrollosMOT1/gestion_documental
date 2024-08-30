@@ -17,7 +17,8 @@ use App\Http\Requests\AgrupacionesConsolidacioneRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\NivelesUno;
-use Spatie\Permission\Models\Permission;
+use App\Models\SolicitudesOferta;
+use App\Models\Tercero;
 
 class AgrupacionesConsolidacioneController extends Controller
 {
@@ -219,6 +220,8 @@ class AgrupacionesConsolidacioneController extends Controller
         $users = User::all();
         $centrosCostos = CentrosCosto::all();
         $fechaActual = Carbon::now()->toDateString();
+        $solicitudesOferta = new SolicitudesOferta();
+        $terceros = Tercero::all();
 
         // Mapeo de permisos a los nombres de los niveles uno
         $permissions = [
@@ -251,7 +254,7 @@ class AgrupacionesConsolidacioneController extends Controller
 
         $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
     
-        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno'));
+        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros'));
     }
 
     private function generatePrefix(): string

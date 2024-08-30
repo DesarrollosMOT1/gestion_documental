@@ -84,6 +84,9 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>
+                                        <input type="checkbox" id="select_all" />
+                                    </th>
                                     <th>ID Consolidación</th>
                                     <th>Solicitud de Compra</th>
                                     <th>Elemento Consolidado</th>
@@ -95,6 +98,9 @@
                             <tbody>
                                 @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" class="select_item" value="{{ $consolidacion->id }}" />
+                                        </td>
                                         <td>{{ $consolidacion->id }}</td>
                                         <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                         <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
@@ -119,6 +125,34 @@
                 @else
                     <p class="text-muted">No hay consolidaciones asociadas a esta agrupación.</p>
                 @endif
+                <div class="float-right">  
+                    <button type="button" id="btnGenerarSolicitudOferta" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
+                        {{ __('Generar Solicitud Oferta') }}
+                    </button>        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para solicitudes-oferta -->
+<div class="modal fade" id="solicitudesOfertaModal" tabindex="-1" aria-labelledby="solicitudesOfertaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="solicitudesOfertaModalLabel">{{ __('Generar Solicitud Oferta') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" inert aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <form id="solicitudesOfertaForm" method="POST" action="{{ route('solicitudes-ofertas.store') }}">
+                        @csrf
+                        <div class="row padding-1 p-1">
+                            <div class="col-md-12">
+                                @include('solicitudes-oferta.form', ['solicitudes-ofertas' => new \App\Models\SolicitudesOferta])
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -198,4 +232,5 @@
     <script src="{{ asset('js/consolidaciones/actualizarEstado.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
+    <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesCompras.js') }}"></script> 
 @endpush
