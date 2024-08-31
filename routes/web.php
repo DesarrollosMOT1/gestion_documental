@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
     route::post('centros-costos/import', [App\Http\Controllers\CentrosCostoController::class, 'import'])->name('centros-costos.import');
     route::post('clasificaciones-centros/import', [App\Http\Controllers\ClasificacionesCentroController::class, 'import'])->name('clasificaciones-centros.import');
+    Route::post('terceros/import', [App\Http\Controllers\TerceroController::class, 'import'])->name('terceros.import');
 
     #rutas principales
     Route::resource('roles',App\Http\Controllers\RoleController::class);

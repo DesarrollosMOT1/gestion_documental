@@ -20,11 +20,16 @@
                                 {{ __('Terceros') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('terceros.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                            <div class="float-right d-flex align-items-center">
+                                <form action="{{ route('terceros.import') }}" method="POST" enctype="multipart/form-data" class="d-flex mr-2">
+                                    @csrf
+                                    <input type="file" class="form-control mr-2" name="file" aria-label="Upload" required>
+                                    <button class="btn btn-secondary" type="submit">Importar</button>
+                                </form>
+                                <a href="{{ route('terceros.create') }}" class="btn btn-primary btn-sm" data-placement="left">
+                                    {{ __('Crear Nuevo') }}
                                 </a>
-                              </div>
+                            </div>                            
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -33,7 +38,7 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>

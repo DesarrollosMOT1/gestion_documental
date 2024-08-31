@@ -76,8 +76,8 @@ $(document).ready(function() {
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${consolidacion.id_solicitudes_compras}">
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${consolidacion.id_solicitud_elemento}">
                         <label class="form-label">Elemento: ${elementoNombre}</label>
-                        <label class="form-label" readonly>Cantidad</label>
-                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" required>
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>

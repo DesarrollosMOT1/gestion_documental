@@ -20,7 +20,8 @@
     </div>
     <div class="form-group mb-2 mb20">
         <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
-        <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror">
+        <select name="id_terceros" id="id_terceros" class="form-control select2 @error('id_terceros') is-invalid @enderror">
+            <option value="">{{ __('Seleccione una opción') }}</option>
             @foreach($terceros as $tercero)
                 <option value="{{ $tercero->nit }}" {{ old('id_terceros') == $tercero->nit ? 'selected' : '' }}>
                     {{ $tercero->nombre }}
@@ -29,9 +30,9 @@
         </select>
         {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
     </div>
-
+    <h4 class="mb-3">Elementos a Solicitar</h4>
     <!-- Contenedor para los elementos dinámicos -->
-    <div id="formularioSolicitudOfertaContainer"></div>
+    <div id="formularioSolicitudOfertaContainer" class="row"></div>
 
     <!-- Botón para generar la solicitud de oferta -->
     <button id="btnEnviar" type="submit" class="btn btn-primary">

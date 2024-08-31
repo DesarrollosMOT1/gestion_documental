@@ -232,5 +232,5 @@
     <script src="{{ asset('js/consolidaciones/actualizarEstado.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
-    <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesCompras.js') }}"></script> 
+    <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesOferta.js') }}"></script> 
 @endpush

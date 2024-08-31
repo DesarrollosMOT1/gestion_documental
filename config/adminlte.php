@@ -353,6 +353,11 @@ return [
                     'icon' => 'fas fa-archive mr-2',
                 ],
                 [
+                    'text' => 'Solicitudes de Ofertas',
+                    'url' => 'solicitudes-ofertas',
+                    'icon' => 'fas fa-envelope-open-text',
+                ],
+                [
                     'text' => 'Cotizaciones',
                     'url' => 'cotizaciones',
                     'icon' => 'fas fa-file-signature',

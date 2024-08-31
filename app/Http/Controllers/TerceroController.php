@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TerceroRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Imports\TercerosImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TerceroController extends Controller
 {
@@ -80,5 +82,17 @@ class TerceroController extends Controller
 
         return Redirect::route('terceros.index')
             ->with('success', 'Tercero eliminado exitosamente');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+
+        Excel::import(new TercerosImport, $request->file('file'));
+
+        return redirect()->route('terceros.index')
+            ->with('success', 'Terceros importados exitosamente.');
     }
 }
