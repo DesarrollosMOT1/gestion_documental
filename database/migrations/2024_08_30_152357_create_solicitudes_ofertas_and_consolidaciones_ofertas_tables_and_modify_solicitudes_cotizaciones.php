@@ -31,11 +31,13 @@ return new class extends Migration
             $table->unsignedBigInteger('id_solicitudes_compras');
             $table->unsignedBigInteger('id_solicitud_elemento');
             $table->unsignedBigInteger('id_consolidaciones');
+            $table->unsignedBigInteger('id_solicitudes_ofertas');
             $table->timestamps();
 
             $table->foreign('id_solicitudes_compras')->references('id')->on('solicitudes_compras');
             $table->foreign('id_solicitud_elemento')->references('id')->on('solicitudes_elementos');
             $table->foreign('id_consolidaciones')->references('id')->on('consolidaciones');
+            $table->foreign('id_solicitudes_ofertas')->references('id')->on('solicitudes_ofertas');
         });
 
         // Modificar tabla solicitudes_cotizaciones

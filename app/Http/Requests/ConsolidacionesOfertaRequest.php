@@ -27,6 +27,7 @@ class ConsolidacionesOfertaRequest extends FormRequest
 			'id_solicitudes_compras' => 'required',
 			'id_solicitud_elemento' => 'required',
 			'id_consolidaciones' => 'required',
+			'id_solicitudes_ofertas' => 'required',
         ];
     }
 }

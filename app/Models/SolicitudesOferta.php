@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Tercero $tercero
  * @property User $user
+ * @property ConsolidacionesOferta[] $consolidacionesOfertas
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -46,6 +47,14 @@ class SolicitudesOferta extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'id_users', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consolidacionesOfertas()
+    {
+        return $this->hasMany(\App\Models\ConsolidacionesOferta::class, 'id_solicitudes_ofertas', 'id');
     }
     
 }

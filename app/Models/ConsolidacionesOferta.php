@@ -13,11 +13,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property $id_solicitudes_compras
  * @property $id_solicitud_elemento
  * @property $id_consolidaciones
+ * @property $id_solicitudes_ofertas
  * @property $created_at
  * @property $updated_at
  *
  * @property Consolidacione $consolidacione
  * @property SolicitudesCompra $solicitudesCompra
+ * @property SolicitudesOferta $solicitudesOferta
  * @property SolicitudesElemento $solicitudesElemento
  * @property SolicitudesCotizacione[] $solicitudesCotizaciones
  * @package App
@@ -33,7 +35,7 @@ class ConsolidacionesOferta extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['cantidad', 'estado', 'id_solicitudes_compras', 'id_solicitud_elemento', 'id_consolidaciones'];
+    protected $fillable = ['cantidad', 'estado', 'id_solicitudes_compras', 'id_solicitud_elemento', 'id_consolidaciones', 'id_solicitudes_ofertas'];
 
 
     /**
@@ -50,6 +52,14 @@ class ConsolidacionesOferta extends Model
     public function solicitudesCompra()
     {
         return $this->belongsTo(\App\Models\SolicitudesCompra::class, 'id_solicitudes_compras', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function solicitudesOferta()
+    {
+        return $this->belongsTo(\App\Models\SolicitudesOferta::class, 'id_solicitudes_ofertas', 'id');
     }
     
     /**

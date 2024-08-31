@@ -49,6 +49,7 @@ class SolicitudesOfertaController extends Controller
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones' => $elemento['id_consolidaciones'],
+                'id_solicitudes_ofertas' => $solicitudOferta->id,
                 'estado' => $elemento['estado'],
                 'cantidad' => $elemento['cantidad'],
             ]);
@@ -77,8 +78,13 @@ class SolicitudesOfertaController extends Controller
      */
     public function show($id): View
     {
-        $solicitudesOferta = SolicitudesOferta::find($id);
-
+        $solicitudesOferta = SolicitudesOferta::with([
+            'user', 
+            'tercero', 
+            'consolidacionesOfertas.solicitudesCompra', 
+            'consolidacionesOfertas.solicitudesElemento.nivelesTres'
+        ])->findOrFail($id);
+    
         return view('solicitudes-oferta.show', compact('solicitudesOferta'));
     }
 
