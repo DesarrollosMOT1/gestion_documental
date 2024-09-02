@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\ConsolidacionesOferta;
 use App\Models\Consolidacione;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudesOfertaController extends Controller
 {
@@ -86,6 +87,21 @@ class SolicitudesOfertaController extends Controller
         ])->findOrFail($id);
     
         return view('solicitudes-oferta.show', compact('solicitudesOferta'));
+    }
+
+    public function downloadPdf($id)
+    {
+        $solicitudesOferta = SolicitudesOferta::with([
+            'user', 
+            'tercero', 
+            'consolidacionesOfertas.solicitudesCompra', 
+            'consolidacionesOfertas.solicitudesElemento.nivelesTres'
+        ])->findOrFail($id);
+    
+        $i = 0;
+    
+        $pdf = Pdf::loadView('solicitudes-oferta.pdf', compact('solicitudesOferta', 'i'));
+        return $pdf->stream('solicitud-oferta-' . $solicitudesOferta->id . '.pdf');
     }
 
     public function actualizarEstado(Request $request, $id)

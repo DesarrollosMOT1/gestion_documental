@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-elementos-multiple', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
     route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
+    #pdf
+    route::get('solicitudes-ofertas/{id}/pdf', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
+
     Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
     Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);

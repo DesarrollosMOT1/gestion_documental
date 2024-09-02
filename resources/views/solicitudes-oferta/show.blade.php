@@ -8,6 +8,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
+            <a href="{{ route('solicitudes-ofertas.pdf', $solicitudesOferta->id) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF <i class="fa fa-file-pdf"></i></a>
         </div>
         <div class="card-body">
             <div class="row">
@@ -93,7 +94,7 @@
                                                 <th>ID</th>
                                                 <th>Solicitud de Compra</th>
                                                 <th>Elemento</th>
-                                                <th>Cantidad</th>
+                                                <th>Cantidad Unidad</th>
                                                 <th>Estado</th>
                                             </tr>
                                         </thead>
