@@ -21,7 +21,59 @@
                             <p><strong>ID:</strong> {{ $solicitudesOferta->id }}</p>
                             <p><strong>Fecha Solicitud:</strong> {{ $solicitudesOferta->fecha_solicitud_oferta }}</p>
                             <p><strong>Usuario:</strong> {{ $solicitudesOferta->user->name }}</p>
-                            <p><strong>Tercero:</strong> {{ $solicitudesOferta->tercero->nombre ?? 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Tercero -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-user mr-2"></i>Información del Tercero</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>NIT:</strong> {{ $solicitudesOferta->tercero->nit }}</p>
+                            <p><strong>Tipo de factura:</strong> {{ $solicitudesOferta->tercero->tipo_factura ?? 'N/A' }}</p>
+                            <p><strong>Nombre:</strong> {{ $solicitudesOferta->tercero->nombre ?? 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitudes de Compra -->
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title m-0"><i class="fas fa-list-alt mr-2"></i>Solicitudes de Compra</h5>
+                        </div>
+                        <div class="card-body">
+                            @if($solicitudesOferta->consolidacionesOfertas->unique('solicitudesCompra.id')->isNotEmpty())
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Solicitud</th>
+                                                <th>Fecha Solicitud</th>
+                                                <th>Solicitante</th>
+                                                <th>Prefijo</th>
+                                                <th>Descripción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($solicitudesOferta->consolidacionesOfertas->unique('solicitudesCompra.id') as $consolidacion)
+                                                <tr>
+                                                    <td>{{ $consolidacion->solicitudesCompra->id ?? 'N/A' }}</td>
+                                                    <td>{{ $consolidacion->solicitudesCompra->fecha_solicitud ?? 'N/A' }}</td>
+                                                    <td>{{ $consolidacion->solicitudesCompra->user->name ?? 'N/A' }}</td>
+                                                    <td>{{ $consolidacion->solicitudesCompra->prefijo ?? 'N/A' }}</td>
+                                                    <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <p class="text-muted">No hay solicitudes de compra asociadas a esta solicitud de oferta.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -52,7 +104,11 @@
                                                     <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->cantidad }}</td>
-                                                    <td>{{ $consolidacion->estado ? 'Activo' : 'Inactivo' }}</td>
+                                                    <td>
+                                                        <input type="checkbox" class="estado-checkbox"
+                                                            data-id="{{ $consolidacion->id }}"
+                                                            {{ $consolidacion->estado == 1 ? 'checked' : '' }}>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -69,3 +125,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/solicitudes-oferta/actualizarEstado.js') }}"></script>
+@endpush

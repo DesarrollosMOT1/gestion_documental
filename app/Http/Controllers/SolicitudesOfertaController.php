@@ -88,6 +88,15 @@ class SolicitudesOfertaController extends Controller
         return view('solicitudes-oferta.show', compact('solicitudesOferta'));
     }
 
+    public function actualizarEstado(Request $request, $id)
+    {
+        $consolidacionOferta = ConsolidacionesOferta::findOrFail($id);
+        $consolidacionOferta->estado = $request->input('estado');
+        $consolidacionOferta->save();
+
+        return response()->json(['success' => true]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
