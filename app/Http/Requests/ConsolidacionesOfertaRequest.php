@@ -23,7 +23,6 @@ class ConsolidacionesOfertaRequest extends FormRequest
     {
         return [
 			'cantidad' => 'required',
-			'estado' => 'required|string',
 			'id_solicitudes_compras' => 'required',
 			'id_solicitud_elemento' => 'required',
 			'id_consolidaciones' => 'required',

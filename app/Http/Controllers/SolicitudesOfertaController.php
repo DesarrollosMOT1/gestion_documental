@@ -51,7 +51,6 @@ class SolicitudesOfertaController extends Controller
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones' => $elemento['id_consolidaciones'],
                 'id_solicitudes_ofertas' => $solicitudOferta->id,
-                'estado' => $elemento['estado'],
                 'cantidad' => $elemento['cantidad'],
             ]);
         }
@@ -68,7 +67,6 @@ class SolicitudesOfertaController extends Controller
             'solicitudesElemento.nivelesTres'
         ])
             ->whereIn('id', $consolidacionesIds)
-            ->where('estado', '1')
             ->get();
     
         return response()->json($consolidaciones);
@@ -104,14 +102,6 @@ class SolicitudesOfertaController extends Controller
         return $pdf->stream('solicitud-oferta-' . $solicitudesOferta->id . '.pdf');
     }
 
-    public function actualizarEstado(Request $request, $id)
-    {
-        $consolidacionOferta = ConsolidacionesOferta::findOrFail($id);
-        $consolidacionOferta->estado = $request->input('estado');
-        $consolidacionOferta->save();
-
-        return response()->json(['success' => true]);
-    }
 
     /**
      * Show the form for editing the specified resource.

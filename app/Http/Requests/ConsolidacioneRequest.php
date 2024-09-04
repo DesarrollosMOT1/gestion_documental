@@ -25,7 +25,6 @@ class ConsolidacioneRequest extends FormRequest
             'elementos.*.id_solicitudes_compras' => 'required|integer',
             'elementos.*.agrupacion_id' => 'required|integer',
             'elementos.*.id_solicitud_elemento' => 'required|integer',
-            'elementos.*.estado' => 'required|integer',
             'elementos.*.cantidad' => 'required|integer|min:1',
         ];
     }

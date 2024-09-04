@@ -40,7 +40,6 @@
                                             
 										<td >{{ $solicitudesOferta->fecha_solicitud_oferta }}</td>
 										<td >{{ $solicitudesOferta->user->name }}</td>
-										<td >{{ $solicitudesOferta->tercero->nombre }}</td>
 
                                             <td>
                                                 <form action="{{ route('solicitudes-ofertas.destroy', $solicitudesOferta->id) }}" class="delete-form" method="POST">

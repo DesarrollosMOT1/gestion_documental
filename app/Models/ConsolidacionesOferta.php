@@ -35,7 +35,7 @@ class ConsolidacionesOferta extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['cantidad', 'estado', 'id_solicitudes_compras', 'id_solicitud_elemento', 'id_consolidaciones', 'id_solicitudes_ofertas'];
+    protected $fillable = ['cantidad', 'id_solicitudes_compras', 'id_solicitud_elemento', 'id_consolidaciones', 'id_solicitudes_ofertas'];
 
 
     /**

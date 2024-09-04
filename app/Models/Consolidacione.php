@@ -34,7 +34,7 @@ class Consolidacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['agrupacion_id','id_solicitudes_compras', 'id_solicitud_elemento', 'estado', 'cantidad'];
+    protected $fillable = ['agrupacion_id','id_solicitudes_compras', 'id_solicitud_elemento', 'cantidad'];
 
 
     /**

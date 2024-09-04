@@ -69,7 +69,6 @@ class AgrupacionesConsolidacioneController extends Controller
                     'agrupacion_id' => $agrupacion->id,
                     'id_solicitudes_compras' => $elemento['id_solicitudes_compra'],
                     'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
-                    'estado' => 0,
                     'cantidad' => $elemento['cantidad'],
                 ]);
     
@@ -92,7 +91,6 @@ class AgrupacionesConsolidacioneController extends Controller
                     'agrupacion_id' => $agrupacion->id,
                     'id_solicitudes_compras' => $elemento['id_solicitudes_compra'],
                     'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
-                    'estado' => 0,
                     'cantidad' => $elemento['cantidad'],
                 ]);
             }
@@ -199,7 +197,6 @@ class AgrupacionesConsolidacioneController extends Controller
                     'agrupacion_id' => $agrupacion->id,
                     'id_solicitudes_compras' => $solicitudesCompra->id,
                     'id_solicitud_elemento' => $solicitudElemento->id,
-                    'estado' => 0,
                     'cantidad' => $element['cantidad'],
                 ]);
             }
@@ -262,14 +259,6 @@ class AgrupacionesConsolidacioneController extends Controller
         $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
         $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
         return $month . $year;
-    }
-    public function actualizarEstado(Request $request, $id)
-    {
-        $consolidacion = Consolidacione::findOrFail($id);
-        $consolidacion->estado = $request->input('estado');
-        $consolidacion->save();
-
-        return response()->json(['success' => true]);
     }
 
     /**

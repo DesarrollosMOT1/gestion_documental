@@ -52,7 +52,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Rutas para agrupaciones y consolidaciones
     Route::post('agrupaciones-consolidacione/{agrupacionesConsolidacioneId}/solicitudes-compra', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'storeSolicitudesCompra'])->name('agrupaciones-consolidacione.storeSolicitudesCompra');
-    Route::post('/consolidaciones/actualizar-estado/{id}', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'actualizarEstado']);
     Route::post('/get-elementos-multiple', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'getElementosMultiple'])->name('get-elementos-multiple');
     Route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
@@ -64,7 +63,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/niveles-tres/{idNivelDos}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesTres']);
     Route::post('/solicitudes-compras/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesCompraController::class, 'actualizarEstado'])->name('solicitudes-compras.actualizar-estado');
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
-    Route::post('/solicitudes-ofertas/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesOfertaController::class, 'actualizarEstado'])->name('solicitudes-ofertas.actualizar-estado');
 
     #cadena de suministros
     Route::resource('productos', ProductoController::class);

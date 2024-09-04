@@ -91,7 +91,6 @@
                                     <th>Solicitud de Compra</th>
                                     <th>Elemento Consolidado</th>
                                     <th>Cantidad Unidad</th>
-                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -105,11 +104,6 @@
                                         <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                         <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                         <td>{{ $consolidacion->cantidad }}</td>
-                                        <td>
-                                            <input type="checkbox" class="estado-checkbox"
-                                                data-id="{{ $consolidacion->id }}"
-                                                {{ $consolidacion->estado == 1 ? 'checked' : '' }}>
-                                        </td>
                                         <td>
                                             @if($consolidacion->elementosConsolidados->count() > 0)
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidacion->id }}">
@@ -229,7 +223,6 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/consolidaciones/actualizarEstado.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
     <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesOferta.js') }}"></script> 

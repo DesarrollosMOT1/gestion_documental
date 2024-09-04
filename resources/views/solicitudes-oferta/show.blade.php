@@ -95,7 +95,6 @@
                                                 <th>Solicitud de Compra</th>
                                                 <th>Elemento</th>
                                                 <th>Cantidad Unidad</th>
-                                                <th>Estado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,11 +104,6 @@
                                                     <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->cantidad }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="estado-checkbox"
-                                                            data-id="{{ $consolidacion->id }}"
-                                                            {{ $consolidacion->estado == 1 ? 'checked' : '' }}>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -126,7 +120,3 @@
     </div>
 </div>
 @endsection
-
-@push('js')
-    <script src="{{ asset('js/solicitudes-oferta/actualizarEstado.js') }}"></script>
-@endpush
