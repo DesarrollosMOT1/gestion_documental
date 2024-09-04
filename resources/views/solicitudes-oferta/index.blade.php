@@ -40,10 +40,15 @@
                                             
 										<td >{{ $solicitudesOferta->fecha_solicitud_oferta }}</td>
 										<td >{{ $solicitudesOferta->user->name }}</td>
-
+                                        <td>
+                                            @if($solicitudesOferta->terceros->isNotEmpty())
+                                                {{ $solicitudesOferta->terceros->pluck('nombre')->implode(', ') }}
+                                            @else
+                                                No hay terceros asociados
+                                            @endif
+                                        </td>
                                             <td>
                                                 <form action="{{ route('solicitudes-ofertas.destroy', $solicitudesOferta->id) }}" class="delete-form" method="POST">
-                                                    <a href="{{ route('solicitudes-ofertas.pdf', $solicitudesOferta->id) }}" target="_blank" class="btn btn-secondary btn-sm"><i class="fa fa-file-pdf"></i></a>
                                                     <a class="btn btn-sm btn-primary " href="{{ route('solicitudes-ofertas.show', $solicitudesOferta->id) }}"><i class="fa fa-fw fa-eye"></i></a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('solicitudes-ofertas.edit', $solicitudesOferta->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf

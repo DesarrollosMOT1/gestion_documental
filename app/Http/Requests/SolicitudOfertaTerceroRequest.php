@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SolicitudesOfertaRequest extends FormRequest
+class SolicitudOfertaTerceroRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,8 @@ class SolicitudesOfertaRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'fecha_solicitud_oferta' => 'required',
-			'id_users' => 'required',
-            'terceros' => ['required', 'array'],  
-            'terceros.*' => ['exists:terceros,nit'], 
-            'elementos' => ['required', 'array'],
+			'solicitudes_ofertas_id' => 'required',
+			'tercero_id' => 'required|string',
         ];
     }
 }

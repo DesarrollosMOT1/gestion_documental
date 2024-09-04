@@ -30,17 +30,16 @@ class SolicitudesOferta extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_solicitud_oferta', 'id_users', 'id_terceros'];
+    protected $fillable = ['fecha_solicitud_oferta', 'id_users'];
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function tercero()
+    public function terceros()
     {
-        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'nit');
+        return $this->belongsToMany(\App\Models\Tercero::class, 'solicitud_oferta_tercero', 'solicitudes_ofertas_id', 'tercero_id');
     }
-    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

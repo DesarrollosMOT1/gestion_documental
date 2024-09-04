@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
     // Rutas para generación de PDF
-    Route::get('solicitudes-ofertas/{id}/pdf', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
+    Route::get('solicitudes-ofertas/{id}/pdf/{nit}', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
 
     // Rutas API
     Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);

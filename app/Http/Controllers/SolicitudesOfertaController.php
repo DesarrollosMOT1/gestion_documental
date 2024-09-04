@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\ConsolidacionesOferta;
 use App\Models\Consolidacione;
+use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudesOfertaController extends Controller
@@ -19,8 +20,8 @@ class SolicitudesOfertaController extends Controller
      */
     public function index(Request $request): View
     {
-        $solicitudesOfertas = SolicitudesOferta::paginate();
-
+        $solicitudesOfertas = SolicitudesOferta::with('terceros')->paginate();
+    
         return view('solicitudes-oferta.index', compact('solicitudesOfertas'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesOfertas->perPage());
     }
@@ -44,6 +45,16 @@ class SolicitudesOfertaController extends Controller
     
         // Guardar los elementos asociados a la solicitud de oferta
         $elementos = $request->input('elementos', []);
+
+            // Guardar los terceros asociados a la solicitud de oferta
+            $terceros = $request->input('terceros', []);
+            foreach ($terceros as $terceroId) {
+                SolicitudOfertaTercero::create([
+                    'solicitudes_ofertas_id' => $solicitudOferta->id,
+                    'tercero_id' => $terceroId,
+                ]);
+            }
+
     
         foreach ($elementos as $elemento) {
             ConsolidacionesOferta::create([
@@ -79,7 +90,7 @@ class SolicitudesOfertaController extends Controller
     {
         $solicitudesOferta = SolicitudesOferta::with([
             'user', 
-            'tercero', 
+            'terceros', // Cargar varios terceros relacionados
             'consolidacionesOfertas.solicitudesCompra', 
             'consolidacionesOfertas.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
@@ -87,19 +98,25 @@ class SolicitudesOfertaController extends Controller
         return view('solicitudes-oferta.show', compact('solicitudesOferta'));
     }
 
-    public function downloadPdf($id)
+    public function downloadPdf($id, $nit)
     {
         $solicitudesOferta = SolicitudesOferta::with([
             'user', 
-            'tercero', 
+            'terceros',
             'consolidacionesOfertas.solicitudesCompra', 
             'consolidacionesOfertas.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
+        $tercero = $solicitudesOferta->terceros->where('nit', $nit)->first();
+    
+        if (!$tercero) {
+            abort(404, 'Tercero no encontrado.');
+        }
+
         $i = 0;
     
-        $pdf = Pdf::loadView('solicitudes-oferta.pdf', compact('solicitudesOferta', 'i'));
-        return $pdf->stream('solicitud-oferta-' . $solicitudesOferta->id . '.pdf');
+        $pdf = Pdf::loadView('solicitudes-oferta.pdf', compact('solicitudesOferta', 'tercero', 'i'));
+        return $pdf->stream('solicitud-oferta-' . $solicitudesOferta->id . '-tercero-' . $tercero->nit . '.pdf');
     }
 
 

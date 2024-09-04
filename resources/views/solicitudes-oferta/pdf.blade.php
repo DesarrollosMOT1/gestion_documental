@@ -77,8 +77,8 @@
                 <strong>Usuario:</strong> {{ $solicitudesOferta->user->name }}
             </td>
             <td>
-                <strong>NIT:</strong> {{ $solicitudesOferta->tercero->nit }}<br>
-                <strong>Nombre:</strong> {{ $solicitudesOferta->tercero->nombre ?? 'N/A' }}<br>
+                <strong>NIT:</strong> {{ $tercero->nit }}<br>
+                <strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}<br>
             </td>
         </tr>
     </table>

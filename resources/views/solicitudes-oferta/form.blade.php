@@ -19,16 +19,15 @@
         {!! $errors->first('id_users', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
     </div>
     <div class="form-group mb-2 mb20">
-        <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
-        <select name="id_terceros" id="id_terceros" class="form-control select2 @error('id_terceros') is-invalid @enderror">
-            <option value="">{{ __('Seleccione una opción') }}</option>
+        <label for="terceros" class="form-label">{{ __('Terceros') }}</label>
+        <select name="terceros[]" id="terceros" size="5" class="form-control select2 @error('terceros') is-invalid @enderror" multiple>
             @foreach($terceros as $tercero)
-                <option value="{{ $tercero->nit }}" {{ old('id_terceros') == $tercero->nit ? 'selected' : '' }}>
+                <option value="{{ $tercero->nit }}" {{ collect(old('terceros'))->contains($tercero->nit) ? 'selected' : '' }}>
                     {{ $tercero->nombre }}
                 </option>
             @endforeach
         </select>
-        {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        {!! $errors->first('terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
     </div>
     <h4 class="mb-3">Elementos a Solicitar</h4>
     <!-- Contenedor para los elementos dinámicos -->

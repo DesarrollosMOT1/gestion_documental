@@ -8,7 +8,6 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
-            <a href="{{ route('solicitudes-ofertas.pdf', $solicitudesOferta->id) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF <i class="fa fa-file-pdf"></i></a>
         </div>
         <div class="card-body">
             <div class="row">
@@ -26,16 +25,23 @@
                     </div>
                 </div>
 
-                <!-- Información del Tercero -->
                 <div class="col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-header">
-                            <h5 class="card-title m-0"><i class="fas fa-user mr-2"></i>Información del Tercero</h5>
+                            <h5 class="card-title m-0"><i class="fas fa-users mr-2"></i>Información de los Terceros Asociados</h5>
                         </div>
                         <div class="card-body">
-                            <p><strong>NIT:</strong> {{ $solicitudesOferta->tercero->nit }}</p>
-                            <p><strong>Tipo de factura:</strong> {{ $solicitudesOferta->tercero->tipo_factura ?? 'N/A' }}</p>
-                            <p><strong>Nombre:</strong> {{ $solicitudesOferta->tercero->nombre ?? 'N/A' }}</p>
+                            @if($solicitudesOferta->terceros->isNotEmpty())
+                                @foreach($solicitudesOferta->terceros as $tercero)
+                                    <p><strong>NIT:</strong> {{ $tercero->nit }}</p>
+                                    <p><strong>Tipo de factura:</strong> {{ $tercero->tipo_factura ?? 'N/A' }}</p>
+                                    <p><strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}</p>
+                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'nit' => $tercero->nit]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
+                                    <hr> <!-- Separador entre terceros -->
+                                @endforeach
+                            @else
+                                <p class="text-muted">No hay terceros asociados a esta solicitud de oferta.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
