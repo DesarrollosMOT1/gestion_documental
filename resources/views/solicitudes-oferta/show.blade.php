@@ -8,6 +8,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
+            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#cotizacionesModal">Cotizaciones</button>
         </div>
         <div class="card-body">
             <div class="row">
@@ -121,8 +122,51 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal para crear cotizaciones -->
+                <div class="modal fade" id="cotizacionesModal" tabindex="-1" role="dialog" aria-labelledby="cotizacionesModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cotizacionesModalLabel">Crear Cotizaciones</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="solicitud_oferta_id" value="{{ $solicitudesOferta->id }}">
+                                <ul class="nav nav-tabs" id="cotizacionesTabs" role="tablist">
+                                    @foreach($solicitudesOferta->terceros as $index => $tercero)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ $index === 0 ? 'active' : '' }}" id="tab-{{ $index }}" data-toggle="tab" href="#tab-content-{{ $index }}" role="tab" aria-controls="tab-content-{{ $index }}" aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                                Cotización {{ $index + 1 }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                <div class="tab-content" id="cotizacionesTabsContent">
+                                    @foreach($solicitudesOferta->terceros as $index => $tercero)
+                                        <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}" id="tab-content-{{ $index }}" role="tabpanel" aria-labelledby="tab-{{ $index }}">
+                                            <h5 class="mt-2 mb-3">Cotización para {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})</h6>
+                                            <br>
+                                            <form action="{{ route('cotizaciones.store') }}" method="POST">
+                                                @csrf
+                                                @include('cotizacione.form')
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/cotizaciones/generarCotizaciones.js') }}"></script>
+@endpush

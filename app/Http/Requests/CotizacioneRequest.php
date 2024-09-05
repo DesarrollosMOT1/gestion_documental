@@ -28,6 +28,12 @@ class CotizacioneRequest extends FormRequest
 			'condiciones_pago' => 'required|string',
             'descuento' => 'nullable|numeric',
 			'id_terceros' => 'required|string',
+            'fecha_inicio_vigencia' => 'required',
+            'fecha_fin_vigencia' => 'required',
+            'elementos' => 'required|array',
+            'elementos.*.cantidad' => 'required|numeric',
+            'elementos.*.id_impuestos' => 'required|numeric',
+            'elementos.*.precio' => 'required|numeric',
         ];
     }
 }

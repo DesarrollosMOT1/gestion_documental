@@ -11,8 +11,9 @@ use Illuminate\View\View;
 use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesCompra;
 use App\Models\Impuesto;
-use App\Models\SolicitudesElemento;
+use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
+use Illuminate\Http\JsonResponse;
 
 class CotizacioneController extends Controller
 {
@@ -30,7 +31,6 @@ class CotizacioneController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    
     public function create(): View
     {
         $cotizacione = new Cotizacione();
@@ -43,7 +43,7 @@ class CotizacioneController extends Controller
     public function store(CotizacioneRequest $request): RedirectResponse
     {
         $cotizacion = Cotizacione::create($request->validated());
-
+    
         foreach ($request->elementos as $elemento) {
             SolicitudesCotizacione::create([
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
@@ -51,13 +51,31 @@ class CotizacioneController extends Controller
                 'cantidad' => $elemento['cantidad'],
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
+                'id_consolidaciones_oferta' => $elemento['id_consolidaciones_oferta'],
                 'estado' => '0',
                 'precio' => $elemento['precio'],
             ]);
         }
-
+    
         return Redirect::route('cotizaciones.index')
             ->with('success', 'Cotización creada exitosamente.');
+    }
+
+    public function obtenerElementosConsolidaciones($solicitudesOfertaId)
+    {
+        $consolidaciones = ConsolidacionesOferta::with([
+            'solicitudesElemento.nivelesTres', 
+            'solicitudesCompra'
+        ])->where('id_solicitudes_ofertas', $solicitudesOfertaId)->get();
+    
+        return response()->json($consolidaciones);
+    }
+
+    public function getImpuestos(): JsonResponse
+    {
+        $impuestos = Impuesto::all();
+
+        return response()->json($impuestos);
     }
 
 

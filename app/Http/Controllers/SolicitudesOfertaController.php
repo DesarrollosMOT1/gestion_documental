@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\ConsolidacionesOferta;
 use App\Models\Consolidacione;
+use App\Models\Cotizacione;
 use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -95,7 +96,9 @@ class SolicitudesOfertaController extends Controller
             'consolidacionesOfertas.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
-        return view('solicitudes-oferta.show', compact('solicitudesOferta'));
+        $cotizacione = new Cotizacione();
+
+        return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione'));
     }
 
     public function downloadPdf($id, $nit)
