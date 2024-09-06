@@ -1,6 +1,21 @@
 <div class="row padding-1 p-1">
     <div class="col-md-6">
         <div class="form-group mb-2">
+            <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
+            <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" required>
+                <option value="" disabled selected>Seleccione un tercero</option>
+                @foreach($solicitudesOferta->terceros as $tercero)
+                    <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
+                        {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})
+                    </option>
+                @endforeach
+            </select>
+            {!! $errors->first('id_terceros', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="form-group mb-2">
             <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotización') }}</label>
             <div class="input-group">
                 <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $cotizacione?->fecha_cotizacion) }}" id="fecha_cotizacion">
@@ -12,7 +27,7 @@
     <div class="col-md-6">
         <div class="form-group mb-2">
             <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
-            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="Cotización para {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})" id="nombre" placeholder="Nombre de la cotización" readonly>
+            <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="" id="nombre" placeholder="Nombre de la cotización" readonly>
             {!! $errors->first('nombre', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
         </div>
     </div>
@@ -43,18 +58,6 @@
             <label for="descuento" class="form-label">{{ __('Descuento') }}</label>
             <input type="text" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento', $cotizacione?->descuento) }}" id="descuento" placeholder="Descuento">
             {!! $errors->first('descuento', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="form-group mb-2">
-            <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
-            <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror">
-                    <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
-                        {{ $tercero->nombre }}
-                    </option>
-            </select>
-            {!! $errors->first('id_terceros', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
         </div>
     </div>
 

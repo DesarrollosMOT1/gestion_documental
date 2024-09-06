@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const solicitudOfertaId = document.getElementById('solicitud_oferta_id').value;
     const elementosContainer = document.getElementById('elementos_container');
     const loadingSpinner = document.getElementById('loading-spinner');
+    const selectTerceros = document.getElementById('id_terceros');
+    const inputNombre = document.getElementById('nombre');
 
     // Función para mostrar u ocultar el spinner de carga
     const toggleLoadingSpinner = (show) => {
@@ -70,6 +72,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return isValid;
     };
 
+    // Función para actualizar el campo de nombre
+    const updateNombre = () => {
+        const selectedOption = selectTerceros.options[selectTerceros.selectedIndex];
+        const nombre = selectedOption ? selectedOption.text : '';
+        const nit = selectedOption ? selectedOption.value : '';
+        inputNombre.value = 'Cotización para ' + nombre + ' (NIT: ' + nit + ')';
+    };
+
     // Función principal para cargar datos y renderizar
     const loadData = async () => {
         toggleLoadingSpinner(true); // Mostrar spinner de carga
@@ -111,5 +121,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // Inicializar datos
     loadData();
+
+    // Agregar un event listener al select para detectar cambios
+    selectTerceros.addEventListener('change', updateNombre);
+
+    // Actualizar el nombre al cargar el modal si ya hay una selección
+    if (selectTerceros.value) {
+        updateNombre();
+    }
 });
