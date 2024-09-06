@@ -131,4 +131,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (selectTerceros.value) {
         updateNombre();
     }
+
+    // Agregar SweetAlert2 para confirmación antes de enviar
+    $('#btnEnviar').on('click', function(e) {
+        e.preventDefault(); // Evitar el envío inmediato del formulario
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Deseas crear esta consolidación?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, crear',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, enviar el formulario
+                $(this).closest('form').submit();
+            }
+        });
+    });
 });

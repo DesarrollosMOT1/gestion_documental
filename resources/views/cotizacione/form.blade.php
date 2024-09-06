@@ -92,7 +92,7 @@
     </div>
 
     <div class="col-md-12 mt-2">
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+        <button id="btnEnviar" type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
     </div>
 
     <!-- Spinner de carga -->
