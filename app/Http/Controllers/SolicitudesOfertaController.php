@@ -95,10 +95,11 @@ class SolicitudesOfertaController extends Controller
             'consolidacionesOfertas.solicitudesCompra', 
             'consolidacionesOfertas.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
-    
+        
         $cotizacione = new Cotizacione();
-
-        return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione'));
+        $tercerosSinCotizacion = $solicitudesOferta->getTercerosSinCotizacion();
+    
+        return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion'));
     }
 
     public function downloadPdf($id, $nit)

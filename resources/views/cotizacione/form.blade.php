@@ -1,14 +1,21 @@
 <div class="row padding-1 p-1">
+    @if($tercerosSinCotizacion->isEmpty())
+        <div class="alert alert-info" role="alert">
+            Ya se han creado todas las cotizaciones para los terceros relacionados.
+        </div>
+    @endif
     <div class="col-md-6">
         <div class="form-group mb-2">
             <label for="id_terceros" class="form-label">{{ __('Tercero') }}</label>
             <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" required>
                 <option value="" disabled selected>Seleccione un tercero</option>
-                @foreach($solicitudesOferta->terceros as $tercero)
+                @forelse($tercerosSinCotizacion as $tercero)
                     <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
                         {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})
                     </option>
-                @endforeach
+                @empty
+                    <option value="" disabled>No hay terceros disponibles</option>
+                @endforelse
             </select>
             {!! $errors->first('id_terceros', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
         </div>

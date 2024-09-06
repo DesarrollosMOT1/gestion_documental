@@ -55,5 +55,15 @@ class SolicitudesOferta extends Model
     {
         return $this->hasMany(\App\Models\ConsolidacionesOferta::class, 'id_solicitudes_ofertas', 'id');
     }
+
+    public function getTercerosSinCotizacion()
+    {
+        return $this->terceros()
+            ->leftJoin('cotizaciones', 'terceros.nit', '=', 'cotizaciones.id_terceros')
+            ->leftJoin('solicitudes_cotizaciones', 'cotizaciones.id', '=', 'solicitudes_cotizaciones.id_cotizaciones')
+            ->whereNull('solicitudes_cotizaciones.id')
+            ->select('terceros.*')
+            ->get();
+    }
     
 }
