@@ -42,9 +42,10 @@
     <div class="col-md-6">
         <div class="form-group mb-2">
             <label for="valor" class="form-label">{{ __('Valor') }}</label>
-            <input type="text" name="valor" class="form-control @error('valor') is-invalid @enderror" value="{{ old('valor', $cotizacione?->valor) }}" id="valor" placeholder="Valor de la cotización">
+            <input type="text" name="valor" class="form-control @error('valor') is-invalid @enderror" value="{{ old('valor', $cotizacione?->valor) }}" id="valor" placeholder="Valor de la cotización" readonly>
             {!! $errors->first('valor', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
         </div>
+        <small class="text-muted">El valor se actualizara cuando añadas el precio de un elemento!</small>
     </div>
 
     <div class="col-md-6">

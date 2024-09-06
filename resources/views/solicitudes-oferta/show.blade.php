@@ -8,7 +8,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
-            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#cotizacionesModal">Cotizaciones</button>
+            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#cotizacionesModal">Crear Cotizacion</button>
         </div>
         <div class="card-body">
             <div class="row">
@@ -153,4 +153,5 @@
 
 @push('js')
     <script src="{{ asset('js/cotizaciones/generarCotizaciones.js') }}"></script>
+    <script src="{{ asset('js/cotizaciones/actualizarValorCotizacion.js') }}"></script>
 @endpush

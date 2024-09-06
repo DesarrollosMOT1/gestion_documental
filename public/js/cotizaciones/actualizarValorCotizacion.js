@@ -4,7 +4,7 @@ $(document).ready(function() {
         var total = 0;
         $('input[name^="elementos"][name$="[precio]"]').each(function() {
             var precio = parseFloat($(this).val()) || 0;
-            var cantidad = parseFloat($(this).closest('.row').find('input[name$="[cantidad]"]').val()) || 0;
+            var cantidad = parseFloat($(this).closest('.card').find('input[name$="[cantidad]"]').val()) || 0;
             total += precio * cantidad;
         });
 
