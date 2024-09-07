@@ -75,7 +75,7 @@ class ConsolidacionesOferta extends Model
      */
     public function solicitudesCotizaciones()
     {
-        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id', 'id_consolidaciones_oferta');
+        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id_consolidaciones_oferta', 'id');
     }
     
 }

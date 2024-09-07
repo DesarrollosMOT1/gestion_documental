@@ -145,6 +145,24 @@
                     </div>
                 </div>
 
+                <!-- Sección de cotizaciones relacionadas -->
+                <div class="mb-4">
+                    <h5>Cotizaciones Relacionadas</h5>
+                    @if($cotizacionesRelacionadas->isNotEmpty())
+                        <div class="list-group">
+                            @foreach($cotizacionesRelacionadas as $cotizacion)
+                                <a href="{{ route('cotizaciones.show', $cotizacion->id) }}" 
+                                class="list-group-item list-group-item-action" 
+                                target="_blank">
+                                    {{ $cotizacion->nombre }} - {{ $cotizacion->fecha_cotizacion }}
+                                </a>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">No hay cotizaciones relacionadas para esta solicitud de oferta.</p>
+                    @endif
+                </div>
+
             </div>
         </div>
     </div>

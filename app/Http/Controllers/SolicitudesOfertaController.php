@@ -91,16 +91,23 @@ class SolicitudesOfertaController extends Controller
     {
         $solicitudesOferta = SolicitudesOferta::with([
             'user', 
-            'terceros', // Cargar varios terceros relacionados
+            'terceros', 
             'consolidacionesOfertas.solicitudesCompra', 
-            'consolidacionesOfertas.solicitudesElemento.nivelesTres'
+            'consolidacionesOfertas.solicitudesElemento.nivelesTres',
+            'consolidacionesOfertas.solicitudesCotizaciones.cotizacione' // Cargar cotizaciones relacionadas
         ])->findOrFail($id);
-        
+    
         $cotizacione = new Cotizacione();
         $tercerosSinCotizacion = $solicitudesOferta->getTercerosSinCotizacion();
+        
+        // Obtener todas las cotizaciones relacionadas
+        $cotizacionesRelacionadas = $solicitudesOferta->consolidacionesOfertas
+            ->flatMap(function ($consolidacion) {
+                return $consolidacion->solicitudesCotizaciones->pluck('cotizacione');
+            })->unique('id');
     
-        return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion'));
-    }
+        return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion', 'cotizacionesRelacionadas'));
+    }    
 
     public function downloadPdf($id, $nit)
     {
