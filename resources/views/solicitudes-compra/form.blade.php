@@ -3,15 +3,23 @@
         <h4 class="mb-3">Información General</h4>
         <div class="form-group mb-2 mb20">
             <label for="fecha_solicitud" class="form-label">{{ __('Fecha Solicitud') }}</label>
-            <input type="date" name="fecha_solicitud" class="form-control @error('fecha_solicitud') is-invalid @enderror" value="{{ old('fecha_solicitud', $fechaActual, $solicitudesCompra?->fecha_solicitud) }}" id="fecha_solicitud" placeholder="Fecha Solicitud">
-            {!! $errors->first('fecha_solicitud', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <input type="date" name="fecha_solicitud"
+                class="form-control @error('fecha_solicitud') is-invalid @enderror"
+                value="{{ old('fecha_solicitud', $fechaActual, $solicitudesCompra?->fecha_solicitud) }}"
+                id="fecha_solicitud" placeholder="Fecha Solicitud">
+            {!! $errors->first(
+                'fecha_solicitud',
+                '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>',
+            ) !!}
         </div>
 
         <div class="form-group mb-2 mb20">
             <label for="id_users" class="form-label">{{ __('Usuario') }}</label>
             <select name="id_users" class="form-control @error('id_users') is-invalid @enderror" id="id_users">
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ old('id_users', $solicitudesCompra?->id_users) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}"
+                        {{ old('id_users', $solicitudesCompra?->id_users) == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}</option>
                 @endforeach
             </select>
             {!! $errors->first('id_users', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
@@ -19,13 +27,17 @@
 
         <div class="form-group mb-2 mb20">
             <label for="prefijo" class="form-label">{{ __('Prefijo') }}</label>
-            <input type="text" name="prefijo" class="form-control @error('prefijo') is-invalid @enderror" value="{{ old('prefijo', $solicitudesCompra?->prefijo) }}" id="prefijo" placeholder="Prefijo" readonly>
+            <input type="text" name="prefijo" class="form-control @error('prefijo') is-invalid @enderror"
+                value="{{ old('prefijo', $solicitudesCompra?->prefijo) }}" id="prefijo" placeholder="Prefijo"
+                readonly>
             {!! $errors->first('prefijo', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
+            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror"
+                value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion"
+                placeholder="Descripción">
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
@@ -40,36 +52,36 @@
                 <option value="partial">Limpiar sólo cantidad y centro de costos</option>
                 <option value="none">No limpiar campos</option>
             </select>
-        </div>        
+        </div>
         <div class="form-group mb-2 mb20">
             <label for="select_niveles_uno" class="form-label">{{ __('Nivel Uno') }}</label>
             <select id="select_niveles_uno" class="form-control">
                 <option selected>Seleccione una opción</option>
-                @foreach($nivelesUno as $nivelUno)
+                @foreach ($nivelesUno as $nivelUno)
                     <option value="{{ $nivelUno->id }}">{{ $nivelUno->nombre }}</option>
                 @endforeach
             </select>
         </div>
-        
+
         <div class="form-group mb-2 mb20">
             <label for="select_niveles_dos" class="form-label">{{ __('Nivel Dos') }}</label>
             <select id="select_niveles_dos" class="form-control">
                 <option selected>Seleccione una opción</option>
             </select>
         </div>
-        
+
         <div class="form-group mb-2 mb20">
             <label for="select_niveles_tres" class="form-label">{{ __('Nivel Tres') }}</label>
             <select id="select_niveles_tres" name="id_niveles_tres" class="form-control">
                 <option selected>Seleccione una opción</option>
             </select>
-        </div>        
+        </div>
 
         <div class="form-group mb-2 mb20">
             <label for="select_id_centros_costos" class="form-label">{{ __('Centros Costos') }}</label>
             <select id="select_id_centros_costos" class="form-control">
                 <option selected>Seleccione una opción</option>
-                @foreach($centrosCostos as $centroCosto)
+                @foreach ($centrosCostos as $centroCosto)
                     <option value="{{ $centroCosto->codigo }}">{{ $centroCosto->nombre }}</option>
                 @endforeach
             </select>
@@ -106,5 +118,5 @@
 </div>
 
 <div class="col-md-12 mt20 mt-2">
-    <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+    <button type="submit" class="btn btn-primary">{{ __('Crear') }}</button>
 </div>

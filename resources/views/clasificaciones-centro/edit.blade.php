@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Clasificacion Centro')
+@section('title', 'editar Clasificacion Centro')
 
 @section('content')
-<br>
+    <br>
     <section class="content container-fluid">
         <div class="">
             <div class="col-md-12">
@@ -13,7 +13,9 @@
                         <span class="card-title">{{ __('Update') }} Clasificaciones Centro</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('clasificaciones-centros.update', $clasificacionesCentro->id) }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST"
+                            action="{{ route('clasificaciones-centros.update', $clasificacionesCentro->id) }}" role="form"
+                            enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 
