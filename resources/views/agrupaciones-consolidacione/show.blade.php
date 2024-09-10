@@ -139,52 +139,89 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalCotizacionesVigentes" tabindex="-1" aria-labelledby="modalCotizacionesLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!-- Modal para seleccionar cotizaciones vigentes (Modal 1) -->
+<div class="modal fade" id="modalCotizacionesVigentes" aria-hidden="true" aria-labelledby="modalCotizacionesLabel" tabindex="-1">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalCotizacionesLabel">Seleccionar Cotizaciones Vigentes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="formSeleccionCotizaciones">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Seleccionar</th>
-                                    <th>ID Consolidación</th>
-                                    <th>Elemento</th>
-                                    <th>Tercero</th>
-                                    <th>Cotización Vigente</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
-                                    @foreach($consolidacion->cotizacionesVigentes as $cotizacion)
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" class="select_item" name="cotizaciones[]" value="{{ $cotizacion->id }}" />
-                                            </td>
-                                            <td>{{ $consolidacion->id }}</td>
-                                            <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                            <td>{{ $cotizacion->tercero->nombre ?? 'N/A' }}</td>
-                                            <td>{{ $cotizacion->id }}</td>
-                                        </tr>
+                    <div class="row">
+                        @foreach($agrupacionesConsolidacione->consolidaciones->groupBy(function($consolidacion) {
+                            return $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A';
+                        }) as $elementoNombre => $consolidaciones)
+                            <div class="col-12 mb-4">
+                                <h4>Cotizaciones encontradas para elemento: {{ $elementoNombre }}</h4>
+                                <div class="row">
+                                    @foreach($consolidaciones as $consolidacion)
+                                        @foreach($consolidacion->cotizacionesVigentes as $cotizacion)
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title">Cotización ID: {{ $cotizacion->id }}</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <h6 class="card-subtitle mb-2 text-muted">Consolidación ID: {{ $consolidacion->id }}</h6>
+                                                        <p class="card-text"><strong>Elemento:</strong> {{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</p>
+                                                        <p class="card-text"><strong>Tercero:</strong> {{ $cotizacion->tercero->nombre ?? 'N/A' }}</p>
+                                                        <p class="card-text"><strong>Valor:</strong> {{ $cotizacion->valor }}</p>
+                                                        <p class="card-text"><strong>Fecha Cotizacion:</strong> {{ $cotizacion->fecha_cotizacion }}</p>
+                                                        <p class="card-text"><strong>Fecha inicio vigencia:</strong> {{ $cotizacion->fecha_inicio_vigencia }}</p>
+                                                        <p class="card-text"><strong>Fecha fin vigencia:</strong> {{ $cotizacion->fecha_fin_vigencia }}</p>
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacion->id }}" />
+                                                            <label class="form-check-label">Seleccionar</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnCrearOrdenCompra">
+                <button type="button" class="btn btn-primary" id="btnCrearOrdenCompra" data-bs-target="#modalCrearOrdenCompra" data-bs-toggle="modal">
                     Crear Orden de Compra
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para crear orden de compra (Modal 2) -->
+<div class="modal fade" id="modalCrearOrdenCompra" aria-hidden="true" aria-labelledby="modalCrearOrdenCompraLabel" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearOrdenCompraLabel">Crear Orden de Compra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCrearOrdenCompra">
+                    <!-- Aquí irán los campos del formulario para crear la orden de compra -->
+                    <div class="mb-3">
+                        <label for="fechaEmision" class="form-label">Fecha de Emisión</label>
+                        <input type="date" class="form-control" id="fechaEmision" name="fecha_emision" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nota" class="form-label">Nota</label>
+                        <textarea class="form-control" id="nota" name="nota" rows="3"></textarea>
+                    </div>
+                    <!-- Aquí se mostrarán las cotizaciones seleccionadas -->
+                    <div id="cotizacionesSeleccionadas"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-target="#modalCotizacionesVigentes" data-bs-toggle="modal">Volver</button>
+                <button type="button" class="btn btn-primary" id="btnGuardarOrdenCompra">Guardar Orden de Compra</button>
             </div>
         </div>
     </div>
