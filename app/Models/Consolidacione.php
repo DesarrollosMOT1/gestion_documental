@@ -54,10 +54,6 @@ class Consolidacione extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function elementosConsolidados()

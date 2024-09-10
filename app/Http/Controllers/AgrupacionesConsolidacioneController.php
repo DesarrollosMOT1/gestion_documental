@@ -19,6 +19,7 @@ use Illuminate\View\View;
 use App\Models\NivelesUno;
 use App\Models\SolicitudesOferta;
 use App\Models\Tercero;
+use App\Models\Cotizacione;
 
 class AgrupacionesConsolidacioneController extends Controller
 {
@@ -248,10 +249,39 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
-
+    
+        // Verificar cotizaciones vigentes para cada consolidación
+        foreach ($agrupacionesConsolidacione->consolidaciones as $consolidacion) {
+            // Ahora llamamos al método pasando el ID de la agrupación
+            $consolidacion->cotizacionesVigentes = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
+        }
+    
         $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
     
         return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros'));
+    }
+    
+    public function verificarCotizacionesVigentes($agrupacionId)
+    {
+        // Obtener los IDs de los niveles tres relacionados con las consolidaciones de la agrupación
+        $nivelesTresIds = Consolidacione::where('agrupacion_id', $agrupacionId)
+            ->whereHas('solicitudesElemento', function ($query) {
+                $query->select('id_niveles_tres');
+            })
+            ->get()
+            ->pluck('solicitudesElemento.nivelesTres.id'); // Obtener IDs de niveles tres
+    
+        // Verificar las cotizaciones vigentes que coincidan con esos niveles tres
+        return Cotizacione::whereHas('solicitudesCotizaciones', function ($query) use ($nivelesTresIds) {
+            $query->whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
+                $subQuery->select('id')
+                        ->from('solicitudes_elementos')
+                        ->whereIn('id_niveles_tres', $nivelesTresIds);
+            });
+        })
+        ->whereDate('fecha_inicio_vigencia', '<=', now())
+        ->whereDate('fecha_fin_vigencia', '>=', now())
+        ->get(); 
     }
 
     private function generatePrefix(): string

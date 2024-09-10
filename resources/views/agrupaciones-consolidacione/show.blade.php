@@ -79,6 +79,16 @@
                 <h5 class="card-title m-0"><i class="fas fa-list mr-2"></i>Consolidaciones Asociadas</h5>
             </div>
             <div class="card-body">
+                @if($agrupacionesConsolidacione->consolidaciones->contains(function ($consolidacion) {
+                    return $consolidacion->cotizacionesVigentes->isNotEmpty();
+                }))
+                    <div class="alert alert-info">
+                        Existen cotizaciones vigentes. 
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalCotizacionesVigentes">
+                            Usar cotizaciones vigentes
+                        </button>
+                    </div>
+                @endif
                 @if($agrupacionesConsolidacione->consolidaciones->isNotEmpty())
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -124,6 +134,57 @@
                         {{ __('Generar Solicitud Oferta') }}
                     </button>        
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCotizacionesVigentes" tabindex="-1" aria-labelledby="modalCotizacionesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCotizacionesLabel">Seleccionar Cotizaciones Vigentes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formSeleccionCotizaciones">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Seleccionar</th>
+                                    <th>ID Consolidación</th>
+                                    <th>Elemento</th>
+                                    <th>Tercero</th>
+                                    <th>Cotización Vigente</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
+                                    @foreach($consolidacion->cotizacionesVigentes as $cotizacion)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="select_item" name="cotizaciones[]" value="{{ $cotizacion->id }}" />
+                                            </td>
+                                            <td>{{ $consolidacion->id }}</td>
+                                            <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
+                                            <td>{{ $cotizacion->tercero->nombre ?? 'N/A' }}</td>
+                                            <td>{{ $cotizacion->id }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnCrearOrdenCompra">
+                    Crear Orden de Compra
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
