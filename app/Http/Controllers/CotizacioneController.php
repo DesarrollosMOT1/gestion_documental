@@ -57,8 +57,8 @@ class CotizacioneController extends Controller
             ]);
         }
     
-        return Redirect::route('cotizaciones.index')
-            ->with('success', 'Cotización creada exitosamente.');
+    return redirect()->route('solicitudes-ofertas.show', $request->solicitud_oferta_id)
+        ->with('success', 'Cotización creada exitosamente.');
     }
 
     public function obtenerElementosConsolidaciones($solicitudesOfertaId)

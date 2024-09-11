@@ -10,6 +10,9 @@
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#cotizacionesModal">Crear Cotizacion</button>
         </div>
+        @if ($message = Session::get('success'))
+            <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+        @endifAhora, después de crear la cotización, el método redirige de nuevo a la misma vista de la solicitud de oferta
         <div class="card-body">
             <div class="row">
                 <!-- Información de la Solicitud de Oferta -->
@@ -136,7 +139,7 @@
                             <div class="modal-body">
                                 <form action="{{ route('cotizaciones.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" id="solicitud_oferta_id" value="{{ $solicitudesOferta->id }}">
+                                    <input type="hidden" name="solicitud_oferta_id" id="solicitud_oferta_id" value="{{ $solicitudesOferta->id }}">
                                     <!-- Incluye el formulario para la cotización -->
                                     @include('cotizacione.form')
                                 </form>
