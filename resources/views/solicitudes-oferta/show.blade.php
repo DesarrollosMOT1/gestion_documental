@@ -12,7 +12,7 @@
         </div>
         @if ($message = Session::get('success'))
             <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
-        @endifAhora, después de crear la cotización, el método redirige de nuevo a la misma vista de la solicitud de oferta
+        @endif
         <div class="card-body">
             <div class="row">
                 <!-- Información de la Solicitud de Oferta -->
