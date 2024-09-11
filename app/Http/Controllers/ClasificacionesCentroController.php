@@ -19,8 +19,8 @@ class ClasificacionesCentroController extends Controller
      */
     public function index(Request $request): View
     {
-        $clasificacionesCentros = ClasificacionesCentro::paginate();
-
+        $clasificacionesCentros = ClasificacionesCentro::with('areas')->paginate();
+    
         return view('clasificaciones-centro.index', compact('clasificacionesCentros'))
             ->with('i', ($request->input('page', 1) - 1) * $clasificacionesCentros->perPage());
     }
@@ -41,11 +41,14 @@ class ClasificacionesCentroController extends Controller
      */
     public function store(ClasificacionesCentroRequest $request): RedirectResponse
     {
-        ClasificacionesCentro::create($request->validated());
-
+        $clasificacionesCentro = ClasificacionesCentro::create($request->validated());
+        
+        // Sincroniza las áreas seleccionadas
+        $clasificacionesCentro->areas()->sync($request->id_areas);
+    
         return Redirect::route('clasificaciones-centros.index')
-            ->with('success', 'Clasificacion Centro creada exitosamente.');
-    }
+            ->with('success', 'Clasificación Centro creada exitosamente.');
+    }    
 
     /**
      * Display the specified resource.
@@ -74,10 +77,14 @@ class ClasificacionesCentroController extends Controller
     public function update(ClasificacionesCentroRequest $request, ClasificacionesCentro $clasificacionesCentro): RedirectResponse
     {
         $clasificacionesCentro->update($request->validated());
-
+        
+        // Sincroniza las áreas seleccionadas
+        $clasificacionesCentro->areas()->sync($request->id_areas);
+    
         return Redirect::route('clasificaciones-centros.index')
-            ->with('success', 'Clasificacion Centro actualizada exitosamente');
+            ->with('success', 'Clasificación Centro actualizada exitosamente.');
     }
+    
 
     public function destroy($id): RedirectResponse
     {

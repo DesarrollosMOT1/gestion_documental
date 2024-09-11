@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClasificacionesCentroRequest extends FormRequest
+class ClasificacionesCentrosAreaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class ClasificacionesCentroRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string',
-            'id_areas' => 'required|array',
-            'id_areas.*' => 'exists:areas,id',
+			'id_clasificaciones_centros' => 'required',
+			'id_areas' => 'required',
         ];
     }
 }

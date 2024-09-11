@@ -41,10 +41,8 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Nombre</th>
-									<th >Area</th>
-
+                                        <th>Nombre</th>
+                                        <th>Áreas</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -52,13 +50,13 @@
                                     @foreach ($clasificacionesCentros as $clasificacionesCentro)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $clasificacionesCentro->nombre }}</td>
-										<td >{{ $clasificacionesCentro->area->nombre }}</td>
-
+                                            <td>{{ $clasificacionesCentro->nombre }}</td>
+                                            <td>
+                                                {{ $clasificacionesCentro->areas->pluck('nombre')->implode(', ') }}
+                                            </td>
                                             <td>
                                                 <form action="{{ route('clasificaciones-centros.destroy', $clasificacionesCentro->id) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('clasificaciones-centros.show', $clasificacionesCentro->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-primary" href="{{ route('clasificaciones-centros.show', $clasificacionesCentro->id) }}"><i class="fa fa-fw fa-eye"></i></a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('clasificaciones-centros.edit', $clasificacionesCentro->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
@@ -68,7 +66,7 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table>                            
                         </div>
                     </div>
                 </div>

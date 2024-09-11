@@ -12,15 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property $created_at
  * @property $updated_at
  *
- * @property ClasificacionesCentro[] $clasificacionesCentros
  * @property User[] $users
+ * @property ClasificacionesCentro[] $clasificacionesCentros
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Area extends Model
 {
-    
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.
@@ -29,15 +28,6 @@ class Area extends Model
      */
     protected $fillable = ['nombre'];
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function clasificacionesCentros()
-    {
-        return $this->hasMany(\App\Models\ClasificacionesCentro::class, 'id', 'id_areas');
-    }
-    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -45,5 +35,14 @@ class Area extends Model
     {
         return $this->hasMany(\App\Models\User::class, 'id', 'id_area');
     }
-    
+
+    /**
+     * Relación de muchos a muchos con ClasificacionesCentro a través de ClasificacionesCentrosArea.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clasificacionesCentros()
+    {
+        return $this->belongsToMany(\App\Models\ClasificacionesCentro::class, 'clasificaciones_centros_areas', 'id_areas', 'id_clasificaciones_centros');
+    }
 }
