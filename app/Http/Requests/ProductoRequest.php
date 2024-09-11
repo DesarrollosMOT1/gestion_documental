@@ -22,10 +22,12 @@ class ProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre' => 'required|string',
 			'codigo_producto' => 'required|string',
-			'unidad_medida' => 'required|string',
-			'medida' => 'required',
+			'nombre' => 'required|string',
+			'unidad_medida_peso' => 'required|string',
+			'peso_bruto' => 'required',
+			'medida_volumen' => 'required',
+			'ean' => 'required',
         ];
     }
 }

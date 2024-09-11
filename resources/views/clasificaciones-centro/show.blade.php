@@ -3,30 +3,31 @@
 @section('title', 'Ver Clasificacion Centro')
 
 @section('content')
-<br>
+    <br>
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">{{ __('Show') }} Clasificaciones Centro</span>
+                            <span class="card-title">{{ __('Mostrar') }} Clasificaciones Centro</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('clasificaciones-centros.index') }}"> {{ __('Atrás') }}</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('clasificaciones-centros.index') }}">
+                                {{ __('Atrás') }}</a>
                         </div>
                     </div>
 
                     <div class="card-body bg-white">
-                        
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Nombre:</strong>
-                                    {{ $clasificacionesCentro->nombre }}
-                                </div>
-                                <div class="form-group mb-2 mb20">
-                                    <strong>Area:</strong>
-                                    {{ $clasificacionesCentro->area->nombre }}
-                                </div>
+
+                        <div class="form-group mb-2 mb20">
+                            <strong>Nombre:</strong>
+                            {{ $clasificacionesCentro->nombre }}
+                        </div>
+                        <div class="form-group mb-2 mb20">
+                            <strong>Area:</strong>
+                            {{ $clasificacionesCentro->area->nombre }}
+                        </div>
 
                     </div>
                 </div>

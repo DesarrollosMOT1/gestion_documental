@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Rol')
+@section('title', 'editar Rol')
 
 @section('content')
-<br>
+    <br>
     <section class="content container-fluid">
         <div class="">
             <div class="col-md-12">
@@ -22,8 +22,9 @@
                             @foreach ($permisos as $permiso)
                                 <div>
                                     <label>
-                                        <input type="checkbox" name="permisos[]" value="{{ $permiso->id }}" 
-                                        {{ $role->permissions->contains($permiso->id) ? 'checked' : '' }} class="mr-1">
+                                        <input type="checkbox" name="permisos[]" value="{{ $permiso->id }}"
+                                            {{ $role->permissions->contains($permiso->id) ? 'checked' : '' }}
+                                            class="mr-1">
                                         {{ $permiso->name }}
                                     </label>
                                 </div>
