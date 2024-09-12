@@ -91,8 +91,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Elemento</th>
+                                                <th>Cantidad</th>
+                                                <th>Descuento</th>
                                                 <th>Impuesto</th>
-                                                <th>Estado</th>
                                                 <th>Precio</th>
                                             </tr>
                                         </thead>
@@ -100,12 +101,9 @@
                                             @foreach($cotizacione->solicitudesCotizaciones as $solicitudCotizacion)
                                                 <tr>
                                                     <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->cantidad }}</td>
+                                                    <td>{{ $solicitudCotizacion->descuento }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="estado-checkbox" 
-                                                               data-id="{{ $solicitudCotizacion->id }}" 
-                                                               {{ $solicitudCotizacion->estado === '1' ? 'checked' : '' }}>
-                                                    </td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach

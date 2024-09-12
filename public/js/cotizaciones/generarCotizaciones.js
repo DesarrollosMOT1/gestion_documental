@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="invalid-feedback">La cantidad es requerida y debe ser un número.</div>
                         </div>
                         <div class="col-md-3">
+                            <label for="cantidad_${index}">Descuento</label>
+                            <input type="number" name="elementos[${index}][descuento]" id="descuento_${index}" class="form-control" value="0" required>
+                            <div class="invalid-feedback">El descuento es requerido y debe ser un número.</div>
+                        </div>
+                        <div class="col-md-3">
                             <label for="impuesto_${index}">Impuesto</label>
                             <select name="elementos[${index}][id_impuestos]" id="impuesto_${index}" class="form-control" required>
                                 ${impuestosOptions}

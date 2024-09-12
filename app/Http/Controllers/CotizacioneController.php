@@ -49,10 +49,10 @@ class CotizacioneController extends Controller
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
                 'id_cotizaciones' => $cotizacion->id,
                 'cantidad' => $elemento['cantidad'],
+                'descuento' => $elemento['descuento'],
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones_oferta' => $elemento['id_consolidaciones_oferta'],
-                'estado' => '0',
                 'precio' => $elemento['precio'],
             ]);
         }
@@ -102,16 +102,6 @@ class CotizacioneController extends Controller
         return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas', 'ordenesCompra', 'solicitudesAprobadas'));
     }
     
-
-    public function actualizarEstado(Request $request, $id)
-    {
-        $elemento = SolicitudesCotizacione::findOrFail($id);
-        $elemento->estado = $request->input('estado');
-        $elemento->save();
-
-        return response()->json(['success' => true]);
-    }
-
 
     /**
      * Show the form for editing the specified resource.

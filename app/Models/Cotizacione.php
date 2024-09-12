@@ -36,7 +36,7 @@ class Cotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'descuento', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
+    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
 
 
     /**

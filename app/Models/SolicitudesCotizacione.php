@@ -37,7 +37,7 @@ class SolicitudesCotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_consolidaciones_oferta','id_solicitudes_compras', 'id_cotizaciones', 'cantidad', 'id_impuestos', 'id_solicitud_elemento', 'precio','estado'];
+    protected $fillable = ['id_consolidaciones_oferta','id_solicitudes_compras', 'id_cotizaciones', 'cantidad', 'descuento', 'id_impuestos', 'id_solicitud_elemento', 'precio','estado'];
 
 
     /**
