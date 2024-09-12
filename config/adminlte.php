@@ -416,8 +416,36 @@ return [
             'icon' => 'fas fa-shopping-cart',
             'submenu' => [
                 [
+                    'text' => 'movimientos',
+                    'url' => 'movimientos',
+                ],
+                [
                     'text' => 'productos',
                     'url' => 'productos',
+                ],
+                [
+                    'text' => 'almacenes',
+                    'url' => 'almacenes',
+                ],
+                [
+                    'text' => 'bodegas',
+                    'url' => 'bodegas',
+                ],
+                [
+                    'text' => 'clases-movimientos',
+                    'url' => 'clases-movimientos',
+                ],
+                [
+                    'text' => 'tipos-movimientos',
+                    'url' => 'tipos-movimientos',
+                ],
+                [
+                    'text' => 'unidades',
+                    'url' => 'unidades',
+                ],
+                [
+                    'text' => 'motivos',
+                    'url' => 'motivos',
                 ],
             ],
         ],

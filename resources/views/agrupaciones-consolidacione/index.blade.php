@@ -3,12 +3,12 @@
 @section('title', 'Agrupaciones Consolidaciones')
 
 @section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
 @endsection
 
 @section('content')
-<br>
+    <br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -33,8 +33,10 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Usuario</th>
-									<th >Fecha Consolidacion</th>
+									<th >Id Solicitudes Compras</th>
+									<th >Id Solicitud Elemento</th>
+									<th >Estado</th>
+									<th >Cantidad</th>
 
                                         <th></th>
                                     </tr>
@@ -44,16 +46,18 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-										<td >{{ $agrupacionesConsolidacione->user->name }}</td>
-										<td >{{ $agrupacionesConsolidacione->fecha_consolidacion }}</td>
+										<td >{{ $consolidacione->id_solicitudes_compras }}</td>
+										<td >{{ $consolidacione->id_solicitud_elemento }}</td>
+										<td >{{ $consolidacione->estado }}</td>
+										<td >{{ $consolidacione->cantidad }}</td>
 
                                             <td>
-                                                <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('agrupaciones-consolidaciones.edit', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form action="{{ route('consolidaciones.destroy', $consolidacione->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('consolidaciones.show', $consolidacione->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('consolidaciones.edit', $consolidacione->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
                                                 </form>
                                             </td>
                                         </tr>

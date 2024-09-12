@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductoController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductoController extends Controller
     {
         $productos = Producto::paginate();
 
-        return view('producto.index', compact('productos'))
+        return view('productos.index', compact('productos'))
             ->with('i', ($request->input('page', 1) - 1) * $productos->perPage());
     }
 
@@ -29,7 +30,7 @@ class ProductoController extends Controller
     {
         $producto = new Producto();
 
-        return view('producto.create', compact('producto'));
+        return view('productos.create', compact('producto'));
     }
 
     /**
@@ -50,23 +51,7 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
 
-        return view('producto.show', compact('producto'));
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show_unidades_equivalentes($id)
-    {
-        $producto = Producto::find($id);
-        $unidades = $producto->unidadesEquivalentes();
-        $lista = [];
-        foreach ($unidades as $unidadEquivalente) {
-            $valor = $unidadEquivalente->unidad_equivalente;
-            $clave = Producto::find($valor);
-            $lista[$clave->nombre] = $valor;
-        }
-
-        return $lista;
+        return view('productos.show', compact('producto'));
     }
 
     /**
@@ -76,7 +61,7 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
 
-        return view('producto.edit', compact('producto'));
+        return view('productos.edit', compact('producto'));
     }
 
     /**
@@ -96,5 +81,13 @@ class ProductoController extends Controller
 
         return Redirect::route('productos.index')
             ->with('success', 'Producto deleted successfully');
+    }
+
+    public function getAllProductos(Request $request):JsonResponse
+    {
+
+        $productos = Producto::all(['codigo_producto as id', 'nombre as name']);
+        return response()->json($productos);
+
     }
 }

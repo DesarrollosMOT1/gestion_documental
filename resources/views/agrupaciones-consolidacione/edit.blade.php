@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Consolidacion')
+@section('title', 'editar Consolidacion')
 
 @section('content')
-<br>
+    <br>
     <section class="content container-fluid">
         <div class="">
             <div class="col-md-12">
