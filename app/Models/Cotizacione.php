@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cotizacione extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     protected $table = 'cotizaciones'; 
 

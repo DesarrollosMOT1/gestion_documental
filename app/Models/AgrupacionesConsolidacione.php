@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 class AgrupacionesConsolidacione extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.

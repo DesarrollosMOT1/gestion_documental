@@ -22,7 +22,6 @@
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
                             <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
                             <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>
-                            <p><strong>Descuento:</strong> {{ $cotizacione->descuento }}</p>
                             <p><strong>Fecha inicio vigencia:</strong> {{ $cotizacione->fecha_inicio_vigencia ?? 'N/A' }}</p>
                             <p><strong>Fecha fin vigencia:</strong> {{ $cotizacione->fecha_fin_vigencia ?? 'N/A' }}</p>
                         </div>
