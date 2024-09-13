@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesElemento;
 use App\Models\SolicitudesCompra;
 use App\Models\User;
@@ -214,6 +215,8 @@ class AgrupacionesConsolidacioneController extends Controller
      */
     public function show($id): View
     {
+        $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
+    
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $users = User::all();
@@ -222,7 +225,7 @@ class AgrupacionesConsolidacioneController extends Controller
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
         $ordenesCompra = new OrdenesCompra();
-
+    
         // Mapeo de permisos a los nombres de los niveles uno
         $permissions = [
             'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
@@ -243,25 +246,29 @@ class AgrupacionesConsolidacioneController extends Controller
     
         // Obtener los niveles uno con base en los permisos del usuario
         $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
-
+    
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
-            'consolidaciones.solicitudesCompra.user', 
+            'consolidaciones.solicitudesCompra.user',
             'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
-        // Verificar cotizaciones vigentes para cada consolidación
-        foreach ($agrupacionesConsolidacione->consolidaciones as $consolidacion) {
-            // Ahora llamamos al método pasando el ID de la agrupación
-            $consolidacion->cotizacionesVigentes = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
-        }
+        // Obtener cotizaciones vigentes agrupadas por elemento y tercero
+        $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
     
-        $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
+        // Agrupar cotizaciones por elemento y tercero
+        $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
+            return [$consolidacion->solicitudesElemento->nivelesTres->nombre => $consolidacion];
+        });
     
-        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros', 'ordenesCompra'));
-    }
+        $cotizacionesPorTercero = $cotizacionesPorElemento->groupBy(function($cotizacion) {
+            return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
+        });
+    
+        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'cotizacionesPorTercero', 'elementosConsolidados'));
+    }    
     
     public function verificarCotizacionesVigentes($agrupacionId)
     {
@@ -273,17 +280,18 @@ class AgrupacionesConsolidacioneController extends Controller
             ->get()
             ->pluck('solicitudesElemento.nivelesTres.id'); // Obtener IDs de niveles tres
     
-        // Verificar las cotizaciones vigentes que coincidan con esos niveles tres
-        return Cotizacione::whereHas('solicitudesCotizaciones', function ($query) use ($nivelesTresIds) {
-            $query->whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
+        // Verificar las solicitudes cotizaciones vigentes que coincidan con esos niveles tres
+        return SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
                 $subQuery->select('id')
                         ->from('solicitudes_elementos')
                         ->whereIn('id_niveles_tres', $nivelesTresIds);
-            });
-        })
-        ->whereDate('fecha_inicio_vigencia', '<=', now())
-        ->whereDate('fecha_fin_vigencia', '>=', now())
-        ->get(); 
+            })
+            ->whereHas('cotizacione', function ($query) {
+                $query->whereDate('fecha_inicio_vigencia', '<=', now())
+                      ->whereDate('fecha_fin_vigencia', '>=', now());
+            })
+            ->with('cotizacione.tercero') // Traer la información del tercero relacionado a la cotización
+            ->get(); 
     }
 
     private function generatePrefix(): string

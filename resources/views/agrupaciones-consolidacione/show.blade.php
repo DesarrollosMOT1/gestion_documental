@@ -136,34 +136,35 @@
             <h5 class="card-title m-0"><i class="fas fa-file-invoice mr-2"></i>Cotizaciones Vigentes</h5>
         </div>
         <div class="card-body">
-            @if($agrupacionesConsolidacione->consolidaciones->contains(function ($consolidacion) {
-                return $consolidacion->cotizacionesVigentes->isNotEmpty();
-            }))
+            @if($cotizacionesPorTercero->isNotEmpty())
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Elemento</th>
-                                @foreach($agrupacionesConsolidacione->consolidaciones->first()->cotizacionesVigentes as $cotizacion)
-                                    <th>{{ $cotizacion->tercero->nombre ?? 'Proveedor N/A' }}</th>
+                                @foreach($cotizacionesPorTercero->keys() as $tercero)
+                                    <th>{{ $tercero }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($agrupacionesConsolidacione->consolidaciones->groupBy(function($consolidacion) {
-                                return $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A';
-                            }) as $elementoNombre => $consolidaciones)
+                            @foreach($elementosConsolidados as $elementoNombre => $cotizacionesPorElemento)
                                 <tr>
                                     <td>{{ $elementoNombre }}</td>
-                                    @foreach($consolidaciones->first()->cotizacionesVigentes as $cotizacion)
+                                    @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
+                                        @php
+                                            $cotizacionElemento = $cotizaciones->firstWhere('id_solicitud_elemento', $cotizacionesPorElemento->first()->id_solicitud_elemento);
+                                        @endphp
                                         <td>
-                                            <div class="form-group">
-                                                <p><strong>Precio:</strong> {{ $cotizacion->valor }}</p>
+                                            @if($cotizacionElemento)
+                                                <p><strong>Precio:</strong> {{ $cotizacionElemento->precio }}</p>
                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacion->id }}" />
+                                                    <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" />
                                                     <label class="form-check-label">Seleccionar</label>
                                                 </div>
-                                            </div>
+                                            @else
+                                                <p class="text-muted">No hay cotizaciones vigentes para este elemento</p>
+                                            @endif
                                         </td>
                                     @endforeach
                                 </tr>
