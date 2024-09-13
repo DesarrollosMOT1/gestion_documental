@@ -153,7 +153,7 @@
                                     <td>{{ $elementoNombre }}</td>
                                     @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
                                         @php
-                                            $cotizacionElemento = $cotizaciones->firstWhere('id_solicitud_elemento', $cotizacionesPorElemento->first()->id_solicitud_elemento);
+                                            $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $cotizacionesPorElemento->first()->solicitudesElemento->nivelesTres->id);
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
