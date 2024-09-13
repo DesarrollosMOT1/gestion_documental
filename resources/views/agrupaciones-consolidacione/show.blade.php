@@ -133,7 +133,9 @@
 <div class="col-12 mb-4">
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title m-0"><i class="fas fa-file-invoice mr-2"></i>Cotizaciones Vigentes</h5>
+            <h5 class="card-title m-0">
+                <i class="fas fa-file-invoice mr-2"></i>Cotizaciones Vigentes
+            </h5>
         </div>
         <div class="card-body">
             @if($cotizacionesPorTercero->isNotEmpty())
@@ -161,6 +163,52 @@
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" />
                                                     <label class="form-check-label">Seleccionar</label>
+                                                </div>
+
+                                                <!-- Botón para abrir el modal -->
+                                                <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
+                                                    <i class="fas fa-eye"></i> 
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="detalleCotizacionLabel{{ $cotizacionElemento->id }}">Detalle de Cotización</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <h6>Detalle de Solicitud de Cotización</h6>
+                                                                        <div class="list-group">
+                                                                            <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
+                                                                            <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
+                                                                            <li class="list-group-item"><strong>Precio:</strong> {{ $cotizacionElemento->precio }}</li>
+                                                                            <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}</li>
+                                                                            <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <h6>Detalle de Cotización</h6>
+                                                                        <div class="list-group">
+                                                                            <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->nombre ?? 'N/A' }}</li>
+                                                                            <li class="list-group-item"><strong>Valor:</strong> {{ $cotizacionElemento->cotizacione->valor }}</li>
+                                                                            <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
+                                                                            <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>
+                                                                            <li class="list-group-item"><strong>Fecha de Cotización:</strong> {{ $cotizacionElemento->cotizacione->fecha_cotizacion }}</li>
+                                                                            <li class="list-group-item"><strong>Fecha inicio vigencia:</strong> {{ $cotizacionElemento->cotizacione->fecha_inicio_vigencia }}</li>
+                                                                            <li class="list-group-item"><strong>Fecha fin vigencia:</strong> {{ $cotizacionElemento->cotizacione->fecha_fin_vigencia }}</li>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             @else
                                                 <p class="text-muted">No hay cotizaciones vigentes para este elemento</p>
