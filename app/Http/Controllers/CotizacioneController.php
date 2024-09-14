@@ -53,6 +53,7 @@ class CotizacioneController extends Controller
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones_oferta' => $elemento['id_consolidaciones_oferta'],
+                'estado' => '0',
                 'precio' => $elemento['precio'],
             ]);
         }

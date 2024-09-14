@@ -81,7 +81,7 @@
             <div class="card-body">
                 @if($agrupacionesConsolidacione->consolidaciones->isNotEmpty())
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>
@@ -131,7 +131,7 @@
 
 <!-- Cotizaciones Vigentes -->
 <div class="col-12 mb-4">
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-header">
             <h5 class="card-title m-0">
                 <i class="fas fa-file-invoice mr-2"></i>Cotizaciones Vigentes
@@ -140,8 +140,8 @@
         <div class="card-body">
             @if($cotizacionesPorTercero->isNotEmpty())
                 <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
+                    <table class="table table-hover table-bordered datatable">
+                        <thead class="table-light">
                             <tr>
                                 <th>Elemento</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
@@ -152,64 +152,74 @@
                         <tbody>
                             @foreach($elementosConsolidados as $elementoNombre => $cotizacionesPorElemento)
                                 <tr>
-                                    <td>{{ $elementoNombre }}</td>
+                                    <td class="font-weight-bold">{{ $elementoNombre }}</td>
                                     @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
                                         @php
                                             $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $cotizacionesPorElemento->first()->solicitudesElemento->nivelesTres->id);
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
-                                                <p><strong>Precio:</strong> {{ $cotizacionElemento->precio }}</p>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" />
-                                                    <label class="form-check-label">Seleccionar</label>
-                                                </div>
-
-                                                <!-- Botón para abrir el modal -->
-                                                <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
-                                                    <i class="fas fa-eye"></i> 
-                                                </button>
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="detalleCotizacionLabel{{ $cotizacionElemento->id }}">Detalle de Cotización</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <h6>Detalle de Solicitud de Cotización</h6>
-                                                                        <div class="list-group">
-                                                                            <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
-                                                                            <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
-                                                                            <li class="list-group-item"><strong>Precio:</strong> {{ $cotizacionElemento->precio }}</li>
-                                                                            <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}</li>
-                                                                            <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <h6>Detalle de Cotización</h6>
-                                                                        <div class="list-group">
-                                                                            <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->nombre ?? 'N/A' }}</li>
-                                                                            <li class="list-group-item"><strong>Valor:</strong> {{ $cotizacionElemento->cotizacione->valor }}</li>
-                                                                            <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
-                                                                            <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>
-                                                                            <li class="list-group-item"><strong>Fecha de Cotización:</strong> {{ $cotizacionElemento->cotizacione->fecha_cotizacion }}</li>
-                                                                            <li class="list-group-item"><strong>Fecha inicio vigencia:</strong> {{ $cotizacionElemento->cotizacione->fecha_inicio_vigencia }}</li>
-                                                                            <li class="list-group-item"><strong>Fecha fin vigencia:</strong> {{ $cotizacionElemento->cotizacione->fecha_fin_vigencia }}</li>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                            </div>
+                                                <div class="d-flex flex-column align-items-start">
+                                                    <p class="mb-2">
+                                                        <strong>Precio:</strong> 
+                                                        <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span>
+                                                    </p>
+                                                    <div class="form-check mb-2">
+                                                        <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" id="seleccionar{{ $cotizacionElemento->id }}" />
+                                                        <label class="form-check-label" for="seleccionar{{ $cotizacionElemento->id }}">Seleccionar</label>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
+                                                            <i class="fas fa-eye"></i> Detalles
+                                                        </button>
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $cotizacionElemento->estado === '1' ? 'checked' : '' }} />
+                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">Aprobación</label>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="detalleCotizacionLabel{{ $cotizacionElemento->id }}">Detalle de Cotización</h5>
+                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <h6 class="border-bottom pb-2 mb-3">Detalle de Solicitud de Cotización</h6>
+                                                                    <ul class="list-group list-group-flush">
+                                                                        <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
+                                                                        <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
+                                                                        <li class="list-group-item"><strong>Precio:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span></li>
+                                                                        <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}%</li>
+                                                                        <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
+                                                                        <li class="list-group-item"><strong>Estado:</strong> <span class="badge {{ $cotizacionElemento->estado === '1' ? 'bg-success' : 'bg-warning text-dark' }}">{{ $cotizacionElemento->estado === '1' ? 'Aprobada' : 'Pendiente' }}</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h6 class="border-bottom pb-2 mb-3">Detalle de Cotización</h6>
+                                                                    <ul class="list-group list-group-flush">
+                                                                        <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->nombre ?? 'N/A' }}</li>
+                                                                        <li class="list-group-item"><strong>Valor:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->cotizacione->valor, 2) }}</span></li>
+                                                                        <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
+                                                                        <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>
+                                                                        <li class="list-group-item"><strong>Fecha de Cotización:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_cotizacion)->format('d/m/Y') }}</li>
+                                                                        <li class="list-group-item"><strong>Fecha inicio vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_inicio_vigencia)->format('d/m/Y') }}</li>
+                                                                        <li class="list-group-item"><strong>Fecha fin vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->format('d/m/Y') }}</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             @else
                                                 <p class="text-muted">No hay cotizaciones vigentes para este elemento</p>
                                             @endif
@@ -221,7 +231,9 @@
                     </table>
                 </div>
             @else
-                <p class="text-muted">No hay cotizaciones vigentes para los elementos consolidados.</p>
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle mr-2"></i>No hay cotizaciones vigentes para los elementos consolidados.
+                </div>
             @endif
         </div>
     </div>
@@ -325,4 +337,5 @@
     <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
     <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesOferta.js') }}"></script> 
+    <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
 @endpush
