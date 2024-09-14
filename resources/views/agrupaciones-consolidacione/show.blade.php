@@ -145,7 +145,28 @@
                             <tr>
                                 <th>Elemento</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
-                                    <th>{{ $tercero }}</th>
+                                    @php
+                                        $cotizaciones = $cotizacionesPorTercero->get($tercero);
+                                        $cotizacion = $cotizaciones->first();
+                                        $diferenciaDias = $cotizacion->diferencia_dias ?? null;
+                                        $estadoVigencia = $cotizacion->estado_vigencia ?? '';
+                                    @endphp
+                                    <th>
+                                        {{ $tercero }}
+                                        @if($diferenciaDias !== null)
+                                            <br>
+                                            <small class="text-muted">
+                                                @if($estadoVigencia === 'expirado')
+                                                    (Expirada)
+                                                @else
+                                                    ({{ abs(floor($diferenciaDias)) }} días restantes)
+                                                @endif
+                                            </small>
+                                        @endif
+                                        <span class="badge {{ $estadoVigencia === 'cercano' ? 'bg-danger' : ($estadoVigencia === 'medio' ? 'bg-warning' : 'bg-success') }}">
+                                            {{ $estadoVigencia === 'cercano' ? 'Cerca de vencer' : ($estadoVigencia === 'medio' ? 'Pronto a vencer' : ($estadoVigencia === 'expirado' ? 'Expirada' : 'Válida')) }}
+                                        </span>
+                                    </th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -208,8 +229,20 @@
                                                                         <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
                                                                         <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>
                                                                         <li class="list-group-item"><strong>Fecha de Cotización:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_cotizacion)->format('d/m/Y') }}</li>
-                                                                        <li class="list-group-item"><strong>Fecha inicio vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_inicio_vigencia)->format('d/m/Y') }}</li>
-                                                                        <li class="list-group-item"><strong>Fecha fin vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->format('d/m/Y') }}</li>
+                                                                        <li class="list-group-item"><strong>Fecha de inicio vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_inicio_vigencia)->format('d/m/Y') }}</li>
+                                                                        <li class="list-group-item"><strong>Fecha de fin vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->format('d/m/Y') }}</li>
+                                                                        <li class="list-group-item"><strong>Estado de Vigencia:</strong> <span class="badge {{ $cotizacionElemento->estado_vigencia === 'cercano' ? 'bg-danger' : ($cotizacionElemento->estado_vigencia === 'medio' ? 'bg-warning' : 'bg-success') }}">
+                                                                            {{ $cotizacionElemento->estado_vigencia === 'cercano' ? 'Cerca de vencer' : ($cotizacionElemento->estado_vigencia === 'medio' ? 'Pronto a vencer' : 'Válida') }}
+                                                                        </span></li>
+                                                                        <li class="list-group-item"><strong>Días Restantes:</strong> 
+                                                                            <span class="text-muted">
+                                                                                @if($cotizacionElemento->estado_vigencia === 'expirado')
+                                                                                    Expirada
+                                                                                @else
+                                                                                    {{ abs(floor(\Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->diffInDays(now()))) }} días restantes
+                                                                                @endif
+                                                                            </span>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                             </div>

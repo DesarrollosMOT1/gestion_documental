@@ -257,12 +257,10 @@ class AgrupacionesConsolidacioneController extends Controller
     
         // Obtener cotizaciones vigentes agrupadas por elemento y tercero
         $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
-    
         // Agrupar cotizaciones por elemento y tercero
         $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
             return [$consolidacion->solicitudesElemento->nivelesTres->nombre => $consolidacion];
         });
-    
         $cotizacionesPorTercero = $cotizacionesPorElemento->groupBy(function($cotizacion) {
             return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
         });
@@ -278,20 +276,39 @@ class AgrupacionesConsolidacioneController extends Controller
                 $query->select('id_niveles_tres');
             })
             ->get()
-            ->pluck('solicitudesElemento.nivelesTres.id'); // Obtener IDs de niveles tres
-    
+            ->pluck('solicitudesElemento.nivelesTres.id');
+
         // Verificar las solicitudes cotizaciones vigentes que coincidan con esos niveles tres
-        return SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
+        $cotizaciones = SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
                 $subQuery->select('id')
                         ->from('solicitudes_elementos')
                         ->whereIn('id_niveles_tres', $nivelesTresIds);
             })
             ->whereHas('cotizacione', function ($query) {
                 $query->whereDate('fecha_inicio_vigencia', '<=', now())
-                      ->whereDate('fecha_fin_vigencia', '>=', now());
+                    ->whereDate('fecha_fin_vigencia', '>=', now());
             })
-            ->with('cotizacione.tercero') // Traer la información del tercero relacionado a la cotización
-            ->get(); 
+            ->with('cotizacione.tercero')
+            ->get();
+    
+        foreach ($cotizaciones as $cotizacion) {
+            $fechaFinVigencia = Carbon::parse($cotizacion->cotizacione->fecha_fin_vigencia);
+            $diferenciaDias = now()->diffInDays($fechaFinVigencia);
+    
+            if ($fechaFinVigencia->lt(now())) {
+                $cotizacion->estado_vigencia = 'expirado';
+            } elseif ($diferenciaDias <= 30) {
+                $cotizacion->estado_vigencia = 'cercano';
+            } elseif ($diferenciaDias <= 90) {
+                $cotizacion->estado_vigencia = 'medio';
+            } else {
+                $cotizacion->estado_vigencia = 'lejos';
+            }
+    
+            $cotizacion->diferencia_dias = $diferenciaDias;
+        }
+    
+        return $cotizaciones;
     }
 
     private function generatePrefix(): string
