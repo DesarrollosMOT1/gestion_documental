@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AlmacenesController;
+use App\Http\Controllers\Api\EquivalenciaController;
 use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\TercerosTestController;
 use App\Http\Controllers\BodegaController;
@@ -12,7 +11,8 @@ use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TiposMovimientoController;
 use App\Http\Controllers\UnidadeController;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -75,7 +75,8 @@ Route::group(['middleware' => 'auth'], function () {
     route::get('api/solicitudes-oferta/{id}/elementos', [App\Http\Controllers\CotizacioneController::class, 'obtenerElementosConsolidaciones']);
     Route::get('/api/impuestos', [App\Http\Controllers\CotizacioneController::class, 'getImpuestos']);
 
-    #cadena de suministros
+    //cadena de suministros
+    Route::post('equivalencias/store-array/{unidadId}', [EquivalenciaController::class, 'storeEquivalencia'])->name('equivalencias.store-array');
     Route::post('registros/store-array/{movimientoId}', [RegistroController::class, 'storeArray'])->name('registros.store-array');
     Route::get('clases-movimientos/get-all-by-typeid/{typeId}', [ClasesMovimientoController::class, 'getAllClasesMovimientobyTipo'])->name('clases-movimientos.get-all-by-typeid');
     Route::get('productos/get-all', [ProductoController::class, 'getAllProductos'])->name('productos.get-all');
@@ -95,4 +96,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('movimientos', MovimientoController::class);
     Route::apiResource('terceros-tests', TercerosTestController::class);
     Route::apiResource('registros', RegistroController::class);
+    Route::apiResource('equivalencias', EquivalenciaController::class);
 });
