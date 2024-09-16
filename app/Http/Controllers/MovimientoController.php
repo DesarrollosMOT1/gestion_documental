@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MovimientoRequest;
-use App\Jobs\ProcessRegistrosJob;
 use App\Models\Movimiento;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -50,9 +50,9 @@ class MovimientoController extends Controller
         $registrosArray = json_decode($registrosJson, true);
 
         $movimiento = $this->storeMovimiento($movimientoData);
-
-        // Despacha el job para procesar los registros en segundo plano
-        ProcessRegistrosJob::dispatch($movimiento->id, $registrosArray);
+        Http::post(route('registros.store-array', ['movimientoId' => $movimiento->id]),
+            $registrosArray
+        );
 
         return Redirect::route('movimientos.index')
             ->with('success', 'Movimiento created successfully.');

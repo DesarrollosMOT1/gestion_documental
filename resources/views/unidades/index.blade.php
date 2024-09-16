@@ -54,10 +54,6 @@
                                                     <a class="btn btn-sm btn-primary "
                                                         href="{{ route('unidades.show', $unidad->id) }}"><i
                                                             class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
-                                                    <a class="btn btn-sm btn-success"
-                                                        href="{{ route('unidades.edit', $unidad->id) }}"><i
-                                                            class="fa fa-fw fa-edit"></i>
-                                                        {{ __('editar') }}</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
