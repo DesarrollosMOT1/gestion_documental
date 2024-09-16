@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UnidadeRequest;
 use App\Models\Unidades;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Http\Requests\UnidadeRequest;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -28,7 +29,7 @@ class UnidadeController extends Controller
      */
     public function create(): View
     {
-        $unidades = new Unidades();
+        $unidades = new Unidades;
 
         return view('unidades.create', compact('unidades'));
     }
@@ -36,12 +37,24 @@ class UnidadeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function storeUnidad(UnidadeRequest $request)
+    {
+        return Unidades::create($request->validated());
+    }
+
     public function store(UnidadeRequest $request): RedirectResponse
     {
-        Unidades::create($request->validated());
+        $UnidadData = $request->input('nombre');
+        $EquivalenciaJson = $request->only('unidad', 'cantidad');
 
-        return Redirect::route('unidades.index')
-            ->with('success', 'Unidade created successfully.');
+        $unidad = $this->storeUnidad($UnidadData);
+
+        Http::post(route('registros.store-array', ['movimientoId' => $unidad->id]),
+            $EquivalenciaJson
+        );
+
+        return Redirect::route('movimientos.index')
+            ->with('success', 'Movimiento created successfully.');
     }
 
     /**
@@ -82,6 +95,7 @@ class UnidadeController extends Controller
         return Redirect::route('unidades.index')
             ->with('success', 'Unidade deleted successfully');
     }
+
     public function getAllUnidades(Request $request): JsonResponse
     {
         $unidades = Unidades::all(['id', 'nombre as name']);
