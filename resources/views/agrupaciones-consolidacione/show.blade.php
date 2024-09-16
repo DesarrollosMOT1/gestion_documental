@@ -191,11 +191,14 @@
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
-                                                            <i class="fas fa-eye"></i> Detalles
+                                                            <i class="fas fa-eye"></i> 
                                                         </button>
+                                                        <!-- Switch de Aprobación con iconos -->
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $cotizacionElemento->estado === '1' ? 'checked' : '' }} />
-                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">Aprobación</label>
+                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
+                                                                <i class="fas {{ $cotizacionElemento->estado === '1' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}"></i>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
