@@ -53,6 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
             cell.querySelectorAll('input:not(.estado-checkbox)').forEach(input => {
                 input.disabled = checkbox.disabled || !checkbox.checked;
             });
+            
+            // Asegurarse de que el campo de selección se actualice correctamente
+            const selectInput = row.querySelector(`input[name="cotizaciones[]"][value="${currentId}"]`);
+            if (selectInput) {
+                selectInput.disabled = checkbox.disabled;
+            }
         });
     }
 
