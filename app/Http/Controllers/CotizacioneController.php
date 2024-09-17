@@ -106,20 +106,29 @@ class CotizacioneController extends Controller
 
     public function actualizarEstado(Request $request, $id)
     {
-        $cotizacionPrecio = CotizacionesPrecio::where('id_solicitudes_cotizaciones', $id)
-            ->where('id_agrupaciones_consolidaciones', $request->input('id_agrupaciones_consolidaciones'))
-            ->first();
+        $solicitudCotizacion = SolicitudesCotizacione::findOrFail($id);
+        $idSolicitudElemento = $solicitudCotizacion->id_solicitud_elemento;
+        $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
     
-        if (!$cotizacionPrecio) {
-            $cotizacionPrecio = new CotizacionesPrecio();
-            $cotizacionPrecio->id_solicitudes_cotizaciones = $id;
-            $cotizacionPrecio->id_agrupaciones_consolidaciones = $request->input('id_agrupaciones_consolidaciones');
-        }
+        // Desactivar todas las cotizaciones para este elemento en esta agrupación
+        CotizacionesPrecio::whereHas('solicitudesCotizacione', function($query) use ($idSolicitudElemento) {
+            $query->where('id_solicitud_elemento', $idSolicitudElemento);
+        })->where('id_agrupaciones_consolidaciones', $idAgrupacion)
+        ->update(['estado' => 0]);
     
-        $cotizacionPrecio->estado = $request->input('estado');
-        $cotizacionPrecio->save();
+        // Actualizar o crear el registro específico
+        $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
+            [
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion
+            ],
+            ['estado' => $request->input('estado')]
+        );
     
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'idSolicitudElemento' => $idSolicitudElemento
+        ]);
     }
     
 

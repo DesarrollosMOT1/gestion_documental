@@ -197,14 +197,14 @@
                                                         </button>
                                                     <!-- Switch de Aprobación con iconos -->
                                                     <div class="form-check form-switch">
-                                                        <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" id="estado{{ $cotizacionElemento->id }}"
-                                                        {{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                        <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                            id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
                                                         <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
                                                             <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
                                                         </label>
                                                     </div>
-                                                    </div>
                                                 </div>
+                                            </div>
                                                 
                                             <!-- Modal -->
                                             <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
@@ -220,6 +220,7 @@
                                                                     <h6 class="border-bottom pb-2 mb-3">Detalle de Solicitud de Cotización</h6>
                                                                     <ul class="list-group list-group-flush">
                                                                         <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
+                                                                        <li class="list-group-item"><strong>Nombre:</strong> {{ $elementoNombre }}</li>
                                                                         <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
                                                                         <li class="list-group-item"><strong>Precio:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span></li>
                                                                         <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}%</li>

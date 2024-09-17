@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Función para actualizar el estado mediante AJAX
     function actualizarEstadoCotizacion(id, estado, idAgrupacion) {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -15,16 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 console.log('Estado actualizado correctamente.');
-
-                // Actualizar el ícono visualmente en función del estado
-                const icono = document.getElementById(`icono-estado${id}`);
-                if (estado === 1) {
-                    icono.classList.remove('fa-times-circle', 'text-danger');
-                    icono.classList.add('fa-check-circle', 'text-success');
-                } else {
-                    icono.classList.remove('fa-check-circle', 'text-success');
-                    icono.classList.add('fa-times-circle', 'text-danger');
-                }
+                actualizarInterfaz(id, estado, data.idSolicitudElemento);
             } else {
                 console.error('Error al actualizar el estado.');
             }
@@ -34,13 +24,56 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Manejar el evento de cambio en el checkbox
+    function actualizarInterfaz(id, estado, idSolicitudElemento) {
+        const checkboxes = document.querySelectorAll(`.estado-checkbox[data-id-solicitud-elemento="${idSolicitudElemento}"]`);
+        
+        checkboxes.forEach(checkbox => {
+            const currentId = checkbox.getAttribute('data-id');
+            const row = checkbox.closest('tr');
+            const icono = row.querySelector(`#icono-estado${currentId}`);
+            
+            if (currentId == id) {
+                checkbox.checked = estado === 1;
+                if (estado === 1) {
+                    icono.classList.remove('fa-times-circle', 'text-danger');
+                    icono.classList.add('fa-check-circle', 'text-success');
+                } else {
+                    icono.classList.remove('fa-check-circle', 'text-success');
+                    icono.classList.add('fa-times-circle', 'text-danger');
+                }
+            } else {
+                checkbox.checked = false;
+                checkbox.disabled = estado === 1;
+                icono.classList.remove('fa-check-circle', 'text-success');
+                icono.classList.add('fa-times-circle', 'text-danger');
+            }
+            
+            // Deshabilitar otros inputs en la misma celda
+            const cell = checkbox.closest('td');
+            cell.querySelectorAll('input:not(.estado-checkbox)').forEach(input => {
+                input.disabled = checkbox.disabled || !checkbox.checked;
+            });
+        });
+    }
+
     document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const id = this.getAttribute('data-id');
             const idAgrupacion = this.getAttribute('data-id-agrupacion');
-            const estado = this.checked ? 1 : 0; // Convertir a 1 o 0 para el backend
+            const estado = this.checked ? 1 : 0;
             actualizarEstadoCotizacion(id, estado, idAgrupacion);
         });
     });
+
+    // Función para aplicar el estado inicial al cargar la página
+    function aplicarEstadoInicial() {
+        document.querySelectorAll('.estado-checkbox:checked').forEach(checkbox => {
+            const id = checkbox.getAttribute('data-id');
+            const idSolicitudElemento = checkbox.getAttribute('data-id-solicitud-elemento');
+            actualizarInterfaz(id, 1, idSolicitudElemento);
+        });
+    }
+
+    // Llamar a la función para aplicar el estado inicial
+    aplicarEstadoInicial();
 });
