@@ -177,6 +177,8 @@
                                     @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
                                         @php
                                             $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $cotizacionesPorElemento->first()->solicitudesElemento->nivelesTres->id);
+                                            $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
+                                            $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
@@ -193,13 +195,14 @@
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                             <i class="fas fa-eye"></i> 
                                                         </button>
-                                                        <!-- Switch de Aprobación con iconos -->
-                                                        <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $cotizacionElemento->estado === '1' ? 'checked' : '' }} />
-                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
-                                                                <i class="fas {{ $cotizacionElemento->estado === '1' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}"></i>
-                                                            </label>
-                                                        </div>
+                                                    <!-- Switch de Aprobación con iconos -->
+                                                    <div class="form-check form-switch">
+                                                        <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" id="estado{{ $cotizacionElemento->id }}"
+                                                        {{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                        <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
+                                                            <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
+                                                        </label>
+                                                    </div>
                                                     </div>
                                                 </div>
                                                 

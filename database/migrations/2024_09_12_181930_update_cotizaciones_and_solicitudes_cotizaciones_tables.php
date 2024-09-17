@@ -19,6 +19,7 @@ return new class extends Migration
         // Añadir el campo 'descuento' a la tabla 'solicitudes_cotizaciones'
         Schema::table('solicitudes_cotizaciones', function (Blueprint $table) {
             $table->decimal('descuento', 8, 2)->nullable()->after('cantidad');
+            $table->dropColumn('estado');
         });
 
         // Crear la tabla intermedia
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->foreign('id_agrupaciones_consolidaciones')->references('id')->on('agrupaciones_consolidaciones')->onDelete('cascade');
 
             $table->string('descripcion')->nullable();
+            $table->string('estado'); 
 
             $table->timestamps();
         });
@@ -48,9 +50,10 @@ return new class extends Migration
         // Eliminar el campo 'descuento' de la tabla 'solicitudes_cotizaciones' y restaurar el campo 'estado'
         Schema::table('solicitudes_cotizaciones', function (Blueprint $table) {
             $table->dropColumn('descuento');
+            $table->string('estado')->after('cantidad');
         });
 
         // Eliminar la tabla intermedia
-        Schema::dropIfExists('solicitudes_cotizaciones_precio');
+        Schema::dropIfExists('cotizaciones_precio');
     }
 };

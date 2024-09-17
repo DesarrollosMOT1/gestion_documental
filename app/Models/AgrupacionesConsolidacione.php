@@ -47,4 +47,8 @@ class AgrupacionesConsolidacione extends Model
         return $this->hasMany(\App\Models\Consolidacione::class, 'agrupacion_id', 'id');
     }
     
+    public function cotizacionesPrecios()
+    {
+        return $this->hasMany(\App\Models\CotizacionesPrecio::class, 'id_agrupaciones_consolidaciones', 'id');
+    }
 }

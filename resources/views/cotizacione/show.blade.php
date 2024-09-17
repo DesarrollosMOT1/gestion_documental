@@ -94,7 +94,6 @@
                                                 <th>Descuento</th>
                                                 <th>Impuesto</th>
                                                 <th>Precio</th>
-                                                <th>Estado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,11 +104,6 @@
                                                     <td>{{ $solicitudCotizacion->descuento }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="estado-checkbox" 
-                                                            data-id="{{ $solicitudCotizacion->id }}" 
-                                                            {{ $solicitudCotizacion->estado === '1' ? 'checked' : '' }}>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -180,7 +174,3 @@
     </div>
 </div>
 @endsection
-
-@push('js')
-    <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
-@endpush

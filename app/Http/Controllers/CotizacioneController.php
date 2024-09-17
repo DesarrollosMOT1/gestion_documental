@@ -13,6 +13,7 @@ use App\Models\SolicitudesCompra;
 use App\Models\Impuesto;
 use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
+use App\Models\CotizacionesPrecio;
 use Illuminate\Http\JsonResponse;
 
 class CotizacioneController extends Controller
@@ -105,10 +106,19 @@ class CotizacioneController extends Controller
 
     public function actualizarEstado(Request $request, $id)
     {
-        $elemento = SolicitudesCotizacione::findOrFail($id);
-        $elemento->estado = $request->input('estado');
-        $elemento->save();
-
+        $cotizacionPrecio = CotizacionesPrecio::where('id_solicitudes_cotizaciones', $id)
+            ->where('id_agrupaciones_consolidaciones', $request->input('id_agrupaciones_consolidaciones'))
+            ->first();
+    
+        if (!$cotizacionPrecio) {
+            $cotizacionPrecio = new CotizacionesPrecio();
+            $cotizacionPrecio->id_solicitudes_cotizaciones = $id;
+            $cotizacionPrecio->id_agrupaciones_consolidaciones = $request->input('id_agrupaciones_consolidaciones');
+        }
+    
+        $cotizacionPrecio->estado = $request->input('estado');
+        $cotizacionPrecio->save();
+    
         return response()->json(['success' => true]);
     }
     
