@@ -187,6 +187,9 @@
                                                         <i class="fas fa-money-bill-wave me-2"></i>
                                                         <span class="badge bg-info text-white me-3">${{ number_format($cotizacionElemento->precio, 2) }}</span>
                                                         <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" id="seleccionar{{ $cotizacionElemento->id }}" />
+                                                            @if(!empty($cotizacionPrecio->descripcion))
+                                                                <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                            @endif
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">

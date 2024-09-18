@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     let cotizacionPendiente = null;
     const justificacionModal = new bootstrap.Modal(document.getElementById('justificacionModal'));
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 
     function actualizarEstadoCotizacion(id, estado, idAgrupacion, justificacion = null) {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
