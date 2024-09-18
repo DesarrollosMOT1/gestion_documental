@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function actualizarEstadoCotizacion(id, estado, idAgrupacion) {
+    let cotizacionPendiente = null;
+    const justificacionModal = new bootstrap.Modal(document.getElementById('justificacionModal'));
+
+    function actualizarEstadoCotizacion(id, estado, idAgrupacion, justificacion = null) {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         fetch(`/cotizaciones/actualizar-estado/${id}`, {
@@ -8,7 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': token
             },
-            body: JSON.stringify({ estado, id_agrupaciones_consolidaciones: idAgrupacion })
+            body: JSON.stringify({ 
+                estado, 
+                id_agrupaciones_consolidaciones: idAgrupacion,
+                justificacion: justificacion
+            })
         })
         .then(response => response.json())
         .then(data => {
@@ -23,6 +30,48 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error en la solicitud AJAX:', error);
         });
     }
+
+    function compararPrecios(id, idAgrupacion, precio) {
+        const elementoActual = document.querySelector(`[data-id="${id}"]`).closest('tr');
+        const todasLasCotizaciones = elementoActual.querySelectorAll('.estado-checkbox');
+        let precioMayor = false;
+
+        todasLasCotizaciones.forEach(cotizacion => {
+            const precioCotizacion = parseFloat(cotizacion.closest('td').querySelector('.badge.bg-info').textContent.replace('$', '').replace(',', ''));
+            if (precio > precioCotizacion && id !== cotizacion.getAttribute('data-id')) {
+                precioMayor = true;
+            }
+        });
+
+        return precioMayor;
+    }
+
+    document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const id = this.getAttribute('data-id');
+            const idAgrupacion = this.getAttribute('data-id-agrupacion');
+            const estado = this.checked ? 1 : 0;
+            const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace('$', '').replace(',', ''));
+
+            if (estado === 1 && compararPrecios(id, idAgrupacion, precio)) {
+                cotizacionPendiente = { id, estado, idAgrupacion };
+                justificacionModal.show();
+                this.checked = false; // Revertir el cambio del checkbox
+            } else {
+                actualizarEstadoCotizacion(id, estado, idAgrupacion);
+            }
+        });
+    });
+
+    document.getElementById('guardarJustificacion').addEventListener('click', function() {
+        const justificacion = document.getElementById('justificacionTexto').value;
+        if (justificacion && cotizacionPendiente) {
+            actualizarEstadoCotizacion(cotizacionPendiente.id, cotizacionPendiente.estado, cotizacionPendiente.idAgrupacion, justificacion);
+            justificacionModal.hide();
+            document.getElementById('justificacionTexto').value = '';
+            cotizacionPendiente = null;
+        }
+    });
 
     function actualizarInterfaz(id, estado, idSolicitudElemento) {
         const checkboxes = document.querySelectorAll(`.estado-checkbox[data-id-solicitud-elemento="${idSolicitudElemento}"]`);

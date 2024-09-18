@@ -279,6 +279,26 @@
     </div>
 </div>
 
+<!-- Agregar este modal al final de tu archivo blade -->
+<div class="modal fade" id="justificacionModal" tabindex="-1" aria-labelledby="justificacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="justificacionModalLabel">Justificación de selección</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
+                <textarea id="justificacionTexto" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal para solicitudes-oferta -->
 <div class="modal fade" id="solicitudesOfertaModal" tabindex="-1" aria-labelledby="solicitudesOfertaModalLabel" aria-hidden="true">

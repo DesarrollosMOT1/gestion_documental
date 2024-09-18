@@ -122,7 +122,10 @@ class CotizacioneController extends Controller
                 'id_solicitudes_cotizaciones' => $id,
                 'id_agrupaciones_consolidaciones' => $idAgrupacion
             ],
-            ['estado' => $request->input('estado')]
+            [
+                'estado' => $request->input('estado'),
+                'descripcion' => $request->input('justificacion')
+            ]
         );
     
         return response()->json([
