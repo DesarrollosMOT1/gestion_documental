@@ -182,29 +182,26 @@
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
-                                                <div class="d-flex flex-column align-items-start">
-                                                    <p class="mb-2">
-                                                        <strong>Precio:</strong> 
-                                                        <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span>
-                                                    </p>
-                                                    <div class="form-check mb-2">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fas fa-money-bill-wave me-2"></i>
+                                                        <span class="badge bg-info text-white me-3">${{ number_format($cotizacionElemento->precio, 2) }}</span>
                                                         <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" id="seleccionar{{ $cotizacionElemento->id }}" />
-                                                        <label class="form-check-label" for="seleccionar{{ $cotizacionElemento->id }}">Seleccionar</label>
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                             <i class="fas fa-eye"></i> 
                                                         </button>
-                                                    <!-- Switch de Aprobación con iconos -->
-                                                    <div class="form-check form-switch">
-                                                        <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                            id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
-                                                        <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
-                                                            <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
-                                                        </label>
+                                                        <!-- Switch de Aprobación con iconos -->
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                                id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
+                                                                <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                                 
                                             <!-- Modal -->
                                             <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
