@@ -140,7 +140,7 @@
         <div class="card-body">
             @if($cotizacionesPorTercero->isNotEmpty())
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered datatable">
+                    <table class="table table-hover table-bordered  table-striped datatable">
                         <thead class="table-light">
                             <tr>
                                 <th>Elemento</th>
@@ -279,7 +279,6 @@
     </div>
 </div>
 
-<!-- Agregar este modal al final de tu archivo blade -->
 <div class="modal fade" id="justificacionModal" tabindex="-1" aria-labelledby="justificacionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -289,7 +288,8 @@
             </div>
             <div class="modal-body">
                 <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
-                <textarea id="justificacionTexto" class="form-control" rows="3"></textarea>
+                <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255"></textarea>
+                <small id="charCount" class="form-text text-muted">0/255 caracteres</small> <!-- Contador de caracteres -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -298,6 +298,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!-- Modal para solicitudes-oferta -->

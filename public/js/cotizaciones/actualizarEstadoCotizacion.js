@@ -1,10 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
     let cotizacionPendiente = null;
     const justificacionModal = new bootstrap.Modal(document.getElementById('justificacionModal'));
+    const justificacionTexto = document.getElementById('justificacionTexto');
+    const charCount = document.getElementById('charCount');
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    // Limitar a 255 caracteres y mostrar el conteo
+    justificacionTexto.addEventListener('input', function() {
+        const maxLength = 255;
+        const currentLength = justificacionTexto.value.length;
+
+        // Actualizar el contador de caracteres
+        charCount.textContent = `${currentLength}/${maxLength} caracteres`;
+
+        // Verificar si se excede el límite
+        if (currentLength > maxLength) {
+            justificacionTexto.value = justificacionTexto.value.substring(0, maxLength); // Recortar texto
+        }
+    });
 
     function actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones, justificacion = null) {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -70,12 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('guardarJustificacion').addEventListener('click', function() {
-        const justificacion = document.getElementById('justificacionTexto').value;
+        const justificacion = justificacionTexto.value;
         if (justificacion && cotizacionPendiente) {
             const idConsolidaciones = document.querySelector(`[data-id="${cotizacionPendiente.id}"]`).getAttribute('data-id-consolidaciones');
             actualizarEstadoCotizacion(cotizacionPendiente.id, cotizacionPendiente.estado, cotizacionPendiente.idAgrupacion, idConsolidaciones, justificacion);
             justificacionModal.hide();
-            document.getElementById('justificacionTexto').value = '';
+            justificacionTexto.value = ''; 
+            charCount.textContent = '0/255 caracteres'; 
             cotizacionPendiente = null;
         }
     });
