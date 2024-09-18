@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property $estado
  * @property $created_at
  * @property $updated_at
+ * @property $id_consolidaciones
+ * @property $estado_jefe
  *
  * @property AgrupacionesConsolidacione $agrupacionesConsolidacione
  * @property SolicitudesCotizacione $solicitudesCotizacione
@@ -32,7 +34,7 @@ class CotizacionesPrecio extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_solicitudes_cotizaciones', 'id_agrupaciones_consolidaciones', 'descripcion', 'estado'];
+    protected $fillable = ['id_solicitudes_cotizaciones', 'id_agrupaciones_consolidaciones', 'descripcion', 'estado', 'id_consolidaciones', 'estado_jefe'];
 
 
     /**
@@ -49,6 +51,14 @@ class CotizacionesPrecio extends Model
     public function solicitudesCotizacione()
     {
         return $this->belongsTo(\App\Models\SolicitudesCotizacione::class, 'id_solicitudes_cotizaciones', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function consolidacione()
+    {
+        return $this->belongsTo(\App\Models\Consolidacione::class, 'id_consolidaciones', 'id');
     }
     
 }

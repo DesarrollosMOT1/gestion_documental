@@ -186,7 +186,7 @@
                                                     <div class="d-flex align-items-center mb-2">
                                                         <i class="fas fa-money-bill-wave me-2"></i>
                                                         <span class="badge bg-info text-white me-3">${{ number_format($cotizacionElemento->precio, 2) }}</span>
-                                                        <input type="checkbox" class="form-check-input" name="cotizaciones[]" value="{{ $cotizacionElemento->id }}" id="seleccionar{{ $cotizacionElemento->id }}" />
+                                                        <input type="checkbox" class="form-check-input" data-id="{{ $cotizacionesPorElemento->first()->id }}">
                                                             @if(!empty($cotizacionPrecio->descripcion))
                                                                 <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
                                                             @endif
@@ -198,7 +198,7 @@
                                                         <!-- Switch de Aprobación con iconos -->
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                                data-id-consolidaciones="{{ $cotizacionesPorElemento->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
                                                             <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
                                                                 <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
                                                             </label>

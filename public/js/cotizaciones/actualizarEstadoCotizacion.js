@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 
-    function actualizarEstadoCotizacion(id, estado, idAgrupacion, justificacion = null) {
+    function actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones, justificacion = null) {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         fetch(`/cotizaciones/actualizar-estado/${id}`, {
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({ 
                 estado, 
                 id_agrupaciones_consolidaciones: idAgrupacion,
+                id_consolidaciones: idConsolidaciones,
                 justificacion: justificacion
             })
         })
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.addEventListener('change', function() {
             const id = this.getAttribute('data-id');
             const idAgrupacion = this.getAttribute('data-id-agrupacion');
+            const idConsolidaciones = this.getAttribute('data-id-consolidaciones'); 
             const estado = this.checked ? 1 : 0;
             const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace('$', '').replace(',', ''));
 
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 justificacionModal.show();
                 this.checked = false; // Revertir el cambio del checkbox
             } else {
-                actualizarEstadoCotizacion(id, estado, idAgrupacion);
+                actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones);
             }
         });
     });
@@ -70,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('guardarJustificacion').addEventListener('click', function() {
         const justificacion = document.getElementById('justificacionTexto').value;
         if (justificacion && cotizacionPendiente) {
-            actualizarEstadoCotizacion(cotizacionPendiente.id, cotizacionPendiente.estado, cotizacionPendiente.idAgrupacion, justificacion);
+            const idConsolidaciones = document.querySelector(`[data-id="${cotizacionPendiente.id}"]`).getAttribute('data-id-consolidaciones');
+            actualizarEstadoCotizacion(cotizacionPendiente.id, cotizacionPendiente.estado, cotizacionPendiente.idAgrupacion, idConsolidaciones, justificacion);
             justificacionModal.hide();
             document.getElementById('justificacionTexto').value = '';
             cotizacionPendiente = null;
@@ -114,15 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const id = this.getAttribute('data-id');
-            const idAgrupacion = this.getAttribute('data-id-agrupacion');
-            const estado = this.checked ? 1 : 0;
-            actualizarEstadoCotizacion(id, estado, idAgrupacion);
-        });
-    });
 
     // Función para aplicar el estado inicial al cargar la página
     function aplicarEstadoInicial() {
