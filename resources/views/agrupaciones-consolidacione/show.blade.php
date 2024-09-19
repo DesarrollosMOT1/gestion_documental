@@ -182,19 +182,25 @@
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="fas fa-money-bill-wave me-2"></i>
-                                                        <span class="badge bg-info text-white me-3">${{ number_format($cotizacionElemento->precio, 2) }}</span>
-                                                        <input type="checkbox" class="form-check-input" data-id="{{ $cotizacionesPorElemento->first()->id }}">
-                                                            @if(!empty($cotizacionPrecio->descripcion))
-                                                                <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
-                                                            @endif
-                                                    </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <!-- Columna de precio -->
+                                                    <div class="d-flex align-items-center">
+                                                        <input type="checkbox" class="form-check-input ms-1" data-id="{{ $cotizacionesPorElemento->first()->id }}">
+                                                        <i class="fas fa-money-bill-wave ms-5"></i>
+                                                        <span class="badge bg-info text-white fs-6 ms-2">
+                                                            ${{ number_format($cotizacionElemento->precio, 2) }}
+                                                        </span>
+                                                        @if(!empty($cotizacionPrecio->descripcion))
+                                                            <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                        @endif
+                                                    </div>                                             
+                                
+                                                    <!-- Columna de controles y acciones -->
                                                     <div class="d-flex align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                             <i class="fas fa-eye"></i> 
                                                         </button>
+                                
                                                         <!-- Switch de Aprobación con iconos -->
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
