@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cotizacionPendiente = null;
     const justificacionModal = new bootstrap.Modal(document.getElementById('justificacionModal'));
     const justificacionTexto = document.getElementById('justificacionTexto');
+    const justificacionError = document.getElementById('justificacionError');
     const charCount = document.getElementById('charCount');
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 console.log('Estado actualizado correctamente.');
-                actualizarInterfaz(id, estado, data.idSolicitudElemento);
+                actualizarInterfaz(id, estado, data.idSolicitudElemento, justificacion);
             } else {
                 console.error('Error al actualizar el estado.');
             }
@@ -86,8 +87,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('guardarJustificacion').addEventListener('click', function() {
-        const justificacion = justificacionTexto.value;
-        if (justificacion && cotizacionPendiente) {
+        const justificacion = justificacionTexto.value.trim();
+        if (justificacion === '') {
+            justificacionTexto.classList.add('is-invalid');
+            justificacionError.style.display = 'block';
+        } else if (cotizacionPendiente) {
+            justificacionTexto.classList.remove('is-invalid');
+            justificacionError.style.display = 'none';
             const idConsolidaciones = document.querySelector(`[data-id="${cotizacionPendiente.id}"]`).getAttribute('data-id-consolidaciones');
             actualizarEstadoCotizacion(cotizacionPendiente.id, cotizacionPendiente.estado, cotizacionPendiente.idAgrupacion, idConsolidaciones, justificacion);
             justificacionModal.hide();
@@ -97,22 +103,47 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function actualizarInterfaz(id, estado, idSolicitudElemento) {
+    // Limpiar la validación cuando se abra el modal
+    justificacionModal._element.addEventListener('show.bs.modal', function () {
+        justificacionTexto.classList.remove('is-invalid');
+        justificacionError.style.display = 'none';
+    });
+
+    function actualizarInterfaz(id, estado, idSolicitudElemento, justificacion = null) {
         const checkboxes = document.querySelectorAll(`.estado-checkbox[data-id-solicitud-elemento="${idSolicitudElemento}"]`);
         
         checkboxes.forEach(checkbox => {
             const currentId = checkbox.getAttribute('data-id');
             const row = checkbox.closest('tr');
             const icono = row.querySelector(`#icono-estado${currentId}`);
+            const comentarioIcon = row.querySelector('.fa-comment-dots');
             
             if (currentId == id) {
                 checkbox.checked = estado === 1;
                 if (estado === 1) {
                     icono.classList.remove('fa-times-circle', 'text-danger');
                     icono.classList.add('fa-check-circle', 'text-success');
+                    
+                    // Actualizar o agregar el icono de comentario si hay justificación
+                    if (justificacion) {
+                        if (comentarioIcon) {
+                            comentarioIcon.title = justificacion;
+                        } else {
+                            const nuevoComentarioIcon = document.createElement('i');
+                            nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
+                            nuevoComentarioIcon.title = justificacion;
+                            nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
+                            checkbox.parentNode.appendChild(nuevoComentarioIcon);
+                            new bootstrap.Tooltip(nuevoComentarioIcon);
+                        }
+                    }
                 } else {
                     icono.classList.remove('fa-check-circle', 'text-success');
                     icono.classList.add('fa-times-circle', 'text-danger');
+                    // Remover el icono de comentario si existe
+                    if (comentarioIcon) {
+                        comentarioIcon.remove();
+                    }
                 }
             } else {
                 checkbox.checked = false;

@@ -288,8 +288,9 @@
             </div>
             <div class="modal-body">
                 <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
-                <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255"></textarea>
-                <small id="charCount" class="form-text text-muted">0/255 caracteres</small> <!-- Contador de caracteres -->
+                <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255" required></textarea>
+                <small id="charCount" class="form-text text-muted">0/255 caracteres</small>
+                <div id="justificacionError" class="invalid-feedback">Por favor, proporcione una justificación.</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
