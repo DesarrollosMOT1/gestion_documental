@@ -140,6 +140,48 @@ class AgrupacionesConsolidacioneController extends Controller
         return response()->json($elementos);
     }
 
+    private function generatePrefix(): string
+    {
+        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
+        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
+        return $month . $year;
+    }
+
+    public function crearSolicitudCompra(): array
+    {
+        $solicitudesCompra = new SolicitudesCompra();
+        $solicitudesCompra->prefijo = $this->generatePrefix();
+        $users = User::all();
+        $centrosCostos = CentrosCosto::all();
+        $fechaActual = Carbon::now()->toDateString();
+        $solicitudesOferta = new SolicitudesOferta();
+        $terceros = Tercero::all();
+        $ordenesCompra = new OrdenesCompra();
+
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+
+        // Obtener los nombres de los niveles uno según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+
+        // Obtener los niveles uno con base en los permisos del usuario
+        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
+
+        return compact('solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'nivelesUno');
+    }
+
     public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse
     {
         $validated = $request->validated();
@@ -217,35 +259,8 @@ class AgrupacionesConsolidacioneController extends Controller
     {
         $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
     
-        $solicitudesCompra = new SolicitudesCompra();
-        $solicitudesCompra->prefijo = $this->generatePrefix();
-        $users = User::all();
-        $centrosCostos = CentrosCosto::all();
-        $fechaActual = Carbon::now()->toDateString();
-        $solicitudesOferta = new SolicitudesOferta();
-        $terceros = Tercero::all();
-        $ordenesCompra = new OrdenesCompra();
-    
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno con base en los permisos del usuario
-        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
+        // Llamar al nuevo método que encapsula la lógica de la solicitud de compra
+        $datosSolicitudCompra = $this->crearSolicitudCompra();
     
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
             'consolidaciones.solicitudesCompra.user',
@@ -257,6 +272,7 @@ class AgrupacionesConsolidacioneController extends Controller
     
         // Obtener cotizaciones vigentes agrupadas por elemento y tercero
         $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
+        
         // Agrupar cotizaciones por elemento y tercero
         $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
             return [$consolidacion->solicitudesElemento->nivelesTres->nombre => $consolidacion];
@@ -265,8 +281,9 @@ class AgrupacionesConsolidacioneController extends Controller
             return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
         });
     
-        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'cotizacionesPorTercero', 'elementosConsolidados'));
-    }    
+        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados')));
+    }
+    
     
     public function verificarCotizacionesVigentes($agrupacionId)
     {
@@ -309,13 +326,6 @@ class AgrupacionesConsolidacioneController extends Controller
         }
     
         return $cotizaciones;
-    }
-
-    private function generatePrefix(): string
-    {
-        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
-        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
-        return $month . $year;
     }
 
     /**
