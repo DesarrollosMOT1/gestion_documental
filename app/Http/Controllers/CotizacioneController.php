@@ -111,16 +111,12 @@ class CotizacioneController extends Controller
         $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
         $idConsolidaciones = $request->input('id_consolidaciones');  
     
-        // Si el estado principal es 0, asegurarse de que estado_jefe también sea 0
-        $estado = $request->input('estado');
-        $estadoJefe = $estado == 0 ? 0 : $request->input('estado_jefe', 0);
-    
         // Desactivar todas las cotizaciones para este elemento en esta agrupación
         CotizacionesPrecio::whereHas('solicitudesCotizacione', function($query) use ($idSolicitudElemento) {
             $query->where('id_solicitud_elemento', $idSolicitudElemento);
         })->where('id_agrupaciones_consolidaciones', $idAgrupacion)
-          ->where('id_consolidaciones', $idConsolidaciones)  
-          ->update(['estado' => 0, 'estado_jefe' => 0]);
+        ->where('id_consolidaciones', $idConsolidaciones)  
+        ->update(['estado' => 0]);
     
         // Actualizar o crear el registro específico
         $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
@@ -130,17 +126,14 @@ class CotizacioneController extends Controller
                 'id_consolidaciones' => $idConsolidaciones  
             ],
             [
-                'estado' => $estado,
-                'estado_jefe' => $estadoJefe,
+                'estado' => $request->input('estado'),
                 'descripcion' => $request->input('justificacion')
             ]
         );
     
         return response()->json([
             'success' => true,
-            'idSolicitudElemento' => $idSolicitudElemento,
-            'estado' => $estado,
-            'estadoJefe' => $estadoJefe
+            'idSolicitudElemento' => $idSolicitudElemento
         ]);
     }
     

@@ -179,17 +179,13 @@
                                             $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $cotizacionesPorElemento->first()->solicitudesElemento->nivelesTres->id);
                                             $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
                                             $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
-                                            $estadoJefe = $cotizacionPrecio ? $cotizacionPrecio->estado_jefe : 0;
                                         @endphp
                                         <td>
                                             @if($cotizacionElemento)
                                                 <div class="d-flex justify-content-between">
                                                     <!-- Columna de precio -->
                                                     <div class="d-flex align-items-center">
-                                                        <input type="checkbox" class="form-check-input ms-1 estado-jefe-checkbox" 
-                                                            data-id="{{ $cotizacionElemento->id }}" 
-                                                            {{ $estadoJefe == 1 ? 'checked' : '' }} 
-                                                            {{ $estadoSwitch == 0 ? 'disabled' : '' }}>
+                                                        <input type="checkbox" class="form-check-input ms-1" data-id="{{ $cotizacionesPorElemento->first()->id }}">
                                                         <i class="fas fa-money-bill-wave ms-5"></i>
                                                         <span class="badge bg-info text-white fs-6 ms-2">
                                                             ${{ number_format($cotizacionElemento->precio, 2) }}
