@@ -26,8 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Función para actualizar el estado de cotización
-    const actualizarEstadoCotizacion = (id, estado, idAgrupacion, idConsolidaciones, justificacion = null) => {
+    const actualizarEstadoCotizacion = (id, estado, idAgrupacion, idConsolidaciones, justificacion = null, estadoJefe = null) => {
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Crear un objeto con los datos a actualizar
+        const dataToUpdate = {
+            id_agrupaciones_consolidaciones: idAgrupacion,
+            id_consolidaciones: idConsolidaciones
+        };
+
+        // Solo incluir los campos que realmente se están actualizando
+        if (estado !== null) dataToUpdate.estado = estado;
+        if (justificacion !== null) dataToUpdate.justificacion = justificacion;
+        if (estadoJefe !== null) dataToUpdate.estado_jefe = estadoJefe;
 
         fetch(`/cotizaciones/actualizar-estado/${id}`, {
             method: 'POST',
@@ -35,18 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': token
             },
-            body: JSON.stringify({
-                estado,
-                id_agrupaciones_consolidaciones: idAgrupacion,
-                id_consolidaciones: idConsolidaciones,
-                justificacion
-            })
+            body: JSON.stringify(dataToUpdate)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 console.log('Estado actualizado correctamente.');
-                actualizarInterfaz(id, estado, data.idSolicitudElemento, justificacion);
+                actualizarInterfaz(id, estado, data.idSolicitudElemento, justificacion, estadoJefe);
             } else {
                 console.error('Error al actualizar el estado.');
             }
@@ -72,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return precioMayor;
     };
 
-    // Manejo del cambio en los checkboxes
+    // Manejo del cambio en los checkboxes de estado
     document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const id = this.getAttribute('data-id');
@@ -80,16 +86,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
             const estado = this.checked ? 1 : 0;
             const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace(/[$,]/g, ''));
+            const estadoJefeCheckbox = document.getElementById(`estadoJefe${id}`);
 
             if (estado === 1 && compararPrecios(id, idAgrupacion, precio)) {
                 cotizacionPendiente = { id, estado, idAgrupacion };
                 justificacionModal.show();
                 this.checked = false; // Revertir el cambio del checkbox
             } else {
-                actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones);
+                actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones, null, null);
+                
+                // Actualizar estado del checkbox de jefe
+                estadoJefeCheckbox.disabled = estado === 0;
+                if (estado === 0) {
+                    estadoJefeCheckbox.checked = false;
+                    actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, 0);
+                }
             }
         });
     });
+
+    // Manejo del cambio en los checkboxes de estado_jefe
+    document.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const id = this.getAttribute('data-id');
+            const idAgrupacion = this.getAttribute('data-id-agrupacion');
+            const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
+            const estadoJefe = this.checked ? 1 : 0;
+
+            // Solo actualizamos el estado_jefe, dejando los demás campos intactos
+            actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, estadoJefe);
+        });
+    });
+
 
     // Manejo del botón de guardar justificación
     document.getElementById('guardarJustificacion').addEventListener('click', () => {
@@ -116,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Función para actualizar la interfaz después de cambiar el estado
-    const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = null) => {
+    const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = null, estadoJefe = null) => {
         const checkboxes = document.querySelectorAll(`.estado-checkbox[data-id-solicitud-elemento="${idSolicitudElemento}"]`);
 
         checkboxes.forEach(checkbox => {
@@ -124,43 +152,62 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = checkbox.closest('tr');
             const icono = row.querySelector(`#icono-estado${currentId}`);
             const comentarioIcon = row.querySelector('.fa-comment-dots');
+            const estadoJefeCheckbox = document.getElementById(`estadoJefe${currentId}`);
 
             if (currentId === id) {
-                checkbox.checked = estado === 1;
-                if (estado === 1) {
-                    icono.classList.remove('fa-times-circle', 'text-danger');
-                    icono.classList.add('fa-check-circle', 'text-success');
+                if (estado !== null) {
+                    checkbox.checked = estado === 1;
+                    if (estado === 1) {
+                        icono.classList.remove('fa-times-circle', 'text-danger');
+                        icono.classList.add('fa-check-circle', 'text-success');
 
-                    // Actualizar o agregar el icono de comentario si hay justificación
-                    if (justificacion) {
-                        if (comentarioIcon) {
-                            comentarioIcon.title = justificacion;
-                        } else {
-                            const nuevoComentarioIcon = document.createElement('i');
-                            nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
-                            nuevoComentarioIcon.title = justificacion;
-                            nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
-                            checkbox.parentNode.appendChild(nuevoComentarioIcon);
-                            new bootstrap.Tooltip(nuevoComentarioIcon);
+                        // Actualizar o agregar el icono de comentario si hay justificación
+                        if (justificacion) {
+                            if (comentarioIcon) {
+                                comentarioIcon.title = justificacion;
+                            } else {
+                                const nuevoComentarioIcon = document.createElement('i');
+                                nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
+                                nuevoComentarioIcon.title = justificacion;
+                                nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
+                                checkbox.parentNode.appendChild(nuevoComentarioIcon);
+                                new bootstrap.Tooltip(nuevoComentarioIcon);
+                            }
                         }
-                    }
-                } else {
-                    icono.classList.remove('fa-check-circle', 'text-success');
-                    icono.classList.add('fa-times-circle', 'text-danger');
-                    if (comentarioIcon) {
-                        comentarioIcon.remove();
+
+                        // Habilitar el checkbox de estado_jefe
+                        estadoJefeCheckbox.disabled = false;
+                    } else {
+                        icono.classList.remove('fa-check-circle', 'text-success');
+                        icono.classList.add('fa-times-circle', 'text-danger');
+
+                        // Deshabilitar y desmarcar el checkbox de estado_jefe
+                        estadoJefeCheckbox.disabled = true;
+                        estadoJefeCheckbox.checked = false;
                     }
                 }
+
+                // Actualizar el estado del checkbox de jefe si se proporcionó
+                if (estadoJefe !== null) {
+                    estadoJefeCheckbox.checked = estadoJefe === 1;
+                }
             } else {
-                checkbox.checked = false;
-                checkbox.disabled = estado === 1;
-                icono.classList.remove('fa-check-circle', 'text-success');
-                icono.classList.add('fa-times-circle', 'text-danger');
+                if (estado !== null) {
+                    checkbox.checked = false;
+                    checkbox.disabled = estado === 1;
+                    icono.classList.remove('fa-check-circle', 'text-success');
+                    icono.classList.add('fa-times-circle', 'text-danger');
+
+                    // Deshabilitar y desmarcar el checkbox de estado_jefe para otras filas
+                    const otroEstadoJefeCheckbox = document.getElementById(`estadoJefe${currentId}`);
+                    otroEstadoJefeCheckbox.disabled = true;
+                    otroEstadoJefeCheckbox.checked = false;
+                }
             }
 
             // Deshabilitar otros inputs en la misma celda
             const cell = checkbox.closest('td');
-            cell.querySelectorAll('input:not(.estado-checkbox)').forEach(input => {
+            cell.querySelectorAll('input:not(.estado-checkbox):not(.estado-jefe-checkbox)').forEach(input => {
                 input.disabled = checkbox.disabled || !checkbox.checked;
             });
 
@@ -177,7 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.estado-checkbox:checked').forEach(checkbox => {
             const id = checkbox.getAttribute('data-id');
             const idSolicitudElemento = checkbox.getAttribute('data-id-solicitud-elemento');
-            actualizarInterfaz(id, 1, idSolicitudElemento);
+            const estadoJefeCheckbox = document.getElementById(`estadoJefe${id}`);
+            const estadoJefe = estadoJefeCheckbox.checked ? 1 : 0;
+            actualizarInterfaz(id, 1, idSolicitudElemento, null, estadoJefe);
         });
     };
 
