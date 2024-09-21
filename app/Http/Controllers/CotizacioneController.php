@@ -110,30 +110,41 @@ class CotizacioneController extends Controller
         $idSolicitudElemento = $solicitudCotizacion->id_solicitud_elemento;
         $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
         $idConsolidaciones = $request->input('id_consolidaciones');  
-    
+
         // Preparar los datos a actualizar
         $dataToUpdate = [
             'id_solicitudes_cotizaciones' => $id,
             'id_agrupaciones_consolidaciones' => $idAgrupacion,
             'id_consolidaciones' => $idConsolidaciones
         ];
-    
-        // Solo incluir los campos que se están actualizando
+
+        // Si estamos actualizando solo estado_jefe, obtenemos el valor actual de 'estado'
+        if ($request->has('estado_jefe') && !$request->has('estado')) {
+            $cotizacionExistente = CotizacionesPrecio::where([
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion,
+                'id_consolidaciones' => $idConsolidaciones
+            ])->first();
+
+            if ($cotizacionExistente) {
+                $dataToUpdate['estado'] = $cotizacionExistente->estado;
+            } else {
+                $dataToUpdate['estado'] = 0; // Valor por defecto si no existe
+            }
+        }
+
         if ($request->has('estado')) {
             $dataToUpdate['estado'] = $request->input('estado');
             
-            // Si se está cambiando el estado principal a 0, también desactivamos estado_jefe
-            if ($request->input('estado') == 0) {
-                $dataToUpdate['estado_jefe'] = 0;
+            if ($request->input('estado') == 1) {
+                // Desactivar otras cotizaciones
+                CotizacionesPrecio::whereHas('solicitudesCotizacione', function($query) use ($idSolicitudElemento) {
+                    $query->where('id_solicitud_elemento', $idSolicitudElemento);
+                })->where('id_agrupaciones_consolidaciones', $idAgrupacion)
+                    ->where('id_consolidaciones', $idConsolidaciones)  
+                    ->where('id_solicitudes_cotizaciones', '!=', $id)
+                    ->update(['estado' => 0]);
             }
-    
-            // Desactivar todas las otras cotizaciones para este elemento en esta agrupación
-            CotizacionesPrecio::whereHas('solicitudesCotizacione', function($query) use ($idSolicitudElemento) {
-                $query->where('id_solicitud_elemento', $idSolicitudElemento);
-            })->where('id_agrupaciones_consolidaciones', $idAgrupacion)
-            ->where('id_consolidaciones', $idConsolidaciones)  
-            ->where('id_solicitudes_cotizaciones', '!=', $id)
-            ->update(['estado' => 0, 'estado_jefe' => 0]);
         }
         
         if ($request->has('estado_jefe')) {
@@ -143,8 +154,7 @@ class CotizacioneController extends Controller
         if ($request->has('justificacion')) {
             $dataToUpdate['descripcion'] = $request->input('justificacion');
         }
-    
-        // Actualizar o crear el registro específico
+
         $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
             [
                 'id_solicitudes_cotizaciones' => $id,
@@ -153,7 +163,7 @@ class CotizacioneController extends Controller
             ],
             $dataToUpdate
         );
-    
+
         return response()->json([
             'success' => true,
             'idSolicitudElemento' => $idSolicitudElemento

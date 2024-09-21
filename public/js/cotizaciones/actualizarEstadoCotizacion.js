@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
             const estado = this.checked ? 1 : 0;
             const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace(/[$,]/g, ''));
-            const estadoJefeCheckbox = document.getElementById(`estadoJefe${id}`);
 
             if (estado === 1 && compararPrecios(id, idAgrupacion, precio)) {
                 cotizacionPendiente = { id, estado, idAgrupacion };
@@ -94,13 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.checked = false; // Revertir el cambio del checkbox
             } else {
                 actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones, null, null);
-                
-                // Actualizar estado del checkbox de jefe
-                estadoJefeCheckbox.disabled = estado === 0;
-                if (estado === 0) {
-                    estadoJefeCheckbox.checked = false;
-                    actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, 0);
-                }
             }
         });
     });
@@ -117,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, estadoJefe);
         });
     });
-
+    
 
     // Manejo del botón de guardar justificación
     document.getElementById('guardarJustificacion').addEventListener('click', () => {
@@ -174,16 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 new bootstrap.Tooltip(nuevoComentarioIcon);
                             }
                         }
-
-                        // Habilitar el checkbox de estado_jefe
-                        estadoJefeCheckbox.disabled = false;
                     } else {
                         icono.classList.remove('fa-check-circle', 'text-success');
                         icono.classList.add('fa-times-circle', 'text-danger');
-
-                        // Deshabilitar y desmarcar el checkbox de estado_jefe
-                        estadoJefeCheckbox.disabled = true;
-                        estadoJefeCheckbox.checked = false;
                     }
                 }
 
@@ -197,15 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     checkbox.disabled = estado === 1;
                     icono.classList.remove('fa-check-circle', 'text-success');
                     icono.classList.add('fa-times-circle', 'text-danger');
-
-                    // Deshabilitar y desmarcar el checkbox de estado_jefe para otras filas
-                    const otroEstadoJefeCheckbox = document.getElementById(`estadoJefe${currentId}`);
-                    otroEstadoJefeCheckbox.disabled = true;
-                    otroEstadoJefeCheckbox.checked = false;
                 }
             }
 
-            // Deshabilitar otros inputs en la misma celda
+            // Deshabilitar otros inputs en la misma celda, excepto estado_jefe
             const cell = checkbox.closest('td');
             cell.querySelectorAll('input:not(.estado-checkbox):not(.estado-jefe-checkbox)').forEach(input => {
                 input.disabled = checkbox.disabled || !checkbox.checked;

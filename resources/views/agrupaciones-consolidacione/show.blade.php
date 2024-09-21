@@ -188,7 +188,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="form-check ms-2">
                                                             <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                data-id-consolidaciones="{{ $cotizacionesPorElemento->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} {{ $estadoSwitch == 0 ? 'disabled' : '' }} />
+                                                                data-id-consolidaciones="{{ $cotizacionesPorElemento->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
                                                         </div>
                                                         <i class="fas fa-money-bill-wave ms-5"></i>
                                                         <span class="badge bg-info text-white fs-6 ms-2">
