@@ -78,6 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return precioMayor;
     };
 
+    // Función para verificar si se puede seleccionar el checkbox de estado_jefe
+    const puedeSeleccionarEstadoJefe = (fila) => {
+        return fila.querySelector('.estado-checkbox:checked') !== null;
+    };
+
+    // Función para actualizar el estado de los checkboxes de estado_jefe
+    const actualizarEstadoJefeCheckboxes = (fila) => {
+        const estadoJefeCheckboxes = fila.querySelectorAll('.estado-jefe-checkbox');
+        const puedeSeleccionar = puedeSeleccionarEstadoJefe(fila);
+
+        estadoJefeCheckboxes.forEach(checkbox => {
+            checkbox.disabled = !puedeSeleccionar;
+            if (!puedeSeleccionar) {
+                checkbox.checked = false;
+            }
+        });
+    };
+
     // Manejo del cambio en los checkboxes de estado
     document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
@@ -94,22 +112,37 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 actualizarEstadoCotizacion(id, estado, idAgrupacion, idConsolidaciones, null, null);
             }
+
+            // Actualizar el estado de los checkboxes de estado_jefe en la misma fila
+            actualizarEstadoJefeCheckboxes(this.closest('tr'));
         });
     });
 
     // Manejo del cambio en los checkboxes de estado_jefe
     document.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
+            if (!puedeSeleccionarEstadoJefe(this.closest('tr'))) {
+                this.checked = false;
+                return;
+            }
+
             const id = this.getAttribute('data-id');
             const idAgrupacion = this.getAttribute('data-id-agrupacion');
             const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
             const estadoJefe = this.checked ? 1 : 0;
 
+            // Desmarcar todos los otros checkboxes de estado_jefe en la misma fila
+            const fila = this.closest('tr');
+            fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
+                if (otherCheckbox !== this) {
+                    otherCheckbox.checked = false;
+                }
+            });
+
             // Solo actualizamos el estado_jefe, dejando los demás campos intactos
             actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, estadoJefe);
         });
     });
-    
 
     // Manejo del botón de guardar justificación
     document.getElementById('guardarJustificacion').addEventListener('click', () => {
@@ -145,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const icono = row.querySelector(`#icono-estado${currentId}`);
             const comentarioIcon = row.querySelector('.fa-comment-dots');
             const estadoJefeCheckbox = document.getElementById(`estadoJefe${currentId}`);
+            actualizarEstadoJefeCheckboxes(checkbox.closest('tr'));
 
             if (currentId === id) {
                 if (estado !== null) {
@@ -197,6 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectInput.disabled = checkbox.disabled;
             }
         });
+
+        // Deshabilitar otros checkboxes de estado_jefe en la misma fila
+        if (estadoJefe !== null) {
+            const row = document.getElementById(`estadoJefe${id}`).closest('tr');
+            row.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
+                checkbox.disabled = checkbox.id !== `estadoJefe${id}` && estadoJefe === 1;
+            });
+        }
     };
 
     // Aplicar el estado inicial al cargar la página
@@ -207,6 +249,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const estadoJefeCheckbox = document.getElementById(`estadoJefe${id}`);
             const estadoJefe = estadoJefeCheckbox.checked ? 1 : 0;
             actualizarInterfaz(id, 1, idSolicitudElemento, null, estadoJefe);
+        });
+
+        // Aplicar el estado inicial para los checkboxes de estado_jefe
+        document.querySelectorAll('tr').forEach(row => {
+            actualizarEstadoJefeCheckboxes(row);
+        });
+
+        // Aplicar el estado inicial para los checkboxes de estado_jefe
+        document.querySelectorAll('.estado-jefe-checkbox:checked').forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            row.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
+                if (otherCheckbox !== checkbox) {
+                    otherCheckbox.disabled = true;
+                }
+            });
         });
     };
 
