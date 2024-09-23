@@ -196,7 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
                                 nuevoComentarioIcon.title = justificacion;
                                 nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
-                                checkbox.parentNode.appendChild(nuevoComentarioIcon);
+                        
+                                // Selecciona el span que contiene el precio y añade el ícono justo después
+                                const precioSpan = checkbox.closest('td').querySelector('.badge.bg-info');
+                                precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon); 
+                                
                                 new bootstrap.Tooltip(nuevoComentarioIcon);
                             }
                         }
