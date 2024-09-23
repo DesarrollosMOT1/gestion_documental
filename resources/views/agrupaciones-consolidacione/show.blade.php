@@ -72,78 +72,26 @@
                     </div>
                 </div>
 
-    <!-- Consolidaciones Asociadas -->
-    <div class="col-12 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title m-0"><i class="fas fa-list mr-2"></i>Consolidaciones Asociadas</h5>
-            </div>
-            <div class="card-body">
-                @if($agrupacionesConsolidacione->consolidaciones->isNotEmpty())
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <input type="checkbox" id="select_all" />
-                                    </th>
-                                    <th>ID Consolidación</th>
-                                    <th>Solicitud de Compra</th>
-                                    <th>Elemento Consolidado</th>
-                                    <th>Cantidad Unidad</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" class="select_item" value="{{ $consolidacion->id }}" />
-                                        </td>
-                                        <td>{{ $consolidacion->id }}</td>
-                                        <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
-                                        <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                        <td>{{ $consolidacion->cantidad }}</td>
-                                        <td>
-                                            @if($consolidacion->elementosConsolidados->count() > 0)
-                                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidacion->id }}">
-                                                    Ver Elementos Consolidados
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <p class="text-muted">No hay consolidaciones asociadas a esta agrupación.</p>
-                @endif
-                <div class="float-right">  
-                    <button type="button" id="btnGenerarSolicitudOferta" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
-                        {{ __('Generar Solicitud Oferta') }}
-                    </button>        
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Cotizaciones Vigentes -->
 <div class="col-12 mb-4">
     <div class="card shadow-sm">
         <div class="card-header">
             <h5 class="card-title m-0">
-                <i class="fas fa-file-invoice mr-2"></i>Cotizaciones Vigentes
+                <i class="fas fa-list mr-2"></i>Consolidaciones y Cotizaciones
             </h5>
         </div>
         <div class="card-body">
-            @if($cotizacionesPorTercero->isNotEmpty())
+            @if($elementosConsolidados->isNotEmpty() && $cotizacionesPorTercero->isNotEmpty())
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered  table-striped datatable">
+                    <table class="table table-hover table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
+                                <th>
+                                    <input type="checkbox" id="select_all" />
+                                </th>
+                                <th></th>
                                 <th>Elemento</th>
+                                <th>Cant</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
                                     @php
                                         $cotizaciones = $cotizacionesPorTercero->get($tercero);
@@ -171,12 +119,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($elementosConsolidados as $elementoNombre => $cotizacionesPorElemento)
+                            @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
                                 <tr>
+                                    <td>
+                                        <input type="checkbox" class="select_item" value="{{ $consolidaciones->first()->id }}" />
+                                    </td>
+                                    <td class="text-center">
+                                        @if($consolidaciones->first()->elementosConsolidados->count() > 0)
+                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
+                                                <i class="fa fa-exclamation-circle"></i>
+                                            </button>
+                                        @endif
+                                    </td>
                                     <td class="font-weight-bold">{{ $elementoNombre }}</td>
+                                    <td>{{ $consolidaciones->first()->cantidad }}</td>
                                     @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
                                         @php
-                                            $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $cotizacionesPorElemento->first()->solicitudesElemento->nivelesTres->id);
+                                            $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $consolidaciones->first()->solicitudesElemento->nivelesTres->id);
                                             $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
                                             $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
                                             $estadoJefe = $cotizacionPrecio ? $cotizacionPrecio->estado_jefe : 0;
@@ -184,31 +143,26 @@
                                         <td>
                                             @if($cotizacionElemento)
                                                 <div class="d-flex justify-content-between">
-                                                    <!-- Columna de precio -->
                                                     <div class="d-flex align-items-center">
                                                         <div class="form-check ms-2">
                                                             <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                data-id-consolidaciones="{{ $cotizacionesPorElemento->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
+                                                                data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
                                                         </div>
-                                                        <i class="fas fa-money-bill-wave ms-5"></i>
+                                                        <i class="fas fa-money-bill-wave ms-3"></i>
                                                         <span class="badge bg-info text-white fs-6 ms-2">
                                                             ${{ number_format($cotizacionElemento->precio, 2) }}
                                                         </span>
                                                         @if(!empty($cotizacionPrecio->descripcion))
                                                             <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
                                                         @endif
-                                                    </div>                                             
-                                
-                                                    <!-- Columna de controles y acciones -->
+                                                    </div>
                                                     <div class="d-flex align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                             <i class="fas fa-eye"></i> 
                                                         </button>
-                                
-                                                        <!-- Switch de Aprobación con iconos -->
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                data-id-consolidaciones="{{ $cotizacionesPorElemento->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                                data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
                                                             <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
                                                                 <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
                                                             </label>
@@ -271,7 +225,7 @@
                                                 </div>
                                             </div>
                                             @else
-                                                <p class="text-muted">No hay cotizaciones vigentes para este elemento</p>
+                                                <p class="text-muted">No hay cotizaciones vigentes</p>
                                             @endif
                                         </td>
                                     @endforeach
@@ -282,9 +236,14 @@
                 </div>
             @else
                 <div class="alert alert-info" role="alert">
-                    <i class="fas fa-info-circle mr-2"></i>No hay cotizaciones vigentes para los elementos consolidados.
+                    <i class="fas fa-info-circle mr-2"></i>No hay consolidaciones o cotizaciones vigentes para mostrar.
                 </div>
             @endif
+            <div class="float-right">  
+                <button type="button" id="btnGenerarSolicitudOferta" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
+                    {{ __('Generar Solicitud Oferta') }}
+                </button>        
+            </div>
         </div>
     </div>
 </div>
