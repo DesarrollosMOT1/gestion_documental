@@ -2,12 +2,12 @@ $(document).ready(function() {
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
     // Eventos para los checkboxes de selección
-    $('#select_all').change(function() {
-        $('.select_item').prop('checked', $(this).prop('checked'));
+    $('#selected_all').change(function() {
+        $('.selected_item').prop('checked', $(this).prop('checked'));
         actualizarConsolidacionesSeleccionadas();
     });
 
-    $('.select_item').change(function() {
+    $('.selected_item').change(function() {
         actualizarConsolidacionesSeleccionadas();
         toggleGenerateButton();
     });
@@ -23,7 +23,7 @@ $(document).ready(function() {
     }
 
     function obtenerConsolidacionesSeleccionadas() {
-        return $('.select_item:checked').map(function() {
+        return $('.selected_item:checked').map(function() {
             return $(this).val();
         }).get();
     }

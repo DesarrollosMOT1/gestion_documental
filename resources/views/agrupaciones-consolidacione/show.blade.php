@@ -8,10 +8,6 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Agrupación de Consolidaciones</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('agrupaciones-consolidaciones.index') }}">Atrás</a>
-            <!-- Botón para abrir el modal -->
-            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#createSolicitudesCompraModal">
-                Crear Solicitud de Compra
-            </button>
         </div>
         @if ($message = Session::get('success'))
             <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
@@ -87,7 +83,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>
-                                    <input type="checkbox" id="select_all" />
+                                    <input type="checkbox" id="selected_all" />
                                 </th>
                                 <th></th>
                                 <th>Elemento</th>
@@ -122,11 +118,11 @@
                             @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" class="select_item" value="{{ $consolidaciones->first()->id }}" />
+                                        <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
                                     </td>
                                     <td class="text-center">
                                         @if($consolidaciones->first()->elementosConsolidados->count() > 0)
-                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
                                                 <i class="fa fa-exclamation-circle"></i>
                                             </button>
                                         @endif
@@ -148,15 +144,15 @@
                                                             <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
                                                                 data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
                                                         </div>
-                                                        <i class="fas fa-money-bill-wave ms-3"></i>
+                                                        <i class="fas fa-money-bill-wave ms-1"></i>
                                                         <span class="badge bg-info text-white fs-6 ms-2">
-                                                            ${{ number_format($cotizacionElemento->precio, 2) }}
+                                                            ${{ number_format($cotizacionElemento->precio) }}
                                                         </span>
                                                         @if(!empty($cotizacionPrecio->descripcion))
                                                             <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
                                                         @endif
                                                     </div>
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-center ms-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                             <i class="fas fa-eye"></i> 
                                                         </button>
@@ -239,11 +235,7 @@
                     <i class="fas fa-info-circle mr-2"></i>No hay consolidaciones o cotizaciones vigentes para mostrar.
                 </div>
             @endif
-            <div class="float-right">  
-                <button type="button" id="btnGenerarSolicitudOferta" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
-                    {{ __('Generar Solicitud Oferta') }}
-                </button>        
-            </div>
+            
         </div>
     </div>
 </div>
@@ -361,7 +353,19 @@
         </div>
     @endif
 @endforeach
-
+    <button type="button" data-toggle="modal" data-target="#createSolicitudesCompraModal" 
+        class="btn btn-sm btn-secondary position-fixed top-0 end-0 me-4 d-flex align-items-center justify-content-center" style="margin-top: 5rem !important;">
+        {{ __('Crear solicitud de compra') }}
+    </button>
+    <button type="button" id="btnGenerarSolicitudOferta" 
+        class="btn btn-sm btn-primary position-fixed bottom-0 start-1 m-4 d-flex align-items-center justify-content-center"
+        data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
+        {{ __('Generar Solicitud Oferta') }}
+    </button>
+    <button type="button" id="" 
+        class="btn btn-sm btn-success position-fixed bottom-0 end-0 m-4 d-flex align-items-center justify-content-center">
+        {{ __('Crear orden de compra') }}
+    </button>
 @endsection
 
 @push('js')

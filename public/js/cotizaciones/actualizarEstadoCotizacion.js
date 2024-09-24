@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo({ top: 500, behavior: 'smooth' });; // hacer scroll al cargar la pagina hasta la tabla
+
     let cotizacionPendiente = null;
 
     // Inicialización de elementos y modales
