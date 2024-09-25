@@ -16,10 +16,10 @@
                             </span>
 
                              <div class="float-right">  
-                                <!-- Botón para Generar Consolidación -->
-                                <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#consolidacionModal" disabled>
+                                <!-- Botón para abrir el modal -->
+                                <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled>
                                     {{ __('Generar Consolidación') }}
-                                </button>        
+                                </button>                                
                                 <a href="{{ route('solicitudes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
@@ -77,27 +77,19 @@
         </div>
     </div>
 
-<!-- Modal para Consolidación -->
-<div class="modal fade" id="consolidacionModal" tabindex="-1" aria-labelledby="consolidacionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="consolidacionModalLabel">{{ __('Generar Consolidación') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" inert aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="consolidacionForm" method="POST" action="{{ route('agrupaciones-consolidaciones.store') }}">
-                    @csrf
-                    <div class="row padding-1 p-1">
-                        <div class="col-md-12">
-                            @include('agrupaciones-consolidacione.form', ['agrupaciones-consolidaciones' => new \App\Models\AgrupacionesConsolidacione])
-                        </div>    
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Formulario para la consolidación -->
+<form id="consolidacionForm" method="POST" action="{{ route('agrupaciones-consolidaciones.store') }}">
+    @csrf
+    <!-- Modal para Consolidación -->
+    <livewire:modal 
+        :title="'Generar Consolidación'"
+        :content="view('agrupaciones-consolidacione.form')->with([
+            'users' => $users,
+            'agrupacionesConsolidacione' => $agrupacionesConsolidacione
+        ])->render()"
+        :size="'modal-lg'"
+    />
+</form>
 
 @endsection
 
