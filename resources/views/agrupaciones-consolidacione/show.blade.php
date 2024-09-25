@@ -68,6 +68,7 @@
                     </div>
                 </div>
 
+
 <!-- Cotizaciones Vigentes -->
 <div class="col-12 mb-4">
     <div class="card shadow-sm">
@@ -122,7 +123,7 @@
                                     </td>
                                     <td class="text-center">
                                         @if($consolidaciones->first()->elementosConsolidados->count() > 0)
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
                                                 <i class="fa fa-exclamation-circle"></i>
                                             </button>
                                         @endif
@@ -153,8 +154,9 @@
                                                         @endif
                                                     </div>
                                                     <div class="d-flex align-items-center ms-2">
+                                                        <!-- Botón para Detalle de Cotización -->
                                                         <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
-                                                            <i class="fas fa-eye"></i> 
+                                                            <i class="fas fa-eye"></i>
                                                         </button>
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
@@ -166,60 +168,15 @@
                                                     </div>
                                                 </div>
                                                 
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="detalleCotizacionModal{{ $cotizacionElemento->id }}" tabindex="-1" aria-labelledby="detalleCotizacionLabel{{ $cotizacionElemento->id }}" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="detalleCotizacionLabel{{ $cotizacionElemento->id }}">Detalle de Cotización</h5>
-                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <h6 class="border-bottom pb-2 mb-3">Detalle de Solicitud de Cotización</h6>
-                                                                    <ul class="list-group list-group-flush">
-                                                                        <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
-                                                                        <li class="list-group-item"><strong>Nombre:</strong> {{ $elementoNombre }}</li>
-                                                                        <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
-                                                                        <li class="list-group-item"><strong>Precio:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span></li>
-                                                                        <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}%</li>
-                                                                        <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
-                                                                        <li class="list-group-item"><strong>Estado:</strong> <span class="badge {{ $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id)->estado == 1 ? 'bg-success' : 'bg-warning text-dark' : 'bg-secondary' }}">{{ $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id)->estado == 1 ? 'Aprobada' : 'Pendiente' : 'Sin Estado' }}</span></li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <h6 class="border-bottom pb-2 mb-3">Detalle de Cotización</h6>
-                                                                    <ul class="list-group list-group-flush">
-                                                                        <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->nombre ?? 'N/A' }}</li>
-                                                                        <li class="list-group-item"><strong>Valor:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->cotizacione->valor, 2) }}</span></li>
-                                                                        <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
-                                                                        <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>
-                                                                        <li class="list-group-item"><strong>Fecha de Cotización:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_cotizacion)->format('d/m/Y') }}</li>
-                                                                        <li class="list-group-item"><strong>Fecha de inicio vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_inicio_vigencia)->format('d/m/Y') }}</li>
-                                                                        <li class="list-group-item"><strong>Fecha de fin vigencia:</strong> {{ \Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->format('d/m/Y') }}</li>
-                                                                        <li class="list-group-item"><strong>Estado de Vigencia:</strong> <span class="badge {{ $cotizacionElemento->estado_vigencia === 'cercano' ? 'bg-danger' : ($cotizacionElemento->estado_vigencia === 'medio' ? 'bg-warning' : 'bg-success') }}">
-                                                                            {{ $cotizacionElemento->estado_vigencia === 'cercano' ? 'Cerca de vencer' : ($cotizacionElemento->estado_vigencia === 'medio' ? 'Pronto a vencer' : 'Válida') }}
-                                                                        </span></li>
-                                                                        <li class="list-group-item"><strong>Días Restantes:</strong> 
-                                                                            <span class="text-muted">
-                                                                                @if($cotizacionElemento->estado_vigencia === 'expirado')
-                                                                                    Expirada
-                                                                                @else
-                                                                                    {{ abs(floor(\Carbon\Carbon::parse($cotizacionElemento->cotizacione->fecha_fin_vigencia)->diffInDays(now()))) }} días restantes
-                                                                                @endif
-                                                                            </span>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                        </div>
-                                                    </div>
+                                            <!-- Modal de Detalle de Cotización -->
+                                            <x-modal id="detalleCotizacionModal{{ $cotizacionElemento->id }}" title="Detalle de Cotización" size="lg">
+                                                <div class="modal-body">
+                                                    @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
                                                 </div>
-                                            </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </x-modal>
                                             @else
                                                 <p class="text-muted">No hay cotizaciones vigentes</p>
                                             @endif
@@ -240,91 +197,49 @@
     </div>
 </div>
 
-<div class="modal fade" id="justificacionModal" tabindex="-1" aria-labelledby="justificacionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="justificacionModalLabel">Justificación de selección</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
-                <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255" required></textarea>
-                <small id="charCount" class="form-text text-muted">0/255 caracteres</small>
-                <div id="justificacionError" class="invalid-feedback">Por favor, proporcione una justificación.</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
-            </div>
+    <!-- Modal de Justificación -->
+    <x-modal id="justificacionModal" title="Justificación de selección" size="md">
+        <div class="modal-body">
+            <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
+            <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255" required></textarea>
+            <small id="charCount" class="form-text text-muted">0/255 caracteres</small>
+            <div id="justificacionError" class="invalid-feedback">Por favor, proporcione una justificación.</div>
         </div>
-    </div>
-</div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
+        </div>
+    </x-modal>
 
+    <!-- Modal para solicitudes-oferta -->
+    <x-modal id="solicitudesOfertaModal" title="{{ __('Generar Solicitud Oferta') }}" size="lg">
+        <div class="modal-body">
+            <form id="solicitudesOfertaForm" method="POST" action="{{ route('solicitudes-ofertas.store') }}">
+                @csrf
+                <div class="row padding-1 p-1">
+                    <div class="col-md-12">
+                        @include('solicitudes-oferta.form', ['solicitudes-ofertas' => new \App\Models\SolicitudesOferta])
+                    </div>
+                </div>
+            </form>
+        </div>
+    </x-modal>
 
-
-<!-- Modal para solicitudes-oferta -->
-<div class="modal fade" id="solicitudesOfertaModal" tabindex="-1" aria-labelledby="solicitudesOfertaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="solicitudesOfertaModalLabel">{{ __('Generar Solicitud Oferta') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" inert aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                    <form id="solicitudesOfertaForm" method="POST" action="{{ route('solicitudes-ofertas.store') }}">
-                        @csrf
-                        <div class="row padding-1 p-1">
-                            <div class="col-md-12">
-                                @include('solicitudes-oferta.form', ['solicitudes-ofertas' => new \App\Models\SolicitudesOferta])
-                            </div>
-                        </div>
-                    </form>
+    <!-- Modal para el formulario de creación -->
+    <x-modal id="createSolicitudesCompraModal" title="{{ __('Crear Solicitud de Compra') }}" size="xl">
+        <form action="{{ route('agrupaciones-consolidacione.storeSolicitudesCompra', $agrupacion->id) }}" method="POST">
+            @csrf
+            <div class="row padding-1 p-1">
+                <div class="col-md-12">
+                    @include('solicitudes-compra.form', ['solicitudesCompra' => $solicitudesCompra])
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </form>
+    </x-modal>
 
-<!-- Modal para el formulario de creación -->
-<div class="modal fade" id="createSolicitudesCompraModal" tabindex="-1" role="dialog" aria-labelledby="createSolicitudesCompraModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createSolicitudesCompraModalLabel">Crear Solicitud de Compra</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('agrupaciones-consolidacione.storeSolicitudesCompra', $agrupacion->id) }}" method="POST">
-                    @csrf
-                    <div class="row padding-1 p-1">
-                        <div class="col-md-12">
-                            @include('solicitudes-compra.form', ['solicitudesCompra' => $solicitudesCompra])
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Elementos Consolidados -->
-@foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
-    @if($consolidacion->elementosConsolidados->count() > 0)
-        <div class="modal fade" id="modalElementosConsolidados{{ $consolidacion->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $consolidacion->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ $consolidacion->id }}">Elementos Consolidados - Consolidación {{ $consolidacion->id }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+    @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
+            @if($consolidacion->elementosConsolidados->count() > 0)
+                <!-- Modal para Elementos Consolidados -->
+                <x-modal id="modalElementosConsolidados{{ $consolidacion->id }}" title="Elementos Consolidados - Consolidación {{ $consolidacion->id }}" size="lg">
                     <div class="modal-body">
                         <table class="table table-striped">
                             <thead>
@@ -345,16 +260,13 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
+                </x-modal>
+            @endif
 @endforeach
-    <button type="button" data-toggle="modal" data-target="#createSolicitudesCompraModal" 
-        class="btn btn-sm btn-secondary position-fixed top-0 end-0 me-4 d-flex align-items-center justify-content-center" style="margin-top: 5rem !important;">
+</div>
+    <!-- Botón para Crear Solicitud de Compra -->
+    <button type="button" data-bs-toggle="modal" data-bs-target="#createSolicitudesCompraModal" 
+            class="btn btn-sm btn-secondary position-fixed top-0 end-0 me-4 d-flex align-items-center justify-content-center" style="margin-top: 5rem !important;">
         {{ __('Crear solicitud de compra') }}
     </button>
     <button type="button" id="btnGenerarSolicitudOferta" 

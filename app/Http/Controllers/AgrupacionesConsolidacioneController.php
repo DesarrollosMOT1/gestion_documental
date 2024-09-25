@@ -152,7 +152,17 @@ class AgrupacionesConsolidacioneController extends Controller
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $users = User::all();
-        $centrosCostos = CentrosCosto::all();
+
+        // Obtener el área del usuario autenticado
+        $user = auth()->user();
+        $areaId = $user->id_area;
+
+        $centrosCostos = CentrosCosto::whereIn('id_clasificaciones_centros', function ($query) use ($areaId) {
+            $query->select('id_clasificaciones_centros')
+                ->from('clasificaciones_centros_areas')
+                ->where('id_areas', $areaId);
+        })->get();
+        
         $fechaActual = Carbon::now()->toDateString();
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
