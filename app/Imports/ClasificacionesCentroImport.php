@@ -18,9 +18,6 @@ class ClasificacionesCentroImport implements ToCollection
         foreach ($rows as $row) {
             ClasificacionesCentro::updateOrCreate(
                 ['nombre' => $row[1]],  // Actualizar o crear por nombre
-                [
-                    'id_areas' => (int) $row[2]
-                ]
             );
         }
     }

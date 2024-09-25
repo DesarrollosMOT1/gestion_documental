@@ -63,14 +63,6 @@
 
     <div class="col-md-6">
         <div class="form-group mb-2">
-            <label for="descuento" class="form-label">{{ __('Descuento') }}</label>
-            <input type="text" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento', $cotizacione?->descuento) }}" id="descuento" placeholder="Descuento">
-            {!! $errors->first('descuento', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="form-group mb-2">
             <label for="fecha_inicio_vigencia" class="form-label">{{ __('Fecha Inicio Vigencia') }}</label>
             <input type="date" name="fecha_inicio_vigencia" class="form-control @error('fecha_inicio_vigencia') is-invalid @enderror" value="{{ old('fecha_inicio_vigencia', $cotizacione?->fecha_inicio_vigencia) }}" id="fecha_inicio_vigencia">
             {!! $errors->first('fecha_inicio_vigencia', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}

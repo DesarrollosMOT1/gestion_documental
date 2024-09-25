@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesElemento;
 use App\Models\SolicitudesCompra;
 use App\Models\User;
@@ -139,6 +140,48 @@ class AgrupacionesConsolidacioneController extends Controller
         return response()->json($elementos);
     }
 
+    private function generatePrefix(): string
+    {
+        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
+        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
+        return $month . $year;
+    }
+
+    public function crearSolicitudCompra(): array
+    {
+        $solicitudesCompra = new SolicitudesCompra();
+        $solicitudesCompra->prefijo = $this->generatePrefix();
+        $users = User::all();
+        $centrosCostos = CentrosCosto::all();
+        $fechaActual = Carbon::now()->toDateString();
+        $solicitudesOferta = new SolicitudesOferta();
+        $terceros = Tercero::all();
+        $ordenesCompra = new OrdenesCompra();
+
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+
+        // Obtener los nombres de los niveles uno según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+
+        // Obtener los niveles uno con base en los permisos del usuario
+        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
+
+        return compact('solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'nivelesUno');
+    }
+
     public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse
     {
         $validated = $request->validated();
@@ -214,54 +257,33 @@ class AgrupacionesConsolidacioneController extends Controller
      */
     public function show($id): View
     {
-        $solicitudesCompra = new SolicitudesCompra();
-        $solicitudesCompra->prefijo = $this->generatePrefix();
-        $users = User::all();
-        $centrosCostos = CentrosCosto::all();
-        $fechaActual = Carbon::now()->toDateString();
-        $solicitudesOferta = new SolicitudesOferta();
-        $terceros = Tercero::all();
-        $ordenesCompra = new OrdenesCompra();
-
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
+        $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
     
-        // Obtener los nombres de los niveles uno según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
+        // Llamar al nuevo método que encapsula la lógica de la solicitud de compra
+        $datosSolicitudCompra = $this->crearSolicitudCompra();
     
-        // Obtener los niveles uno con base en los permisos del usuario
-        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
-
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
-            'consolidaciones.solicitudesCompra.user', 
+            'consolidaciones.solicitudesCompra.user',
             'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
-        // Verificar cotizaciones vigentes para cada consolidación
-        foreach ($agrupacionesConsolidacione->consolidaciones as $consolidacion) {
-            // Ahora llamamos al método pasando el ID de la agrupación
-            $consolidacion->cotizacionesVigentes = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
-        }
+        // Obtener cotizaciones vigentes agrupadas por elemento y tercero
+        $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
+        
+        // Agrupar cotizaciones por elemento y tercero
+        $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
+            return [$consolidacion->solicitudesElemento->nivelesTres->nombre => $consolidacion];
+        });
+        $cotizacionesPorTercero = $cotizacionesPorElemento->groupBy(function($cotizacion) {
+            return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
+        });
     
-        $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
-    
-        return view('agrupaciones-consolidacione.show', compact('agrupacion', 'agrupacionesConsolidacione', 'solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'nivelesUno', 'solicitudesOferta', 'terceros', 'ordenesCompra'));
+        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados')));
     }
+    
     
     public function verificarCotizacionesVigentes($agrupacionId)
     {
@@ -271,26 +293,39 @@ class AgrupacionesConsolidacioneController extends Controller
                 $query->select('id_niveles_tres');
             })
             ->get()
-            ->pluck('solicitudesElemento.nivelesTres.id'); // Obtener IDs de niveles tres
-    
-        // Verificar las cotizaciones vigentes que coincidan con esos niveles tres
-        return Cotizacione::whereHas('solicitudesCotizaciones', function ($query) use ($nivelesTresIds) {
-            $query->whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
+            ->pluck('solicitudesElemento.nivelesTres.id');
+
+        // Verificar las solicitudes cotizaciones vigentes que coincidan con esos niveles tres
+        $cotizaciones = SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
                 $subQuery->select('id')
                         ->from('solicitudes_elementos')
                         ->whereIn('id_niveles_tres', $nivelesTresIds);
-            });
-        })
-        ->whereDate('fecha_inicio_vigencia', '<=', now())
-        ->whereDate('fecha_fin_vigencia', '>=', now())
-        ->get(); 
-    }
-
-    private function generatePrefix(): string
-    {
-        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
-        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
-        return $month . $year;
+            })
+            ->whereHas('cotizacione', function ($query) {
+                $query->whereDate('fecha_inicio_vigencia', '<=', now())
+                    ->whereDate('fecha_fin_vigencia', '>=', now());
+            })
+            ->with('cotizacione.tercero')
+            ->get();
+    
+        foreach ($cotizaciones as $cotizacion) {
+            $fechaFinVigencia = Carbon::parse($cotizacion->cotizacione->fecha_fin_vigencia);
+            $diferenciaDias = now()->diffInDays($fechaFinVigencia);
+    
+            if ($fechaFinVigencia->lt(now())) {
+                $cotizacion->estado_vigencia = 'expirado';
+            } elseif ($diferenciaDias <= 30) {
+                $cotizacion->estado_vigencia = 'cercano';
+            } elseif ($diferenciaDias <= 90) {
+                $cotizacion->estado_vigencia = 'medio';
+            } else {
+                $cotizacion->estado_vigencia = 'lejos';
+            }
+    
+            $cotizacion->diferencia_dias = $diferenciaDias;
+        }
+    
+        return $cotizaciones;
     }
 
     /**

@@ -62,9 +62,9 @@ class CentrosCostoController extends Controller
      */
     public function edit($id): View
     {
-        $centrosCosto = CentrosCosto::find($id);
+        $centrosCosto = CentrosCosto::findOrFail($id);
         $clasificacionesCentros = ClasificacionesCentro::all();
-        return view('centros-costo.edit', compact('centrosCosto'));
+        return view('centros-costo.edit', compact('centrosCosto', 'clasificacionesCentros'));
     }
 
     /**

@@ -13,6 +13,7 @@
         "laravel/framework": "^11.21.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.29",
         "spatie/laravel-permission": "^6.9"

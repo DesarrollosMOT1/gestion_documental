@@ -13,6 +13,7 @@ use App\Models\SolicitudesCompra;
 use App\Models\Impuesto;
 use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
+use App\Models\CotizacionesPrecio;
 use Illuminate\Http\JsonResponse;
 
 class CotizacioneController extends Controller
@@ -49,6 +50,7 @@ class CotizacioneController extends Controller
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
                 'id_cotizaciones' => $cotizacion->id,
                 'cantidad' => $elemento['cantidad'],
+                'descuento' => $elemento['descuento'],
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones_oferta' => $elemento['id_consolidaciones_oferta'],
@@ -101,17 +103,73 @@ class CotizacioneController extends Controller
     
         return view('cotizacione.show', compact('cotizacione', 'solicitudesUnicas', 'ordenesCompra', 'solicitudesAprobadas'));
     }
-    
 
     public function actualizarEstado(Request $request, $id)
     {
-        $elemento = SolicitudesCotizacione::findOrFail($id);
-        $elemento->estado = $request->input('estado');
-        $elemento->save();
+        $solicitudCotizacion = SolicitudesCotizacione::findOrFail($id);
+        $idSolicitudElemento = $solicitudCotizacion->id_solicitud_elemento;
+        $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
+        $idConsolidaciones = $request->input('id_consolidaciones');  
 
-        return response()->json(['success' => true]);
+        // Preparar los datos a actualizar
+        $dataToUpdate = [
+            'id_solicitudes_cotizaciones' => $id,
+            'id_agrupaciones_consolidaciones' => $idAgrupacion,
+            'id_consolidaciones' => $idConsolidaciones
+        ];
+
+        // Si estamos actualizando solo estado_jefe, obtenemos el valor actual de 'estado'
+        if ($request->has('estado_jefe') && !$request->has('estado')) {
+            $cotizacionExistente = CotizacionesPrecio::where([
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion,
+                'id_consolidaciones' => $idConsolidaciones
+            ])->first();
+
+            if ($cotizacionExistente) {
+                $dataToUpdate['estado'] = $cotizacionExistente->estado;
+            } else {
+                $dataToUpdate['estado'] = 0; // Valor por defecto si no existe
+            }
+        }
+
+        if ($request->has('estado')) {
+            $dataToUpdate['estado'] = $request->input('estado');
+            
+            if ($request->input('estado') == 1) {
+                // Desactivar otras cotizaciones
+                CotizacionesPrecio::whereHas('solicitudesCotizacione', function($query) use ($idSolicitudElemento) {
+                    $query->where('id_solicitud_elemento', $idSolicitudElemento);
+                })->where('id_agrupaciones_consolidaciones', $idAgrupacion)
+                    ->where('id_consolidaciones', $idConsolidaciones)  
+                    ->where('id_solicitudes_cotizaciones', '!=', $id)
+                    ->update(['estado' => 0]);
+            }
+        }
+        
+        if ($request->has('estado_jefe')) {
+            $dataToUpdate['estado_jefe'] = $request->input('estado_jefe');
+        }
+        
+        if ($request->has('justificacion')) {
+            $dataToUpdate['descripcion'] = $request->input('justificacion');
+        }
+
+        $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
+            [
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion,
+                'id_consolidaciones' => $idConsolidaciones  
+            ],
+            $dataToUpdate
+        );
+
+        return response()->json([
+            'success' => true,
+            'idSolicitudElemento' => $idSolicitudElemento
+        ]);
     }
-
+    
 
     /**
      * Show the form for editing the specified resource.

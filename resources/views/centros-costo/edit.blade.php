@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'editar Centro Costo')
+@section('title', 'Editar Centro Costo')
 
 @section('content')
     <br>
@@ -13,7 +13,7 @@
                         <span class="card-title">{{ __('Update') }} Centros Costo</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('centros-costos.update', $centrosCosto->codigo) }}"
+                        <form method="POST" action="{{ route('centros-costos.update', $centrosCosto->id) }}"
                             role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
