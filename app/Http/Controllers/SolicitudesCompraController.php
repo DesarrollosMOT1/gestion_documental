@@ -147,7 +147,18 @@ class SolicitudesCompraController extends Controller
 
         // Crear los elementos de solicitud
         $elements = $request->input('elements', []);
+        
         foreach ($elements as $element) {
+            // Verificación de duplicados
+            $existingElement = SolicitudesElemento::where('id_niveles_tres', $element['id_niveles_tres'])
+                ->where('id_centros_costos', $element['id_centros_costos'])
+                ->where('id_solicitudes_compra', $solicitudesCompra->id)
+                ->exists();
+
+            if ($existingElement) {
+                return back()->withErrors(['error' => 'El elemento con id_niveles_tres ' . $element['id_niveles_tres'] . ' y id_centros_costos ' . $element['id_centros_costos'] . ' ya fue agregado.']);
+            }
+
             $solicitudesCompra->solicitudesElemento()->create([
                 'id_niveles_tres' => $element['id_niveles_tres'],
                 'id_centros_costos' => $element['id_centros_costos'],
@@ -158,7 +169,7 @@ class SolicitudesCompraController extends Controller
         }
 
         return Redirect::route('solicitudes-compras.index')
-            ->with('success', 'Solicitud Compra creada creada.');
+            ->with('success', 'Solicitud de compra creada correctamente.');
     }
 
     
