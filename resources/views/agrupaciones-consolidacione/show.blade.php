@@ -78,7 +78,7 @@
             </h5>
         </div>
         <div class="card-body">
-            @if($elementosConsolidados->isNotEmpty() && $cotizacionesPorTercero->isNotEmpty())
+            @if($elementosConsolidados->isNotEmpty())
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered table-striped">
                         <thead class="table-light">
@@ -130,7 +130,9 @@
                                     </td>
                                     <td class="font-weight-bold">{{ $elementoNombre }}</td>
                                     <td>{{ $consolidaciones->first()->cantidad }}</td>
-                                    @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
+        
+                                    @if($cotizacionesPorTercero->isNotEmpty())
+                                        @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
                                         @php
                                             $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $consolidaciones->first()->solicitudesElemento->nivelesTres->id);
                                             $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
@@ -182,6 +184,11 @@
                                             @endif
                                         </td>
                                     @endforeach
+                                    @else
+                                        <td colspan="{{ count($cotizacionesPorTercero) + 3 }}">
+                                            <p class="text-muted">No hay cotizaciones vigentes para mostrar.</p>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -192,7 +199,6 @@
                     <i class="fas fa-info-circle mr-2"></i>No hay consolidaciones o cotizaciones vigentes para mostrar.
                 </div>
             @endif
-            
         </div>
     </div>
 </div>
