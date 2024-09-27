@@ -55,7 +55,7 @@ $(document).ready(function() {
         $('#formularioSolicitudOfertaContainer').html(html);
 
         $('.btn-eliminar').on('click', function() {
-            $(this).closest('.card').remove();
+            $(this).closest('.col-md-6').remove();
             toggleGenerateButton($('#formularioSolicitudOfertaContainer .card').length > 0);
         });
 
@@ -64,9 +64,9 @@ $(document).ready(function() {
 
     function generarConsolidacionHTML(consolidacion, index) {
         const elementoNombre = consolidacion.solicitudes_elemento && 
-                               consolidacion.solicitudes_elemento.niveles_tres ? 
-                               consolidacion.solicitudes_elemento.niveles_tres.nombre : 
-                               'No especificado';
+                            consolidacion.solicitudes_elemento.niveles_tres ? 
+                            consolidacion.solicitudes_elemento.niveles_tres.nombre : 
+                            'No especificado';
         
         return `
             <div class="col-md-6 col-lg-4">

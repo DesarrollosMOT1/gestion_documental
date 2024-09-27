@@ -122,8 +122,8 @@ $(document).ready(function() {
 
         // Agregar funcionalidad para eliminar elementos
         $('.btn-eliminar').on('click', function() {
-            $(this).closest('.card').remove();
-            toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0);
+            $(this).closest('.col-md-6').remove();
+            toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0); // Verifica si quedan tarjetas
         });
 
         // Habilitar o deshabilitar el botón de enviar
@@ -141,10 +141,15 @@ $(document).ready(function() {
             `;
         });
     
+        // Si el elemento fue consolidado (porque su cantidad fue sumada), añadimos las clases y texto correspondientes.
+        const consolidadoClass = elemento.elementos_originales.length > 1 ? 'bg-warning' : '';
+        const consolidadoTexto = elemento.elementos_originales.length > 1 ? '<span class="badge bg-warning">Consolidado</span>' : '';
+    
         return `
             <div class="col-md-6 col-lg-4">
-                <div class="card p-2 mb-3">
+                <div class="card p-2 mb-3 ${consolidadoClass}">
                     <div class="card-body">
+                        ${consolidadoTexto} <!-- Muestra el texto "Consolidado" si es necesario -->
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compra]" value="${elemento.id_solicitudes_compra}">
                         <label class="form-label">Elemento: ${elemento.nivel_tres_nombre}</label>
