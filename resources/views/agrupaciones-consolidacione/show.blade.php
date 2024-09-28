@@ -242,6 +242,18 @@
         </form>
     </x-modal>
 
+    <!-- Modal para el formulario de creación -->
+    <x-modal id="createOrdenesCompraModal" title="{{ __('Crear Orden de Compra') }}" size="xl">
+        <form action="{{ route('ordenes-compras.store') }}" method="POST">
+            @csrf
+            <div class="row padding-1 p-1">
+                <div class="col-md-12">
+                    @include('ordenes-compra.form', ['ordenesCompra' => $ordenesCompra])
+                </div>
+            </div>
+        </form>
+    </x-modal>
+
     @foreach($agrupacionesConsolidacione->consolidaciones as $consolidacion)
             @if($consolidacion->elementosConsolidados->count() > 0)
                 <!-- Modal para Elementos Consolidados -->
@@ -280,9 +292,9 @@
         data-bs-toggle="modal" data-bs-target="#solicitudesOfertaModal" disabled>
         {{ __('Generar Solicitud Oferta') }}
     </button>
-    <button type="button" id="" 
-        class="btn btn-sm btn-success position-fixed bottom-0 end-0 m-4 d-flex align-items-center justify-content-center">
-        {{ __('Crear orden de compra') }}
+    <button type="button" id="btnCrearOrdenCompra" 
+        class="btn btn-sm btn-success position-fixed bottom-0 end-0 m-4 d-flex align-items-center justify-content-center"
+        data-bs-toggle="modal" data-bs-target="#createOrdenesCompraModal"> {{ __('Crear orden de compra') }}
     </button>
 @endsection
 

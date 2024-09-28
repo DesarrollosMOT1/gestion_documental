@@ -268,6 +268,8 @@ class AgrupacionesConsolidacioneController extends Controller
     public function show($id): View
     {
         $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
+
+        $ordenesCompra = new OrdenesCompra();
     
         // Llamar al nuevo método que encapsula la lógica de la solicitud de compra
         $datosSolicitudCompra = $this->crearSolicitudCompra();
@@ -291,7 +293,7 @@ class AgrupacionesConsolidacioneController extends Controller
             return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
         });
     
-        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados')));
+        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados', 'ordenesCompra')));
     }
     
     

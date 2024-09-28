@@ -22,8 +22,8 @@ class SolicitudesCompraRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fecha_solicitud' => 'required',
-            'id_users' => 'required',
+            'fecha_solicitud' => 'required|date',
+            'id_users' => 'required|exists:users,id',
             'prefijo' => 'required|string',
             'descripcion' => 'required|string',
             'elements' => 'required|array|min:1', // Asegúrate de que haya al menos un elemento
