@@ -175,9 +175,6 @@
                                                 <div class="modal-body">
                                                     @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                </div>
                                             </x-modal>
                                             @else
                                                 <p class="text-muted">No hay cotizaciones vigentes</p>

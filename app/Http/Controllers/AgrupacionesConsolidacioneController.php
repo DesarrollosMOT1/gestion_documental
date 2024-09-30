@@ -324,7 +324,7 @@ class AgrupacionesConsolidacioneController extends Controller
             $fechaFinVigencia = Carbon::parse($cotizacion->cotizacione->fecha_fin_vigencia);
             $diferenciaDias = now()->diffInDays($fechaFinVigencia);
     
-            if ($fechaFinVigencia->lt(now())) {
+            if ($fechaFinVigencia->endOfDay()->lt(now())) {
                 $cotizacion->estado_vigencia = 'expirado';
             } elseif ($diferenciaDias <= 30) {
                 $cotizacion->estado_vigencia = 'cercano';
