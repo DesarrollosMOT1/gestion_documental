@@ -121,7 +121,7 @@ function removeElement(index) {
     updateTableMessage();
 }
 
-document.getElementById('submitForm').addEventListener('click', async function(event) {
+document.getElementById('submitForm').addEventListener('click', function(event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del botón
 
     const elementsCount = document.querySelectorAll('#elementsTableBody tr:not(#noElementsRow)').length;
@@ -137,45 +137,9 @@ document.getElementById('submitForm').addEventListener('click', async function(e
     this.disabled = true; // Desactivar el botón al hacer clic
     this.innerHTML = 'Enviando...'; // Cambiar texto del botón
 
-    try {
-        const form = document.getElementById('solicitudesCompras'); // Obtener el formulario
-        const formData = new FormData(form); // Crear un objeto FormData con los datos del formulario
-
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-        });
-
-        if (response.ok) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Solicitud enviada',
-                text: 'La solicitud se ha enviado correctamente.',
-            }).then(() => {
-                window.location.href = '/solicitudes-compras'; // Redirigir a la página de solicitudes
-            });
-        } else {
-            const error = await response.json();
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error.message || 'Ocurrió un error al enviar la solicitud.',
-            });
-        }
-    } catch (error) {
-        console.error('Error en la solicitud:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al enviar la solicitud.',
-        });
-    } finally {
-        this.disabled = false; // Reactivar el botón al finalizar
-        this.innerHTML = 'Enviar'; // Restablecer texto del botón
-    }
+    // Enviar el formulario
+    const form = document.getElementById('solicitudesCompras'); // Obtener el formulario
+    form.submit(); 
 });
 
 updateTableMessage();

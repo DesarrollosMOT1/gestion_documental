@@ -233,7 +233,7 @@
 
     <!-- Modal para el formulario de creación -->
     <x-modal id="createSolicitudesCompraModal" title="{{ __('Crear Solicitud de Compra') }}" size="xl">
-        <form action="{{ route('agrupaciones-consolidacione.storeSolicitudesCompra', $agrupacion->id) }}" method="POST">
+        <form action="{{ route('agrupaciones-consolidacione.storeSolicitudesCompra', $agrupacion->id) }}" method="POST" id="solicitudesCompras">
             @csrf
             <div class="row padding-1 p-1">
                 <div class="col-md-12">
@@ -264,16 +264,24 @@
                             <thead>
                                 <tr>
                                     <th>ID Solicitud</th>
+                                    <th>Fecha solicitud</th>
+                                    <th>Solicitante</th>
+                                    <th>Descripcion</th>
                                     <th>Elemento</th>
                                     <th>Cantidad Unidad</th>
+                                    <th>Centro Costo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($consolidacion->elementosConsolidados as $elementoConsolidado)
                                     <tr>
                                         <td>{{ $elementoConsolidado->solicitudesCompra->id }}</td>
+                                        <td> {{ $elementoConsolidado->solicitudesCompra->fecha_solicitud }} </td>
+                                        <td>{{ $elementoConsolidado->solicitudesCompra->user->name }} </td>
+                                        <td>{{ $elementoConsolidado->solicitudesCompra->descripcion }} </td>
                                         <td>{{ $elementoConsolidado->solicitudesElemento->nivelesTres->nombre }}</td>
                                         <td>{{ $elementoConsolidado->solicitudesElemento->cantidad }}</td>
+                                        <td>{{ $elementoConsolidado->solicitudesElemento->centrosCosto->nombre }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
