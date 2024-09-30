@@ -83,12 +83,16 @@
                     <table class="table table-hover table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
-                                <th>
+                                <th colspan="4" class="bg-success bg-opacity-50 text-center">Consolidaciones</th>
+                                <th colspan="{{ count($cotizacionesPorTercero) }}" class="text-center">Terceros con cotizaciones vigentes</th>
+                            </tr>
+                            <tr>
+                                <th class="bg-success bg-opacity-50">
                                     <input type="checkbox" id="selected_all" />
                                 </th>
-                                <th></th>
-                                <th>Elemento</th>
-                                <th>Cant</th>
+                                <th class="bg-success bg-opacity-50"></th>
+                                <th class="bg-success bg-opacity-50">Elemento</th>
+                                <th class="bg-success bg-opacity-50">Cant</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
                                     @php
                                         $cotizaciones = $cotizacionesPorTercero->get($tercero);
@@ -118,18 +122,18 @@
                         <tbody>
                             @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
                                 <tr>
-                                    <td>
+                                    <td class="bg-success bg-opacity-50">
                                         <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center bg-success bg-opacity-50">
                                         @if($consolidaciones->first()->elementosConsolidados->count() > 0)
                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
                                                 <i class="fa fa-exclamation-circle"></i>
                                             </button>
                                         @endif
                                     </td>
-                                    <td class="font-weight-bold">{{ $elementoNombre }}</td>
-                                    <td>{{ $consolidaciones->first()->cantidad }}</td>
+                                    <td class="font-weight-bold bg-success bg-opacity-50">{{ $elementoNombre }}</td>
+                                    <td class="bg-success bg-opacity-50">{{ $consolidaciones->first()->cantidad }}</td>
         
                                     @if($cotizacionesPorTercero->isNotEmpty())
                                         @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
