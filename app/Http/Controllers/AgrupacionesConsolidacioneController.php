@@ -340,6 +340,13 @@ class AgrupacionesConsolidacioneController extends Controller
         return $cotizaciones;
     }
 
+    public function obtenerHistorialCotizaciones($elementoId)
+    {
+        return SolicitudesCotizacione::where('id_solicitud_elemento', $elementoId)
+            ->with('cotizacione.tercero')
+            ->get();
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

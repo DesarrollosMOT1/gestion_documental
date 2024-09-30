@@ -80,19 +80,19 @@
         <div class="card-body">
             @if($elementosConsolidados->isNotEmpty())
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered table-striped">
+                    <table class="table table-hover table-bordered table-striped border-dark">
                         <thead class="table-light">
                             <tr>
-                                <th colspan="4" class="bg-success bg-opacity-50 text-center">Consolidaciones</th>
-                                <th colspan="{{ count($cotizacionesPorTercero) }}" class="text-center">Terceros con cotizaciones vigentes</th>
+                                <th colspan="4" class="bg-success bg-opacity-50 text-center border-dark">Consolidaciones</th>
+                                <th colspan="{{ count($cotizacionesPorTercero) }}" class="text-center border-dark">Terceros con cotizaciones vigentes</th>
                             </tr>
                             <tr>
-                                <th class="bg-success bg-opacity-50">
+                                <th class="bg-success bg-opacity-50 border-dark">
                                     <input type="checkbox" id="selected_all" />
                                 </th>
-                                <th class="bg-success bg-opacity-50"></th>
-                                <th class="bg-success bg-opacity-50">Elemento</th>
-                                <th class="bg-success bg-opacity-50">Cant</th>
+                                <th class="bg-success bg-opacity-50 border-dark"></th>
+                                <th class="bg-success bg-opacity-50 border-dark">Elemento</th>
+                                <th class="bg-success bg-opacity-50 border-dark">Cant</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
                                     @php
                                         $cotizaciones = $cotizacionesPorTercero->get($tercero);
@@ -100,7 +100,7 @@
                                         $diferenciaDias = $cotizacion->diferencia_dias ?? null;
                                         $estadoVigencia = $cotizacion->estado_vigencia ?? '';
                                     @endphp
-                                    <th>
+                                    <th class="border-dark">
                                         {{ $tercero }}
                                         @if($diferenciaDias !== null)
                                             <br>
@@ -122,18 +122,23 @@
                         <tbody>
                             @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
                                 <tr>
-                                    <td class="bg-success bg-opacity-50">
+                                    <td class="bg-success bg-opacity-50 border-dark">
                                         <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
                                     </td>
-                                    <td class="text-center bg-success bg-opacity-50">
+                                    <td class="text-center bg-success bg-opacity-50 border-dark">
                                         @if($consolidaciones->first()->elementosConsolidados->count() > 0)
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
-                                                <i class="fa fa-exclamation-circle"></i>
-                                            </button>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
+                                                    <i class="fa fa-exclamation-circle"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}">
+                                                    <i class="fa fa-history"></i>
+                                                </button>
+                                            </div>
                                         @endif
                                     </td>
-                                    <td class="font-weight-bold bg-success bg-opacity-50">{{ $elementoNombre }}</td>
-                                    <td class="bg-success bg-opacity-50">{{ $consolidaciones->first()->cantidad }}</td>
+                                    <td class="font-weight-bold bg-success bg-opacity-50 border-dark">{{ $elementoNombre }}</td>
+                                    <td class="bg-success bg-opacity-50 border-dark">{{ $consolidaciones->first()->cantidad }}</td>
         
                                     @if($cotizacionesPorTercero->isNotEmpty())
                                         @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
@@ -143,7 +148,7 @@
                                             $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
                                             $estadoJefe = $cotizacionPrecio ? $cotizacionPrecio->estado_jefe : 0;
                                         @endphp
-                                        <td>
+                                        <td class="border-dark">
                                             @if($cotizacionElemento)
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex align-items-center">
@@ -151,7 +156,6 @@
                                                             <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
                                                                 data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
                                                         </div>
-                                                        <i class="fas fa-money-bill-wave ms-1"></i>
                                                         <span class="badge bg-info text-white fs-6 ms-2">
                                                             ${{ number_format($cotizacionElemento->precio) }}
                                                         </span>
@@ -176,9 +180,7 @@
                                                 
                                             <!-- Modal de Detalle de Cotización -->
                                             <x-modal id="detalleCotizacionModal{{ $cotizacionElemento->id }}" title="Detalle de Cotización" size="lg">
-                                                <div class="modal-body">
-                                                    @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
-                                                </div>
+                                                @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
                                             </x-modal>
                                             @else
                                                 <p class="text-muted">No hay cotizaciones vigentes</p>
@@ -186,7 +188,7 @@
                                         </td>
                                     @endforeach
                                     @else
-                                        <td colspan="{{ count($cotizacionesPorTercero) + 3 }}">
+                                        <td class="border-dark" colspan="{{ count($cotizacionesPorTercero) + 3 }}">
                                             <p class="text-muted">No hay cotizaciones vigentes para mostrar.</p>
                                         </td>
                                     @endif
@@ -206,12 +208,10 @@
 
     <!-- Modal de Justificación -->
     <x-modal id="justificacionModal" title="Justificación de selección" size="md">
-        <div class="modal-body">
-            <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
-            <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255" required></textarea>
-            <small id="charCount" class="form-text text-muted">0/255 caracteres</small>
-            <div id="justificacionError" class="invalid-feedback">Por favor, proporcione una justificación.</div>
-        </div>
+        <p>Esta cotización tiene un precio mayor que las demás. Por favor, justifique la selección:</p>
+        <textarea id="justificacionTexto" class="form-control" rows="3" maxlength="255" required></textarea>
+        <small id="charCount" class="form-text text-muted">0/255 caracteres</small>
+        <div id="justificacionError" class="invalid-feedback">Por favor, proporcione una justificación.</div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
         </div>
@@ -219,16 +219,14 @@
 
     <!-- Modal para solicitudes-oferta -->
     <x-modal id="solicitudesOfertaModal" title="{{ __('Generar Solicitud Oferta') }}" size="lg">
-        <div class="modal-body">
-            <form id="solicitudesOfertaForm" method="POST" action="{{ route('solicitudes-ofertas.store') }}">
-                @csrf
-                <div class="row padding-1 p-1">
-                    <div class="col-md-12">
-                        @include('solicitudes-oferta.form', ['solicitudes-ofertas' => new \App\Models\SolicitudesOferta])
-                    </div>
+        <form id="solicitudesOfertaForm" method="POST" action="{{ route('solicitudes-ofertas.store') }}">
+            @csrf
+            <div class="row padding-1 p-1">
+                <div class="col-md-12">
+                    @include('solicitudes-oferta.form', ['solicitudes-ofertas' => new \App\Models\SolicitudesOferta])
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </x-modal>
 
     <!-- Modal para el formulario de creación -->
@@ -259,37 +257,79 @@
             @if($consolidacion->elementosConsolidados->count() > 0)
                 <!-- Modal para Elementos Consolidados -->
                 <x-modal id="modalElementosConsolidados{{ $consolidacion->id }}" title="Elementos Consolidados - Consolidación {{ $consolidacion->id }}" size="lg">
-                    <div class="modal-body">
-                        <table class="table table-striped">
-                            <thead>
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID Solicitud</th>
+                                <th>Fecha solicitud</th>
+                                <th>Solicitante</th>
+                                <th>Descripcion</th>
+                                <th>Elemento</th>
+                                <th>Cantidad Unidad</th>
+                                <th>Centro Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($consolidacion->elementosConsolidados as $elementoConsolidado)
                                 <tr>
-                                    <th>ID Solicitud</th>
-                                    <th>Fecha solicitud</th>
-                                    <th>Solicitante</th>
-                                    <th>Descripcion</th>
-                                    <th>Elemento</th>
-                                    <th>Cantidad Unidad</th>
-                                    <th>Centro Costo</th>
+                                    <td>{{ $elementoConsolidado->solicitudesCompra->id }}</td>
+                                    <td> {{ $elementoConsolidado->solicitudesCompra->fecha_solicitud }} </td>
+                                    <td>{{ $elementoConsolidado->solicitudesCompra->user->name }} </td>
+                                    <td>{{ $elementoConsolidado->solicitudesCompra->descripcion }} </td>
+                                    <td>{{ $elementoConsolidado->solicitudesElemento->nivelesTres->nombre }}</td>
+                                    <td>{{ $elementoConsolidado->solicitudesElemento->cantidad }}</td>
+                                    <td>{{ $elementoConsolidado->solicitudesElemento->centrosCosto->nombre }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($consolidacion->elementosConsolidados as $elementoConsolidado)
-                                    <tr>
-                                        <td>{{ $elementoConsolidado->solicitudesCompra->id }}</td>
-                                        <td> {{ $elementoConsolidado->solicitudesCompra->fecha_solicitud }} </td>
-                                        <td>{{ $elementoConsolidado->solicitudesCompra->user->name }} </td>
-                                        <td>{{ $elementoConsolidado->solicitudesCompra->descripcion }} </td>
-                                        <td>{{ $elementoConsolidado->solicitudesElemento->nivelesTres->nombre }}</td>
-                                        <td>{{ $elementoConsolidado->solicitudesElemento->cantidad }}</td>
-                                        <td>{{ $elementoConsolidado->solicitudesElemento->centrosCosto->nombre }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </x-modal>
             @endif
-@endforeach
+    @endforeach
+
+    @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
+        <!-- Modal para el historial de cotizaciones de cada elemento -->
+        <x-modal id="modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}" title="Historial de Cotizaciones para {{ $elementoNombre }}" size="lg">
+            @php
+                $historialCotizaciones = $consolidaciones->first()->solicitudesElemento->solicitudesCotizaciones;
+            @endphp
+            @if($historialCotizaciones->isNotEmpty())
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Elemento</th>
+                            <th>Tercero</th>
+                            <th>Precio</th>
+                            <th>Descuento</th>
+                            <th>Fecha de Vigencia</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($historialCotizaciones as $cotizacion)
+                            <tr>
+                                <td> {{ $elementoNombre }} </td>
+                                <td>{{ $cotizacion->cotizacione->tercero->nombre ?? 'N/A' }}</td>
+                                <td>${{ $cotizacion->precio }}</td>
+                                <td>{{ $cotizacion->descuento ?? '0' }}%</td>
+                                <td>{{ $cotizacion->cotizacione->fecha_inicio_vigencia }} - {{ $cotizacion->cotizacione->fecha_fin_vigencia }}</td>
+                                <td>
+                                    @php
+                                        $fechaFinVigencia = \Carbon\Carbon::parse($cotizacion->cotizacione->fecha_fin_vigencia);
+                                        $estado = now()->gt($fechaFinVigencia) ? 'Expirada' : 'Vigente';
+                                    @endphp
+                                    {{ $estado }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p>No hay historial de cotizaciones disponible para este elemento.</p>
+            @endif
+        </x-modal>
+    @endforeach
+
 </div>
     <!-- Botón para Crear Solicitud de Compra -->
     <button type="button" data-bs-toggle="modal" data-bs-target="#createSolicitudesCompraModal" 
