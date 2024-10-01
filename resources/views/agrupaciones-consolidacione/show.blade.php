@@ -83,16 +83,16 @@
                     <table class="table table-hover table-bordered table-striped border-dark">
                         <thead class="table-light">
                             <tr>
-                                <th colspan="4" class="bg-success bg-opacity-50 text-center border-dark">Consolidaciones</th>
+                                <th colspan="4" class="bg-success bg-opacity-50 text-center border-dark text-dark">Consolidaciones</th>
                                 <th colspan="{{ count($cotizacionesPorTercero) }}" class="text-center border-dark">Terceros con cotizaciones vigentes</th>
                             </tr>
                             <tr>
-                                <th class="bg-success bg-opacity-50 border-dark">
+                                <th class="bg-success bg-opacity-50 border-dark text-dark">
                                     <input type="checkbox" id="selected_all" />
                                 </th>
-                                <th class="bg-success bg-opacity-50 border-dark"></th>
-                                <th class="bg-success bg-opacity-50 border-dark">Elemento</th>
-                                <th class="bg-success bg-opacity-50 border-dark">Cant</th>
+                                <th class="bg-success bg-opacity-50 border-dark text-dark">Acciones</th>
+                                <th class="bg-success bg-opacity-50 border-dark text-dark">Elemento</th>
+                                <th class="bg-success bg-opacity-50 border-dark text-dark">Cant</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
                                     @php
                                         $cotizaciones = $cotizacionesPorTercero->get($tercero);
@@ -122,23 +122,23 @@
                         <tbody>
                             @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
                                 <tr>
-                                    <td class="bg-success bg-opacity-50 border-dark">
+                                    <td class="bg-success bg-opacity-50 border-dark text-dark">
                                         <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
                                     </td>
-                                    <td class="text-center bg-success bg-opacity-50 border-dark">
+                                    <td class="text-center bg-success bg-opacity-50 border-dark text-dark">
                                         @if($consolidaciones->first()->elementosConsolidados->count() > 0)
                                             <div class="d-flex justify-content-center gap-2">
                                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
                                                     <i class="fa fa-exclamation-circle"></i>
                                                 </button>
+                                        @endif
                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}">
                                                     <i class="fa fa-history"></i>
                                                 </button>
                                             </div>
-                                        @endif
                                     </td>
-                                    <td class="font-weight-bold bg-success bg-opacity-50 border-dark">{{ $elementoNombre }}</td>
-                                    <td class="bg-success bg-opacity-50 border-dark">{{ $consolidaciones->first()->cantidad }}</td>
+                                    <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
+                                    <td class="bg-success bg-opacity-50 border-dark text-dark">{{ $consolidaciones->first()->cantidad }}</td>
         
                                     @if($cotizacionesPorTercero->isNotEmpty())
                                         @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
