@@ -121,78 +121,82 @@
                         </thead>
                         <tbody>
                             @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
-                                <tr>
-                                    <td class="bg-success bg-opacity-50 border-dark text-dark">
-                                        <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
-                                    </td>
-                                    <td class="text-center bg-success bg-opacity-50 border-dark text-dark">
-                                        @if($consolidaciones->first()->elementosConsolidados->count() > 0)
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
-                                                    <i class="fa fa-exclamation-circle"></i>
-                                                </button>
-                                        @endif
-                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}">
-                                                    <i class="fa fa-history"></i>
-                                                </button>
-                                            </div>
-                                    </td>
-                                    <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
-                                    <td class="bg-success bg-opacity-50 border-dark text-dark">{{ $consolidaciones->first()->cantidad }}</td>
-        
-                                    @if($cotizacionesPorTercero->isNotEmpty())
-                                        @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
-                                        @php
-                                            $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $consolidaciones->first()->solicitudesElemento->nivelesTres->id);
-                                            $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
-                                            $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
-                                            $estadoJefe = $cotizacionPrecio ? $cotizacionPrecio->estado_jefe : 0;
-                                        @endphp
-                                        <td class="border-dark">
-                                            @if($cotizacionElemento)
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="form-check ms-2">
-                                                            <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
-                                                        </div>
-                                                        <span class="badge bg-info text-white fs-6 ms-2">
-                                                            ${{ number_format($cotizacionElemento->precio) }}
-                                                        </span>
-                                                        @if(!empty($cotizacionPrecio->descripcion))
-                                                            <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
-                                                        @endif
-                                                    </div>
-                                                    <div class="d-flex align-items-center ms-2">
-                                                        <!-- Botón para Detalle de Cotización -->
-                                                        <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
-                                                            <i class="fas fa-eye"></i>
+                                @foreach($consolidaciones as $consolidacion)
+                                    @if(!auth()->user()->can('ver_consolidaciones_jefe') || $consolidacion->cotizacionesPrecio->where('estado', 1)->isNotEmpty())
+                                        <tr>
+                                            <td class="bg-success bg-opacity-50 border-dark text-dark">
+                                                <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
+                                            </td>
+                                            <td class="text-center bg-success bg-opacity-50 border-dark text-dark">
+                                                @if($consolidaciones->first()->elementosConsolidados->count() > 0)
+                                                    <div class="d-flex justify-content-center gap-2">
+                                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalElementosConsolidados{{ $consolidaciones->first()->id }}">
+                                                            <i class="fa fa-exclamation-circle"></i>
                                                         </button>
-                                                        <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
-                                                            <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
-                                                                <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
-                                                            </label>
-                                                        </div>
+                                                @endif
+                                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}">
+                                                            <i class="fa fa-history"></i>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                                
-                                            <!-- Modal de Detalle de Cotización -->
-                                            <x-modal id="detalleCotizacionModal{{ $cotizacionElemento->id }}" title="Detalle de Cotización" size="lg">
-                                                @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
-                                            </x-modal>
+                                            </td>
+                                            <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
+                                            <td class="bg-success bg-opacity-50 border-dark text-dark">{{ $consolidaciones->first()->cantidad }}</td>
+                
+                                            @if($cotizacionesPorTercero->isNotEmpty())
+                                                @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
+                                                @php
+                                                    $cotizacionElemento = $cotizaciones->firstWhere('solicitudesElemento.nivelesTres.id', $consolidaciones->first()->solicitudesElemento->nivelesTres->id);
+                                                    $cotizacionPrecio = $cotizacionElemento ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) : null;
+                                                    $estadoSwitch = $cotizacionPrecio ? $cotizacionPrecio->estado : 0;
+                                                    $estadoJefe = $cotizacionPrecio ? $cotizacionPrecio->estado_jefe : 0;
+                                                @endphp
+                                                <td class="border-dark">
+                                                    @if($cotizacionElemento)
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="form-check ms-2">
+                                                                    <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                                        data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
+                                                                </div>
+                                                                <span class="badge bg-info text-white fs-6 ms-2">
+                                                                    ${{ number_format($cotizacionElemento->precio) }}
+                                                                </span>
+                                                                @if(!empty($cotizacionPrecio->descripcion))
+                                                                    <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                                @endif
+                                                            </div>
+                                                            <div class="d-flex align-items-center ms-2">
+                                                                <!-- Botón para Detalle de Cotización -->
+                                                                <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                                <div class="form-check form-switch">
+                                                                    <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                                        data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
+                                                                    <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
+                                                                        <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    <!-- Modal de Detalle de Cotización -->
+                                                    <x-modal id="detalleCotizacionModal{{ $cotizacionElemento->id }}" title="Detalle de Cotización" size="lg">
+                                                        @include('agrupaciones-consolidacione.detalle_cotizacion', ['cotizacionElemento' => $cotizacionElemento, 'elementoNombre' => $elementoNombre, 'agrupacion' => $agrupacion])
+                                                    </x-modal>
+                                                    @else
+                                                        <p class="text-muted">No hay cotizaciones vigentes</p>
+                                                    @endif
+                                                </td>
+                                            @endforeach
                                             @else
-                                                <p class="text-muted">No hay cotizaciones vigentes</p>
+                                                <td class="border-dark" colspan="{{ count($cotizacionesPorTercero) + 3 }}">
+                                                    <p class="text-muted">No hay cotizaciones vigentes para mostrar.</p>
+                                                </td>
                                             @endif
-                                        </td>
-                                    @endforeach
-                                    @else
-                                        <td class="border-dark" colspan="{{ count($cotizacionesPorTercero) + 3 }}">
-                                            <p class="text-muted">No hay cotizaciones vigentes para mostrar.</p>
-                                        </td>
+                                        </tr>
                                     @endif
-                                </tr>
+                                @endforeach
                             @endforeach
                         </tbody>
                     </table>

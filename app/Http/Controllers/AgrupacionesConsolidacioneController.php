@@ -279,16 +279,26 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
-            'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres'
+            'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres',
+            'consolidaciones.cotizacionesPrecio'
         ])->findOrFail($id);
     
-        // Obtener cotizaciones vigentes agrupadas por elemento y tercero
+        // Verificar si el usuario tiene el permiso 'ver_consolidaciones_jefe'
+        if (auth()->user()->can('ver_consolidaciones_jefe')) {
+            // Filtrar consolidaciones que tengan cotizaciones_precio relacionadas con estado = 1
+            $consolidacionesFiltered = $agrupacionesConsolidacione->consolidaciones->filter(function ($consolidacion) {
+                return $consolidacion->cotizacionesPrecio->where('estado', 1)->isNotEmpty();
+            });
+            $agrupacionesConsolidacione->setRelation('consolidaciones', $consolidacionesFiltered);
+        }
+    
         $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
         
         // Agrupar cotizaciones por elemento y tercero
         $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
             return [$consolidacion->solicitudesElemento->nivelesTres->nombre => $consolidacion];
         });
+        
         $cotizacionesPorTercero = $cotizacionesPorElemento->groupBy(function($cotizacion) {
             return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
         });
