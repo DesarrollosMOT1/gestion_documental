@@ -152,33 +152,49 @@
                                                 @endphp
                                                 <td class="border-dark">
                                                     @if($cotizacionElemento)
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="form-check ms-2">
-                                                                    <input type="checkbox" class="form-check-input estado-jefe-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                        data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estadoJefe{{ $cotizacionElemento->id }}"{{ $estadoJefe == 1 ? 'checked' : '' }} />
-                                                                </div>
-                                                                <span class="badge bg-info text-white fs-6 ms-2">
-                                                                    ${{ number_format($cotizacionElemento->precio) }}
-                                                                </span>
-                                                                @if(!empty($cotizacionPrecio->descripcion))
-                                                                    <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
-                                                                @endif
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="form-check ms-2">
+                                                                <input type="checkbox" 
+                                                                    class="form-check-input estado-jefe-checkbox" 
+                                                                    data-id="{{ $cotizacionElemento->id }}" 
+                                                                    data-id-agrupacion="{{ $agrupacion->id }}" 
+                                                                    data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                                    data-id-consolidaciones="{{ $consolidaciones->first()->id }}" 
+                                                                    id="estadoJefe{{ $cotizacionElemento->id }}" 
+                                                                    {{ $estadoJefe == 1 ? 'checked' : '' }} 
+                                                                    {{ !auth()->user()->can('editar_consolidacion_estado_jefe') ? 'disabled' : '' }} 
+                                                                />
                                                             </div>
-                                                            <div class="d-flex align-items-center ms-2">
-                                                                <!-- Botón para Detalle de Cotización -->
-                                                                <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                                <div class="form-check form-switch">
-                                                                    <input type="checkbox" class="form-check-input estado-checkbox" data-id="{{ $cotizacionElemento->id }}" data-id-agrupacion="{{ $agrupacion->id }}" data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
-                                                                        data-id-consolidaciones="{{ $consolidaciones->first()->id }}" id="estado{{ $cotizacionElemento->id }}"{{ $estadoSwitch == 1 ? 'checked' : '' }} />
-                                                                    <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
-                                                                        <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
-                                                                    </label>
-                                                                </div>
+                                                            <span class="badge bg-info text-white fs-6 ms-2">
+                                                                ${{ number_format($cotizacionElemento->precio) }}
+                                                            </span>
+                                                            @if(!empty($cotizacionPrecio->descripcion))
+                                                                <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                            @endif
+                                                        </div>
+                                                        <div class="d-flex align-items-center ms-2">
+                                                            <!-- Botón para Detalle de Cotización -->
+                                                            <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                            <div class="form-check form-switch">
+                                                                <input type="checkbox" 
+                                                                    class="form-check-input estado-checkbox" 
+                                                                    data-id="{{ $cotizacionElemento->id }}" 
+                                                                    data-id-agrupacion="{{ $agrupacion->id }}" 
+                                                                    data-id-solicitud-elemento="{{ $cotizacionElemento->id_solicitud_elemento }}"
+                                                                    data-id-consolidaciones="{{ $consolidaciones->first()->id }}" 
+                                                                    id="estado{{ $cotizacionElemento->id }}" 
+                                                                    {{ $estadoSwitch == 1 ? 'checked' : '' }} 
+                                                                    {{ !auth()->user()->can('editar_consolidacion_estado') ? 'disabled' : '' }} 
+                                                                />
+                                                                <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
+                                                                    <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
+                                                                </label>
                                                             </div>
                                                         </div>
+                                                    </div>
                                                         
                                                     <!-- Modal de Detalle de Cotización -->
                                                     <x-modal id="detalleCotizacionModal{{ $cotizacionElemento->id }}" title="Detalle de Cotización" size="lg">
