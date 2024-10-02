@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    window.scrollTo({ top: 500, behavior: 'smooth' });; // hacer scroll al cargar la pagina hasta la tabla
+    window.scrollTo({ top: 500, behavior: 'smooth' });
 
     let cotizacionPendiente = null;
 
@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
             justificacionTexto.value = justificacionTexto.value.substring(0, maxLength);
         }
     });
+
+    // Función para verificar permisos
+    const tienePermiso = (checkbox) => {
+        return checkbox.getAttribute('data-permiso') && !checkbox.hasAttribute('disabled');
+    };
 
     // Función para actualizar el estado de cotización
     const actualizarEstadoCotizacion = (id, estado, idAgrupacion, idConsolidaciones, justificacion = null, estadoJefe = null) => {
@@ -80,21 +85,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return precioMayor;
     };
 
-    // Función para verificar si se puede seleccionar el checkbox de estado_jefe
+// Función para verificar si se puede seleccionar el checkbox de estado_jefe
     document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
+            if (!tienePermiso(this)) {
+                this.checked = !this.checked; // Revertir el cambio si no tiene permiso
+                return;
+            }
+
             const id = this.getAttribute('data-id');
             const idAgrupacion = this.getAttribute('data-id-agrupacion');
             const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
             const estado = this.checked ? 1 : 0;
             const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace(/[$,]/g, ''));
 
-            // Desmarcar otros checkboxes de estado en la misma fila
             if (estado === 1) {
                 const fila = this.closest('tr');
                 fila.querySelectorAll('.estado-checkbox').forEach(otherCheckbox => {
                     if (otherCheckbox !== this) {
                         otherCheckbox.checked = false;
+                        otherCheckbox.disabled = true;  // Deshabilitar los demás checkboxes
+                    }
+                });
+            } else {
+                // Si el checkbox se desmarca, habilitar todos los demás checkboxes de la fila
+                const fila = this.closest('tr');
+                fila.querySelectorAll('.estado-checkbox').forEach(otherCheckbox => {
+                    if (otherCheckbox !== this) {
+                        otherCheckbox.disabled = false;  // Habilitar los checkboxes
                     }
                 });
             }
@@ -112,6 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manejo del cambio en los checkboxes de estado_jefe
     document.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
+            if (!tienePermiso(this)) {
+                this.checked = !this.checked; // Revertir el cambio si no tiene permiso
+                return;
+            }
 
             const id = this.getAttribute('data-id');
             const idAgrupacion = this.getAttribute('data-id-agrupacion');
@@ -119,14 +141,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const estadoJefe = this.checked ? 1 : 0;
 
             // Desmarcar todos los otros checkboxes de estado_jefe en la misma fila
-            const fila = this.closest('tr');
-            fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
-                if (otherCheckbox !== this) {
-                    otherCheckbox.checked = false;
-                }
-            });
+            if (estadoJefe === 1) {
+                const fila = this.closest('tr');
+                fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
+                    if (otherCheckbox !== this) {
+                        otherCheckbox.checked = false;
+                        otherCheckbox.disabled = true;  // Deshabilitar los demás checkboxes
+                    }
+                });
+            } else {
+                // Si el checkbox se desmarca, habilitar todos los demás checkboxes de la fila
+                const fila = this.closest('tr');
+                fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
+                    otherCheckbox.disabled = false;  // Habilitar los checkboxes
+                });
+            }
 
-            // Solo actualizamos el estado_jefe, dejando los demás campos intactos
             actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, estadoJefe);
         });
     });
@@ -181,11 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
                                 nuevoComentarioIcon.title = justificacion;
                                 nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
-                        
+
                                 // Selecciona el span que contiene el precio y añade el ícono justo después
                                 const precioSpan = checkbox.closest('td').querySelector('.badge.bg-info');
                                 precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon); 
-                                
+
                                 new bootstrap.Tooltip(nuevoComentarioIcon);
                             }
                         }
@@ -197,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 if (estado !== null) {
                     checkbox.checked = false;
-                    checkbox.disabled = estado === 1;
+                    checkbox.disabled = estado === 1 || !tienePermiso(checkbox);
                     icono.classList.remove('fa-check-circle', 'text-success');
                     icono.classList.add('fa-times-circle', 'text-danger');
                 }
@@ -209,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.disabled = checkbox.disabled || !checkbox.checked;
             });
 
-            // Asegurarse de que el campo de selección se actualice correctamente
             const selectInput = row.querySelector(`input[name="cotizaciones[]"][value="${currentId}"]`);
             if (selectInput) {
                 selectInput.disabled = checkbox.disabled;
@@ -220,11 +249,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (estadoJefe !== null) {
             const row = document.getElementById(`estadoJefe${id}`).closest('tr');
             row.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
-                checkbox.disabled = checkbox.id !== `estadoJefe${id}` && estadoJefe === 1;
+                checkbox.disabled = (checkbox.id !== `estadoJefe${id}` && estadoJefe === 1) || !tienePermiso(checkbox);
             });
         }
     };
 
+    // Aplicar el estado inicial
     const aplicarEstadoInicial = () => {
         // Primero manejamos los checkboxes de estado
         document.querySelectorAll('.estado-checkbox:checked').forEach(checkbox => {
@@ -242,10 +272,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
                     if (otherCheckbox !== checkedJefe) {
                         otherCheckbox.checked = false;
-                        otherCheckbox.disabled = true;
+                        otherCheckbox.disabled = true || !tienePermiso(otherCheckbox);
                     }
                 });
-                
+
                 // Llamamos a actualizarEstadoCotizacion para asegurarnos de que el estado se guarde
                 const idAgrupacion = checkedJefe.getAttribute('data-id-agrupacion');
                 const idConsolidaciones = checkedJefe.getAttribute('data-id-consolidaciones');

@@ -164,6 +164,7 @@
                                                                     id="estadoJefe{{ $cotizacionElemento->id }}" 
                                                                     {{ $estadoJefe == 1 ? 'checked' : '' }} 
                                                                     {{ !auth()->user()->can('editar_consolidacion_estado_jefe') ? 'disabled' : '' }} 
+                                                                    data-permiso="editar_consolidacion_estado_jefe"
                                                                 />
                                                             </div>
                                                             <span class="badge bg-info text-white fs-6 ms-2">
@@ -188,6 +189,7 @@
                                                                     id="estado{{ $cotizacionElemento->id }}" 
                                                                     {{ $estadoSwitch == 1 ? 'checked' : '' }} 
                                                                     {{ !auth()->user()->can('editar_consolidacion_estado') ? 'disabled' : '' }} 
+                                                                    data-permiso="editar_consolidacion_estado"
                                                                 />
                                                                 <label class="form-check-label" for="estado{{ $cotizacionElemento->id }}">
                                                                     <i class="estado-icon fas {{ $estadoSwitch == 1 ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}" id="icono-estado{{ $cotizacionElemento->id }}"></i>
