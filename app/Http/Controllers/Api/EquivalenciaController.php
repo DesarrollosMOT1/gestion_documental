@@ -24,17 +24,17 @@ class EquivalenciaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(EquivalenciaRequest $request): Equivalencia
+    public function store($request)
     {
-        return Equivalencia::create($request->validated());
+        return Equivalencia::create($request);
     }
 
     public function storeEquivalencia(int $unidadPrincipalId, array $unidadEquivalenteData): Equivalencia
     {
-        if ($unidadEquivalenteData['unidad_equivalente'] === 'base') {
+        if ($unidadEquivalenteData['unidad'] === 'base') {
             $unidadEquivalenteId = $unidadPrincipalId;
         } else {
-            $unidadEquivalenteId = $unidadEquivalenteData['unidad_equivalente'];
+            $unidadEquivalenteId = $unidadEquivalenteData['unidad'];
         }
 
         $data = [
@@ -43,7 +43,9 @@ class EquivalenciaController extends Controller
             'cantidad' => $unidadEquivalenteData['cantidad'],
         ];
 
-        return $this->store(new EquivalenciaRequest($data));
+        $equivalencia = $this->store($data);
+
+        return $equivalencia;
     }
 
     /**

@@ -22,7 +22,16 @@ class UnidadeRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre' => 'required|string',
+            'nombre' => 'required|string|max:255',
+            'unidad' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if ($value !== 'base' && ! \App\Models\Unidades::where('id', $value)->exists()) {
+                        $fail('La unidad seleccionada no es válida.');
+                    }
+                },
+            ],
+            'cantidad' => 'required|integer|min:1',
         ];
     }
 }

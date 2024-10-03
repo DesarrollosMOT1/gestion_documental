@@ -4,6 +4,11 @@
     Movimientos
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -32,17 +37,16 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <!-- Añadir la clase "datatable" a la tabla para futuros usos de DataTables -->
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>Id</th>
-
                                         <th>Tipo</th>
                                         <th>Clase</th>
                                         <th>Almacen</th>
                                         <th>Fecha</th>
-                                        <th>Descripcion</th>
-
+                                        <th>Descripción</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -55,11 +59,10 @@
                                             <td>{{ $movimiento->almacen }}</td>
                                             <td>{{ $movimiento->fecha }}</td>
                                             <td>{{ $movimiento->descripcion }}</td>
-
                                             <td>
-                                                <a class="btn btn-sm btn-primary "
-                                                    href="{{ route('movimientos.show', $movimiento->id) }}"><i
-                                                        class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
+                                                <a class="btn btn-sm btn-primary"
+                                                    href="{{ route('movimientos.show', $movimiento->id) }}">
+                                                    <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
                                             </td>
                                         </tr>
                                     @endforeach
