@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return precioMayor;
     };
 
-// Función para verificar si se puede seleccionar el checkbox de estado_jefe
+    // Función para verificar si se puede seleccionar el checkbox de estado_jefe
     document.querySelectorAll('.estado-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             if (!tienePermiso(this)) {
@@ -185,6 +185,18 @@ document.addEventListener('DOMContentLoaded', () => {
         justificacionError.style.display = 'none';
     });
 
+    // Modificar la función actualizarSelectedItem
+    const actualizarSelectedItem = (row) => {
+        const selectedItem = row.querySelector('.selected_item');
+        const estadoJefeCheckbox = row.querySelector('.estado-jefe-checkbox:checked');
+        if (selectedItem) {
+            selectedItem.disabled = !!estadoJefeCheckbox;
+            if (estadoJefeCheckbox) {
+                selectedItem.checked = false; // Desmarcar si está deshabilitado
+            }
+        }
+    };
+
     // Modificar la función actualizarInterfaz
     const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = null, estadoJefe = null) => {
         const checkboxes = document.querySelectorAll(`.estado-checkbox[data-id-solicitud-elemento="${idSolicitudElemento}"]`);
@@ -251,7 +263,11 @@ document.addEventListener('DOMContentLoaded', () => {
             row.querySelectorAll('.estado-jefe-checkbox').forEach(checkbox => {
                 checkbox.disabled = (checkbox.id !== `estadoJefe${id}` && estadoJefe === 1) || !tienePermiso(checkbox);
             });
+            actualizarSelectedItem(row);
         }
+        document.querySelectorAll(`tr`).forEach(row => {
+            actualizarSelectedItem(row);
+        });
     };
 
     // Aplicar el estado inicial
@@ -281,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const idConsolidaciones = checkedJefe.getAttribute('data-id-consolidaciones');
                 actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, 1);
             }
+            actualizarSelectedItem(row);
         });
     };
 

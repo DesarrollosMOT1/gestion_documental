@@ -3,14 +3,25 @@ $(document).ready(function() {
 
     // Eventos para los checkboxes de selección
     $('#selected_all').change(function() {
-        $('.selected_item').prop('checked', $(this).prop('checked'));
+        $('.selected_item:not(:disabled)').prop('checked', $(this).prop('checked'));
         actualizarConsolidacionesSeleccionadas();
     });
 
     $('.selected_item').change(function() {
+        if ($(this).prop('disabled')) {
+            $(this).prop('checked', false);
+            return;
+        }
         actualizarConsolidacionesSeleccionadas();
         toggleGenerateButton();
     });
+
+    // Función para actualizar el estado de #selected_all
+    function actualizarSelectedAll() {
+        const totalCheckboxes = $('.selected_item:not(:disabled)').length;
+        const checkedCheckboxes = $('.selected_item:not(:disabled):checked').length;
+        $('#selected_all').prop('checked', totalCheckboxes === checkedCheckboxes && totalCheckboxes > 0);
+    }
 
     function actualizarConsolidacionesSeleccionadas() {
         const consolidacionesSeleccionadas = obtenerConsolidacionesSeleccionadas();
@@ -20,6 +31,7 @@ $(document).ready(function() {
             limpiarFormularioSolicitudOferta();
             toggleGenerateButton(false);
         }
+        actualizarSelectedAll();
     }
 
     function obtenerConsolidacionesSeleccionadas() {
@@ -160,4 +172,16 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Agregar un observador de mutaciones para manejar cambios dinámicos en los checkboxes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'disabled') {
+                actualizarSelectedAll();
+            }
+        });
+    });
+
+    const config = { attributes: true, subtree: true, attributeFilter: ['disabled'] };
+    observer.observe(document.body, config);
 });
