@@ -28,10 +28,10 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Usuario</th>
-									<th >Fecha Consolidacion</th>
-
-                                        <th></th>
+									<th>Usuario</th>
+									<th>Fecha Consolidacion</th>
+                                    <th>Area</th>
+                                    <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,7 +41,7 @@
                                             
 										<td >{{ $agrupacionesConsolidacione->user->name }}</td>
 										<td >{{ $agrupacionesConsolidacione->fecha_consolidacion }}</td>
-
+                                        <td>{{ $agrupacionesConsolidacione->user->area->nombre }}</td>
                                             <td>
                                                 <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" class="delete-form" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
