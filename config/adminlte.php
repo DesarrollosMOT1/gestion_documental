@@ -301,8 +301,8 @@ return [
         ],
         [
             'text' => 'Inicio',
-            'route'  => 'home',
-            'icon' => 'fas fa-fw fa-home'
+            'route' => 'home',
+            'icon' => 'fas fa-fw fa-home',
         ],
         [
             'type' => 'fullscreen-widget',
@@ -431,11 +431,11 @@ return [
                     'url' => 'bodegas',
                 ],
                 [
-                    'text' => 'clases-movimientos',
+                    'text' => 'clases de movimientos',
                     'url' => 'clases-movimientos',
                 ],
                 [
-                    'text' => 'tipos-movimientos',
+                    'text' => 'tipos de movimientos',
                     'url' => 'tipos-movimientos',
                 ],
                 [

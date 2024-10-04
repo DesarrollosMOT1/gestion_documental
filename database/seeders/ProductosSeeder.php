@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ProductosSeeder extends Seeder
 {
@@ -15,7 +14,7 @@ class ProductosSeeder extends Seeder
     {
         DB::table('productos')->insert([
             [
-                'codigo_producto' => str::random(10),
+                'codigo_producto' => strval(mt_rand(1000000000000, 9999999999999)), // Genera un número de 13 cifras
                 'nombre' => 'Producto 1',
                 'unidad_medida_peso' => 'kg',
                 'peso_bruto' => 100,
@@ -25,7 +24,7 @@ class ProductosSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'codigo_producto' => Str::random(10),
+                'codigo_producto' => strval(mt_rand(1000000000000, 9999999999999)), // Genera un número de 13 cifras
                 'nombre' => 'Producto 2',
                 'unidad_medida_peso' => 'g',
                 'peso_bruto' => 200,

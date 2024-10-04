@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\EquivalenciaController;
 use App\Http\Requests\UnidadeRequest;
 use App\Models\Unidades;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -18,7 +18,7 @@ class UnidadeController extends Controller
      */
     public function index(Request $request): View
     {
-        $unidades = Unidades::paginate();
+        $unidades = Unidades::with(['equivalencias.unidad_equivalente'])->paginate();
 
         return view('unidades.index', compact('unidades'))
             ->with('i', ($request->input('page', 1) - 1) * $unidades->perPage());
@@ -37,24 +37,23 @@ class UnidadeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeUnidad(UnidadeRequest $request)
+    public function storeUnidad($request)
     {
-        return Unidades::create($request->validated());
+        return Unidades::create($request);
     }
 
     public function store(UnidadeRequest $request): RedirectResponse
     {
-        $UnidadData = $request->input('nombre');
+        $request->validated();
+        $UnidadData = $request->only('nombre');
         $EquivalenciaJson = $request->only('unidad', 'cantidad');
-
         $unidad = $this->storeUnidad($UnidadData);
 
-        Http::post(route('registros.store-array', ['movimientoId' => $unidad->id]),
-            $EquivalenciaJson
-        );
+        $equivalenciasController = new EquivalenciaController;
+        $equivalenciasController->storeEquivalencia($unidad->id, $EquivalenciaJson);
 
-        return Redirect::route('movimientos.index')
-            ->with('success', 'Movimiento created successfully.');
+        return Redirect::route('unidades.index')
+            ->with('success', 'unidad creada exitosamente.');
     }
 
     /**
@@ -62,9 +61,10 @@ class UnidadeController extends Controller
      */
     public function show($id): View
     {
-        $unidades = Unidades::find($id);
+        // Cargar la unidad específica junto con sus equivalencias y las unidades equivalentes
+        $unidad = Unidades::with(['equivalencias.unidad_equivalente'])->findOrFail($id);
 
-        return view('unidades.show', compact('unidades'));
+        return view('unidades.show', compact('unidad'));
     }
 
     /**
@@ -85,7 +85,7 @@ class UnidadeController extends Controller
         $unidades->update($request->validated());
 
         return Redirect::route('unidades.index')
-            ->with('success', 'Unidade updated successfully');
+            ->with('success', 'Unidad updated successfully');
     }
 
     public function destroy($id): RedirectResponse
@@ -93,7 +93,7 @@ class UnidadeController extends Controller
         Unidades::find($id)->delete();
 
         return Redirect::route('unidades.index')
-            ->with('success', 'Unidade deleted successfully');
+            ->with('success', 'Unidad borrada exitosamente');
     }
 
     public function getAllUnidades(Request $request): JsonResponse
