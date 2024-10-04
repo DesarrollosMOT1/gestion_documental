@@ -10,7 +10,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="unidad" class="form-label">{{ __('Unidad Equivalente') }}</label>
-            <select id="unidad" name="unidad" onchange="fetchClases(this.value)" class="form-control">
+            <select id="unidad" name="unidad" onchange="handleUnidadChange()" class="form-control">
                 <option value="">Seleccione una unidad equivalente</option>
             </select>
             {!! $errors->first('unidad', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
@@ -34,17 +34,41 @@
             .then(response => response.json())
             .then(data => {
                 const tipoSelect = document.getElementById('unidad');
-                const opt = document.createElement('option');
-                opt.value = "base";
-                opt.textContent = "base";
-                tipoSelect.appendChild(opt);
-                data.forEach(option => {
-                    const opt = document.createElement('option');
-                    opt.value = option.id;
-                    opt.textContent = option.name;
-                    tipoSelect.appendChild(opt);
-                });
+                tipoSelect.innerHTML = '';
+
+                const optBase = document.createElement('option');
+                optBase.value = "base";
+                optBase.textContent = "base";
+                tipoSelect.appendChild(optBase);
+
+                if (data.length > 0) {
+                    data.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.id;
+                        opt.textContent = option.name;
+                        tipoSelect.appendChild(opt);
+                    });
+                } else {
+                    console.log('No se encontraron unidades equivalentes');
+                }
+
+                // Ejecutar la función al cargar los datos para que se valide si la opción por defecto es "base"
+                handleUnidadChange();
             })
             .catch(error => console.error('Error al cargar las unidades equivalentes:', error));
     });
+
+    function handleUnidadChange() {
+        const unidadSelect = document.getElementById('unidad');
+        const cantidadInput = document.getElementById('cantidad');
+
+        if (unidadSelect.value === 'base') {
+            // Si la opción seleccionada es "base", bloquear el campo de cantidad y poner el valor en 1
+            cantidadInput.value = 1;
+            cantidadInput.setAttribute('readonly', true);
+        } else {
+            // Si es otra opción, permitir editar el campo cantidad
+            cantidadInput.removeAttribute('readonly');
+        }
+    }
 </script>

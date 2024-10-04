@@ -21,20 +21,22 @@
         </div>
         <div class="form-group mb-2 mb20">
             <label for="fecha" class="form-label">{{ __('Fecha') }}</label>
-            <input type="date" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha', $movimiento?->fecha) }}" id="fecha" placeholder="Fecha">
+            <input type="date" name="fecha" class="form-control @error('fecha') is-invalid @enderror"
+                value="{{ old('fecha', $movimiento?->fecha) }}" id="fecha" placeholder="Fecha">
             {!! $errors->first('fecha', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripcion') }}</label>
-            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" placeholder="Descripcion">{{ old('descripcion', $movimiento?->descripcion) }}</textarea>
+            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
+                placeholder="Descripcion">{{ old('descripcion', $movimiento?->descripcion) }}</textarea>
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        fetch('{{ route("tiposMovimientos.get-all") }}')
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('{{ route('tipos-movimientos.get-all') }}')
             .then(response => response.json())
             .then(data => {
                 const tipoSelect = document.getElementById('tipoSelect');
@@ -53,7 +55,8 @@
         claseSelect.innerHTML = '<option value="">Seleccione una clase de movimiento</option>';
 
         if (tipoId) {
-            const url = `{{ route('clases-movimientos.get-all-by-typeid', ['typeId' => 'ID_PLACEHOLDER']) }}`.replace('ID_PLACEHOLDER', tipoId);
+            const url = `{{ route('clases-movimientos.get-all-by-typeid', ['typeId' => 'ID_PLACEHOLDER']) }}`.replace(
+                'ID_PLACEHOLDER', tipoId);
 
             fetch(url)
                 .then(response => response.json())

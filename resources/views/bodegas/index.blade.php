@@ -4,6 +4,11 @@
     Bodegas
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -19,7 +24,7 @@
                             <div class="float-right">
                                 <a href="{{ route('bodegas.create') }}" class="btn btn-primary btn-sm float-right"
                                     data-placement="left">
-                                    {{ __('crear nuevo') }}
+                                    {{ __('Crear Nuevo') }}
                                 </a>
                             </div>
                         </div>
@@ -32,14 +37,13 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <!-- Añadir la clase "datatable" a la tabla para futuros usos de DataTables -->
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>Id</th>
-
                                         <th>Nombre</th>
-                                        <th>Direccion</th>
-
+                                        <th>Dirección</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -47,23 +51,22 @@
                                     @foreach ($bodegas as $bodega)
                                         <tr>
                                             <td>{{ $bodega->id }}</td>
-
                                             <td>{{ $bodega->nombre }}</td>
                                             <td>{{ $bodega->direccion }}</td>
-
                                             <td>
                                                 <form action="{{ route('bodegas.destroy', $bodega->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary "
-                                                        href="{{ route('bodegas.show', $bodega->id) }}"><i
-                                                            class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('bodegas.show', $bodega->id) }}">
+                                                        <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
                                                     <a class="btn btn-sm btn-success"
-                                                        href="{{ route('bodegas.edit', $bodega->id) }}"><i
-                                                            class="fa fa-fw fa-edit"></i> {{ __('editar') }}</a>
+                                                        href="{{ route('bodegas.edit', $bodega->id) }}">
+                                                        <i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i
-                                                            class="fa fa-fw fa-trash"></i> {{ __('eliminar') }}</button>
+                                                        onclick="event.preventDefault();
+                                                        confirm('¿Está seguro de eliminar?') ? this.closest('form').submit() : false;">
+                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}</button>
                                                 </form>
                                             </td>
                                         </tr>
