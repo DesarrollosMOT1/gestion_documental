@@ -88,7 +88,9 @@
                             </tr>
                             <tr>
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">
-                                    <input type="checkbox" id="selected_all" />
+                                    <div class="form-check ms-2">
+                                        <input class="form-check-input" type="checkbox" id="selected_all" />
+                                    </div>
                                 </th>
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">Acciones</th>
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">Elemento</th>
@@ -125,7 +127,9 @@
                                     @if(!auth()->user()->can('ver_consolidaciones_jefe') || $consolidacion->cotizacionesPrecio->where('estado', 1)->isNotEmpty())
                                         <tr>
                                             <td class="bg-success bg-opacity-50 border-dark text-dark">
-                                                <input type="checkbox" class="selected_item" value="{{ $consolidaciones->first()->id }}" />
+                                                <div class="form-check ms-2">
+                                                    <input class="form-check-input selected_item" type="checkbox" value="{{ $consolidaciones->first()->id }}" />
+                                                </div>
                                             </td>
                                             <td class="text-center bg-success bg-opacity-50 border-dark text-dark">
                                                 @if($consolidaciones->first()->elementosConsolidados->count() > 0)
