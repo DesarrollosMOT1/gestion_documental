@@ -39,7 +39,7 @@ class AgrupacionesConsolidacioneController extends Controller
             'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
             'ver_dotacion_personal' => 'DOTACION PERSONAL',
         ];
-
+    
         // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
         $nivelesPermitidos = [];
         foreach ($permissions as $permiso => $nombre) {
@@ -47,19 +47,25 @@ class AgrupacionesConsolidacioneController extends Controller
                 $nivelesPermitidos[] = $nombre;
             }
         }
-
+    
         // Obtener los niveles uno permitidos
         $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
-
+    
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+    
+        // Filtrar las consolidaciones por rango de fechas
         $agrupacionesConsolidaciones = AgrupacionesConsolidacione::whereHas('consolidaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
             $query->whereIn('id', $nivelesUnoIds);
         })
+        ->whereBetween('fecha_consolidacion', [$fechaInicio, $fechaFin])
         ->with('consolidaciones.solicitudesElemento')
         ->paginate();
-
+    
         return view('agrupaciones-consolidacione.index', compact('agrupacionesConsolidaciones'))
             ->with('i', ($request->input('page', 1) - 1) * $agrupacionesConsolidaciones->perPage());
-    }
+    }    
 
     /**
      * Show the form for creating a new resource.
