@@ -381,26 +381,11 @@ class AgrupacionesConsolidacioneController extends Controller
         return $cotizaciones;
     }
 
-    public function obtenerHistorialCotizaciones($agrupacionId)
+    public function obtenerHistorialCotizaciones($elementoId)
     {
-        // Obtener los IDs de los niveles tres relacionados con las consolidaciones de la agrupación
-        $nivelesTresIds = Consolidacione::where('agrupacion_id', $agrupacionId)
-            ->whereHas('solicitudesElemento', function ($query) {
-                $query->select('id_niveles_tres');
-            })
-            ->get()
-            ->pluck('solicitudesElemento.nivelesTres.id');
-    
-        // Obtener todas las cotizaciones históricas que coincidan con esos niveles tres, sin importar la vigencia
-        $cotizaciones = SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
-                $subQuery->select('id')
-                        ->from('solicitudes_elementos')
-                        ->whereIn('id_niveles_tres', $nivelesTresIds);
-            })
+        return SolicitudesCotizacione::where('id_solicitud_elemento', $elementoId)
             ->with('cotizacione.tercero')
             ->get();
-    
-        return $cotizaciones;
     }
 
     /**
