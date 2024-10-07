@@ -22,9 +22,16 @@ class DatabaseSeeder extends Seeder
             TiposYClasesMovimientosSeeder::class,
             BodegasYAlmacenesSeeder::class
         ]);
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        
+        // Crear o encontrar usuario
+        User::firstOrCreate(
+            [
+                'email' => 'test@example.com',  // Buscará por email
+            ],
+            [
+                'name' => 'Test User',  // Si no lo encuentra, creará con estos atributos
+                'password' => bcrypt('password123'),  // No olvides encriptar la contraseña
+            ]
+        );
     }
 }
