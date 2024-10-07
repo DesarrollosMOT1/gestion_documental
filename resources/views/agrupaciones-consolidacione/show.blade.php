@@ -317,9 +317,10 @@
         <!-- Modal para el historial de cotizaciones de cada elemento -->
         <x-modal id="modalHistorialCotizaciones{{ $consolidaciones->first()->solicitudesElemento->nivelesTres->id }}" title="Historial de Cotizaciones para {{ $elementoNombre }}" size="lg">
             @php
-                $historialCotizaciones = $consolidaciones->first()->solicitudesElemento->solicitudesCotizaciones;
+                // Filtrar el historial para el nivel tres actual
+                $historialElemento = $historialCotizaciones->where('solicitudesElemento.nivelesTres.id', $consolidaciones->first()->solicitudesElemento->nivelesTres->id);
             @endphp
-            @if($historialCotizaciones->isNotEmpty())
+            @if($historialElemento->isNotEmpty())
                 <table class="table table-hover table-bordered table-striped">
                     <thead>
                         <tr>
@@ -332,11 +333,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($historialCotizaciones as $cotizacion)
+                        @foreach($historialElemento as $cotizacion)
                             <tr>
                                 <td> {{ $elementoNombre }} </td>
                                 <td>{{ $cotizacion->cotizacione->tercero->nombre ?? 'N/A' }}</td>
-                                <td>${{ $cotizacion->precio }}</td>
+                                <td>${{ number_format($cotizacion->precio, 2) }}</td>
                                 <td>{{ $cotizacion->descuento ?? '0' }}%</td>
                                 <td>{{ $cotizacion->cotizacione->fecha_inicio_vigencia }} - {{ $cotizacion->cotizacione->fecha_fin_vigencia }}</td>
                                 <td>

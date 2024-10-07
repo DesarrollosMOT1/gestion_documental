@@ -324,6 +324,8 @@ class AgrupacionesConsolidacioneController extends Controller
         }
     
         $cotizacionesPorElemento = $this->verificarCotizacionesVigentes($agrupacionesConsolidacione->id);
+
+        $historialCotizaciones = $this->obtenerHistorialCotizaciones($agrupacionesConsolidacione->id);
         
         // Agrupar cotizaciones por elemento y tercero
         $elementosConsolidados = $agrupacionesConsolidacione->consolidaciones->mapToGroups(function($consolidacion) {
@@ -334,7 +336,7 @@ class AgrupacionesConsolidacioneController extends Controller
             return $cotizacion->cotizacione->tercero->nombre ?? 'Proveedor N/A';
         });
     
-        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados', 'ordenesCompra')));
+        return view('agrupaciones-consolidacione.show', array_merge($datosSolicitudCompra, compact('agrupacion', 'agrupacionesConsolidacione', 'cotizacionesPorTercero', 'elementosConsolidados', 'ordenesCompra', 'historialCotizaciones')));
     }
     
     
@@ -381,12 +383,27 @@ class AgrupacionesConsolidacioneController extends Controller
         return $cotizaciones;
     }
 
-    public function obtenerHistorialCotizaciones($elementoId)
+    public function obtenerHistorialCotizaciones($agrupacionId)
     {
-        return SolicitudesCotizacione::where('id_solicitud_elemento', $elementoId)
+        // Obtener los IDs de los niveles tres relacionados con las consolidaciones de la agrupación
+        $nivelesTresIds = Consolidacione::where('agrupacion_id', $agrupacionId)
+            ->whereHas('solicitudesElemento', function ($query) {
+                $query->select('id_niveles_tres');
+            })
+            ->get()
+            ->pluck('solicitudesElemento.nivelesTres.id');
+    
+        // Obtener el historial completo de cotizaciones para esos niveles tres
+        $historialCotizaciones = SolicitudesCotizacione::whereIn('id_solicitud_elemento', function ($subQuery) use ($nivelesTresIds) {
+                $subQuery->select('id')
+                        ->from('solicitudes_elementos')
+                        ->whereIn('id_niveles_tres', $nivelesTresIds);
+            })
             ->with('cotizacione.tercero')
             ->get();
-    }
+    
+        return $historialCotizaciones;
+    }    
 
     /**
      * Show the form for editing the specified resource.
