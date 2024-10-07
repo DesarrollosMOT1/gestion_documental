@@ -13,7 +13,7 @@
                         <span class="card-title">{{ __('Create') }} Solicitudes Compra</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('solicitudes-compras.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('solicitudes-compras.store') }}"  role="form" id="solicitudesCompras" enctype="multipart/form-data">
                             @csrf
 
                             @include('solicitudes-compra.form')

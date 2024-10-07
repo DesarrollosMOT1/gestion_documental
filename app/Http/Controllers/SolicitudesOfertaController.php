@@ -42,21 +42,23 @@ class SolicitudesOfertaController extends Controller
      */
     public function store(SolicitudesOfertaRequest $request): RedirectResponse
     {
+        // Crear la solicitud de oferta utilizando los datos validados
         $solicitudOferta = SolicitudesOferta::create($request->validated());
-    
+
         // Guardar los elementos asociados a la solicitud de oferta
         $elementos = $request->input('elementos', []);
+        // Guardar los terceros asociados a la solicitud de oferta
+        $terceros = $request->input('terceros', []);
 
-            // Guardar los terceros asociados a la solicitud de oferta
-            $terceros = $request->input('terceros', []);
-            foreach ($terceros as $terceroId) {
-                SolicitudOfertaTercero::create([
-                    'solicitudes_ofertas_id' => $solicitudOferta->id,
-                    'tercero_id' => $terceroId,
-                ]);
-            }
+        // Guardar terceros
+        foreach ($terceros as $terceroId) {
+            SolicitudOfertaTercero::create([
+                'solicitudes_ofertas_id' => $solicitudOferta->id,
+                'tercero_id' => $terceroId,
+            ]);
+        }
 
-    
+        // Guardar elementos de la solicitud
         foreach ($elementos as $elemento) {
             ConsolidacionesOferta::create([
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'],
@@ -66,10 +68,11 @@ class SolicitudesOfertaController extends Controller
                 'cantidad' => $elemento['cantidad'],
             ]);
         }
-    
+
+        // Redireccionar con un mensaje de éxito
         return Redirect::route('solicitudes-ofertas.index')
             ->with('success', 'Solicitud de oferta creada exitosamente.');
-    }    
+    }
 
     public function getConsolidacionesDetalles(Request $request)
     {

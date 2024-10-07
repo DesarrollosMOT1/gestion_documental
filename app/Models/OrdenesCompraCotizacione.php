@@ -30,7 +30,7 @@ class OrdenesCompraCotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_ordenes_compras', 'id_solicitudes_cotizaciones', 'id_entradas', 'id_consolidaciones_oferta', 'id_solicitud_elemento'];
+    protected $fillable = ['id_ordenes_compras', 'id_solicitudes_cotizaciones', 'id_entradas', 'id_consolidaciones_oferta', 'id_solicitud_elemento', 'id_cotizaciones_precio'];
 
 
     /**

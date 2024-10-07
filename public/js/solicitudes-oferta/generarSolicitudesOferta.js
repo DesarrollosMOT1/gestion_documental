@@ -3,14 +3,25 @@ $(document).ready(function() {
 
     // Eventos para los checkboxes de selección
     $('#selected_all').change(function() {
-        $('.selected_item').prop('checked', $(this).prop('checked'));
+        $('.selected_item:not(:disabled)').prop('checked', $(this).prop('checked'));
         actualizarConsolidacionesSeleccionadas();
     });
 
     $('.selected_item').change(function() {
+        if ($(this).prop('disabled')) {
+            $(this).prop('checked', false);
+            return;
+        }
         actualizarConsolidacionesSeleccionadas();
         toggleGenerateButton();
     });
+
+    // Función para actualizar el estado de #selected_all
+    function actualizarSelectedAll() {
+        const totalCheckboxes = $('.selected_item:not(:disabled)').length;
+        const checkedCheckboxes = $('.selected_item:not(:disabled):checked').length;
+        $('#selected_all').prop('checked', totalCheckboxes === checkedCheckboxes && totalCheckboxes > 0);
+    }
 
     function actualizarConsolidacionesSeleccionadas() {
         const consolidacionesSeleccionadas = obtenerConsolidacionesSeleccionadas();
@@ -20,6 +31,7 @@ $(document).ready(function() {
             limpiarFormularioSolicitudOferta();
             toggleGenerateButton(false);
         }
+        actualizarSelectedAll();
     }
 
     function obtenerConsolidacionesSeleccionadas() {
@@ -39,8 +51,9 @@ $(document).ready(function() {
             success: function(data) {
                 actualizarFormularioSolicitudOferta(data);
             },
-            error: function() {
-                mostrarError('No se pueden generar solicitudes de oferta para las consolidaciones seleccionadas.');
+            error: function(jqXHR) {
+                const errorMessage = jqXHR.responseJSON?.message || 'No se pueden generar solicitudes de oferta para las consolidaciones seleccionadas.';
+                mostrarError(errorMessage);
                 toggleGenerateButton(false);
             }
         });
@@ -53,9 +66,8 @@ $(document).ready(function() {
         });
 
         $('#formularioSolicitudOfertaContainer').html(html);
-
         $('.btn-eliminar').on('click', function() {
-            $(this).closest('.card').remove();
+            $(this).closest('.col-md-6').remove();
             toggleGenerateButton($('#formularioSolicitudOfertaContainer .card').length > 0);
         });
 
@@ -63,10 +75,7 @@ $(document).ready(function() {
     }
 
     function generarConsolidacionHTML(consolidacion, index) {
-        const elementoNombre = consolidacion.solicitudes_elemento && 
-                               consolidacion.solicitudes_elemento.niveles_tres ? 
-                               consolidacion.solicitudes_elemento.niveles_tres.nombre : 
-                               'No especificado';
+        const elementoNombre = consolidacion.solicitudes_elemento?.niveles_tres?.nombre || 'No especificado';
         
         return `
             <div class="col-md-6 col-lg-4">
@@ -77,7 +86,7 @@ $(document).ready(function() {
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${consolidacion.id_solicitud_elemento}">
                         <label class="form-label">Elemento: ${elementoNombre}</label>
                         <label class="form-label">Cantidad</label>
-                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required>
+                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required min="0">
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
@@ -110,6 +119,44 @@ $(document).ready(function() {
 
     $('#btnEnviar').on('click', function(e) {
         e.preventDefault();
+
+        // Validaciones antes de mostrar la alerta
+        const elementos = $('#formularioSolicitudOfertaContainer input[name^="elementos"]');
+        let valid = true;
+        let cantidadInvalida = false;
+
+        elementos.each(function() {
+            const cantidad = parseFloat($(this).val());
+            if ($(this).attr('name').includes('cantidad')) {
+                if (isNaN(cantidad) || cantidad < 0) {
+                    cantidadInvalida = true;
+                    return false; // Salir del bucle each
+                }
+            }
+            if ($(this).val() === '') {
+                valid = false; // Si algún campo está vacío
+            }
+        });
+
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Todos los campos deben ser completados.',
+            });
+            return;
+        }
+
+        if (cantidadInvalida) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La cantidad debe ser un número válido y no puede ser menor que 0.',
+            });
+            return;
+        }
+
+        // Mostrar alerta de confirmación
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¿Deseas crear esta solicitud de oferta?",
@@ -125,4 +172,16 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Agregar un observador de mutaciones para manejar cambios dinámicos en los checkboxes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'disabled') {
+                actualizarSelectedAll();
+            }
+        });
+    });
+
+    const config = { attributes: true, subtree: true, attributeFilter: ['disabled'] };
+    observer.observe(document.body, config);
 });

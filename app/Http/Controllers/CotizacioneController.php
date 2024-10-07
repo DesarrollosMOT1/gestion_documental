@@ -169,6 +169,18 @@ class CotizacioneController extends Controller
             'idSolicitudElemento' => $idSolicitudElemento
         ]);
     }
+    public function getCotizacionesEstadoJefe($agrupacionId): JsonResponse
+    {
+        $cotizacionesPrecio = CotizacionesPrecio::where('estado_jefe', 1)
+            ->where('id_agrupaciones_consolidaciones', $agrupacionId)
+            ->with(['solicitudesCotizacione', 'agrupacionesConsolidacione', 'consolidacione'])
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $cotizacionesPrecio
+        ]);
+    }
     
 
     /**

@@ -65,5 +65,10 @@ class SolicitudesElemento extends Model
     {
         return $this->hasMany(\App\Models\Consolidacione::class, 'id_solicitud_elemento', 'id');
     }
+
+    public function solicitudesCotizaciones()
+    {
+        return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id_solicitud_elemento', 'id');
+    }
     
 }
