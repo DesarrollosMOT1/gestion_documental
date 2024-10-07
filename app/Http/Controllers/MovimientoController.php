@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MovimientoRequest;
 use App\Models\Movimiento;
+use App\Models\Registro;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -45,17 +45,19 @@ class MovimientoController extends Controller
     {
         try {
             $movimientoData = $request->only('tipo', 'clase', 'almacen', 'fecha', 'descripcion');
+
             $registrosArray = json_decode($request->input('registros'), true) ?? [];
 
             $movimientoBuilder = new MovimientoBuilder;
+
             $movimientoBuilder->setMovimientoData($movimientoData);
-            dd($registrosArray);
+
             $movimientoBuilder->addRegistros($registrosArray);
 
             $movimientoBuilder->build();
 
             return Redirect::route('movimientos.index')
-                ->with('success', 'Movimiento created successfully.');
+                ->with('success', 'Movimiento creado exitosamente.');
         } catch (\Exception $e) {
             return Redirect::route('movimientos.create')
                 ->with('error', 'An error occurred: '.$e->getMessage());
@@ -109,8 +111,6 @@ class MovimientoBuilder
 
     protected $registrosArray = [];
 
-    protected $trasladosArray = [];
-
     // Método para establecer los datos del movimiento
     public function setMovimientoData(array $data): self
     {
@@ -137,15 +137,17 @@ class MovimientoBuilder
         return $this;
     }
 
-    // Método final para construir el movimiento, registros y traslados
+    // Método final para construir el movimiento y los registros
     public function build()
     {
-        // Crear el movimiento
         $movimiento = $this->storeMovimiento($this->movimientoData);
 
-        // Agregar los registros al movimiento
         if (! empty($this->registrosArray)) {
-            $this->storeRegistros($movimiento->id, $this->registrosArray);
+            foreach ($this->registrosArray as &$registro) {
+                $registro['movimiento'] = $movimiento->id;
+            }
+
+            $this->storeRegistros($this->registrosArray);
         }
 
         return $movimiento;
@@ -154,12 +156,12 @@ class MovimientoBuilder
     // Lógica para almacenar el movimiento
     protected function storeMovimiento(array $movimientoData)
     {
-        return Movimiento::create($movimientoData);  // Simulación de guardado
+        return Movimiento::create($movimientoData);
     }
 
     // Lógica para almacenar los registros
-    protected function storeRegistros(int $movimientoId, array $registrosArray): void
+    protected function storeRegistros(array $registrosArray): void
     {
-        Http::post(route('registros.store-array', ['movimientoId' => $movimientoId]), $registrosArray);
+        Registro::insert($registrosArray);
     }
 }
