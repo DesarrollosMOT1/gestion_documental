@@ -48,17 +48,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para generar el HTML de una cotización
     const generarCotizacionHTML = (cotizacion, index) => {
         return `
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">${cotizacion.consolidacione.solicitudes_elemento.niveles_tres.nombre}</h5>
+            <div class="card rounded-lg mb-3 bg-light">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-primary">${cotizacion.consolidacione.solicitudes_elemento.niveles_tres.nombre}</h5>
                     <input type="hidden" name="cotizaciones[${index}][id]" value="${cotizacion.id}">
-                    <p class="card-text">Precio: ${cotizacion.solicitudes_cotizacione.precio}</p>
-                    <p class="card-text">Cantidad: ${cotizacion.solicitudes_cotizacione.cantidad}</p>
-                    <p class="card-text">Cotización: ${cotizacion.solicitudes_cotizacione.cotizacione.nombre}</p>
+                    <input type="hidden" name="cotizaciones[${index}][id_solicitudes_cotizaciones]" value="${cotizacion.solicitudes_cotizacione.id}">
+                    <input type="hidden" name="cotizaciones[${index}][id_consolidaciones_oferta]" value="${cotizacion.solicitudes_cotizacione.id_consolidaciones_oferta}">
+                    <input type="hidden" name="cotizaciones[${index}][id_solicitud_elemento]" value="${cotizacion.solicitudes_cotizacione.id_solicitud_elemento}">
+                    <input type="hidden" name="cotizaciones[${index}][id_cotizaciones_precio]" value="${cotizacion.id}">
+                    <p class="card-text"><strong>Precio:</strong> ${cotizacion.solicitudes_cotizacione.precio}</p>
+                    <p class="card-text"><strong>Cantidad:</strong> ${cotizacion.solicitudes_cotizacione.cantidad}</p>
+                    <p class="card-text"><strong>Cotización:</strong> ${cotizacion.solicitudes_cotizacione.cotizacione.nombre}</p>
                 </div>
             </div>
         `;
-    };
+    };    
 
     // Función para mostrar errores
     const mostrarError = (mensaje) => {
