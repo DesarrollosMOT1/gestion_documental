@@ -26,8 +26,8 @@ class OrdenesCompraRequest extends FormRequest
             'cotizaciones' => 'required|array|min:1', // Asegúrate de que haya al menos una cotización
             'cotizaciones.*.id_terceros' => 'required|string',
             'cotizaciones.*.id_solicitudes_cotizaciones' => 'required|integer|exists:solicitudes_cotizaciones,id',
-            'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidacioes_ofertas,id',
-            'cotizaciones.*.id_solicitud_elemento' => 'required|integer|exists:solicitudes_elemento,id',
+            'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidaciones_ofertas,id',
+            'cotizaciones.*.id_solicitud_elemento' => 'required|integer|exists:solicitudes_elementos,id',
             'cotizaciones.*.id_cotizaciones_precio' => 'required|integer|exists:cotizaciones_precio,id',
         ];
     }

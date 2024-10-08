@@ -75,6 +75,19 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
     };
 
+    // Función para contar los terceros únicos
+    const contarTercerosUnicos = () => {
+        const cotizaciones = Array.from(document.querySelectorAll('#formularioOrdenesCompra .card'));
+        const idTerceros = new Set();
+
+        cotizaciones.forEach(cotizacion => {
+            const idTercero = cotizacion.querySelector('input[name^="cotizaciones"][name$="[id_terceros]"]').value;
+            idTerceros.add(idTercero);
+        });
+
+        return idTerceros.size; // Devuelve la cantidad de terceros únicos
+    };
+
     // Función para mostrar la alerta de confirmación antes de enviar el formulario
     const confirmarEnvio = (e) => {
         e.preventDefault(); // Prevenir el envío por defecto
@@ -89,8 +102,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        const numOrdenes = contarTercerosUnicos();
+
         Swal.fire({
-            title: '¿Deseas crear esta orden de compra?',
+            title: `¿Deseas crear ${numOrdenes} orden${numOrdenes === 1 ? '' : 'es'} de compra?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
