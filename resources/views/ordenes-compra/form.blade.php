@@ -46,8 +46,13 @@
             {!! $errors->first('nota', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
     </div>
+
 </div>
+<div id="formularioOrdenesCompra" class="row g-3">
+    <!-- Aquí se van a cargar dinámicamente las tarjetas con JS -->
+</div>
+
 <div class="col-md-12 mt20 mt-2">
-    <button type="submit" class="btn btn-primary">{{ __('Crear') }}</button>
+    <button type="submit" id="btnEnviarOrden" class="btn btn-primary" disabled>{{ __('Crear') }}</button>
 </div>
 </div>

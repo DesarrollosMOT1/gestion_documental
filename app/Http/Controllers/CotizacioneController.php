@@ -173,9 +173,15 @@ class CotizacioneController extends Controller
     {
         $cotizacionesPrecio = CotizacionesPrecio::where('estado_jefe', 1)
             ->where('id_agrupaciones_consolidaciones', $agrupacionId)
-            ->with(['solicitudesCotizacione', 'agrupacionesConsolidacione', 'consolidacione'])
+            ->with([
+                'solicitudesCotizacione', 
+                'solicitudesCotizacione.cotizacione.tercero',
+                'agrupacionesConsolidacione', 
+                'consolidacione',
+                'consolidacione.solicitudesElemento.nivelesTres'
+            ])
             ->get();
-
+    
         return response()->json([
             'success' => true,
             'data' => $cotizacionesPrecio

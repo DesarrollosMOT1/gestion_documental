@@ -269,8 +269,9 @@
 
     <!-- Modal para el formulario de creación -->
     <x-modal id="createOrdenesCompraModal" title="{{ __('Crear Orden de Compra') }}" size="xl">
-        <form action="{{ route('ordenes-compras.store') }}" method="POST">
+        <form action="{{ route('ordenes-compras.store') }}" method="POST" id="formularioOrden">
             @csrf
+            <input type="hidden" name="agrupaciones_consolidaciones_id" id="agrupaciones_consolidaciones_id" value="{{ $agrupacionesConsolidacione->id }}">
             <div class="row padding-1 p-1">
                 <div class="col-md-12">
                     @include('ordenes-compra.form', ['ordenesCompra' => $ordenesCompra])
@@ -379,4 +380,5 @@
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
     <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesOferta.js') }}"></script> 
     <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
+    <script src="{{ asset('js/ordenes-compra/generarOrdenesCompra.js') }}"></script>
 @endpush
