@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const formularioOrden = document.getElementById('formularioOrden');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    // Función para habilitar/deshabilitar el botón de enviar
+    const toggleGenerateButton = (enable) => {
+        btnEnviar.disabled = !enable;
+    };
+
     // Inicializar el botón deshabilitado
     toggleGenerateButton(false);
 
@@ -63,11 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;
-    };
-
-    // Función para habilitar/deshabilitar el botón de enviar
-    const toggleGenerateButton = (enable) => {
-        btnEnviar.disabled = !enable;
     };
 
     // Función para mostrar la alerta de confirmación antes de enviar el formulario
