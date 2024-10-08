@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\OrdenesCompraCotizacione;
 
 class OrdenesCompraController extends Controller
 {
@@ -38,9 +37,8 @@ class OrdenesCompraController extends Controller
      */
     public function store(OrdenesCompraRequest $request): RedirectResponse
     {
-        // Crea una nueva orden de compra
-        $orden = OrdenesCompra::create($request->validated());
-    
+        OrdenesCompra::create($request->validated());
+
         return Redirect::route('ordenes-compras.index')
             ->with('success', 'Orden de Compra creada exitosamente.');
     }

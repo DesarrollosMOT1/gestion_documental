@@ -23,10 +23,7 @@ class OrdenesCompraRequest extends FormRequest
     {
         return [
 			'fecha_emision' => 'required',
-			'subtotal' => 'required',
-			'total' => 'required',
-			'cantidad_total' => 'required',
-			'nota' => 'required|string',
+			'id_terceros' => 'string',
         ];
     }
 }

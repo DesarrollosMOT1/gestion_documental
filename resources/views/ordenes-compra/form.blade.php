@@ -1,46 +1,17 @@
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group mb-3">
-            <label for="fecha_emision" class="form-label">{{ __('Fecha Emisión') }}</label>
-            <input type="date" name="fecha_emision" 
-                class="form-control @error('fecha_emision') is-invalid @enderror"
-                value="{{ old('fecha_emision', $ordenesCompra?->fecha_emision) }}" 
-                id="fecha_emision" placeholder="Fecha Emisión">
+<div class="row padding-1 p-1">
+    <div class="col-md-12">
+        
+        <div class="form-group mb-2 mb20">
+            <label for="fecha_emision" class="form-label">{{ __('Fecha Emision') }}</label>
+            <input type="text" name="fecha_emision" class="form-control @error('fecha_emision') is-invalid @enderror" value="{{ old('fecha_emision', $ordenesCompra?->fecha_emision) }}" id="fecha_emision" placeholder="Fecha Emision">
             {!! $errors->first('fecha_emision', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-        <div class="form-group mb-3">
-            <label for="subtotal" class="form-label">{{ __('Subtotal') }}</label>
-            <input type="text" name="subtotal" 
-                class="form-control @error('subtotal') is-invalid @enderror"
-                value="{{ old('subtotal', $ordenesCompra?->subtotal) }}" 
-                id="subtotal" placeholder="Subtotal">
-            {!! $errors->first('subtotal', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        <div class="form-group mb-2 mb20">
+            <label for="id_terceros" class="form-label">{{ __('Id Terceros') }}</label>
+            <input type="text" name="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" value="{{ old('id_terceros', $ordenesCompra?->id_terceros) }}" id="id_terceros" placeholder="Id Terceros">
+            {!! $errors->first('id_terceros', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
-        <div class="form-group mb-3">
-            <label for="total" class="form-label">{{ __('Total') }}</label>
-            <input type="text" name="total" 
-                class="form-control @error('total') is-invalid @enderror"
-                value="{{ old('total', $ordenesCompra?->total) }}" 
-                id="total" placeholder="Total">
-            {!! $errors->first('total', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group mb-3">
-            <label for="cantidad_total" class="form-label">{{ __('Cantidad Total') }}</label>
-            <input type="text" name="cantidad_total" 
-                class="form-control @error('cantidad_total') is-invalid @enderror"
-                value="{{ old('cantidad_total', $ordenesCompra?->cantidad_total) }}" 
-                id="cantidad_total" placeholder="Cantidad Total">
-            {!! $errors->first('cantidad_total', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-        <div class="form-group mb-3">
-            <label for="nota" class="form-label">{{ __('Nota') }}</label>
-            <textarea name="nota" 
-                class="form-control @error('nota') is-invalid @enderror" 
-                id="nota" rows="4" placeholder="Nota">{{ old('nota', $ordenesCompra?->nota) }}</textarea>
-            {!! $errors->first('nota', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
+
     </div>
 </div>
 

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $updated_at
  *
  * @property Cotizacione[] $cotizaciones
+ * @property OrdenesCompra[] $ordenesCompras
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -34,7 +35,6 @@ class Tercero extends Model
 
     protected $fillable = ['nit', 'tipo_factura', 'nombre'];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -42,5 +42,12 @@ class Tercero extends Model
     {
         return $this->hasMany(\App\Models\Cotizacione::class, 'nit', 'id_terceros');
     }
-    
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ordenesCompras() 
+    {
+        return $this->hasMany(\App\Models\OrdenesCompra::class, 'id_terceros', 'nit');
+    }
 }
