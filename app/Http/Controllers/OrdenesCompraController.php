@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrdenesCompra;
+use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
@@ -37,11 +38,43 @@ class OrdenesCompraController extends Controller
      */
     public function store(OrdenesCompraRequest $request): RedirectResponse
     {
-        OrdenesCompra::create($request->validated());
-
+        // Los datos ya están validados por el middleware
+        $data = $request->validated();
+        $cotizaciones = $request->input('cotizaciones');
+    
+        // Agrupar cotizaciones por tercero
+        $cotizacionesPorTercero = [];
+        foreach ($cotizaciones as $cotizacion) {
+            $idTercero = $cotizacion['id_terceros'];
+            if (!isset($cotizacionesPorTercero[$idTercero])) {
+                $cotizacionesPorTercero[$idTercero] = [];
+            }
+            $cotizacionesPorTercero[$idTercero][] = $cotizacion;
+        }
+    
+        // Crear una orden de compra por cada tercero
+        foreach ($cotizacionesPorTercero as $idTercero => $cotizacionesDelTercero) {
+            // Crear la orden de compra
+            $ordenCompra = OrdenesCompra::create([
+                'fecha_emision' => $data['fecha_emision'],
+                'id_terceros' => $idTercero
+            ]);
+    
+            // Crear las cotizaciones relacionadas
+            foreach ($cotizacionesDelTercero as $cotizacion) {
+                OrdenesCompraCotizacione::create([
+                    'id_ordenes_compras' => $ordenCompra->id,
+                    'id_solicitudes_cotizaciones' => $cotizacion['id_solicitudes_cotizaciones'],
+                    'id_consolidaciones_oferta' => $cotizacion['id_consolidaciones_oferta'],
+                    'id_solicitud_elemento' => $cotizacion['id_solicitud_elemento'],
+                    'id_cotizaciones_precio' => $cotizacion['id_cotizaciones_precio'],
+                ]);
+            }
+        }
+    
         return Redirect::route('ordenes-compras.index')
-            ->with('success', 'Orden de Compra creada exitosamente.');
-    }
+            ->with('success', 'Órdenes de Compra creadas exitosamente.');
+    }    
 
     /**
      * Display the specified resource.
