@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             TercerosTestSeeder::class,
             MotivosSeeder::class,
             TiposYClasesMovimientosSeeder::class,
-            BodegasYAlmacenesSeeder::class
+            BodegasYAlmacenesSeeder::class,
+            AreasSeeder::class,
+            PermisosSeeder::class
         ]);
         
         // Crear o encontrar usuario

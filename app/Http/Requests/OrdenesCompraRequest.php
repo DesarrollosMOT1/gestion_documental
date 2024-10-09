@@ -23,7 +23,7 @@ class OrdenesCompraRequest extends FormRequest
     {
         return [
             'fecha_emision' => 'required|date',
-            'cotizaciones' => 'required|array|min:1', // Asegúrate de que haya al menos una cotización
+            'cotizaciones' => 'required|array|min:1', 
             'cotizaciones.*.id_terceros' => 'required|string',
             'cotizaciones.*.id_solicitudes_cotizaciones' => 'required|integer|exists:solicitudes_cotizaciones,id',
             'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidaciones_ofertas,id',

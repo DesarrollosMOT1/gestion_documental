@@ -42,12 +42,12 @@ return new class extends Migration
         Schema::create('solicitud_oferta_tercero', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('solicitudes_ofertas_id');
-            $table->string('tercero_id');
+            $table->unsignedBigInteger('tercero_id');
             $table->timestamps();
 
             // Llaves foráneas
             $table->foreign('solicitudes_ofertas_id')->references('id')->on('solicitudes_ofertas')->onDelete('cascade');
-            $table->foreign('tercero_id')->references('nit')->on('terceros')->onDelete('cascade');
+            $table->foreign('tercero_id')->references('id')->on('terceros')->onDelete('cascade');
         });
     }
 
@@ -75,8 +75,8 @@ return new class extends Migration
 
         // Restaurar el campo 'id_terceros' en la tabla 'cotizaciones'
         Schema::table('cotizaciones', function (Blueprint $table) {
-            $table->string('id_terceros');
-            $table->foreign('id_terceros')->references('nit')->on('terceros');
+            $table->unsignedBigInteger('id_terceros');
+            $table->foreign('id_terceros')->references('id')->on('terceros');
         });
 
         // Eliminar la tabla intermedia 'cotizacion_tercero'

@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
     Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class);
     Route::resource('solicitudes-ofertas', App\Http\Controllers\SolicitudesOfertaController::class);
-    Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
     Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
     Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class);
@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
     // Rutas para generación de PDF
-    Route::get('solicitudes-ofertas/{id}/pdf/{nit}', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
+    Route::get('solicitudes-ofertas/{id}/pdf/{terceroId}', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
 
     // Rutas API
     Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);

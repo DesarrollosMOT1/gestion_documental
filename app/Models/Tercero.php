@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Tercero
  *
+ * @property $id
  * @property $nit
  * @property $tipo_factura
  * @property $nombre
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Cotizacione[] $cotizaciones
  * @property OrdenesCompra[] $ordenesCompras
+ * @property SolicitudOfertaTercero[] $solicitudOfertaTerceros
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -28,26 +30,31 @@ class Tercero extends Model
      *
      * @var array<int, string>
      */
-
-    protected $primaryKey = 'nit';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = ['nit', 'tipo_factura', 'nombre'];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cotizaciones()
     {
-        return $this->hasMany(\App\Models\Cotizacione::class, 'nit', 'id_terceros');
+        return $this->hasMany(\App\Models\Cotizacione::class, 'id', 'id_terceros');
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ordenesCompras() 
+    public function ordenesCompras()
     {
-        return $this->hasMany(\App\Models\OrdenesCompra::class, 'id_terceros', 'nit');
+        return $this->hasMany(\App\Models\OrdenesCompra::class, 'id', 'id_terceros');
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function solicitudOfertaTerceros()
+    {
+        return $this->hasMany(\App\Models\SolicitudOfertaTercero::class, 'id', 'tercero_id');
+    }
+    
 }

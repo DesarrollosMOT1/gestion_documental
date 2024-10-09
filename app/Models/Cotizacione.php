@@ -44,7 +44,7 @@ class Cotizacione extends Model
      */
     public function tercero()
     {
-        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'nit');
+        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'id');
     }
     
     /**

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->dropColumn(['subtotal', 'total', 'cantidad_total', 'nota']);
             
             // Añadir la nueva columna foránea
-            $table->string('id_terceros')->nullable(); // o sin nullable() según tu requerimiento
-            $table->foreign('id_terceros')->references('nit')->on('terceros')->onDelete('cascade');
+            $table->unsignedBigInteger('id_terceros');
+            $table->foreign('id_terceros')->references('id')->on('terceros')->onDelete('cascade');
         });
     }
 

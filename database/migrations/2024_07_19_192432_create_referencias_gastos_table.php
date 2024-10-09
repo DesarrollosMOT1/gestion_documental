@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('referencias_gastos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo_mekano');
+            $table->string('codigo_mekano')->unique();
             $table->string('nombre');
             $table->timestamps();
         });

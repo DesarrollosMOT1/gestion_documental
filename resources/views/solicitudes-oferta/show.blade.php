@@ -41,7 +41,7 @@
                                     <p><strong>NIT:</strong> {{ $tercero->nit }}</p>
                                     <p><strong>Tipo de factura:</strong> {{ $tercero->tipo_factura ?? 'N/A' }}</p>
                                     <p><strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}</p>
-                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'nit' => $tercero->nit]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
+                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'terceroId' => $tercero->id]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
                                     <hr> <!-- Separador entre terceros -->
                                 @endforeach
                             @else

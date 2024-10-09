@@ -25,7 +25,7 @@ class SolicitudesOfertaRequest extends FormRequest
             'fecha_solicitud_oferta' => 'required|date', // Asegurar que sea una fecha válida
             'id_users' => 'required|exists:users,id', // Validar que el usuario exista
             'terceros' => ['required', 'array'],  
-            'terceros.*' => ['exists:terceros,nit'], 
+            'terceros.*' => ['exists:terceros,id'], 
             'elementos' => 'required|array|min:1',
             'elementos.*.id_solicitudes_compras' => 'required|exists:solicitudes_compras,id', // Validar que cada id_solicitudes_compras exista
             'elementos.*.id_solicitud_elemento' => 'required|exists:solicitudes_elementos,id', // Validar que cada id_solicitud_elemento exista

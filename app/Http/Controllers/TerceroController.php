@@ -48,9 +48,9 @@ class TerceroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($nit): View
+    public function show($id): View
     {
-        $tercero = Tercero::find($nit);
+        $tercero = Tercero::find($id);
 
         return view('tercero.show', compact('tercero'));
     }
@@ -58,9 +58,9 @@ class TerceroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($nit): View
+    public function edit($id): View
     {
-        $tercero = Tercero::find($nit);
+        $tercero = Tercero::find($id);
 
         return view('tercero.edit', compact('tercero'));
     }
@@ -76,9 +76,9 @@ class TerceroController extends Controller
             ->with('success', 'Tercero actualizado exitosamente');
     }
 
-    public function destroy($nit): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
-        Tercero::find($nit)->delete();
+        Tercero::find($id)->delete();
 
         return Redirect::route('terceros.index')
             ->with('success', 'Tercero eliminado exitosamente');
