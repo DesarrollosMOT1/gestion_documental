@@ -68,6 +68,7 @@ class OrdenesCompraController extends Controller
                     'id_consolidaciones_oferta' => $cotizacion['id_consolidaciones_oferta'],
                     'id_solicitud_elemento' => $cotizacion['id_solicitud_elemento'],
                     'id_cotizaciones_precio' => $cotizacion['id_cotizaciones_precio'],
+                    'id_consolidaciones' => $cotizacion['id_consolidaciones']
                 ]);
             }
         }

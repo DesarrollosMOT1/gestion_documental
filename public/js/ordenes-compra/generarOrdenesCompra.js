@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <input type="hidden" name="cotizaciones[${index}][id_consolidaciones_oferta]" value="${cotizacion.solicitudes_cotizacione.id_consolidaciones_oferta}">
                     <input type="hidden" name="cotizaciones[${index}][id_solicitud_elemento]" value="${cotizacion.solicitudes_cotizacione.id_solicitud_elemento}">
                     <input type="hidden" name="cotizaciones[${index}][id_cotizaciones_precio]" value="${cotizacion.id}">
+                    <input type="hidden" name="cotizaciones[${index}][id_consolidaciones]" value="${cotizacion.id_consolidaciones}">
                     <input type="hidden" name="cotizaciones[${index}][id_terceros]" value="${cotizacion.solicitudes_cotizacione.cotizacione.id_terceros}">
                     <p class="card-text"><strong>Precio:</strong> ${cotizacion.solicitudes_cotizacione.precio}</p>
                     <p class="card-text"><strong>Cantidad:</strong> ${cotizacion.solicitudes_cotizacione.cantidad}</p>

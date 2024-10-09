@@ -29,6 +29,7 @@ class OrdenesCompraRequest extends FormRequest
             'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidaciones_ofertas,id',
             'cotizaciones.*.id_solicitud_elemento' => 'required|integer|exists:solicitudes_elementos,id',
             'cotizaciones.*.id_cotizaciones_precio' => 'required|integer|exists:cotizaciones_precio,id',
+            'cotizaciones.*.id_consolidaciones' => 'required|integer|exists:consolidaciones,id',
         ];
     }
 }
