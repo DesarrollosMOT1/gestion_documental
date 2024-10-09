@@ -42,9 +42,17 @@ class OrdenesCompraController extends Controller
         $data = $request->validated();
         $cotizaciones = $request->input('cotizaciones');
     
+        // Obtener las IDs de consolidaciones que ya tienen órdenes de compra asociadas
+        $consolidacionesEnOrdenes = OrdenesCompraCotizacione::pluck('id_consolidaciones')->toArray();
+    
+        // Filtrar cotizaciones que no tienen órdenes de compra asociadas
+        $cotizacionesFiltradas = array_filter($cotizaciones, function($cotizacion) use ($consolidacionesEnOrdenes) {
+            return !in_array($cotizacion['id_consolidaciones'], $consolidacionesEnOrdenes);
+        });
+    
         // Agrupar cotizaciones por tercero
         $cotizacionesPorTercero = [];
-        foreach ($cotizaciones as $cotizacion) {
+        foreach ($cotizacionesFiltradas as $cotizacion) {
             $idTercero = $cotizacion['id_terceros'];
             if (!isset($cotizacionesPorTercero[$idTercero])) {
                 $cotizacionesPorTercero[$idTercero] = [];
@@ -75,7 +83,7 @@ class OrdenesCompraController extends Controller
     
         return Redirect::route('ordenes-compras.index')
             ->with('success', 'Órdenes de Compra creadas exitosamente.');
-    }    
+    }       
 
     /**
      * Display the specified resource.
