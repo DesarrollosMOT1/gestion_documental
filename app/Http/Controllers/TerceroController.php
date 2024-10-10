@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TerceroRequest;
+use App\Imports\TercerosImport;
 use App\Models\Tercero;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Http\Requests\TerceroRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Imports\TercerosImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TerceroController extends Controller
@@ -29,7 +31,7 @@ class TerceroController extends Controller
      */
     public function create(): View
     {
-        $tercero = new Tercero();
+        $tercero = new Tercero;
 
         return view('tercero.create', compact('tercero'));
     }
@@ -94,5 +96,15 @@ class TerceroController extends Controller
 
         return redirect()->route('terceros.index')
             ->with('success', 'Terceros importados exitosamente.');
+    }
+
+    public function getAllTerceros(): JsonResponse
+    {
+        $tercerosTests = DB::table('terceros')
+            ->select('nit as id', 'nombre as name')
+            ->get();
+        //dd($tercerosTests);
+
+        return response()->json($tercerosTests);
     }
 }
