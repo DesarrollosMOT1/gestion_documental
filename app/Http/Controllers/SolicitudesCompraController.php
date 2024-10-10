@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\SolicitudesCompra;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,15 +9,11 @@ use App\Http\Requests\SolicitudesCompraRequest;
 use App\Models\AgrupacionesConsolidacione;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\User;
 use App\Models\CentrosCosto;
 use App\Models\NivelesUno;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
 use App\Models\SolicitudesElemento;
-use App\Models\Impuesto;
-use App\Models\Cotizacione;
-use App\Models\Tercero;
 
 class SolicitudesCompraController extends Controller
 {
@@ -63,11 +58,9 @@ class SolicitudesCompraController extends Controller
         ->with('solicitudesElemento')
         ->paginate();
     
-        $fechaActual = Carbon::now()->toDateString();
-        $users = User::all();
         $agrupacionesConsolidacione = new AgrupacionesConsolidacione();
     
-        return view('solicitudes-compra.index', compact('solicitudesCompras', 'fechaActual', 'users', 'agrupacionesConsolidacione'))
+        return view('solicitudes-compra.index', compact('solicitudesCompras', 'agrupacionesConsolidacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
 
@@ -79,8 +72,6 @@ class SolicitudesCompraController extends Controller
     {
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
-        $users = User::all();
-        $fechaActual = Carbon::now()->toDateString();
     
         // Obtener el área del usuario autenticado
         $user = auth()->user();
@@ -114,7 +105,7 @@ class SolicitudesCompraController extends Controller
         // Obtener los niveles uno con base en los permisos del usuario
         $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
     
-        return view('solicitudes-compra.create', compact('solicitudesCompra', 'users', 'nivelesUno', 'centrosCostos', 'fechaActual'));
+        return view('solicitudes-compra.create', compact('solicitudesCompra', 'nivelesUno', 'centrosCostos'));
     }
     
     

@@ -4,8 +4,7 @@
         
         <div class="form-group mb-2 mb20">
             <label for="fecha_emision" class="form-label">{{ __('Fecha Emision') }}</label>
-            <input type="date" name="fecha_emision" class="form-control @error('fecha_emision') is-invalid @enderror" value="{{ old('fecha_emision', $ordenesCompra?->fecha_emision) }}" id="fecha_emision" placeholder="Fecha Emision">
-            {!! $errors->first('fecha_emision', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <x-campo-fecha nombre="fecha_emision" :valor="$ordenesCompra?->fecha_emision" :errores="$errors" />
         </div>
 
     </div>

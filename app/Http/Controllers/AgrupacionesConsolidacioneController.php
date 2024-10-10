@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesElemento;
 use App\Models\SolicitudesCompra;
-use App\Models\User;
 use App\Models\CentrosCosto;
 use Carbon\Carbon;
 use App\Http\Requests\SolicitudesCompraRequest;
@@ -20,7 +19,6 @@ use Illuminate\View\View;
 use App\Models\NivelesUno;
 use App\Models\SolicitudesOferta;
 use App\Models\Tercero;
-use App\Models\Cotizacione;
 use App\Models\OrdenesCompra;
 
 class AgrupacionesConsolidacioneController extends Controller
@@ -190,7 +188,6 @@ class AgrupacionesConsolidacioneController extends Controller
     {
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
-        $users = User::all();
 
         // Obtener el área del usuario autenticado
         $user = auth()->user();
@@ -202,7 +199,6 @@ class AgrupacionesConsolidacioneController extends Controller
                 ->where('id_areas', $areaId);
         })->get();
         
-        $fechaActual = Carbon::now()->toDateString();
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
         $ordenesCompra = new OrdenesCompra();
@@ -228,7 +224,7 @@ class AgrupacionesConsolidacioneController extends Controller
         // Obtener los niveles uno con base en los permisos del usuario
         $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
 
-        return compact('solicitudesCompra', 'users', 'centrosCostos', 'fechaActual', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'nivelesUno');
+        return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'nivelesUno');
     }
 
     public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse

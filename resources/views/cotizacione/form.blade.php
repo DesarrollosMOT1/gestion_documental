@@ -24,10 +24,7 @@
     <div class="col-md-6">
         <div class="form-group mb-2">
             <label for="fecha_cotizacion" class="form-label">{{ __('Fecha Cotización') }}</label>
-            <div class="input-group">
-                <input type="date" name="fecha_cotizacion" class="form-control @error('fecha_cotizacion') is-invalid @enderror" value="{{ old('fecha_cotizacion', $cotizacione?->fecha_cotizacion) }}" id="fecha_cotizacion">
-            </div>
-            {!! $errors->first('fecha_cotizacion', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
+            <x-campo-fecha nombre="fecha_cotizacion" :valor="$cotizacione?->fecha_cotizacion" :errores="$errors" />
         </div>
     </div>
 
@@ -64,8 +61,7 @@
     <div class="col-md-6">
         <div class="form-group mb-2">
             <label for="fecha_inicio_vigencia" class="form-label">{{ __('Fecha Inicio Vigencia') }}</label>
-            <input type="date" name="fecha_inicio_vigencia" class="form-control @error('fecha_inicio_vigencia') is-invalid @enderror" value="{{ old('fecha_inicio_vigencia', $cotizacione?->fecha_inicio_vigencia) }}" id="fecha_inicio_vigencia">
-            {!! $errors->first('fecha_inicio_vigencia', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
+            <x-campo-fecha nombre="fecha_inicio_vigencia" :valor="$cotizacione?->fecha_inicio_vigencia" :errores="$errors" />
         </div>
     </div>
 
