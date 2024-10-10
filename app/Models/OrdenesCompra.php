@@ -44,7 +44,7 @@ class OrdenesCompra extends Model
      */
     public function ordenesCompraCotizaciones()
     {
-        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id', 'id_ordenes_compras');
+        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id_ordenes_compras', 'id');
     }
     
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrdenesCompra;
+use App\Models\Consolidacione;
 use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -90,7 +91,13 @@ class OrdenesCompraController extends Controller
      */
     public function show($id): View
     {
-        $ordenesCompra = OrdenesCompra::find($id);
+        $ordenesCompra = OrdenesCompra::with([
+            'tercero',
+            'ordenesCompraCotizaciones.solicitudesElemento.nivelesTres',
+            'ordenesCompraCotizaciones.solicitudesCotizacione.cotizacione',
+            'ordenesCompraCotizaciones.cotizacionesPrecio',
+            'ordenesCompraCotizaciones.consolidacione.solicitudesCompra',
+        ])->findOrFail($id);
 
         return view('ordenes-compra.show', compact('ordenesCompra'));
     }
