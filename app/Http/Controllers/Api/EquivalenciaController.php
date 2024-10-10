@@ -7,7 +7,6 @@ use App\Http\Requests\EquivalenciaRequest;
 use App\Http\Resources\EquivalenciaResource;
 use App\Models\Equivalencia;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class EquivalenciaController extends Controller
 {
@@ -27,6 +26,16 @@ class EquivalenciaController extends Controller
     public function store($request)
     {
         return Equivalencia::create($request);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeRequestEquivalencia(EquivalenciaRequest $request)
+    {
+        Equivalencia::create($request->validated());
+
+        return redirect()->back()->with('success', 'Equivalencia creada con éxito');
     }
 
     public function storeEquivalencia(int $unidadPrincipalId, array $unidadEquivalenteData): Equivalencia
@@ -66,10 +75,10 @@ class EquivalenciaController extends Controller
         return $equivalencia;
     }
 
-    public function destroy(Equivalencia $equivalencia): Response
+    public function destroy(Equivalencia $equivalencia)
     {
         $equivalencia->delete();
 
-        return response()->noContent();
+        return redirect()->back();
     }
 }

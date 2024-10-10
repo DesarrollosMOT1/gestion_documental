@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('registros', function (Blueprint $table) {
             $table->id();
-            $table->string('producto',255);
-            $table->unsignedBigInteger('tercero');
+            $table->string('producto', 255);
+            $table->string('tercero');
             $table->unsignedBigInteger('unidad');
             $table->unsignedBigInteger('movimiento');
             $table->integer('cantidad');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('detalle_registro');
             $table->timestamps();
             $table->foreign('producto')->references('codigo_producto')->on('productos')->onDelete('cascade');
-            $table->foreign('tercero')->references('id')->on('tercerosTest')->onDelete('cascade');
+            $table->foreign('tercero')->references('nit')->on('terceros')->onDelete('cascade');
             $table->foreign('unidad')->references('id')->on('unidades')->onDelete('cascade');
             $table->foreign('movimiento')->references('id')->on('movimientos')->onDelete('cascade');
             $table->foreign('motivo')->references('id')->on('motivos')->onDelete('cascade');

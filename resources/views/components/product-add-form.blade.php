@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <!-- Botón para abrir el modal -->
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#productoModal">
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">
         {{ __('Agregar Registro') }}
     </button>
 
@@ -12,20 +12,20 @@
                     <th>{{ __('Producto') }}</th>
                     <th>{{ __('Unidad') }}</th>
                     <th>{{ __('Cantidad') }}</th>
-                    <th>{{ __('Cliente') }}</th>
+                    <th>{{ __('Tercero') }}</th>
                     <th>{{ __('Motivo') }}</th>
                     <th>{{ __('Detalle Registro') }}</th>
                     <th>{{ __('Acciones') }}</th>
                 </tr>
             </thead>
-            <tbody id="productosTabla">
+            <tbody id="registrosTable">
                 <!-- Aquí se insertarán dinámicamente las filas -->
             </tbody>
         </table>
     </div>
 
     <!-- Modal para agregar productos -->
-    <div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,7 +35,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="productoForm">
+                    <form id="registroForm">
                         <x-drop-down-input name="producto" route="{{ route('productos.get-all') }}" />
                         <x-drop-down-input name="unidad" route="{{ route('unidades.get-all') }}" />
                         <div class="form-group mb-3">
@@ -43,7 +43,7 @@
                             <input type="number" name="cantidad" class="form-control" id="cantidad" required
                                 min="1" step="1">
                         </div>
-                        <x-drop-down-input name="tercero" route="{{ route('terceros-tests.get-all') }}" />
+                        <x-drop-down-input name="tercero" route="{{ route('terceros-api.get-all') }}" />
                         <input type="hidden" name="movimiento" class="form-control" id="movimiento" value=" "
                             required>
                         <x-drop-down-input name="motivo" route="{{ route('motivos.get-all') }}" />
@@ -56,7 +56,7 @@
                             <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">{{ __('Cerrar') }}</button>
                             <button type="submit" class="btn btn-success"
-                                id="guardarProducto">{{ __('Guardar Producto') }}</button>
+                                id="guardarRegistro">{{ __('Guardar Registro') }}</button>
                         </div>
                     </form>
                 </div>
@@ -69,7 +69,7 @@
     let registros = [];
 
     function actualizarTabla() {
-        const tabla = document.getElementById('productosTabla');
+        const tabla = document.getElementById('registrosTable');
         tabla.innerHTML = '';
 
         registros.forEach((registro, index) => {
@@ -88,7 +88,6 @@
             tabla.appendChild(row);
         });
 
-        // Actualiza el input oculto en la vista de crear movimiento
         const registrosInput = window.document.getElementById('registrosInput');
         if (registrosInput) {
             registrosInput.value = JSON.stringify(registros);
@@ -105,10 +104,10 @@
         actualizarTabla();
     }
 
-    document.getElementById('productoForm').addEventListener('submit', (event) => {
+    document.getElementById('registroForm').addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const form = document.getElementById('productoForm');
+        const form = document.getElementById('registroForm');
         const formData = new FormData(form);
         const registro = Object.fromEntries(formData.entries());
 
@@ -117,7 +116,6 @@
             guardarRegistro(registro);
 
             form.reset();
-            $('#productoModal').modal('hide');
         } else {
             alert('Por favor, complete todos los campos del formulario.');
         }

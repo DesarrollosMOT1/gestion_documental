@@ -1,15 +1,15 @@
 <?php
 
-use App\Models\Movimiento;
-use Illuminate\Support\Facades\Http;
+namespace App\Http\Controllers;
 
-class MovimientoBuilder
+use App\Models\Movimiento;
+use App\Models\Registro;
+
+class MovimientoBuilder extends Controller
 {
     protected $movimientoData;
 
     protected $registrosArray = [];
-
-    protected $trasladosArray = [];
 
     // Método para establecer los datos del movimiento
     public function setMovimientoData(array $data): self
@@ -37,15 +37,17 @@ class MovimientoBuilder
         return $this;
     }
 
-    // Método final para construir el movimiento, registros y traslados
+    // Método final para construir el movimiento y los registros
     public function build()
     {
-        // Crear el movimiento
+
         $movimiento = $this->storeMovimiento($this->movimientoData);
 
-        // Agregar los registros al movimiento
         if (! empty($this->registrosArray)) {
-            $this->storeRegistros($movimiento->id, $this->registrosArray);
+            foreach ($this->registrosArray as &$registro) {
+                $registro['movimiento'] = $movimiento->id;
+            }
+            $this->storeRegistros($this->registrosArray);
         }
 
         return $movimiento;
@@ -54,12 +56,12 @@ class MovimientoBuilder
     // Lógica para almacenar el movimiento
     protected function storeMovimiento(array $movimientoData)
     {
-        return Movimiento::create($movimientoData);  // Simulación de guardado
+        return Movimiento::create($movimientoData);
     }
 
     // Lógica para almacenar los registros
-    protected function storeRegistros(int $movimientoId, array $registrosArray): void
+    protected function storeRegistros(array $registrosArray): void
     {
-        Http::post(route('registros.store-array', ['movimientoId' => $movimientoId]), $registrosArray);
+        Registro::insert($registrosArray);
     }
 }

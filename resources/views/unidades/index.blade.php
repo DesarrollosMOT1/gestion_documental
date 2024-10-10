@@ -43,8 +43,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Nombre</th>
-                                        <th>id de equivalente</th>
-                                        <th>cantidad equivalente</th>
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -53,24 +52,6 @@
                                         <tr>
                                             <td>{{ $unidad->id }}</td>
                                             <td>{{ $unidad->nombre }}</td>
-                                            <td>
-                                                @if ($unidad->equivalencias->isNotEmpty())
-                                                    @foreach ($unidad->equivalencias as $equivalencia)
-                                                        {{ $equivalencia->unidad_equivalente ? $equivalencia->unidad_equivalente : 'Unidad no encontrada' }}
-                                                    @endforeach
-                                                @else
-                                                    Sin equivalencias
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($unidad->equivalencias->isNotEmpty())
-                                                    @foreach ($unidad->equivalencias as $equivalencia)
-                                                        <div>{{ $equivalencia->cantidad }}</div>
-                                                    @endforeach
-                                                @else
-                                                    0
-                                                @endif
-                                            </td>
                                             <td>
                                                 <form action="{{ route('unidades.destroy', $unidad->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary"

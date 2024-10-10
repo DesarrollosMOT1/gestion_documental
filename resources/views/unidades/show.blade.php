@@ -33,16 +33,33 @@
                             <thead>
                                 <tr>
                                     <th>Unidad Equivalente</th>
+                                    <th>Nombre</th>
                                     <th>Cantidad</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($unidad->equivalencias->isNotEmpty())
-                                    @foreach ($unidad->equivalencias as $equivalencia)
+                                @if ($equivalencias->isNotEmpty())
+                                    @foreach ($equivalencias as $equivalencia)
                                         <tr>
-                                            <td>{{ $equivalencia->unidad_equivalente ? $equivalencia->unidad_equivalente : 'Unidad no encontrada' }}
+                                            <td>
+                                                {{ $equivalencia->nombre_equivalente ?? 'Unidad no encontrada' }}
+                                            </td>
+                                            <td>
+                                                {{ $equivalencia->nombre_equivalente ?? 'Nombre no disponible' }}
                                             </td>
                                             <td>{{ $equivalencia->cantidad }}</td>
+                                            <td>
+                                                <form action="{{ route('equivalencias.destroy', $equivalencia->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="event.preventDefault(); confirm('¿Está seguro de querer borrar esta equivalencia?') ? this.closest('form').submit() : false;">
+                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -52,7 +69,9 @@
                                 @endif
                             </tbody>
                         </table>
-
+                        <div class="float-right">
+                            <x-equivalencia-add-modal :idUnidadPrincipal="$unidad->id" />
+                        </div>
                     </div>
                 </div>
             </div>

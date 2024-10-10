@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\TercerosTest;
-use Illuminate\Http\Request;
-use App\Http\Requests\TercerosTestRequest;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TercerosTestRequest;
+use App\Models\TercerosTest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TercerosTestController extends Controller
 {
@@ -18,6 +17,7 @@ class TercerosTestController extends Controller
     public function index(Request $request)
     {
         $tercerosTests = TercerosTest::all(['id', 'nombre as name']);
+
         return response()->json($tercerosTests);
     }
 
@@ -56,7 +56,8 @@ class TercerosTestController extends Controller
 
     public function getAllTerceros(): JsonResponse
     {
-        $tercerosTests = TercerosTest::all(['id', 'nombre as name']);
+        $tercerosTests = TercerosTest::all(['nit as id', 'nombre as name']);
+
         return response()->json($tercerosTests);
     }
 }
