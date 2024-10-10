@@ -9,13 +9,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property $id
  * @property $fecha_emision
- * @property $subtotal
- * @property $total
- * @property $cantidad_total
- * @property $nota
  * @property $created_at
  * @property $updated_at
+ * @property $id_terceros
  *
+ * @property Tercero $tercero
  * @property OrdenesCompraCotizacione[] $ordenesCompraCotizaciones
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
@@ -30,9 +28,17 @@ class OrdenesCompra extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_emision', 'subtotal', 'total', 'cantidad_total', 'nota'];
+    protected $fillable = ['fecha_emision', 'id_terceros'];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tercero()
+    {
+        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'id');
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

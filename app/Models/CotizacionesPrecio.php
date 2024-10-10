@@ -18,7 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property $estado_jefe
  *
  * @property AgrupacionesConsolidacione $agrupacionesConsolidacione
+ * @property Consolidacione $consolidacione
  * @property SolicitudesCotizacione $solicitudesCotizacione
+ * @property OrdenesCompraCotizacione[] $ordenesCompraCotizaciones
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -48,17 +50,25 @@ class CotizacionesPrecio extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function consolidacione()
+    {
+        return $this->belongsTo(\App\Models\Consolidacione::class, 'id_consolidaciones', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function solicitudesCotizacione()
     {
         return $this->belongsTo(\App\Models\SolicitudesCotizacione::class, 'id_solicitudes_cotizaciones', 'id');
     }
-
+    
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function consolidacione()
+    public function ordenesCompraCotizaciones()
     {
-        return $this->belongsTo(\App\Models\Consolidacione::class, 'id_consolidaciones', 'id');
+        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id', 'id_cotizaciones_precio');
     }
     
 }

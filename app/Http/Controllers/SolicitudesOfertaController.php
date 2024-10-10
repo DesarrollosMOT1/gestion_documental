@@ -112,7 +112,7 @@ class SolicitudesOfertaController extends Controller
         return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion', 'cotizacionesRelacionadas'));
     }    
 
-    public function downloadPdf($id, $nit)
+    public function downloadPdf($id, $terceroId)
     {
         $solicitudesOferta = SolicitudesOferta::with([
             'user', 
@@ -121,7 +121,8 @@ class SolicitudesOfertaController extends Controller
             'consolidacionesOfertas.solicitudesElemento.nivelesTres'
         ])->findOrFail($id);
     
-        $tercero = $solicitudesOferta->terceros->where('nit', $nit)->first();
+        $tercero = $solicitudesOferta->terceros->where('id', $terceroId)->first();
+
     
         if (!$tercero) {
             abort(404, 'Tercero no encontrado.');

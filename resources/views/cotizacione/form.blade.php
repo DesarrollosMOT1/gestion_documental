@@ -10,8 +10,8 @@
             <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" required>
                 <option value="" disabled selected>Seleccione un tercero</option>
                 @forelse($tercerosSinCotizacion as $tercero)
-                    <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
-                        {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})
+                    <option value="{{ $tercero->id }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->id ? 'selected' : '' }}>
+                        (NIT: {{ $tercero->nit }}) - {{ $tercero->nombre }} 
                     </option>
                 @empty
                     <option value="" disabled>No hay terceros disponibles</option>

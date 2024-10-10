@@ -19,27 +19,15 @@
                     </div>
 
                     <div class="card-body bg-white">
-
-                        <div class="form-group mb-2 mb20">
-                            <strong>Fecha Emision:</strong>
-                            {{ $ordenesCompra->fecha_emision }}
-                        </div>
-                        <div class="form-group mb-2 mb20">
-                            <strong>Subtotal:</strong>
-                            {{ $ordenesCompra->subtotal }}
-                        </div>
-                        <div class="form-group mb-2 mb20">
-                            <strong>Total:</strong>
-                            {{ $ordenesCompra->total }}
-                        </div>
-                        <div class="form-group mb-2 mb20">
-                            <strong>Cantidad Total:</strong>
-                            {{ $ordenesCompra->cantidad_total }}
-                        </div>
-                        <div class="form-group mb-2 mb20">
-                            <strong>Nota:</strong>
-                            {{ $ordenesCompra->nota }}
-                        </div>
+                        
+                                <div class="form-group mb-2 mb20">
+                                    <strong>Fecha Emision:</strong>
+                                    {{ $ordenesCompra->fecha_emision }}
+                                </div>
+                                <div class="form-group mb-2 mb20">
+                                    <strong>Id Terceros:</strong>
+                                    {{ $ordenesCompra->id_terceros }}
+                                </div>
 
                     </div>
                 </div>

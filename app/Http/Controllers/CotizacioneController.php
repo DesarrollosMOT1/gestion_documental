@@ -14,6 +14,7 @@ use App\Models\Impuesto;
 use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
 use App\Models\CotizacionesPrecio;
+use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\JsonResponse;
 
 class CotizacioneController extends Controller
@@ -169,13 +170,25 @@ class CotizacioneController extends Controller
             'idSolicitudElemento' => $idSolicitudElemento
         ]);
     }
+
     public function getCotizacionesEstadoJefe($agrupacionId): JsonResponse
     {
+        // Obtener las cotizaciones_precio que no tengan órdenes de compra creadas
         $cotizacionesPrecio = CotizacionesPrecio::where('estado_jefe', 1)
             ->where('id_agrupaciones_consolidaciones', $agrupacionId)
-            ->with(['solicitudesCotizacione', 'agrupacionesConsolidacione', 'consolidacione'])
+            ->whereNotIn('id_consolidaciones', function($query) {
+                $query->select('id_consolidaciones')
+                      ->from('ordenes_compra_cotizaciones');
+            })
+            ->with([
+                'solicitudesCotizacione', 
+                'solicitudesCotizacione.cotizacione.tercero',
+                'agrupacionesConsolidacione', 
+                'consolidacione',
+                'consolidacione.solicitudesElemento.nivelesTres'
+            ])
             ->get();
-
+    
         return response()->json([
             'success' => true,
             'data' => $cotizacionesPrecio

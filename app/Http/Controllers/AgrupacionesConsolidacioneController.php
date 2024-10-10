@@ -147,7 +147,7 @@ class AgrupacionesConsolidacioneController extends Controller
             'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
             'ver_dotacion_personal' => 'DOTACION PERSONAL',
         ];
-
+    
         // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
         $nivelesPermitidos = [];
         foreach ($permissions as $permiso => $nombre) {
@@ -155,21 +155,29 @@ class AgrupacionesConsolidacioneController extends Controller
                 $nivelesPermitidos[] = $nombre;
             }
         }
-
+    
         // Obtener los niveles uno permitidos
         $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
-
-        // Obtener los elementos filtrados por nivel uno permitido y estado
+    
+        // Obtener los elementos filtrados por nivel uno permitido, estado y que no tengan consolidaciones
         $elementos = SolicitudesElemento::with('nivelesTres')
             ->whereIn('id_solicitudes_compra', $solicitudes)
             ->where('estado', '1')
             ->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
                 $query->whereIn('id', $nivelesUnoIds);
             })
+            ->whereNotIn('id', function($query) {
+                $query->select('id_solicitud_elemento')
+                    ->from('consolidaciones');
+            })
+            ->whereNotIn('id', function($query) {
+                $query->select('id_solicitud_elemento')
+                    ->from('elementos_consolidados');
+            })
             ->get();
-
+    
         return response()->json($elementos);
-    }
+    }    
 
     private function generatePrefix(): string
     {
