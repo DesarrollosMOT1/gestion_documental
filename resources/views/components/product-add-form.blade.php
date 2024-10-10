@@ -12,7 +12,7 @@
                     <th>{{ __('Producto') }}</th>
                     <th>{{ __('Unidad') }}</th>
                     <th>{{ __('Cantidad') }}</th>
-                    <th>{{ __('Cliente') }}</th>
+                    <th>{{ __('Tercero') }}</th>
                     <th>{{ __('Motivo') }}</th>
                     <th>{{ __('Detalle Registro') }}</th>
                     <th>{{ __('Acciones') }}</th>
@@ -43,7 +43,7 @@
                             <input type="number" name="cantidad" class="form-control" id="cantidad" required
                                 min="1" step="1">
                         </div>
-                        <x-drop-down-input name="tercero" route="{{ route('terceros-tests.get-all') }}" />
+                        <x-drop-down-input name="tercero" route="{{ route('terceros-api.get-all') }}" />
                         <input type="hidden" name="movimiento" class="form-control" id="movimiento" value=" "
                             required>
                         <x-drop-down-input name="motivo" route="{{ route('motivos.get-all') }}" />

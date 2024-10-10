@@ -8,6 +8,7 @@ use App\Models\Unidades;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -61,10 +62,14 @@ class UnidadeController extends Controller
      */
     public function show($id): View
     {
-        // Cargar la unidad específica junto con sus equivalencias y las unidades equivalentes
-        $unidad = Unidades::with(['equivalencias.unidad_equivalente'])->findOrFail($id);
+        $unidad = Unidades::find($id);
+        $equivalencias = DB::table('equivalencias')
+            ->join('unidades AS unidad_equivalente', 'equivalencias.unidad_equivalente', '=', 'unidad_equivalente.id')
+            ->where('equivalencias.unidad_principal', $unidad->id)
+            ->select('equivalencias.cantidad', 'unidad_equivalente.nombre as nombre_equivalente', 'equivalencias.id')
+            ->get();
 
-        return view('unidades.show', compact('unidad'));
+        return view('unidades.show', compact('unidad', 'equivalencias'));
     }
 
     /**

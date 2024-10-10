@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProductosSeeder::class,
             UnidadesSeeder::class,
-            TercerosTestSeeder::class,
+            TercerosSeeder::class,
             MotivosSeeder::class,
             TiposYClasesMovimientosSeeder::class,
-            BodegasYAlmacenesSeeder::class
+            BodegasYAlmacenesSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',
