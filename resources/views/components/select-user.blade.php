@@ -4,7 +4,7 @@
         id="{{ $nombre }}" 
         class="form-control @error($nombre) is-invalid @enderror" 
         required 
-        disabled
+        readonly
     >
         <option value="{{ $valor }}" selected>{{ Auth::user()->name }}</option>
     </select>

@@ -106,6 +106,9 @@ class CotizacioneController extends Controller
             'solicitudesCotizaciones.impuesto'
         ])->findOrFail($id);
         
+        // Verificar si el usuario tiene acceso a la cotización
+        $this->authorize('view', $cotizacione);
+        
         // Filtra las solicitudes únicas por su ID de compra
         $solicitudesUnicas = $cotizacione->solicitudesCotizaciones->unique('id_solicitudes_compras');
     
