@@ -15,20 +15,16 @@ use App\Models\NivelesDos;
 use App\Models\NivelesTres;
 use App\Models\SolicitudesElemento;
 use App\Traits\VerNivelesPermiso;
+use App\Traits\GenerarPrefijo;
+use App\Traits\ObtenerCentrosCostos;
+
 
 class SolicitudesCompraController extends Controller
 {
-    use VerNivelesPermiso;
+    use VerNivelesPermiso, GenerarPrefijo, ObtenerCentrosCostos ;
     /**
      * Display a listing of the resource.
      */
-
-    private function generatePrefix(): string
-    {
-        $month = strtoupper(date('M')); // Obtiene las primeras tres letras del mes actual (Jun, Jul, etc.)
-        $year = date('y'); // Obtiene los últimos dos dígitos del año actual (24 para 2024)
-        return $month . $year;
-    }
     
     public function index(Request $request): View
     {
@@ -55,17 +51,7 @@ class SolicitudesCompraController extends Controller
     {
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
-    
-        // Obtener el área del usuario autenticado
-        $user = auth()->user();
-        $areaId = $user->id_area;
-    
-        // Obtener los centros de costos asociados a las clasificaciones de centros del área del usuario
-        $centrosCostos = CentrosCosto::whereIn('id_clasificaciones_centros', function ($query) use ($areaId) {
-            $query->select('id_clasificaciones_centros')
-                ->from('clasificaciones_centros_areas')
-                ->where('id_areas', $areaId);
-        })->get();
+        $centrosCostos = $this->obtenerCentrosCostos();
     
         $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
     
