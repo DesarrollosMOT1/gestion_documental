@@ -112,6 +112,8 @@ class OrdenesCompraController extends Controller
             'ordenesCompraCotizaciones.consolidacione.solicitudesCompra',
         ])->findOrFail($id);
 
+        $this->authorize('view', $ordenesCompra);
+
         return view('ordenes-compra.show', compact('ordenesCompra'));
     }
 
