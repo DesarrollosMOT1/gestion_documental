@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Policies\OrdenesCompraPolicy;
+use App\Policies\SolicitudesOfertaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Cotizacione;
 use App\Models\OrdenesCompra;
+use App\Models\SolicitudesOferta;
 use App\Policies\CotizacionePolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Cotizacione::class => CotizacionePolicy::class,
         OrdenesCompra::class => OrdenesCompraPolicy::class,
+        SolicitudesOferta::class => SolicitudesOfertaPolicy::class,
     ];
 
         /**

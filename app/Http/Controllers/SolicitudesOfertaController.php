@@ -113,6 +113,8 @@ class SolicitudesOfertaController extends Controller
             'consolidacionesOfertas.solicitudesElemento.nivelesTres',
             'consolidacionesOfertas.solicitudesCotizaciones.cotizacione' // Cargar cotizaciones relacionadas
         ])->findOrFail($id);
+
+        $this->authorize('view', $solicitudesOferta);
     
         $cotizacione = new Cotizacione();
         $tercerosSinCotizacion = $solicitudesOferta->getTercerosSinCotizacion();
