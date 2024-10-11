@@ -14,7 +14,7 @@ use App\Models\Impuesto;
 use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
 use App\Models\CotizacionesPrecio;
-use App\Models\OrdenesCompraCotizacione;
+use App\Models\NivelesUno;
 use Illuminate\Http\JsonResponse;
 
 class CotizacioneController extends Controller
@@ -24,7 +24,32 @@ class CotizacioneController extends Controller
      */
     public function index(Request $request): View
     {
-        $cotizaciones = Cotizacione::paginate();
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno permitidos
+        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+
+        $cotizaciones = Cotizacione::whereHas('solicitudesCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds){
+            $query->whereIn('id', $nivelesUnoIds);
+        })
+        ->with('solicitudesCotizaciones.solicitudesElemento')
+        ->paginate();
 
         return view('cotizacione.index', compact('cotizaciones'))
             ->with('i', ($request->input('page', 1) - 1) * $cotizaciones->perPage());

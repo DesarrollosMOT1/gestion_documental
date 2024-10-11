@@ -11,6 +11,7 @@ use Illuminate\View\View;
 use App\Models\ConsolidacionesOferta;
 use App\Models\Consolidacione;
 use App\Models\Cotizacione;
+use App\Models\NivelesUno;
 use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -21,7 +22,32 @@ class SolicitudesOfertaController extends Controller
      */
     public function index(Request $request): View
     {
-        $solicitudesOfertas = SolicitudesOferta::with('terceros')->paginate();
+        // Mapeo de permisos a los nombres de los niveles uno
+        $permissions = [
+            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
+            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
+            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
+            'ver_sistemas' => 'SISTEMAS',
+            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
+            'ver_dotacion_personal' => 'DOTACION PERSONAL',
+        ];
+    
+        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
+        $nivelesPermitidos = [];
+        foreach ($permissions as $permiso => $nombre) {
+            if (auth()->user()->hasPermissionTo($permiso)) {
+                $nivelesPermitidos[] = $nombre;
+            }
+        }
+    
+        // Obtener los niveles uno permitidos
+        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+
+        $solicitudesOfertas = SolicitudesOferta::whereHas('consolidacionesOfertas.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds){
+            $query->whereIn('id', $nivelesUnoIds);
+        })
+        ->with('consolidacionesOfertas.solicitudesElemento')
+        ->paginate();
     
         return view('solicitudes-oferta.index', compact('solicitudesOfertas'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesOfertas->perPage());
