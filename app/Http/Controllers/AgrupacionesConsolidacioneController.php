@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SolicitudesCotizacione;
 use App\Models\SolicitudesElemento;
 use App\Models\SolicitudesCompra;
-use App\Models\CentrosCosto;
 use Carbon\Carbon;
 use App\Http\Requests\SolicitudesCompraRequest;
 use App\Models\ElementosConsolidado;
@@ -34,7 +33,6 @@ class AgrupacionesConsolidacioneController extends Controller
      */
     public function index(Request $request): View
     {
-
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
         // Rango de fechas por defecto (últimos 14 días)
@@ -152,10 +150,8 @@ class AgrupacionesConsolidacioneController extends Controller
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $centrosCostos = $this->obtenerCentrosCostos();
-        
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
-
         $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
 
         return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'nivelesUno');

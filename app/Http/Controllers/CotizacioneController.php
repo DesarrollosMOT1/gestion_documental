@@ -16,6 +16,7 @@ use App\Models\OrdenesCompra;
 use App\Models\CotizacionesPrecio;
 use Illuminate\Http\JsonResponse;
 use App\Traits\VerNivelesPermiso;
+use Carbon\Carbon;
 
 class CotizacioneController extends Controller
 {
@@ -27,9 +28,14 @@ class CotizacioneController extends Controller
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+
         $cotizaciones = Cotizacione::whereHas('solicitudesCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds){
             $query->whereIn('id', $nivelesUnoIds);
         })
+        ->whereBetween('fecha_cotizacion', [$fechaInicio, $fechaFin])
         ->with('solicitudesCotizaciones.solicitudesElemento')
         ->paginate();
 

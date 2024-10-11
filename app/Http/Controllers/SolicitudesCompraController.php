@@ -9,7 +9,7 @@ use App\Http\Requests\SolicitudesCompraRequest;
 use App\Models\AgrupacionesConsolidacione;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\CentrosCosto;
+use Carbon\Carbon;
 use App\Models\NivelesUno;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
@@ -29,11 +29,16 @@ class SolicitudesCompraController extends Controller
     public function index(Request $request): View
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
+
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
     
         // Obtener las solicitudes de compra que tienen al menos un SolicitudesElemento relacionado con los NivelesUno permitidos
         $solicitudesCompras = SolicitudesCompra::whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
             $query->whereIn('id', $nivelesUnoIds);
         })
+        ->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFin])
         ->with('solicitudesElemento')
         ->paginate();
     

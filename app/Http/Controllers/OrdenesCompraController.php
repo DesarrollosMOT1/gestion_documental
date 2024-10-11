@@ -10,6 +10,7 @@ use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Traits\VerNivelesPermiso;
+use Carbon\Carbon;
 
 class OrdenesCompraController extends Controller
 {
@@ -21,9 +22,14 @@ class OrdenesCompraController extends Controller
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+
         $ordenesCompras = OrdenesCompra::whereHas('ordenesCompraCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use($nivelesUnoIds){
             $query->whereIn('id', $nivelesUnoIds);
         })
+        ->whereBetween('fecha_emision', [$fechaInicio, $fechaFin])
         ->with('ordenesCompraCotizaciones.solicitudesElemento')
         ->paginate();
 

@@ -14,6 +14,7 @@ use App\Models\Cotizacione;
 use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Traits\VerNivelesPermiso;
+use Carbon\Carbon;
 
 class SolicitudesOfertaController extends Controller
 {
@@ -25,9 +26,14 @@ class SolicitudesOfertaController extends Controller
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+
         $solicitudesOfertas = SolicitudesOferta::whereHas('consolidacionesOfertas.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds){
             $query->whereIn('id', $nivelesUnoIds);
         })
+        ->whereBetween('fecha_solicitud_oferta', [$fechaInicio, $fechaFin])
         ->with('consolidacionesOfertas.solicitudesElemento')
         ->paginate();
     
