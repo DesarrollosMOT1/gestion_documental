@@ -15,15 +15,15 @@
                                 {{ __('Solicitudes Compras') }}
                             </span>
 
-                             <div class="float-right">  
+                            <div class="float-right">  
                                 <!-- Botón para Generar Consolidación -->
                                 <button type="button" id="btnGenerarConsolidacion" class="btn btn-secondary btn-sm float-right ml-2" data-bs-toggle="modal" data-bs-target="#consolidacionModal" disabled>
                                     {{ __('Generar Consolidación') }}
                                 </button>     
                                 <a href="{{ route('solicitudes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                                {{ __('Crear Nuevo') }}
                                 </a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -36,7 +36,9 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>
-                                            <input type="checkbox" id="select_all" />
+                                            <div class="form-check ms-2">
+                                                <input class="form-check-input" type="checkbox" id="select_all" />
+                                            </div>
                                         </th>
                                         <th>No</th>
                                         <th>Fecha Solicitud</th>
@@ -50,7 +52,8 @@
                                     @foreach ($solicitudesCompras as $solicitudesCompra)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" class="select_item" value="{{ $solicitudesCompra->id }}" />
+                                                <div class="form-check ms-2">
+                                                    <input class="form-check-input selected_item" type="checkbox" class="select_item" value="{{ $solicitudesCompra->id }}" />
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $solicitudesCompra->fecha_solicitud }}</td>
