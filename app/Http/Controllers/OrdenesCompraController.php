@@ -3,41 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrdenesCompra;
-use App\Models\NivelesUno;
 use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Traits\VerNivelesPermiso;
 
 class OrdenesCompraController extends Controller
 {
+    use VerNivelesPermiso;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno permitidos
-        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
         $ordenesCompras = OrdenesCompra::whereHas('ordenesCompraCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use($nivelesUnoIds){
             $query->whereIn('id', $nivelesUnoIds);

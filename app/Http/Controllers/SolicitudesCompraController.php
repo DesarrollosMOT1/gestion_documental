@@ -14,9 +14,11 @@ use App\Models\NivelesUno;
 use App\Models\NivelesDos;
 use App\Models\NivelesTres;
 use App\Models\SolicitudesElemento;
+use App\Traits\VerNivelesPermiso;
 
 class SolicitudesCompraController extends Controller
 {
+    use VerNivelesPermiso;
     /**
      * Display a listing of the resource.
      */
@@ -30,26 +32,7 @@ class SolicitudesCompraController extends Controller
     
     public function index(Request $request): View
     {
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno permitidos
-        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
         // Obtener las solicitudes de compra que tienen al menos un SolicitudesElemento relacionado con los NivelesUno permitidos
         $solicitudesCompras = SolicitudesCompra::whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
@@ -80,30 +63,11 @@ class SolicitudesCompraController extends Controller
         // Obtener los centros de costos asociados a las clasificaciones de centros del área del usuario
         $centrosCostos = CentrosCosto::whereIn('id_clasificaciones_centros', function ($query) use ($areaId) {
             $query->select('id_clasificaciones_centros')
-                  ->from('clasificaciones_centros_areas')
-                  ->where('id_areas', $areaId);
+                ->from('clasificaciones_centros_areas')
+                ->where('id_areas', $areaId);
         })->get();
     
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno con base en los permisos del usuario
-        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
+        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
     
         return view('solicitudes-compra.create', compact('solicitudesCompra', 'nivelesUno', 'centrosCostos'));
     }
@@ -170,26 +134,7 @@ class SolicitudesCompraController extends Controller
      */
     public function show($id): View
     {
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno permitidos
-        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
         // Obtener la solicitud de compra con los elementos filtrados por nivel uno permitido
         $solicitudesCompra = SolicitudesCompra::with(['solicitudesElemento' => function($query) use ($nivelesUnoIds) {

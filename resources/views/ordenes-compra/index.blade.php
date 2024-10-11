@@ -25,7 +25,7 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                     <th>No</th>
@@ -33,13 +33,13 @@
 									<th>Tercero</th>
                                     <th>NIT</th>
                                     <th>Tipo Factura</th>
+                                    <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($ordenesCompras as $ordenesCompra)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
-                                            
+                                        <td>{{ ++$i }}</td>
 										<td >{{ $ordenesCompra->fecha_emision }}</td>
 										<td >{{ $ordenesCompra->tercero->nombre }}</td>
                                         <td >{{ $ordenesCompra->tercero->nit }}</td>

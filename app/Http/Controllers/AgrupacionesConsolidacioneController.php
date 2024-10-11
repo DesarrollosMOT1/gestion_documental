@@ -20,35 +20,19 @@ use App\Models\NivelesUno;
 use App\Models\SolicitudesOferta;
 use App\Models\Tercero;
 use App\Models\OrdenesCompra;
+use App\Traits\VerNivelesPermiso;
 
 class AgrupacionesConsolidacioneController extends Controller
 {
+    use VerNivelesPermiso;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno permitidos
-        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
-    
+
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
+
         // Rango de fechas por defecto (últimos 14 días)
         $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
         $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
@@ -63,7 +47,7 @@ class AgrupacionesConsolidacioneController extends Controller
     
         return view('agrupaciones-consolidacione.index', compact('agrupacionesConsolidaciones'))
             ->with('i', ($request->input('page', 1) - 1) * $agrupacionesConsolidaciones->perPage());
-    }    
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -136,26 +120,7 @@ class AgrupacionesConsolidacioneController extends Controller
     {
         $solicitudes = $request->input('solicitudes', []);
         
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
-    
-        // Obtener los nombres de los niveles uno permitidos según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-    
-        // Obtener los niveles uno permitidos
-        $nivelesUnoIds = NivelesUno::whereIn('nombre', $nivelesPermitidos)->pluck('id')->toArray();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
         // Obtener los elementos filtrados por nivel uno permitido, estado y que no tengan consolidaciones
         $elementos = SolicitudesElemento::with('nivelesTres')
@@ -201,30 +166,10 @@ class AgrupacionesConsolidacioneController extends Controller
         
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
-        $ordenesCompra = new OrdenesCompra();
 
-        // Mapeo de permisos a los nombres de los niveles uno
-        $permissions = [
-            'ver_mantenimiento_vehiculo' => 'MANTENIMIENTO VEHICULO',
-            'ver_utiles_papeleria_fotocopia' => 'UTILES, PAPELERIA Y FOTOCOPIA',
-            'ver_implementos_aseo_cafeteria' => 'IMPLEMENTOS DE ASEO Y CAFETERIA',
-            'ver_sistemas' => 'SISTEMAS',
-            'ver_seguridad_salud' => 'SEGURIDAD Y SALUD',
-            'ver_dotacion_personal' => 'DOTACION PERSONAL',
-        ];
+        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
 
-        // Obtener los nombres de los niveles uno según los permisos del usuario
-        $nivelesPermitidos = [];
-        foreach ($permissions as $permiso => $nombre) {
-            if (auth()->user()->hasPermissionTo($permiso)) {
-                $nivelesPermitidos[] = $nombre;
-            }
-        }
-
-        // Obtener los niveles uno con base en los permisos del usuario
-        $nivelesUno = NivelesUno::whereIn('nombre', $nivelesPermitidos)->get();
-
-        return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'ordenesCompra', 'nivelesUno');
+        return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'nivelesUno');
     }
 
     public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse
