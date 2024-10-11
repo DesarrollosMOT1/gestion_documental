@@ -134,6 +134,8 @@ class SolicitudesCompraController extends Controller
             });
         }, 'solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto'])
         ->findOrFail($id);
+
+        $this->authorize('view', $solicitudesCompra);
     
         return view('solicitudes-compra.show', compact('solicitudesCompra'));
     }
