@@ -247,6 +247,8 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres',
             'consolidaciones.cotizacionesPrecio'
         ])->findOrFail($id);
+
+        $this->authorize('view', $agrupacionesConsolidacione);
     
         // Verificar si el usuario tiene el permiso 'ver_consolidaciones_jefe'
         if (auth()->user()->can('ver_consolidaciones_jefe')) {

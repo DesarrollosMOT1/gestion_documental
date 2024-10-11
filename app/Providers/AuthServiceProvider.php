@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Policies\AgrupacionesConsolidacionePolicy;
 use App\Policies\OrdenesCompraPolicy;
 use App\Policies\SolicitudesOfertaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Cotizacione;
 use App\Models\OrdenesCompra;
+use App\Models\AgrupacionesConsolidacione;
 use App\Models\SolicitudesOferta;
 use App\Policies\CotizacionePolicy;
 
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         Cotizacione::class => CotizacionePolicy::class,
         OrdenesCompra::class => OrdenesCompraPolicy::class,
         SolicitudesOferta::class => SolicitudesOfertaPolicy::class,
+        AgrupacionesConsolidacione::class => AgrupacionesConsolidacionePolicy::class,
     ];
 
         /**
