@@ -81,7 +81,9 @@
                                             <div class="col-md-4 mb-4">
                                                 <div class="card h-100">
                                                     <div class="card-header bg-success">
-                                                        <h6 class="m-0">Agrupacion Consolidación #{{ $ordenCompraCotizacion->consolidacione->agrupacioneConsolidaciones->pluck('id')->implode('-') }}</h6>
+                                                        <h6 class="m-0">Agrupación Consolidación #{{ $ordenCompraCotizacion->consolidacione->agrupacioneConsolidaciones->pluck('id')->implode('-') }}
+                                                            <a href="{{ route('agrupaciones-consolidaciones.show', $ordenCompraCotizacion->consolidacione->id) }}" target="_blank" class="btn btn-sm btn-warning ms-2">Ir</a>
+                                                        </h6>
                                                     </div>
                                                     <div class="card-body">
                                                         <p><strong>Consolidó:</strong> {{ $ordenCompraCotizacion->consolidacione->agrupacioneConsolidaciones->pluck('user.name')->implode('-') }}</p>
@@ -90,13 +92,22 @@
                                                         <p><strong>Cantidad Consolidada:</strong> {{ $ordenCompraCotizacion->consolidacione->cantidad }}</p>
                                                         <hr>
                                                         <h6 class="text-muted">Información de Solicitud de Compra</h6>
+                                                        <p><strong>Solicitud de Compra:</strong> #{{ $ordenCompraCotizacion->consolidacione->solicitudesCompra->id ?? 'N/A' }}
+                                                            @if($ordenCompraCotizacion->consolidacione->solicitudesCompra)
+                                                                <a href="{{ route('solicitudes-compras.show', $ordenCompraCotizacion->consolidacione->solicitudesCompra->id) }}" target="_blank" class="btn btn-sm btn-warning ms-2">Ir</a>
+                                                            @endif
+                                                        </p>    
                                                         <p><strong>Prefijo de Solicitud:</strong> {{ $ordenCompraCotizacion->consolidacione->solicitudesCompra->prefijo ?? 'N/A' }}</p>
                                                         <p><strong>Fecha Solicitud:</strong> {{ $ordenCompraCotizacion->consolidacione->solicitudesCompra->fecha_solicitud ?? 'N/A' }}</p>
                                                         <p><strong>Usuario Solicitante:</strong> {{ $ordenCompraCotizacion->consolidacione->solicitudesCompra->user->name ?? 'N/A' }}</p>
                                                         <p><strong>Descripcion:</strong> {{ $ordenCompraCotizacion->consolidacione->solicitudesCompra->descripcion ?? 'N/A' }}</p>
                                                         <hr>
                                                         <h6 class="text-muted">Información de Cotización</h6>
-                                                        <p><strong>Cotización:</strong> #{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->id ?? 'N/A' }}</p>
+                                                        <p><strong>Cotización:</strong> #{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->id ?? 'N/A' }}
+                                                            @if($ordenCompraCotizacion->solicitudesCotizacione->cotizacione)
+                                                                <a href="{{ route('cotizaciones.show', $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->id) }}" target="_blank" class="btn btn-sm btn-warning ms-2">Ir</a>
+                                                            @endif
+                                                        </p>
                                                         <p><strong>Fecha de Cotizacion:</strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->fecha_cotizacion ?? 'N/A' }}</p>
                                                         <p><strong>Nombre:</strong> #{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->nombre ?? 'N/A' }}</p>
                                                         <p><strong>Condiciones de Pago: </strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->condiciones_pago ?? 'N/A' }}</p>
