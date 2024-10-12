@@ -56,7 +56,8 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check ms-2">
-                                                    <input class="form-check-input selected_item" type="checkbox" class="select_item" value="{{ $solicitudesCompra->id }}" />
+                                                    <input class="form-check-input select_item" type="checkbox" value="{{ $solicitudesCompra->id }}" />
+                                                </div>
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $solicitudesCompra->fecha_solicitud }}</td>
