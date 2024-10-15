@@ -28,6 +28,18 @@ class PermisosSeeder extends Seeder
             'ver_administracion_roles',
             'ver_administracion_areas',
             'ver_administracion_permisos',
+            'ver_solicitudes_compras',
+            'ver_consolidaciones',
+            'ver_solicitudes_ofertas',
+            'ver_cotizaciones',
+            'ver_ordenes_compras',
+            'ver_clasificaciones_centros',
+            'ver_entrada_inventario',
+            'ver_niveles_jerarquicos',
+            'ver_referencias_gastos',
+            'ver_centros_costos',
+            'ver_terceros',
+            'ver_impuestos'
         ];
 
         // Crear los permisos si no existen
