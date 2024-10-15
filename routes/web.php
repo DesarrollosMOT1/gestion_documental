@@ -29,7 +29,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('niveles-dos/import', [App\Http\Controllers\NivelesDosController::class, 'import'])->name('niveles-dos.import');
     Route::post('niveles-tres/import', [App\Http\Controllers\NivelesTresController::class, 'import'])->name('niveles-tres.import');
     Route::post('centros-costos/import', [App\Http\Controllers\CentrosCostoController::class, 'import'])->name('centros-costos.import');
-    Route::post('clasificaciones-centros/import', [App\Http\Controllers\ClasificacionesCentroController::class, 'import'])->name('clasificaciones-centros.import');
     Route::post('terceros/import', [App\Http\Controllers\TerceroController::class, 'import'])->name('terceros.import');
     Route::post('referencias-gastos/import', [App\Http\Controllers\ReferenciasGastoController::class, 'import'])->name('referencias-gastos.import');
 

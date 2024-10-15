@@ -32,6 +32,7 @@
                                     <th>No</th>
                                     <th>Nombre</th>
                                     <th>Email</th>
+                                    <th>Area</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -41,6 +42,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->area->nombre }}</td>
                                     <td>
                                         <form action="{{ route('admin.users.destroy', $user->id) }}" class="delete-form" method="POST">
                                             <a class="btn btn-sm btn-success" href="{{ route('admin.users.edit', $user) }}"><i class="fa fa-fw fa-edit"></i></a>

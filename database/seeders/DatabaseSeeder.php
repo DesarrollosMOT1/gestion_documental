@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             TiposYClasesMovimientosSeeder::class,
             BodegasYAlmacenesSeeder::class,,
             AreasSeeder::class,
-            PermisosSeeder::class
+            PermisosSeeder::class,
+            ClasificacionesCentroSeeder::class
         ]);
         
         // Crear o encontrar usuario
