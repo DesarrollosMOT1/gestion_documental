@@ -327,6 +327,7 @@
                         <tr>
                             <th>Elemento</th>
                             <th>Tercero</th>
+                            <th>Usuario</th>
                             <th>Precio</th>
                             <th>Descuento</th>
                             <th>Fecha de Vigencia</th>
@@ -338,6 +339,7 @@
                             <tr>
                                 <td> {{ $elementoNombre }} </td>
                                 <td>{{ $cotizacion->cotizacione->tercero->nombre ?? 'N/A' }}</td>
+                                <td>{{ $cotizacion->cotizacione->user->name ?? 'N/A'}}</td>
                                 <td>${{ number_format($cotizacion->precio, 2) }}</td>
                                 <td>{{ $cotizacion->descuento ?? '0' }}%</td>
                                 <td>{{ $cotizacion->cotizacione->fecha_inicio_vigencia }} - {{ $cotizacion->cotizacione->fecha_fin_vigencia }}</td>

@@ -7,6 +7,11 @@
             <x-campo-fecha nombre="fecha_emision" :valor="$ordenesCompra?->fecha_emision" :errores="$errors" />
         </div>
 
+        <div class="form-group mb-2 mb20">
+            <label for="id_users" class="form-label">{{ __('Usuario') }}</label>
+            <x-select-user nombre="id_users" :errores="$errors" />
+        </div>
+
     </div>
 </div>
 

@@ -30,6 +30,13 @@
 
     <div class="col-md-6">
         <div class="form-group mb-2">
+            <label for="id_users" class="form-label">{{ __('Usuario') }}</label>
+            <x-select-user nombre="id_users" :errores="$errors" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group mb-2">
             <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
             <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="" id="nombre" placeholder="Nombre de la cotización" readonly>
             {!! $errors->first('nombre', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}

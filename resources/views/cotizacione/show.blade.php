@@ -19,6 +19,7 @@
                         </div>
                         <div class="card-body">
                             <p><strong>Fecha Cotización:</strong> {{ $cotizacione->fecha_cotizacion }}</p>
+                            <p><strong>Usuario:</strong> {{ $cotizacione->user->name }}</p>
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
                             <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
                             <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>

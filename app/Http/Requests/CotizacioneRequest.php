@@ -29,6 +29,7 @@ class CotizacioneRequest extends FormRequest
 			'id_terceros' => 'required|string',
             'fecha_inicio_vigencia' => 'required',
             'fecha_fin_vigencia' => 'required',
+            'id_users' => 'required|exists:users,id',
             'elementos' => 'required|array',
             'elementos.*.cantidad' => 'required|numeric',
             'elementos.*.descuento' => 'nullable|numeric',

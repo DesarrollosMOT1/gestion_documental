@@ -20,6 +20,7 @@
                         <div class="card-body">
                             <p><strong>Fecha Emisión:</strong> {{ $ordenesCompra->fecha_emision }}</p>
                             <p><strong>Tercero:</strong> {{ $ordenesCompra->tercero->nombre ?? 'N/A' }}</p>
+                            <p><strong>Tercero:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
                             <p><strong>NIT:</strong> {{ $ordenesCompra->tercero->nit ?? 'N/A' }}</p>
                             <p><strong>Tipo de Factura:</strong> {{ $ordenesCompra->tercero->tipo_factura ?? 'N/A' }}</p>
                         </div>
@@ -110,6 +111,7 @@
                                                         </p>
                                                         <p><strong>Fecha de Cotizacion:</strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->fecha_cotizacion ?? 'N/A' }}</p>
                                                         <p><strong>Nombre:</strong> #{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->nombre ?? 'N/A' }}</p>
+                                                        <p><strong>Usuario:</strong> {{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->user->name ?? 'N/A' }}</p>
                                                         <p><strong>Condiciones de Pago: </strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->condiciones_pago ?? 'N/A' }}</p>
                                                         <p><strong>Fecha de Inicio Vigencia: </strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->fecha_inicio_vigencia ?? 'N/A' }}</p>
                                                         <p><strong>Fecha de Fin Vigencia: </strong>{{ $ordenCompraCotizacion->solicitudesCotizacione->cotizacione->fecha_fin_vigencia ?? 'N/A' }}</p>

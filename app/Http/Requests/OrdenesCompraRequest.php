@@ -24,6 +24,7 @@ class OrdenesCompraRequest extends FormRequest
         return [
             'fecha_emision' => 'required|date',
             'cotizaciones' => 'required|array|min:1', 
+            'id_users' => 'required|exists:users,id',
             'cotizaciones.*.id_terceros' => 'required|string',
             'cotizaciones.*.id_solicitudes_cotizaciones' => 'required|integer|exists:solicitudes_cotizaciones,id',
             'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidaciones_ofertas,id',
