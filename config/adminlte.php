@@ -314,21 +314,25 @@ return [
             'text' => 'Usuarios',
             'url' => 'users',
             'icon' => 'fas fa-fw fa-users',
+            'can' => 'ver_administracion_usuarios'
         ],
         [
             'text' => 'Roles',
             'url' => 'roles',
             'icon' => 'fas fa-fw fa-user-tag',
+            'can' => 'ver_administracion_roles'
         ],
         [
             'text' => 'Permisos',
             'url' => 'permissions',
             'icon' => 'fas fa-fw fa-key',
+            'can' => 'ver_administracion_permisos'
         ],
         [
             'text' => 'Áreas',
             'url' => 'areas',
             'icon' => 'fas fa-fw fa-building',
+            'can' => 'ver_administracion_areas'
         ],
         ['header' => 'account_settings'],
         [
@@ -345,31 +349,37 @@ return [
                     'text' => 'Solicitudes de Compras',
                     'url' => 'solicitudes-compras',
                     'icon' => 'fas fa-file-invoice',
+                    'can' => 'ver_solicitudes_compras'
                 ],
                 [
                     'text' => 'Consolidaciones',
                     'url' => 'agrupaciones-consolidaciones',
                     'icon' => 'fas fa-archive mr-2',
+                    'can' =>'ver_consolidaciones'
                 ],
                 [
                     'text' => 'Solicitudes de Ofertas',
                     'url' => 'solicitudes-ofertas',
                     'icon' => 'fas fa-envelope-open-text',
+                    'can' => 'ver_solicitudes_ofertas'
                 ],
                 [
                     'text' => 'Cotizaciones',
                     'url' => 'cotizaciones',
                     'icon' => 'fas fa-file-signature',
+                    'can' => 'ver_cotizaciones'
                 ],
                 [
                     'text' => 'Órdenes de Compras',
                     'url' => 'ordenes-compras',
                     'icon' => 'fas fa-file-contract',
+                    'can' => 'ver_ordenes_compras'
                 ],
                 [
                     'text' => 'Entradas a Inventario',
                     'url' => 'entradas',
                     'icon' => 'fas fa-sign-in-alt',
+                    'can' => 'ver_entrada_inventario'
                 ],
                 [
                     'text' => 'Administración',
@@ -379,31 +389,37 @@ return [
                             'text' => 'Clasificaciones de Centros',
                             'url' => 'clasificaciones-centros',
                             'icon' => 'fas fa-list-alt',
+                            'can' => 'ver_clasificaciones_centros'
                         ],
                         [
                             'text' => 'Niveles Jerárquicos',
                             'url' => 'niveles-unos',
                             'icon' => 'fas fa-layer-group',
+                            'can' => 'ver_niveles_jerarquicos'
                         ],
                         [
                             'text' => 'Referencias de gastos',
                             'url' => 'referencias-gastos',
                             'icon' => 'fas fa-dollar-sign',
+                            'can' => 'ver_referencias_gastos'
                         ],
                         [
                             'text' => 'Centros de Costos',
                             'url' => 'centros-costos',
                             'icon' => 'fas fa-sitemap',
+                            'can' => 'ver_centros_costos'
                         ],
                         [
                             'text' => 'Terceros',
                             'url' => 'terceros',
                             'icon' => 'fas fa-users',
+                            'can' => 'ver_terceros'
                         ],
                         [
                             'text' => 'Impuestos',
                             'url' => 'impuestos',
                             'icon' => 'fas fa-percent',
+                            'can' => 'ver_impuestos'
                         ],
                     ],
                 ],

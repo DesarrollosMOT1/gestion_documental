@@ -24,6 +24,10 @@ class PermisosSeeder extends Seeder
             'ver_consolidaciones_jefe',
             'editar_consolidacion_estado_jefe',
             'editar_consolidacion_estado',
+            'ver_administracion_usuarios',
+            'ver_administracion_roles',
+            'ver_administracion_areas',
+            'ver_administracion_permisos',
         ];
 
         // Crear los permisos si no existen

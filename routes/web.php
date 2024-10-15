@@ -34,30 +34,30 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('referencias-gastos/import', [App\Http\Controllers\ReferenciasGastoController::class, 'import'])->name('referencias-gastos.import');
 
     // Rutas principales
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+    Route::resource('roles', App\Http\Controllers\RoleController::class)->middleware('can:ver_administracion_roles');
+    Route::resource('permissions', App\Http\Controllers\PermissionController::class)->middleware('can:ver_administracion_permisos');
 
     // Rutas usuarios
-    Route::resource('users', App\Http\Controllers\UserController::class)->names('admin.users');
+    Route::resource('users', App\Http\Controllers\UserController::class)->names('admin.users')->middleware('can:ver_administracion_usuarios');
     Route::get('/NewPassword', [App\Http\Controllers\UserSettingsController::class, 'NewPassword'])->name('NewPassword');
     Route::post('/change/password', [App\Http\Controllers\UserSettingsController::class, 'changePassword'])->name('changePassword');
 
     // Rutas para gestión de compras
-    Route::resource('areas', App\Http\Controllers\AreaController::class);
-    Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class);
-    Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
+    Route::resource('areas', App\Http\Controllers\AreaController::class)->middleware('can:ver_administracion_areas');
+    Route::resource('clasificaciones-centros', App\Http\Controllers\ClasificacionesCentroController::class)->middleware('can:ver_clasificaciones_centros');
+    Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class)->middleware('can:ver_niveles_jerarquicos');
     Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
-    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class);
-    Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
-    Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class);
-    Route::resource('solicitudes-ofertas', App\Http\Controllers\SolicitudesOfertaController::class);
-    Route::resource('terceros', App\Http\Controllers\TerceroController::class);
-    Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
-    Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
-    Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class);
-    Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class);
-    Route::resource('entradas', App\Http\Controllers\EntradaController::class);
+    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->middleware('can:ver_centros_costos');
+    Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->middleware('can:ver_referencias_gastos');
+    Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class)->middleware('can:ver_consolidaciones');
+    Route::resource('solicitudes-ofertas', App\Http\Controllers\SolicitudesOfertaController::class)->middleware('can:ver_solicitudes_ofertas');
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class)->middleware('can:ver_terceros');
+    Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class)->middleware('can:ver_impuestos');
+    Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class)->middleware('can:ver_solicitudes_compras');
+    Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class)->middleware('can:ver_cotizaciones');
+    Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class)->middleware('can:ver_ordenes_compras');
+    Route::resource('entradas', App\Http\Controllers\EntradaController::class)->middleware('can:ver_entrada_inventario');
 
     // Rutas para agrupaciones y consolidaciones
     Route::post('agrupaciones-consolidacione/{agrupacionesConsolidacioneId}/solicitudes-compra', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'storeSolicitudesCompra'])->name('agrupaciones-consolidacione.storeSolicitudesCompra');
