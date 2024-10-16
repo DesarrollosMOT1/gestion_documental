@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_solicitud_oferta');
             $table->unsignedBigInteger('id_users');
-            $table->string('id_terceros');
+            $table->unsignedBigInteger('id_terceros');
             $table->timestamps();
 
             $table->foreign('id_users')->references('id')->on('users');
-            $table->foreign('id_terceros')->references('nit')->on('terceros');
+            $table->foreign('id_terceros')->references('id')->on('terceros');
         });
 
         // Crear tabla consolidaciones_ofertas

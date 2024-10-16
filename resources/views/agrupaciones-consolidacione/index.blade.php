@@ -10,27 +10,40 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
-                            <span id="card_title">
-                                {{ __('Agrupaciones Consolidaciones') }}
-                            </span>
-
+                            <span id="card_title">{{ __('Agrupaciones Consolidaciones') }}</span>
                         </div>
                     </div>
+                    
                     @if ($message = Session::get('success'))
                         <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                     @endif
 
                     <div class="card-body bg-white">
+                        <!-- Filtro de rango de fechas -->
+                        <form method="GET" action="{{ route('agrupaciones-consolidaciones.index') }}" class="mb-4">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="fecha_inicio">Fecha de inicio:</label>
+                                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ request('fecha_inicio') ?? \Carbon\Carbon::now()->subDays(14)->toDateString() }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="fecha_fin">Fecha de fin:</label>
+                                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ request('fecha_fin') ?? \Carbon\Carbon::now()->toDateString() }}">
+                                </div>
+                                <div class="col-md-3 align-self-end">
+                                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Usuario</th>
-									<th >Fecha Consolidacion</th>
-
+                                        <th>Usuario</th>
+                                        <th>Fecha Consolidacion</th>
+                                        <th>Area</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -38,17 +51,16 @@
                                     @foreach ($agrupacionesConsolidaciones as $agrupacionesConsolidacione)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $agrupacionesConsolidacione->user->name }}</td>
-										<td >{{ $agrupacionesConsolidacione->fecha_consolidacion }}</td>
-
+                                            <td>{{ $agrupacionesConsolidacione->user->name }}</td>
+                                            <td>{{ $agrupacionesConsolidacione->fecha_consolidacion }}</td>
+                                            <td>{{ $agrupacionesConsolidacione->user->area->nombre }}</td>
                                             <td>
-                                                <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary" href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('agrupaciones-consolidaciones.edit', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
+                                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -56,6 +68,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        {{ $agrupacionesConsolidaciones->links() }}
                     </div>
                 </div>
             </div>

@@ -32,7 +32,7 @@
         </div>
         <br>
         <h4 class="mb-3">Elementos a consolidar</h4>
-        <div id="formularioConsolidacionContainer" class="row">
+        <div id="formularioConsolidacionContainer" class="row g-3">
             <!-- Aquí se cargarán dinámicamente los formularios -->
         </div>
     </div>

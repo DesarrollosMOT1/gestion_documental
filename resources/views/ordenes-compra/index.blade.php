@@ -2,10 +2,6 @@
 
 @section('title', 'Ordenes de Compra')
 
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
 
 @section('content')
 <br>
@@ -22,27 +18,26 @@
 
                              <div class="float-right">
                                 <a href="{{ route('ordenes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                                  {{ __('Create New') }}
                                 </a>
                               </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
-                        <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+                        <div class="alert alert-success m-4">
+                            <p>{{ $message }}</p>
+                        </div>
                     @endif
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover datatable">
+                            <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
                                         
 									<th >Fecha Emision</th>
-									<th >Subtotal</th>
-									<th >Total</th>
-									<th >Cantidad Total</th>
-									<th >Nota</th>
+									<th >Id Terceros</th>
 
                                         <th></th>
                                     </tr>
@@ -53,10 +48,7 @@
                                             <td>{{ ++$i }}</td>
                                             
 										<td >{{ $ordenesCompra->fecha_emision }}</td>
-										<td >{{ $ordenesCompra->subtotal }}</td>
-										<td >{{ $ordenesCompra->total }}</td>
-										<td >{{ $ordenesCompra->cantidad_total }}</td>
-										<td >{{ $ordenesCompra->nota }}</td>
+										<td >{{ $ordenesCompra->id_terceros }}</td>
 
                                             <td>
                                                 <form action="{{ route('ordenes-compras.destroy', $ordenesCompra->id) }}" class="delete-form" method="POST">

@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 class AgrupacionesConsolidacione extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.
@@ -47,4 +47,8 @@ class AgrupacionesConsolidacione extends Model
         return $this->hasMany(\App\Models\Consolidacione::class, 'agrupacion_id', 'id');
     }
     
+    public function cotizacionesPrecios()
+    {
+        return $this->hasMany(\App\Models\CotizacionesPrecio::class, 'id_agrupaciones_consolidaciones', 'id');
+    }
 }

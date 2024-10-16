@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class SolicitudesOferta extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     /**
      * The attributes that are mass assignable.
@@ -59,7 +59,7 @@ class SolicitudesOferta extends Model
     public function getTercerosSinCotizacion()
     {
         return $this->terceros()
-            ->leftJoin('cotizaciones', 'terceros.nit', '=', 'cotizaciones.id_terceros')
+            ->leftJoin('cotizaciones', 'terceros.id', '=', 'cotizaciones.id_terceros')
             ->leftJoin('solicitudes_cotizaciones', 'cotizaciones.id', '=', 'solicitudes_cotizaciones.id_cotizaciones')
             ->whereNull('solicitudes_cotizaciones.id')
             ->select('terceros.*')

@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="invalid-feedback">La cantidad es requerida y debe ser un número.</div>
                         </div>
                         <div class="col-md-3">
+                            <label for="cantidad_${index}">Descuento</label>
+                            <input type="number" name="elementos[${index}][descuento]" id="descuento_${index}" class="form-control" value="0" required>
+                            <div class="invalid-feedback">El descuento es requerido y debe ser un número.</div>
+                        </div>
+                        <div class="col-md-3">
                             <label for="impuesto_${index}">Impuesto</label>
                             <select name="elementos[${index}][id_impuestos]" id="impuesto_${index}" class="form-control" required>
                                 ${impuestosOptions}
@@ -75,9 +80,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para actualizar el campo de nombre
     const updateNombre = () => {
         const selectedOption = selectTerceros.options[selectTerceros.selectedIndex];
-        const nombre = selectedOption ? selectedOption.text : '';
-        const nit = selectedOption ? selectedOption.value : '';
-        inputNombre.value = 'Cotización para ' + nombre + ' (NIT: ' + nit + ')';
+        if (selectedOption) {
+            const optionText = selectedOption.text;
+            
+            // Usamos una expresión regular para extraer el NIT del texto
+            const nitMatch = optionText.match(/\(NIT: ([\d]+)\)/);
+            const nit = nitMatch ? nitMatch[1] : '';
+            
+            // Obtenemos el nombre del texto después del NIT
+            const nombre = optionText.split(') - ')[1] || '';
+
+            inputNombre.value = 'Cotización para ' + nombre + ' (NIT: ' + nit + ')';
+        }
     };
 
     // Función principal para cargar datos y renderizar

@@ -8,7 +8,8 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
-            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#cotizacionesModal">Crear Cotizacion</button>
+            <!-- Botón para Crear Cotización -->
+<button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cotizacionesModal">Crear Cotización</button>
         </div>
         @if ($message = Session::get('success'))
             <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
@@ -40,7 +41,7 @@
                                     <p><strong>NIT:</strong> {{ $tercero->nit }}</p>
                                     <p><strong>Tipo de factura:</strong> {{ $tercero->tipo_factura ?? 'N/A' }}</p>
                                     <p><strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}</p>
-                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'nit' => $tercero->nit]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
+                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'terceroId' => $tercero->id]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
                                     <hr> <!-- Separador entre terceros -->
                                 @endforeach
                             @else
@@ -127,26 +128,16 @@
                 </div>
 
                 <!-- Modal para crear cotizaciones -->
-                <div class="modal fade" id="cotizacionesModal" tabindex="-1" role="dialog" aria-labelledby="cotizacionesModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="cotizacionesModalLabel">Crear Cotización</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('cotizaciones.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="solicitud_oferta_id" id="solicitud_oferta_id" value="{{ $solicitudesOferta->id }}">
-                                    <!-- Incluye el formulario para la cotización -->
-                                    @include('cotizacione.form')
-                                </form>
-                            </div>
-                        </div>
+                <x-modal id="cotizacionesModal" title="Crear Cotización" size="lg">
+                    <div class="modal-body">
+                        <form action="{{ route('cotizaciones.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="solicitud_oferta_id" id="solicitud_oferta_id" value="{{ $solicitudesOferta->id }}">
+                            <!-- Incluye el formulario para la cotización -->
+                            @include('cotizacione.form')
+                        </form>
                     </div>
-                </div>
+                </x-modal>
 
                 <!-- Sección de cotizaciones relacionadas -->
                 <div class="mb-4">

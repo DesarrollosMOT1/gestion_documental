@@ -1,11 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Centro Costo')
-
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
+@section('title', 'Areas')
 
 @section('content')
 <br>

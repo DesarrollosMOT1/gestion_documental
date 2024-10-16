@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('terceros', function (Blueprint $table) {
-            $table->string('nit')->primary();
+            $table->id();
+            $table->string('nit')->unique();
             $table->string('tipo_factura');
             $table->string('nombre');
             $table->timestamps();

@@ -22,11 +22,14 @@ class OrdenesCompraRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'fecha_emision' => 'required',
-			'subtotal' => 'required',
-			'total' => 'required',
-			'cantidad_total' => 'required',
-			'nota' => 'required|string',
+            'fecha_emision' => 'required|date',
+            'cotizaciones' => 'required|array|min:1', 
+            'cotizaciones.*.id_terceros' => 'required|string',
+            'cotizaciones.*.id_solicitudes_cotizaciones' => 'required|integer|exists:solicitudes_cotizaciones,id',
+            'cotizaciones.*.id_consolidaciones_oferta' => 'required|integer|exists:consolidaciones_ofertas,id',
+            'cotizaciones.*.id_solicitud_elemento' => 'required|integer|exists:solicitudes_elementos,id',
+            'cotizaciones.*.id_cotizaciones_precio' => 'required|integer|exists:cotizaciones_precio,id',
+            'cotizaciones.*.id_consolidaciones' => 'required|integer|exists:consolidaciones,id',
         ];
     }
 }

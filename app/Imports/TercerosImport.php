@@ -15,10 +15,10 @@ class TercerosImport implements ToCollection
 
         foreach ($rows as $row) {
             Tercero::updateOrCreate(
-                ['nit' => $row[0]], // Buscar por id
+                ['nit' => $row[1]], // Buscar por id
                 [
-                    'tipo_factura' => $row[1],
-                    'nombre' => $row[2]
+                    'tipo_factura' => $row[2],
+                    'nombre' => $row[3]
                 ]
             );
         }

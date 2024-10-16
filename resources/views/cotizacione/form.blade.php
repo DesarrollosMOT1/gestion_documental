@@ -10,8 +10,8 @@
             <select name="id_terceros" id="id_terceros" class="form-control @error('id_terceros') is-invalid @enderror" required>
                 <option value="" disabled selected>Seleccione un tercero</option>
                 @forelse($tercerosSinCotizacion as $tercero)
-                    <option value="{{ $tercero->nit }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->nit ? 'selected' : '' }}>
-                        {{ $tercero->nombre }} (NIT: {{ $tercero->nit }})
+                    <option value="{{ $tercero->id }}" {{ old('id_terceros', $cotizacione?->id_terceros) == $tercero->id ? 'selected' : '' }}>
+                        (NIT: {{ $tercero->nit }}) - {{ $tercero->nombre }} 
                     </option>
                 @empty
                     <option value="" disabled>No hay terceros disponibles</option>
@@ -58,14 +58,6 @@
                 <option value="crédito" {{ old('condiciones_pago', $cotizacione?->condiciones_pago) == 'crédito' ? 'selected' : '' }}>Crédito</option>
             </select>
             {!! $errors->first('condiciones_pago', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="form-group mb-2">
-            <label for="descuento" class="form-label">{{ __('Descuento') }}</label>
-            <input type="text" name="descuento" class="form-control @error('descuento') is-invalid @enderror" value="{{ old('descuento', $cotizacione?->descuento) }}" id="descuento" placeholder="Descuento">
-            {!! $errors->first('descuento', '<div class="invalid-feedback"><strong>:message</strong></div>') !!}
         </div>
     </div>
 

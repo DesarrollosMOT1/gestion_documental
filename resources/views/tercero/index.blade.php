@@ -2,11 +2,6 @@
 
 @section('title', 'Terceros')
 
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
-
 @section('content')
 <br>
     <div class="container-fluid">
@@ -29,7 +24,7 @@
                                 <a href="{{ route('terceros.create') }}" class="btn btn-primary btn-sm" data-placement="left">
                                     {{ __('Crear Nuevo') }}
                                 </a>
-                            </div>                            
+                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -60,9 +55,9 @@
 										<td >{{ $tercero->nombre }}</td>
 
                                             <td>
-                                                <form action="{{ route('terceros.destroy', $tercero->nit) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('terceros.show', $tercero->nit) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('terceros.edit', $tercero->nit) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form action="{{ route('terceros.destroy', $tercero->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('terceros.show', $tercero->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('terceros.edit', $tercero->id) }}"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
@@ -75,7 +70,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $terceros->withQueryString()->links() !!}
             </div>
         </div>
     </div>
