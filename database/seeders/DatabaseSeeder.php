@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             MotivosSeeder::class,
             TiposYClasesMovimientosSeeder::class,
             BodegasYAlmacenesSeeder::class,
+            EquivalenciasTableSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',

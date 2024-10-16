@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UnidadesSeeder extends Seeder
 {
@@ -20,6 +20,11 @@ class UnidadesSeeder extends Seeder
             ],
             [
                 'nombre' => 'Unidad 2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nombre' => 'Unidad 3',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
