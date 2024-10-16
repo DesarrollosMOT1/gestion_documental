@@ -89,7 +89,7 @@ class TerceroController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx',
+            'file' => 'required|mimes:xlsx,csv,xls',
         ]);
 
         Excel::import(new TercerosImport, $request->file('file'));

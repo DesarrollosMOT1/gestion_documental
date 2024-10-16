@@ -15,19 +15,20 @@
                             <span id="card_title">
                                 {{ __('Centros Costos') }}
                             </span>
-
                             <div class="float-right d-flex align-items-center">
                                 <form action="{{ route('centros-costos.import') }}" method="POST" enctype="multipart/form-data" class="d-flex mr-2">
                                     @csrf
-                                    <input type="file" class="form-control mr-2" name="file" aria-label="Upload" required>
+                                    <input type="file" class="form-control mr-2 @error('file') is-invalid @enderror" name="file" aria-label="Upload" required>
+                                    {!! $errors->first('file', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
                                     <button class="btn btn-secondary" type="submit">Importar</button>
                                 </form>
                                 <a href="{{ route('centros-costos.create') }}" class="btn btn-primary btn-sm" data-placement="left">
                                     {{ __('Crear Nuevo') }}
                                 </a>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
+                    <br>
                     @if ($message = Session::get('success'))
                         <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                     @endif
