@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class NivelesUnoRequest extends FormRequest
 {
@@ -21,8 +22,14 @@ class NivelesUnoRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('niveles_uno');
+
         return [
-			'nombre' => 'required|string',
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('niveles_uno', 'nombre')->ignore($id),
+            ],
             'inventario' => 'nullable|boolean',
         ];
     }

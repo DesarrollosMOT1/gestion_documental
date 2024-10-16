@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CentrosCostoRequest extends FormRequest
 {
@@ -21,10 +22,20 @@ class CentrosCostoRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('centros_costo');
+
         return [
-			'codigo_mekano' => 'required|string',
-			'nombre' => 'required|string',
-			'id_clasificaciones_centros' => 'required',
+            'codigo_mekano' => [
+                'required',
+                'string',
+                Rule::unique('centros_costos', 'codigo_mekano')->ignore($id), // Verificar que sea único, ignorando el ID actual
+            ],
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('centros_costos', 'nombre')->ignore($id), // Verificar que sea único, ignorando el ID actual
+            ],
+            'id_clasificaciones_centros' => 'required',
         ];
     }
 }

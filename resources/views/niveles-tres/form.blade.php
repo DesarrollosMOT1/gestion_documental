@@ -21,11 +21,11 @@
         
         <div class="form-group mb-2 mb20">
             <label for="id_referencias_gastos" class="form-label">{{ __('Referencia Gasto') }}</label>
-            <select name="id_referencias_gastos" class="form-control @error('id_referencias_gastos') is-invalid @enderror" id="id_referencias_gastos">
+            <select name="id_referencias_gastos" class="form-control select2 @error('id_referencias_gastos') is-invalid @enderror" id="id_referencias_gastos">
                 <option value="">{{ __('Seleccione una referencia de gasto') }}</option>
                 @foreach($referenciasGastos as $referenciaGasto)
-                    <option value="{{ $referenciaGasto->codigo }}" {{ old('id_referencias_gastos', $nivelesTre?->id_referencias_gastos) == $referenciaGasto->codigo ? 'selected' : '' }}>
-                        {{ $referenciaGasto->nombre }}
+                    <option value="{{ $referenciaGasto->id }}" {{ old('id_referencias_gastos', $nivelesTre?->id_referencias_gastos) == $referenciaGasto->id ? 'selected' : '' }}>
+                        {{ $referenciaGasto->codigo_mekano}} - {{ $referenciaGasto->nombre }}
                     </option>
                 @endforeach
             </select>

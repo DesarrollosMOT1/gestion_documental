@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClasificacionesCentroRequest extends FormRequest
 {
@@ -21,8 +22,14 @@ class ClasificacionesCentroRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('clasificaciones_centro');
+
         return [
-            'nombre' => 'required|string',
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('clasificaciones_centros', 'nombre')->ignore($id),
+            ],
             'id_areas' => 'required|array',
             'id_areas.*' => 'exists:areas,id',
         ];
