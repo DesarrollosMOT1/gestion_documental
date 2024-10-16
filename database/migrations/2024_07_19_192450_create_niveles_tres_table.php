@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('niveles_tres', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->unsignedBigInteger('id_niveles_dos');
             $table->unsignedBigInteger('id_referencias_gastos');
             $table->timestamps();
