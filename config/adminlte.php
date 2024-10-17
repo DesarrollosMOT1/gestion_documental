@@ -392,10 +392,10 @@ return [
                             'can' => 'ver_clasificaciones_centros'
                         ],
                         [
-                            'text' => 'Niveles Jerárquicos',
-                            'url' => 'niveles-unos',
-                            'icon' => 'fas fa-layer-group',
-                            'can' => 'ver_niveles_jerarquicos'
+                            'text' => 'Centros de Costos',
+                            'url' => 'centros-costos',
+                            'icon' => 'fas fa-sitemap',
+                            'can' => 'ver_centros_costos'
                         ],
                         [
                             'text' => 'Referencias de gastos',
@@ -404,10 +404,10 @@ return [
                             'can' => 'ver_referencias_gastos'
                         ],
                         [
-                            'text' => 'Centros de Costos',
-                            'url' => 'centros-costos',
-                            'icon' => 'fas fa-sitemap',
-                            'can' => 'ver_centros_costos'
+                            'text' => 'Niveles Jerárquicos',
+                            'url' => 'niveles-unos',
+                            'icon' => 'fas fa-layer-group',
+                            'can' => 'ver_niveles_jerarquicos'
                         ],
                         [
                             'text' => 'Terceros',
