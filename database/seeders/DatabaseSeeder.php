@@ -20,9 +20,17 @@ class DatabaseSeeder extends Seeder
             TercerosSeeder::class,
             MotivosSeeder::class,
             TiposYClasesMovimientosSeeder::class,
-            BodegasYAlmacenesSeeder::class,,
+
+            BodegasYAlmacenesSeeder::class,
+            EquivalenciasTableSeeder::class,
+        ]);
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+
             AreasSeeder::class,
             PermisosSeeder::class
+
         ]);
         
         // Crear o encontrar usuario

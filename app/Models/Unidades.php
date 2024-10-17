@@ -4,51 +4,88 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class Unidade
- *
- * @property $id
- * @property $nombre
- * @property $created_at
- * @property $updated_at
- * @property Registro[] $registros
- *
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 class Unidades extends Model
 {
     protected $perPage = 20;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = ['nombre'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    // Relación con los registros
     public function registros()
     {
-        return $this->hasMany(\App\Models\Registro::class, 'id', 'unidad');
+        return $this->hasMany(\App\Models\Registro::class, 'unidad', 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    // Relación con las equivalencias donde la unidad es la unidad principal
     public function equivalencias()
     {
         return $this->hasMany(\App\Models\Equivalencia::class, 'unidad_principal', 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *                                                         retorna la unidad equivalente
-     */
-    //retorna la unidad equivalente
-    public function equivalenciasComoEquivalente()
+    public function obtenerEquivalencias($unidadId)
     {
-        return $this->hasMany(\App\Models\Equivalencia::class, 'unidad_equivalente', 'id');
+        $unidad = $this->find($unidadId);
+
+        if (! $unidad) {
+            return null;
+        }
+
+        static $visitas = [];
+
+        if (in_array($unidad->id, $visitas)) {
+            return [
+                'unidad' => $unidad->nombre,
+                'equivalencias' => [],
+            ];
+        }
+
+        $visitas[] = $unidad->id;
+
+        $equivalenciasCadena = [];
+
+        $equivalenciasDirectas = $unidad->equivalencias()->get();
+
+        foreach ($equivalenciasDirectas as $equivalencia) {
+            $unidadEquivalente = Unidades::find($equivalencia->unidad_equivalente);
+
+            if ($unidadEquivalente) {
+                $existe = false;
+                foreach ($equivalenciasCadena as $eqCadena) {
+                    if ($eqCadena['unidad_equivalente'] === $unidadEquivalente->nombre) {
+                        $existe = true;
+                        break;
+                    }
+                }
+
+                if (! $existe) {
+                    $equivalenciasCadena[] = [
+                        'unidad_equivalente' => $unidadEquivalente->nombre,
+                        'cantidad' => $equivalencia->cantidad,
+                    ];
+                }
+                $equivalenciasDeUnidadEquivalente = $this->obtenerEquivalencias($unidadEquivalente->id);
+                foreach ($equivalenciasDeUnidadEquivalente['equivalencias'] as $eq) {
+                    $existe = false;
+                    foreach ($equivalenciasCadena as $eqCadena) {
+                        if ($eqCadena['unidad_equivalente'] === $eq['unidad_equivalente']) {
+                            $existe = true;
+                            break;
+                        }
+                    }
+                    if (! $existe) {
+                        $cantidadMultiplicada = $eq['cantidad'] * $equivalencia->cantidad;
+                        $equivalenciasCadena[] = [
+                            'unidad_equivalente' => $eq['unidad_equivalente'],
+                            'cantidad' => $cantidadMultiplicada,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return [
+            'unidad' => $unidad->nombre,
+            'equivalencias' => $equivalenciasCadena,
+        ];
     }
 }

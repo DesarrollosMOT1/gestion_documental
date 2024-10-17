@@ -3,7 +3,10 @@
 @section('template_title')
     {{ $unidad->nombre ?? __('Mostrar') . ' ' . __('Unidad') }}
 @endsection
-
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
+@endsection
 @section('content')
     <section class="content container-fluid">
         <div class="row">
@@ -27,51 +30,27 @@
                             <strong>Nombre:</strong>
                             {{ $unidad->nombre }}
                         </div>
-
-                        <h5>Equivalencias</h5>
-                        <table class="table table-striped">
+                        <table id="equivalenciasTable" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Unidad Equivalente</th>
-                                    <th>Nombre</th>
-                                    <th>Cantidad</th>
-                                    <th>Acciones</th>
+                                    <th>Unidad</th>
+                                    @foreach ($equivalencias['equivalencias'] as $equivalencia)
+                                        <th>Equivale a</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($equivalencias->isNotEmpty())
-                                    @foreach ($equivalencias as $equivalencia)
-                                        <tr>
-                                            <td>
-                                                {{ $equivalencia->nombre_equivalente ?? 'Unidad no encontrada' }}
-                                            </td>
-                                            <td>
-                                                {{ $equivalencia->nombre_equivalente ?? 'Nombre no disponible' }}
-                                            </td>
-                                            <td>{{ $equivalencia->cantidad }}</td>
-                                            <td>
-                                                <form action="{{ route('equivalencias.destroy', $equivalencia->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('¿Está seguro de querer borrar esta equivalencia?') ? this.closest('form').submit() : false;">
-                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td>{{ $equivalencias['unidad'] }}</td> <!-- Aquí se muestra la unidad principal -->
+                                    @foreach ($equivalencias['equivalencias'] as $equivalencia)
+                                        <td>{{ $equivalencia['cantidad'] }} {{ $equivalencia['unidad_equivalente'] }}</td>
+                                        <!-- Equivalencias -->
                                     @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="2">Sin equivalencias</td>
-                                    </tr>
-                                @endif
+                                </tr>
                             </tbody>
                         </table>
-                        <div class="float-right">
-                            <x-equivalencia-add-modal :idUnidadPrincipal="$unidad->id" />
-                        </div>
+
                     </div>
                 </div>
             </div>
