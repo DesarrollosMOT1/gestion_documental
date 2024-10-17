@@ -93,16 +93,4 @@ class ClasificacionesCentroController extends Controller
         return Redirect::route('clasificaciones-centros.index')
             ->with('success', 'ClasificacionesCentro eliminada exitosamente');
     }
-
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,csv,xls',
-        ]);
-
-        Excel::import(new ClasificacionesCentroImport, $request->file('file')->store('temp'));
-
-        return redirect()->route('clasificaciones-centros.index')
-                        ->with('success', 'Las clasificaciones de centros han sido importadas correctamente.');
-    }
 }

@@ -15,15 +15,31 @@ class PermisosSeeder extends Seeder
     {
         // Lista de permisos a crear
         $permisos = [
-            'ver_sistemas',
-            'ver_mantenimiento_vehiculo',
-            'ver_implementos_aseo_cafeteria',
-            'ver_utiles_papeleria_fotocopia',
-            'ver_seguridad_salud',
-            'ver_dotacion_personal',
+            'ver_nivel_sistemas',
+            'ver_nivel_mantenimiento_vehiculo',
+            'ver_nivel_implementos_aseo_cafeteria',
+            'ver_nivel_utiles_papeleria_fotocopia',
+            'ver_nivel_seguridad_salud',
+            'ver_nivel_dotacion_personal',
             'ver_consolidaciones_jefe',
             'editar_consolidacion_estado_jefe',
             'editar_consolidacion_estado',
+            'ver_administracion_usuarios',
+            'ver_administracion_roles',
+            'ver_administracion_areas',
+            'ver_administracion_permisos',
+            'ver_solicitudes_compras',
+            'ver_consolidaciones',
+            'ver_solicitudes_ofertas',
+            'ver_cotizaciones',
+            'ver_ordenes_compras',
+            'ver_clasificaciones_centros',
+            'ver_entrada_inventario',
+            'ver_niveles_jerarquicos',
+            'ver_referencias_gastos',
+            'ver_centros_costos',
+            'ver_terceros',
+            'ver_impuestos'
         ];
 
         // Crear los permisos si no existen

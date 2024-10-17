@@ -9,15 +9,29 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Traits\VerNivelesPermiso;
+use Carbon\Carbon;
 
 class OrdenesCompraController extends Controller
 {
+    use VerNivelesPermiso;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        $ordenesCompras = OrdenesCompra::paginate();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
+
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+
+        $ordenesCompras = OrdenesCompra::whereHas('ordenesCompraCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use($nivelesUnoIds){
+            $query->whereIn('id', $nivelesUnoIds);
+        })
+        ->whereBetween('fecha_emision', [$fechaInicio, $fechaFin])
+        ->with('ordenesCompraCotizaciones.solicitudesElemento')
+        ->paginate();
 
         return view('ordenes-compra.index', compact('ordenesCompras'))
             ->with('i', ($request->input('page', 1) - 1) * $ordenesCompras->perPage());
@@ -90,7 +104,15 @@ class OrdenesCompraController extends Controller
      */
     public function show($id): View
     {
-        $ordenesCompra = OrdenesCompra::find($id);
+        $ordenesCompra = OrdenesCompra::with([
+            'tercero',
+            'ordenesCompraCotizaciones.solicitudesElemento.nivelesTres',
+            'ordenesCompraCotizaciones.solicitudesCotizacione.cotizacione',
+            'ordenesCompraCotizaciones.cotizacionesPrecio',
+            'ordenesCompraCotizaciones.consolidacione.solicitudesCompra',
+        ])->findOrFail($id);
+
+        $this->authorize('view', $ordenesCompra);
 
         return view('ordenes-compra.show', compact('ordenesCompra'));
     }

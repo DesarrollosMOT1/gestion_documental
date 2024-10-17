@@ -28,7 +28,7 @@ class OrdenesCompra extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_emision', 'id_terceros'];
+    protected $fillable = ['fecha_emision', 'id_terceros', 'id_users'];
 
 
     /**
@@ -44,7 +44,12 @@ class OrdenesCompra extends Model
      */
     public function ordenesCompraCotizaciones()
     {
-        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id', 'id_ordenes_compras');
+        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id_ordenes_compras', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'id_users', 'id');
     }
     
 }

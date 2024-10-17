@@ -15,11 +15,6 @@
                                 {{ __('Clasificaciones Centros') }}
                             </span>
                             <div class="float-right d-flex align-items-center">
-                                <form action="{{ route('clasificaciones-centros.import') }}" method="POST" enctype="multipart/form-data" class="d-flex mr-2">
-                                    @csrf
-                                    <input type="file" class="form-control mr-2" name="file" aria-label="Upload" required>
-                                    <button class="btn btn-secondary" type="submit">Importar</button>
-                                </form>
                                 <a href="{{ route('clasificaciones-centros.create') }}" class="btn btn-primary btn-sm" data-placement="left">
                                     {{ __('Crear Nuevo') }}
                                 </a>

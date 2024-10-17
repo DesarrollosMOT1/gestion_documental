@@ -19,6 +19,7 @@
                         </div>
                         <div class="card-body">
                             <p><strong>Fecha Cotización:</strong> {{ $cotizacione->fecha_cotizacion }}</p>
+                            <p><strong>Usuario:</strong> {{ $cotizacione->user->name }}</p>
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
                             <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
                             <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>
@@ -113,60 +114,6 @@
                                 <p class="text-muted">No hay elementos cotizados asociados a esta cotización.</p>
                             @endif
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botón para abrir el modal -->
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearOrdenModal">
-                Crear Orden de Compra
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="crearOrdenModal" tabindex="-1" aria-labelledby="crearOrdenLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="crearOrdenLabel"></i>Crear Orden de Compra
-                            </h5>
-                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="{{ route('ordenes-compras.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <!-- Lista de elementos a incluir en la orden de compra -->
-                                <h5 class="mb-3">
-                                    <i class="fas fa-list-ul mr-2"></i>Elementos en la Orden de Compra
-                                </h5>
-                                <div class="table-responsive mb-4">
-                                    <table class="table table-hover table-striped">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Elemento</th>
-                                                <th>Cantidad</th>
-                                                <th>Precio</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($solicitudesAprobadas as $solicitudCotizacion)
-                                            <input type="hidden" name="id_solicitudes_cotizaciones[]" value="{{ $solicitudCotizacion->id }}">
-                                                <tr>
-                                                    <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $solicitudCotizacion->cantidad ?? 'N/A' }}</td>
-                                                    <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <h5 class="mb-3">
-                                    <i class="fas fa-info-circle mr-2"></i>Información General
-                                </h5>
-                                @include('ordenes-compra.form')
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

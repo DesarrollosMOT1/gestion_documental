@@ -36,7 +36,7 @@ class Cotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
+    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia', 'id_users'];
 
 
     /**
@@ -53,6 +53,11 @@ class Cotizacione extends Model
     public function solicitudesCotizaciones()
     {
         return $this->hasMany(\App\Models\SolicitudesCotizacione::class, 'id_cotizaciones', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'id_users', 'id');
     }
     
 }

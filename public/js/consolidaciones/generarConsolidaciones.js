@@ -6,11 +6,11 @@ $(document).ready(function() {
 
     // Eventos para los checkboxes de selección
     $('#select_all').change(function() {
-        $('.select_item').prop('checked', $(this).prop('checked'));
+        $('.form-check-input.select_item').prop('checked', $(this).prop('checked'));
         actualizarSolicitudesYElementos();
     });
 
-    $('.select_item').change(function() {
+    $('.form-check-input.select_item').change(function() {
         actualizarSolicitudesYElementos();
         toggleGenerateButton();
     });
@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     // Función para obtener las solicitudes seleccionadas
     function obtenerSolicitudesSeleccionadas() {
-        return $('.select_item:checked').map(function() {
+        return $('.form-check-input.select_item:checked').map(function() {
             return $(this).val();
         }).get();
     }
@@ -38,7 +38,7 @@ $(document).ready(function() {
     // Actualizar la tabla de solicitudes consolidadas
     function actualizarTablaSolicitudes(solicitudes) {
         let tablaSolicitudes = '';
-        $('.select_item:checked').closest('tr').each(function() {
+        $('.form-check-input.select_item:checked').closest('tr').each(function() {
             const prefijo = $(this).find('td:eq(4)').text();
             const descripcion = $(this).find('td:eq(5)').text();
             const fecha_solicitud = $(this).find('td:eq(2)').text();

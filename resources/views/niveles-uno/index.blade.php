@@ -30,8 +30,9 @@
                             <form action="{{ route('niveles-unos.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
-                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <input type="file" class="form-control @error('file') is-invalid @enderror" name="file" aria-label="Upload" required>
                                     <button class="btn btn-secondary" type="submit">Importar</button>
+                                    {!! $errors->first('file', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
                                 </div>
                                 <br>
                             </form>
@@ -63,8 +64,9 @@
                             <form action="{{ route('niveles-dos.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
-                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <input type="file" class="form-control @error('file') is-invalid @enderror" name="file" aria-label="Upload" required>
                                     <button class="btn btn-secondary" type="submit">Importar</button>
+                                    {!! $errors->first('file', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
                                 </div>
                                 <br>
                             </form>
@@ -84,8 +86,9 @@
                             <form action="{{ route('niveles-tres.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
-                                    <input type="file" class="form-control" name="file" aria-label="Upload" required>
+                                    <input type="file" class="form-control @error('file') is-invalid @enderror" name="file" aria-label="Upload" required>
                                     <button class="btn btn-secondary" type="submit">Importar</button>
+                                    {!! $errors->first('file', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
                                 </div>
                                 <br>
                             </form>

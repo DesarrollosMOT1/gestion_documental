@@ -65,9 +65,11 @@
                                                     <td>{{ $elemento->centrosCosto->nombre ?? 'N/A' }}</td>
                                                     <td>{{ $elemento->cantidad }}</td>
                                                     <td>
-                                                        <input type="checkbox" class="estado-checkbox" 
-                                                               data-id="{{ $elemento->id }}" 
-                                                               {{ $elemento->estado ? 'checked' : '' }}>
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox" class="form-check-input estado-checkbox" 
+                                                                   data-id="{{ $elemento->id }}" 
+                                                                   {{ $elemento->estado ? 'checked' : '' }}>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'editar Nivel Tres')
+@section('title', 'Editar Nivel Tres')
 
 @section('content')
     <br>

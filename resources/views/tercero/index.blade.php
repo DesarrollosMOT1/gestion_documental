@@ -18,7 +18,8 @@
                             <div class="float-right d-flex align-items-center">
                                 <form action="{{ route('terceros.import') }}" method="POST" enctype="multipart/form-data" class="d-flex mr-2">
                                     @csrf
-                                    <input type="file" class="form-control mr-2" name="file" aria-label="Upload" required>
+                                    <input type="file" class="form-control mr-2 @error('file') is-invalid @enderror" name="file" aria-label="Upload" required>
+                                    {!! $errors->first('file', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
                                     <button class="btn btn-secondary" type="submit">Importar</button>
                                 </form>
                                 <a href="{{ route('terceros.create') }}" class="btn btn-primary btn-sm" data-placement="left">

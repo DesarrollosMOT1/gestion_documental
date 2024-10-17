@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clasificaciones_centros', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->unsignedBigInteger('id_areas');
             $table->foreign('id_areas')->references('id')->on('areas');
             $table->timestamps();
