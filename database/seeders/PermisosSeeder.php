@@ -39,7 +39,8 @@ class PermisosSeeder extends Seeder
             'ver_referencias_gastos',
             'ver_centros_costos',
             'ver_terceros',
-            'ver_impuestos'
+            'ver_impuestos',
+            'ver_solicitudes_usuario_autentificado'
         ];
 
         // Crear los permisos si no existen

@@ -34,13 +34,28 @@ class SolicitudesCompraController extends Controller
         $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
         $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
     
-        // Obtener las solicitudes de compra que tienen al menos un SolicitudesElemento relacionado con los NivelesUno permitidos
-        $solicitudesCompras = SolicitudesCompra::whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-            $query->whereIn('id', $nivelesUnoIds);
-        })
-        ->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFin])
-        ->with('solicitudesElemento')
-        ->paginate();
+        $solicitudesComprasQuery = SolicitudesCompra::query();
+    
+        // Si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado'
+        if (auth()->user()->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
+            // Filtrar por solicitudes propias y las de los niveles permitidos
+            $solicitudesComprasQuery->where(function($query) use ($nivelesUnoIds) {
+                $query->where('id_users', auth()->user()->id)
+                    ->orWhereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                        $query->whereIn('id', $nivelesUnoIds);
+                    });
+            });
+        } else {
+            // Si no tiene el permiso, solo filtrar por los niveles permitidos
+            $solicitudesComprasQuery->whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                $query->whereIn('id', $nivelesUnoIds);
+            });
+        }
+    
+        // Filtrar por el rango de fechas
+        $solicitudesCompras = $solicitudesComprasQuery->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFin])
+            ->with('solicitudesElemento')
+            ->paginate();
     
         $agrupacionesConsolidacione = new AgrupacionesConsolidacione();
     
@@ -127,27 +142,48 @@ class SolicitudesCompraController extends Controller
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
-        // Obtener la solicitud de compra con los elementos filtrados por nivel uno permitido
-        $solicitudesCompra = SolicitudesCompra::with(['solicitudesElemento' => function($query) use ($nivelesUnoIds) {
-            $query->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+        // Obtener la solicitud de compra con el id especificado
+        $solicitudesCompraQuery = SolicitudesCompra::with([
+            'solicitudesElemento.nivelesTres', 
+            'solicitudesElemento.centrosCosto'
+        ]);
+    
+        // Si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado', verificar que el id_users coincida
+        if (auth()->user()->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
+            $solicitudesCompra = $solicitudesCompraQuery->where('id_users', auth()->user()->id)->findOrFail($id);
+        } else {
+            // Si no tiene el permiso, verificar si tiene acceso a los niveles permitidos
+            $solicitudesCompra = $solicitudesCompraQuery->whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
                 $query->whereIn('id', $nivelesUnoIds);
-            });
-        }, 'solicitudesElemento.nivelesTres', 'solicitudesElemento.centrosCosto'])
-        ->findOrFail($id);
-
+            })->findOrFail($id);
+        }
+    
+        // Verificar la política de acceso
         $this->authorize('view', $solicitudesCompra);
     
-        return view('solicitudes-compra.show', compact('solicitudesCompra'));
+        return view('solicitudes-compra.show', compact('solicitudesCompra', 'nivelesUnoIds'));
     }
+    
 
     public function actualizarEstado(Request $request, $id)
     {
         $elemento = SolicitudesElemento::findOrFail($id);
+    
+        // Obtener los niveles permitidos del usuario
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
+    
+        // Verificar si el usuario tiene permiso sobre el nivel del elemento
+        if (!in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds)) {
+            return response()->json(['error' => 'No tienes permiso para actualizar este elemento.'], 403);
+        }
+    
+        // Actualizar el estado si tiene permiso
         $elemento->estado = $request->input('estado');
         $elemento->save();
-
+    
         return response()->json(['success' => true]);
     }
+    
 
 
 
