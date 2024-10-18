@@ -73,7 +73,7 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $centrosCostos = $this->obtenerCentrosCostos();
     
-        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
+        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidosSolicitudCompra())->get();
     
         return view('solicitudes-compra.create', compact('solicitudesCompra', 'nivelesUno', 'centrosCostos'));
     }
