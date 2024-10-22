@@ -22,8 +22,16 @@ class AgrupacionesConsolidacioneRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'user_id' => 'required',
-			'fecha_consolidacion' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'fecha_consolidacion' => 'required|date',
+            'elementos' => 'required|array|min:1',
+            'elementos.*.id_solicitud_elemento' => 'required|exists:solicitudes_elementos,id',
+            'elementos.*.id_solicitudes_compra' => 'required|exists:solicitudes_compras,id',
+            'elementos.*.cantidad' => 'required|numeric|min:1',
+            'elementos.*.elementos_originales' => 'sometimes|array',
+            'elementos.*.elementos_originales.*.id_solicitud_elemento' => 'required|exists:solicitudes_elementos,id',
+            'elementos.*.elementos_originales.*.id_solicitudes_compra' => 'required|exists:solicitudes_compras,id',
+            'elementos.*.elementos_originales.*.cantidad' => 'required|numeric|min:1',
         ];
     }
 }

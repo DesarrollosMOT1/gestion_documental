@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cotizacione extends Model
 {
     
-    protected $perPage = 20;
+    protected $perPage = 2000;
 
     protected $table = 'cotizaciones'; 
 
@@ -36,7 +36,7 @@ class Cotizacione extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'descuento', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
+    protected $fillable = ['fecha_cotizacion', 'nombre', 'valor', 'condiciones_pago', 'id_terceros', 'fecha_inicio_vigencia', 'fecha_fin_vigencia'];
 
 
     /**
@@ -44,7 +44,7 @@ class Cotizacione extends Model
      */
     public function tercero()
     {
-        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'nit');
+        return $this->belongsTo(\App\Models\Tercero::class, 'id_terceros', 'id');
     }
     
     /**

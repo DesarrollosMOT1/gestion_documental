@@ -122,8 +122,8 @@ $(document).ready(function() {
 
         // Agregar funcionalidad para eliminar elementos
         $('.btn-eliminar').on('click', function() {
-            $(this).closest('.card').remove();
-            toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0);
+            $(this).closest('.col-md-6').remove();
+            toggleGenerateButton($('#formularioConsolidacionContainer .card').length > 0); // Verifica si quedan tarjetas
         });
 
         // Habilitar o deshabilitar el botón de enviar
@@ -141,15 +141,20 @@ $(document).ready(function() {
             `;
         });
     
+        // Si el elemento fue consolidado (porque su cantidad fue sumada), añadimos las clases y texto correspondientes.
+        const consolidadoClass = elemento.elementos_originales.length > 1 ? 'bg-warning' : '';
+        const consolidadoTexto = elemento.elementos_originales.length > 1 ? '<span class="badge bg-warning">Consolidado</span>' : '';
+    
         return `
             <div class="col-md-6 col-lg-4">
-                <div class="card p-2 mb-3">
+                <div class="card p-2 mb-3 ${consolidadoClass}">
                     <div class="card-body">
+                        ${consolidadoTexto} <!-- Muestra el texto "Consolidado" si es necesario -->
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compra]" value="${elemento.id_solicitudes_compra}">
                         <label class="form-label">Elemento: ${elemento.nivel_tres_nombre}</label>
                         <label class="form-label">Cantidad Unidad:</label>
-                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
+                        <input type="number" name="elementos[${index}][cantidad]" class="form-control cantidad" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         ${elementosOriginalesHTML}
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
@@ -160,12 +165,11 @@ $(document).ready(function() {
     }
 
     function mostrarError(mensaje) {
-        $('#formularioConsolidacionContainer').html(`
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Atención!</strong> ${mensaje}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: mensaje
+        });
     }
 
     function limpiarFormularioConsolidacion() {
@@ -184,6 +188,12 @@ $(document).ready(function() {
     // Agregar SweetAlert2 para confirmación antes de enviar
     $('#btnEnviar').on('click', function(e) {
         e.preventDefault(); // Evitar el envío inmediato del formulario
+
+        // Validaciones antes de enviar
+        if (!validarFormulario()) {
+            return; // Detener el envío si hay errores
+        }
+
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¿Deseas crear esta consolidación?",
@@ -200,4 +210,29 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Validar el formulario antes de enviarlo
+    function validarFormulario() {
+        const elementos = $('#formularioConsolidacionContainer .card');
+        
+        if (elementos.length === 0) {
+            mostrarError('No hay elementos para consolidar.');
+            return false;
+        }
+
+        let tieneErrores = false;
+
+        elementos.each(function() {
+            const cantidadInput = $(this).find('.cantidad');
+            const cantidad = parseInt(cantidadInput.val());
+
+            if (isNaN(cantidad) || cantidad < 0) {
+                tieneErrores = true;
+                mostrarError('La cantidad debe ser un número válido y no puede ser menor que 0.');
+                return false; // Salir del loop each
+            }
+        });
+
+        return !tieneErrores; // Retornar verdadero si no hay errores
+    }
 });

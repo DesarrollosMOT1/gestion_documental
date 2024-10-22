@@ -2,11 +2,6 @@
 
 @section('title', 'Cotizaciones')
 
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
-
 @section('content')
 <br>
     <div class="container-fluid">
@@ -36,7 +31,6 @@
 									<th >Nombre</th>
 									<th >Valor</th>
 									<th >Condiciones Pago</th>
-									<th >Descuento</th>
 									<th >Tercero</th>
 									<th >Fecha Inicio Vigencia</th>
 									<th >Fecha Fin Vigencia</th>
@@ -54,7 +48,6 @@
 										<td >{{ $cotizacione->valor }}</td>
 										<td >{{ $cotizacione->condiciones_pago }}</td>
 										<td >{{ $cotizacione->descuento }}</td>
-										<td >{{ $cotizacione->tercero->nombre }}</td>
                                         <td >{{ $cotizacione->fecha_inicio_vigencia }}</td>
 										<td >{{ $cotizacione->fecha_fin_vigencia }}</td>
 

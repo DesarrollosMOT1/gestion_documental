@@ -2,27 +2,27 @@ $(document).ready(function() {
     // Función para actualizar el valor total de la cotización
     function actualizarValorTotal() {
         var total = 0;
+
+        // Iterar sobre cada tarjeta de elemento
         $('input[name^="elementos"][name$="[precio]"]').each(function() {
             var precio = parseFloat($(this).val()) || 0;
             var cantidad = parseFloat($(this).closest('.card').find('input[name$="[cantidad]"]').val()) || 0;
-            total += precio * cantidad;
+            var descuento = parseFloat($(this).closest('.card').find('input[name$="[descuento]"]').val()) || 0;
+            
+            // Calcular el valor con el descuento aplicado
+            var subtotal = (precio * cantidad);
+            var descuentoAplicado = subtotal * (descuento / 100);
+
+            // Restar el descuento al subtotal
+            total += (subtotal - descuentoAplicado);
         });
 
-        // Aplicar el descuento si existe
-        var descuento = parseFloat($('#descuento').val()) || 0;
-        total = total - (total * (descuento / 100));
-
-        // Actualizar el campo de valor
+        // Actualizar el campo de valor con el total calculado
         $('#valor').val(total.toFixed(2));
     }
 
-    // Actualizar el valor total cuando cambie el precio o la cantidad de algún elemento
-    $(document).on('input', 'input[name^="elementos"][name$="[precio]"], input[name^="elementos"][name$="[cantidad]"]', function() {
-        actualizarValorTotal();
-    });
-
-    // Actualizar el valor total cuando cambie el descuento
-    $('#descuento').on('input', function() {
+    // Actualizar el valor total cuando cambie el precio, la cantidad o el descuento de algún elemento
+    $(document).on('input', 'input[name^="elementos"][name$="[precio]"], input[name^="elementos"][name$="[cantidad]"], input[name^="elementos"][name$="[descuento]"]', function() {
         actualizarValorTotal();
     });
 

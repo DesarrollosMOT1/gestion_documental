@@ -18,10 +18,10 @@ return new class extends Migration
             $table->decimal('valor', 8, 2);
             $table->text('condiciones_pago');
             $table->decimal('descuento', 8, 2)->nullable();
-            $table->string('id_terceros');
+            $table->unsignedBigInteger('id_terceros');
             $table->timestamps();
             
-            $table->foreign('id_terceros')->references('nit')->on('terceros');
+            $table->foreign('id_terceros')->references('id')->on('terceros');
         });
     }
 

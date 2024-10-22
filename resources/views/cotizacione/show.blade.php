@@ -22,7 +22,6 @@
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
                             <p><strong>Valor:</strong> {{ $cotizacione->valor }}</p>
                             <p><strong>Condiciones de Pago:</strong> {{ $cotizacione->condiciones_pago }}</p>
-                            <p><strong>Descuento:</strong> {{ $cotizacione->descuento }}</p>
                             <p><strong>Fecha inicio vigencia:</strong> {{ $cotizacione->fecha_inicio_vigencia ?? 'N/A' }}</p>
                             <p><strong>Fecha fin vigencia:</strong> {{ $cotizacione->fecha_fin_vigencia ?? 'N/A' }}</p>
                         </div>
@@ -91,8 +90,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Elemento</th>
+                                                <th>Cantidad</th>
+                                                <th>Descuento</th>
                                                 <th>Impuesto</th>
-                                                <th>Estado</th>
                                                 <th>Precio</th>
                                             </tr>
                                         </thead>
@@ -100,12 +100,9 @@
                                             @foreach($cotizacione->solicitudesCotizaciones as $solicitudCotizacion)
                                                 <tr>
                                                     <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->cantidad }}</td>
+                                                    <td>{{ $solicitudCotizacion->descuento }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
-                                                    <td>
-                                                        <input type="checkbox" class="estado-checkbox" 
-                                                               data-id="{{ $solicitudCotizacion->id }}" 
-                                                               {{ $solicitudCotizacion->estado === '1' ? 'checked' : '' }}>
-                                                    </td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
@@ -177,7 +174,3 @@
     </div>
 </div>
 @endsection
-
-@push('js')
-    <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
-@endpush

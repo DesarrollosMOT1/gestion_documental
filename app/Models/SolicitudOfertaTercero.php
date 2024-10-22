@@ -46,7 +46,7 @@ class SolicitudOfertaTercero extends Model
      */
     public function tercero()
     {
-        return $this->belongsTo(\App\Models\Tercero::class, 'tercero_id', 'nit');
+        return $this->belongsTo(\App\Models\Tercero::class, 'tercero_id', 'id');
     }
     
 }

@@ -48,11 +48,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('niveles-unos', App\Http\Controllers\NivelesUnoController::class);
     Route::resource('niveles-dos', App\Http\Controllers\NivelesDosController::class);
     Route::resource('niveles-tres', App\Http\Controllers\NivelesTresController::class);
-    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class)->parameters(['centros-costos' => 'codigo']);
+    Route::resource('centros-costos', App\Http\Controllers\CentrosCostoController::class);
     Route::resource('referencias-gastos', App\Http\Controllers\ReferenciasGastoController::class)->parameters(['referencias-gastos' => 'codigo']);
     Route::resource('agrupaciones-consolidaciones', App\Http\Controllers\AgrupacionesConsolidacioneController::class);
     Route::resource('solicitudes-ofertas', App\Http\Controllers\SolicitudesOfertaController::class);
-    Route::resource('terceros', App\Http\Controllers\TerceroController::class)->parameters(['terceros' => 'nit']);
+    Route::resource('terceros', App\Http\Controllers\TerceroController::class);
     Route::resource('impuestos', App\Http\Controllers\ImpuestoController::class);
     Route::resource('solicitudes-compras', App\Http\Controllers\SolicitudesCompraController::class);
     Route::resource('cotizaciones', App\Http\Controllers\CotizacioneController::class);
@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-consolidaciones-detalles', [App\Http\Controllers\SolicitudesOfertaController::class, 'getConsolidacionesDetalles'])->name('get-consolidaciones-detalles');
 
     // Rutas para generación de PDF
-    Route::get('solicitudes-ofertas/{id}/pdf/{nit}', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
+    Route::get('solicitudes-ofertas/{id}/pdf/{terceroId}', [App\Http\Controllers\SolicitudesOfertaController::class, 'downloadPdf'])->name('solicitudes-ofertas.pdf');
 
     // Rutas API
     Route::get('/api/niveles-dos/{idNivelUno}', [App\Http\Controllers\SolicitudesCompraController::class, 'getNivelesDos']);
@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
     route::get('api/solicitudes-oferta/{id}/elementos', [App\Http\Controllers\CotizacioneController::class, 'obtenerElementosConsolidaciones']);
     Route::get('/api/impuestos', [App\Http\Controllers\CotizacioneController::class, 'getImpuestos']);
+    Route::get('/cotizaciones-precio/estado-jefe/{agrupacionId}', [App\Http\Controllers\CotizacioneController::class, 'getCotizacionesEstadoJefe']);
 
     //cadena de suministros
     Route::post('equivalencias/store-array/{unidadId}', [EquivalenciaController::class, 'storeEquivalencia'])->name('equivalencias.store-array');

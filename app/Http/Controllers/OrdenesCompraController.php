@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrdenesCompra;
+use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrdenesCompraRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\OrdenesCompraCotizacione;
 
 class OrdenesCompraController extends Controller
 {
@@ -38,20 +38,52 @@ class OrdenesCompraController extends Controller
      */
     public function store(OrdenesCompraRequest $request): RedirectResponse
     {
-        // Crea una nueva orden de compra
-        $orden = OrdenesCompra::create($request->validated());
+        // Los datos ya están validados por el middleware
+        $data = $request->validated();
+        $cotizaciones = $request->input('cotizaciones');
     
-        // Asocia las solicitudes de cotización con la nueva orden de compra
-        foreach ($request->input('id_solicitudes_cotizaciones') as $idSolicitudCotizacion) {
-            OrdenesCompraCotizacione::create([
-                'id_ordenes_compras' => $orden->id,
-                'id_solicitudes_cotizaciones' => $idSolicitudCotizacion,
+        // Obtener las IDs de consolidaciones que ya tienen órdenes de compra asociadas
+        $consolidacionesEnOrdenes = OrdenesCompraCotizacione::pluck('id_consolidaciones')->toArray();
+    
+        // Filtrar cotizaciones que no tienen órdenes de compra asociadas
+        $cotizacionesFiltradas = array_filter($cotizaciones, function($cotizacion) use ($consolidacionesEnOrdenes) {
+            return !in_array($cotizacion['id_consolidaciones'], $consolidacionesEnOrdenes);
+        });
+    
+        // Agrupar cotizaciones por tercero
+        $cotizacionesPorTercero = [];
+        foreach ($cotizacionesFiltradas as $cotizacion) {
+            $idTercero = $cotizacion['id_terceros'];
+            if (!isset($cotizacionesPorTercero[$idTercero])) {
+                $cotizacionesPorTercero[$idTercero] = [];
+            }
+            $cotizacionesPorTercero[$idTercero][] = $cotizacion;
+        }
+    
+        // Crear una orden de compra por cada tercero
+        foreach ($cotizacionesPorTercero as $idTercero => $cotizacionesDelTercero) {
+            // Crear la orden de compra
+            $ordenCompra = OrdenesCompra::create([
+                'fecha_emision' => $data['fecha_emision'],
+                'id_terceros' => $idTercero
             ]);
+    
+            // Crear las cotizaciones relacionadas
+            foreach ($cotizacionesDelTercero as $cotizacion) {
+                OrdenesCompraCotizacione::create([
+                    'id_ordenes_compras' => $ordenCompra->id,
+                    'id_solicitudes_cotizaciones' => $cotizacion['id_solicitudes_cotizaciones'],
+                    'id_consolidaciones_oferta' => $cotizacion['id_consolidaciones_oferta'],
+                    'id_solicitud_elemento' => $cotizacion['id_solicitud_elemento'],
+                    'id_cotizaciones_precio' => $cotizacion['id_cotizaciones_precio'],
+                    'id_consolidaciones' => $cotizacion['id_consolidaciones']
+                ]);
+            }
         }
     
         return Redirect::route('ordenes-compras.index')
-            ->with('success', 'Orden de Compra creada exitosamente.');
-    }
+            ->with('success', 'Órdenes de Compra creadas exitosamente.');
+    }       
 
     /**
      * Display the specified resource.

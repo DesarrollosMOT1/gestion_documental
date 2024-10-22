@@ -66,4 +66,17 @@ class Consolidacione extends Model
     {
         return $this->hasMany(\App\Models\AgrupacionesConsolidacione::class, 'id', 'agrupacion_id');
     }
+
+    public function cotizacionesPrecio()
+    {
+        return $this->hasMany(\App\Models\CotizacionesPrecio::class, 'id_consolidaciones', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ordenesCompraCotizaciones()
+    {
+        return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id_consolidaciones', 'id');
+    }
 }
