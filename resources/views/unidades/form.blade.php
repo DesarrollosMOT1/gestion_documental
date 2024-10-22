@@ -19,7 +19,7 @@
         <div class="form-group mb-3">
             <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
             <input type="number" name="cantidad" class="form-control" id="cantidad" required min="1"
-                step="1">
+                max="1000" step="1">
         </div>
     </div>
 

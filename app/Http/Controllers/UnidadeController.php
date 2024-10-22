@@ -45,15 +45,24 @@ class UnidadeController extends Controller
     public function store(UnidadeRequest $request): RedirectResponse
     {
         $request->validated();
-        $UnidadData = $request->only('nombre');
-        $EquivalenciaJson = $request->only('unidad', 'cantidad');
-        $unidad = $this->storeUnidad($UnidadData);
+        try {
+            $UnidadData = $request->only('nombre');
+            $EquivalenciaJson = $request->only('unidad', 'cantidad');
+            $unidad = $this->storeUnidad($UnidadData);
 
-        $equivalenciasController = new EquivalenciaController;
-        $equivalenciasController->storeEquivalencia($unidad->id, $EquivalenciaJson);
+            $equivalenciasController = new EquivalenciaController;
+            $equivalenciasController->storeEquivalencia($unidad->id, $EquivalenciaJson);
 
-        return Redirect::route('unidades.index')
-            ->with('success', 'unidad creada exitosamente.');
+            return Redirect::route('unidades.index')
+                ->with('success', 'unidad creada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors([
+                    'error' => 'No se pudo crear la unidad. El nombre ya está en uso.',
+                    'exception' => $e->getMessage(),
+                ])
+                ->withInput();
+        }
     }
 
     /**

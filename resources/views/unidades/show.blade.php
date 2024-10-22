@@ -44,13 +44,12 @@
                                 <tr>
                                     <td>{{ $equivalencias['unidad'] }}</td> <!-- Aquí se muestra la unidad principal -->
                                     @foreach ($equivalencias['equivalencias'] as $equivalencia)
-                                        <td>{{ $equivalencia['cantidad'] }} {{ $equivalencia['unidad_equivalente'] }}</td>
-                                        <!-- Equivalencias -->
+                                        <td>{{ $equivalencia['cantidad'] }} {{ $equivalencia['unidad_equivalente'] }}
+                                        </td>
                                     @endforeach
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

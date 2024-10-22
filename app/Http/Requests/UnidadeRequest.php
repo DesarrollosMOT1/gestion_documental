@@ -22,7 +22,7 @@ class UnidadeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|unique:unidades|string|max:255',
             'unidad' => [
                 'nullable',
                 function ($attribute, $value, $fail) {
@@ -31,7 +31,7 @@ class UnidadeRequest extends FormRequest
                     }
                 },
             ],
-            'cantidad' => 'required|integer|min:1',
+            'cantidad' => 'required|integer|min:1|max:1000',
         ];
     }
 }
