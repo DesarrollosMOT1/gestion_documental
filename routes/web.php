@@ -18,7 +18,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
+
 
 // Rutas protegidas por el middleware 'auth'
 Route::group(['middleware' => 'auth'], function () {

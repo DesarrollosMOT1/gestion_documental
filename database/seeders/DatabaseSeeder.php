@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             BodegasYAlmacenesSeeder::class,
             EquivalenciasTableSeeder::class,
             AreasSeeder::class,
-            PermisosSeeder::class
+            PermisosSeeder::class,
+            ClasificacionesCentroSeeder::class
         ]);
         
         // Crear o encontrar usuario

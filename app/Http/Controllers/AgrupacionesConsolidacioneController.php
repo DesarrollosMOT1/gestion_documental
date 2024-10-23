@@ -152,7 +152,7 @@ class AgrupacionesConsolidacioneController extends Controller
         $centrosCostos = $this->obtenerCentrosCostos();
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
-        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidos())->get();
+        $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidosSolicitudCompra())->get();
 
         return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'nivelesUno');
     }

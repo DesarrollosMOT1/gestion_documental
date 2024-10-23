@@ -68,7 +68,8 @@
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" 
                                                                    data-id="{{ $elemento->id }}" 
-                                                                   {{ $elemento->estado ? 'checked' : '' }}>
+                                                                   {{ $elemento->estado ? 'checked' : '' }} 
+                                                                   @if(!in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds)) disabled @endif>
                                                         </div>
                                                     </td>
                                                 </tr>

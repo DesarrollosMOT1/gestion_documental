@@ -179,10 +179,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Limpiar la validación cuando se abra el modal
-    justificacionModal._element.addEventListener('show.bs.modal', () => {
+    // Limpiar la validación y restaurar el estado de los checkboxes al cerrar el modal
+    justificacionModal._element.addEventListener('hide.bs.modal', () => {
         justificacionTexto.classList.remove('is-invalid');
         justificacionError.style.display = 'none';
+
+        // Restaurar los checkboxes si el modal se cierra sin guardar
+        if (cotizacionPendiente) {
+            const fila = document.querySelector(`[data-id="${cotizacionPendiente.id}"]`).closest('tr');
+            fila.querySelectorAll('.estado-checkbox').forEach(checkbox => {
+                checkbox.disabled = false;
+                checkbox.checked = false;
+            });
+            cotizacionPendiente = null; // Limpiar la cotización pendiente
+        }
     });
 
     // Modificar la función actualizarSelectedItem
