@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    @section('adminlte_css_pre')
-        <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    @stop
 
     @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
     @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
@@ -46,7 +43,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
+                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                                 value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus/>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
