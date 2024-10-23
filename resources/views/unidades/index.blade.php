@@ -37,7 +37,6 @@
 
                     <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <!-- Añadir la clase "datatable" a la tabla para futuros usos de DataTables -->
                             <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
