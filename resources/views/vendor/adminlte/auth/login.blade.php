@@ -9,21 +9,18 @@
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css')}}">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 
     @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
-    @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
     @php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
 
     @if (config('adminlte.use_route_url', false))
         @php( $login_url = $login_url ? route($login_url) : '' )
-        @php( $register_url = $register_url ? route($register_url) : '' )
         @php( $password_reset_url = $password_reset_url ? route($password_reset_url) : '' )
     @else
         @php( $login_url = $login_url ? url($login_url) : '' )
-        @php( $register_url = $register_url ? url($register_url) : '' )
         @php( $password_reset_url = $password_reset_url ? url($password_reset_url) : '' )
     @endif
 
@@ -34,7 +31,7 @@
             <div class="container">
                 <div class="signin-content">
                     <div class="signin-image">
-                        <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
+                        <figure><img src="{{ asset('images/signin-image.jpg') }}" alt="sing up image"></figure>
                     </div>
 
                     <div class="signin-form">

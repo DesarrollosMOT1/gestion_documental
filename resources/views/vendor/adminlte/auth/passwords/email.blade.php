@@ -39,12 +39,6 @@
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                                 value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus/>
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                                    </div>
-                                </div>
-                    
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
