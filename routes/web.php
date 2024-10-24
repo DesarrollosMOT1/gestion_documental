@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth'], function () {
     route::get('api/solicitudes-oferta/{id}/elementos', [App\Http\Controllers\CotizacioneController::class, 'obtenerElementosConsolidaciones']);
     Route::get('/api/impuestos', [App\Http\Controllers\CotizacioneController::class, 'getImpuestos']);
     Route::get('/cotizaciones-precio/estado-jefe/{agrupacionId}', [App\Http\Controllers\CotizacioneController::class, 'getCotizacionesEstadoJefe']);
+    Route::resource('audits', App\Http\Controllers\AuditController::class)->except(['create', 'edit', 'delete'])->middleware('can:ver_registro_auditoria');
+
 
     //cadena de suministros
     Route::post('equivalencias/store-array/{unidadId}', [EquivalenciaController::class, 'storeEquivalencia'])->name('equivalencias.store-array');
