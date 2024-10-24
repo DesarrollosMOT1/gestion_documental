@@ -22,6 +22,7 @@ use App\Models\OrdenesCompra;
 use App\Traits\VerNivelesPermiso;
 use App\Traits\GenerarPrefijo;
 use App\Traits\ObtenerCentrosCostos;
+use App\Models\NivelesTres;
 
 
 class AgrupacionesConsolidacioneController extends Controller
@@ -153,8 +154,25 @@ class AgrupacionesConsolidacioneController extends Controller
         $solicitudesOferta = new SolicitudesOferta();
         $terceros = Tercero::all();
         $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidosSolicitudCompra())->get();
+        
+        // Obtener los niveles tres
+        $nivelesTres = NivelesTres::all();
+    
+        // Verificar si hay elementos antiguos
+        $oldElements = old('elements', []);
+        
+        // Si hay elementos antiguos, buscar sus nombres
+        $elementsWithNames = array_map(function ($element) use ($nivelesTres, $centrosCostos) {
+            return [
+                'id_niveles_tres' => $element['id_niveles_tres'],
+                'id_centros_costos' => $element['id_centros_costos'],
+                'cantidad' => $element['cantidad'],
+                'nombre_nivel_tres' => $nivelesTres->firstWhere('id', $element['id_niveles_tres'])->nombre ?? 'No encontrado',
+                'nombre_centro_costo' => $centrosCostos->firstWhere('id', $element['id_centros_costos'])->nombre ?? 'No encontrado',
+            ];
+        }, $oldElements);
 
-        return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'nivelesUno');
+        return compact('solicitudesCompra', 'centrosCostos', 'solicitudesOferta', 'terceros', 'nivelesUno', 'elementsWithNames');
     }
 
     public function storeSolicitudesCompra(SolicitudesCompraRequest $request, $agrupacionesConsolidacioneId): RedirectResponse

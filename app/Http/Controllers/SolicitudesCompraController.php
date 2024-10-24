@@ -72,11 +72,28 @@ class SolicitudesCompraController extends Controller
         $solicitudesCompra = new SolicitudesCompra();
         $solicitudesCompra->prefijo = $this->generatePrefix();
         $centrosCostos = $this->obtenerCentrosCostos();
-    
+        
         $nivelesUno = NivelesUno::whereIn('id', $this->obtenerNivelesPermitidosSolicitudCompra())->get();
+        
+        // Obtener los niveles tres
+        $nivelesTres = NivelesTres::all();
     
-        return view('solicitudes-compra.create', compact('solicitudesCompra', 'nivelesUno', 'centrosCostos'));
-    }
+        // Verificar si hay elementos antiguos
+        $oldElements = old('elements', []);
+        
+        // Si hay elementos antiguos, buscar sus nombres
+        $elementsWithNames = array_map(function ($element) use ($nivelesTres, $centrosCostos) {
+            return [
+                'id_niveles_tres' => $element['id_niveles_tres'],
+                'id_centros_costos' => $element['id_centros_costos'],
+                'cantidad' => $element['cantidad'],
+                'nombre_nivel_tres' => $nivelesTres->firstWhere('id', $element['id_niveles_tres'])->nombre ?? 'No encontrado',
+                'nombre_centro_costo' => $centrosCostos->firstWhere('id', $element['id_centros_costos'])->nombre ?? 'No encontrado',
+            ];
+        }, $oldElements);
+    
+        return view('solicitudes-compra.create', compact('solicitudesCompra', 'nivelesUno', 'centrosCostos', 'elementsWithNames'));
+    }    
     
     
     public function getNivelesDos($idNivelUno)
