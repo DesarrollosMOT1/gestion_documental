@@ -2,21 +2,12 @@
 <h4 class="mb-3">Información General</h4>
 <div class="form-group mb-2 mb20">
     <label for="fecha_solicitud_oferta" class="form-label">{{ __('Fecha Solicitud de Oferta') }}</label>
-    <input type="date" name="fecha_solicitud_oferta" class="form-control @error('fecha_solicitud_oferta') is-invalid @enderror" value="{{ old('fecha_solicitud_oferta') }}" id="fecha_solicitud_oferta" required>
-    {!! $errors->first('fecha_solicitud_oferta', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+    <x-campo-fecha nombre="fecha_solicitud_oferta" :valor="old('fecha_solicitud_oferta')" :errores="$errors" />
 </div>
 
 <div class="form-group mb-2 mb20">
     <label for="id_users" class="form-label">{{ __('Usuario') }}</label>
-    <select name="id_users" id="id_users" class="form-control @error('id_users') is-invalid @enderror" required>
-        <option value="" disabled selected>{{ __('Selecciona un usuario') }}</option>
-        @foreach($users as $user)
-            <option value="{{ $user->id }}" {{ old('id_users') == $user->id ? 'selected' : '' }}>
-                {{ $user->name }}
-            </option>
-        @endforeach
-    </select>
-    {!! $errors->first('id_users', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+    <x-select-user nombre="id_users" :errores="$errors" />
 </div>
 
 <div class="form-group mb-2 mb20">

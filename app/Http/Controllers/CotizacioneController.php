@@ -14,17 +14,30 @@ use App\Models\Impuesto;
 use App\Models\ConsolidacionesOferta;
 use App\Models\OrdenesCompra;
 use App\Models\CotizacionesPrecio;
-use App\Models\OrdenesCompraCotizacione;
 use Illuminate\Http\JsonResponse;
+use App\Traits\VerNivelesPermiso;
+use Carbon\Carbon;
 
 class CotizacioneController extends Controller
 {
+    use VerNivelesPermiso;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        $cotizaciones = Cotizacione::paginate();
+        $nivelesUnoIds = $this->obtenerNivelesPermitidos();
+
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
+
+        $cotizaciones = Cotizacione::whereHas('solicitudesCotizaciones.solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds){
+            $query->whereIn('id', $nivelesUnoIds);
+        })
+        ->whereBetween('fecha_cotizacion', [$fechaInicio, $fechaFin])
+        ->with('solicitudesCotizaciones.solicitudesElemento')
+        ->paginate();
 
         return view('cotizacione.index', compact('cotizaciones'))
             ->with('i', ($request->input('page', 1) - 1) * $cotizaciones->perPage());
@@ -92,6 +105,9 @@ class CotizacioneController extends Controller
             'solicitudesCotizaciones.solicitudesElemento.nivelesTres', 
             'solicitudesCotizaciones.impuesto'
         ])->findOrFail($id);
+        
+        // Verificar si el usuario tiene acceso a la cotización
+        $this->authorize('view', $cotizacione);
         
         // Filtra las solicitudes únicas por su ID de compra
         $solicitudesUnicas = $cotizacione->solicitudesCotizaciones->unique('id_solicitudes_compras');

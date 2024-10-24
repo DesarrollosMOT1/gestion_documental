@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nit')->unique();
             $table->string('tipo_factura');
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->timestamps();
         });
     }

@@ -16,19 +16,11 @@
         <h4 class="mb-3">Información General</h4>
         <div class="form-group mb-2 mb20">
             <label for="user_id" class="form-label">{{ __('Usuario') }}</label>
-            <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ old('user_id', $agrupacionesConsolidacione?->user_id) == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
-                    </option>
-                @endforeach
-            </select>
-            {!! $errors->first('user_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <x-select-user nombre="user_id" :errores="$errors" />
         </div>
         <div class="form-group mb-2 mb20">
             <label for="fecha_consolidacion" class="form-label">{{ __('Fecha Consolidacion') }}</label>
-            <input type="date" name="fecha_consolidacion" class="form-control @error('fecha_consolidacion') is-invalid @enderror" value="{{ old('fecha_consolidacion', $agrupacionesConsolidacione?->fecha_consolidacion) }}" id="fecha_consolidacion" placeholder="Fecha Consolidacion">
-            {!! $errors->first('fecha_consolidacion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <x-campo-fecha nombre="fecha_consolidacion" :valor="$agrupacionesConsolidacione?->fecha_consolidacion" :errores="$errors" />
         </div>
         <br>
         <h4 class="mb-3">Elementos a consolidar</h4>

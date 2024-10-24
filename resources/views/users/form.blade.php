@@ -66,25 +66,25 @@
                 <div class="form-group">
                     <label>Roles</label>
                     @foreach ($roles as $role)
-                        <div class="form-check">
+                        <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" 
                                 {{ (isset($user) && $user->roles->contains($role)) || (is_array(old('roles')) && in_array($role->id, old('roles'))) ? 'checked' : '' }}>
                             <label class="form-check-label">{{ $role->name }}</label>
                         </div>
                     @endforeach
                 </div>
-
+            
                 <div class="form-group">
                     <label>Permisos</label>
                     @foreach ($permissions as $permission)
-                        <div class="form-check">
+                        <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" 
                                 {{ (isset($user) && $user->permissions->contains($permission)) || (is_array(old('permissions')) && in_array($permission->id, old('permissions'))) ? 'checked' : '' }}>
                             <label class="form-check-label">{{ $permission->name }}</label>
                         </div>
                     @endforeach
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 </div>

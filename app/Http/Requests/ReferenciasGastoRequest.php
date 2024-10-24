@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ReferenciasGastoRequest extends FormRequest
 {
@@ -21,9 +22,19 @@ class ReferenciasGastoRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('referencias_gasto');
+
         return [
-			'codigo_mekano' => 'required|string',
-			'nombre' => 'required|string',
+            'codigo_mekano' => [
+                'required',
+                'string',
+                Rule::unique('referencias_gastos', 'codigo_mekano')->ignore($id), 
+            ],
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('referencias_gastos', 'nombre')->ignore($id), 
+            ],
         ];
     }
 }

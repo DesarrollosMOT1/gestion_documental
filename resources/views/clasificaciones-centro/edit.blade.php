@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'editar Clasificacion Centro')
+@section('title', 'Editar Clasificacion Centro')
 
 @section('content')
     <br>

@@ -15,6 +15,7 @@
         <h6 class="border-bottom pb-2 mb-3">Detalle de Cotización</h6>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->nombre ?? 'N/A' }}</li>
+            <li class="list-group-item"><strong>Nombre:</strong> {{ $cotizacionElemento->cotizacione->user->name ?? 'N/A' }}</li>
             <li class="list-group-item"><strong>Valor:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->cotizacione->valor, 2) }}</span></li>
             <li class="list-group-item"><strong>Condiciones de Pago:</strong> {{ $cotizacionElemento->cotizacione->condiciones_pago }}</li>
             <li class="list-group-item"><strong>Tercero:</strong> {{ $cotizacionElemento->cotizacione->tercero->nombre ?? 'N/A' }}</li>

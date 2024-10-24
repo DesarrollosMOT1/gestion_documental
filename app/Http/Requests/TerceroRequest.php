@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TerceroRequest extends FormRequest
 {
@@ -21,10 +22,21 @@ class TerceroRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Obtener el ID del tercero desde la ruta
+        $id = $this->route('tercero');
+
         return [
-			'nit' => 'required|string',
-			'tipo_factura' => 'required|string',
-			'nombre' => 'required|string',
+            'nit' => [
+                'required',
+                'string',
+                Rule::unique('terceros', 'nit')->ignore($id),
+            ],
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('terceros', 'nombre')->ignore($id),
+            ],
+            'tipo_factura' => 'required|string',
         ];
     }
 }

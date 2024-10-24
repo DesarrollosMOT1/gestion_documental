@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,35 +13,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Llamar otros seeders
         $this->call([
             ProductosSeeder::class,
             UnidadesSeeder::class,
             TercerosSeeder::class,
             MotivosSeeder::class,
             TiposYClasesMovimientosSeeder::class,
-
             BodegasYAlmacenesSeeder::class,
             EquivalenciasTableSeeder::class,
-        ]);
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-
             AreasSeeder::class,
-            PermisosSeeder::class
-
+            PermisosSeeder::class,
+            ClasificacionesCentroSeeder::class
         ]);
         
         // Crear o encontrar usuario
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             [
-                'email' => 'test@example.com',  // Buscará por email
+                'email' => 'sistemasmot8@gmail.com',
             ],
             [
-                'name' => 'Test User',  // Si no lo encuentra, creará con estos atributos
-                'password' => bcrypt('password123'),  // No olvides encriptar la contraseña
+                'name' => 'Administrador',
+                'password' => bcrypt('adminmaestri'),
+                'id_area' => 1,
             ]
         );
+
+        // Asignar todos los permisos al usuario
+        $user->syncPermissions(Permission::all());
     }
 }

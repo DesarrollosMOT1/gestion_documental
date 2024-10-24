@@ -15,12 +15,6 @@
                             <span id="card_title">
                                 {{ __('Ordenes Compras') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('ordenes-compras.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -30,25 +24,29 @@
                     @endif
 
                     <div class="card-body bg-white">
+                        <form method="GET" action="{{ route('ordenes-compras.index') }}" class="mb-4">
+                            <x-filtro-fechas />
+                        </form>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover datatable">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
-                                        
-									<th >Fecha Emision</th>
-									<th >Id Terceros</th>
-
-                                        <th></th>
+                                    <th>No</th>
+									<th>Fecha Emision</th>
+									<th>Tercero</th>
+                                    <th>NIT</th>
+                                    <th>Tipo Factura</th>
+                                    <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($ordenesCompras as $ordenesCompra)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
-                                            
+                                        <td>{{ ++$i }}</td>
 										<td >{{ $ordenesCompra->fecha_emision }}</td>
-										<td >{{ $ordenesCompra->id_terceros }}</td>
+										<td >{{ $ordenesCompra->tercero->nombre }}</td>
+                                        <td >{{ $ordenesCompra->tercero->nit }}</td>
+                                        <td >{{ $ordenesCompra->tercero->tipo_factura }}</td>
 
                                             <td>
                                                 <form action="{{ route('ordenes-compras.destroy', $ordenesCompra->id) }}" class="delete-form" method="POST">

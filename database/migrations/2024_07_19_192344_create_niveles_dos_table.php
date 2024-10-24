@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('niveles_dos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->unsignedBigInteger('id_niveles_uno');
             $table->foreign('id_niveles_uno')->references('id')->on('niveles_uno');
             $table->timestamps();

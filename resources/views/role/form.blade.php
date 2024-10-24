@@ -15,10 +15,10 @@
                     @foreach ($permisos->chunk(ceil($permisos->count() / 3)) as $chunk)
                         <div class="col-md-4">
                             @foreach ($chunk as $permiso)
-                                <div class="form-check mb-2">
+                                <div class="form-check form-switch mb-2">
                                     <input class="form-check-input" type="checkbox" name="permisos[]" 
-                                           value="{{ $permiso->id }}" id="permiso{{ $permiso->id }}"
-                                           {{ (isset($role) && $role->permissions->contains($permiso->id)) ? 'checked' : '' }}>
+                                        value="{{ $permiso->id }}" id="permiso{{ $permiso->id }}"
+                                        {{ (isset($role) && $role->permissions->contains($permiso->id)) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="permiso{{ $permiso->id }}">
                                         {{ $permiso->name }}
                                     </label>

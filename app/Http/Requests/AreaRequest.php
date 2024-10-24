@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AreaRequest extends FormRequest
 {
@@ -21,8 +22,14 @@ class AreaRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('area'); 
+
         return [
-			'nombre' => 'required|string',
+            'nombre' => [
+                'required',
+                'string',
+                Rule::unique('areas', 'nombre')->ignore($id), 
+            ],
         ];
     }
 }
