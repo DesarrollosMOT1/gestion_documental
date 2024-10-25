@@ -19,44 +19,6 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Robust background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
@@ -84,9 +46,29 @@ Copia el archivo de configuración de ejemplo y renómbralo a .env
 ### 3. Generar la Clave de la Aplicación
 Laravel necesita una clave única para la aplicación. Genera esta clave con el siguiente comando:<br><br>
 php artisan key:generate
-### 4. Configurar la Base de Datos
-Edita el archivo .env y configura las variables de entorno para la base de datos:
+### 4. Configurar environment
+En el archivo .env modifica lo siguiente:
 <br><br>
+Nombre de la app:
+<br>
+APP_NAME=GestionDocumental
+<br>
+
+Zona Horaria:
+<br>
+APP_TIMEZONE=America/Bogota
+
+Idioma:
+<br>
+APP_LOCALE=es
+<br>
+APP_FALLBACK_LOCALE=es
+<br>
+APP_FAKER_LOCALE=es_ES
+<br>
+
+Base de datos:
+<br>
 DB_CONNECTION=mysql
 <br>
 DB_HOST=127.0.0.1
@@ -99,6 +81,25 @@ DB_USERNAME=root
 <br>
 DB_PASSWORD=
 
+Configuracion de correo:
+<br>
+MAIL_MAILER=smtp
+<br>
+MAIL_HOST=smtp.gmail.com
+<br>
+MAIL_PORT=587
+<br>
+MAIL_USERNAME=sistemasmaestri@gmail.com
+<br>
+MAIL_PASSWORD=ugtdrarcnbgsxnbu
+<br>
+MAIL_ENCRYPTION=tls
+<br>
+MAIL_FROM_ADDRESS=sistemasmaestri@gmail.com
+<br>
+MAIL_FROM_NAME=GestionDocumental
+<br>
+
 ### 5. Migrar las Tablas de la Base de Datos
 Ejecuta las migraciones para crear las tablas necesarias en tu base de datos: <br><br>
 php artisan migrate
@@ -108,11 +109,11 @@ Asegúrate de tener Node.js y npm instalados.
 Instala las dependencias de npm especificadas en el archivo package.json: <br><br>
 npm install
 ### 2. Compilar Recursos
-Compila los recursos del frontend: <br><br>
-npm run dev
-<br><hr>
 Para una compilación optimizada para producción, usa:<br><br>
 npm run build
+<br><hr>
+Compila los recursos del frontend en desarrollo: <br><br>
+npm run dev
 <br>
 ## Comandos de Migraciones de Base de Datos
 ### Migraciones
@@ -143,9 +144,15 @@ php artisan make:seeder NombreSeeder
 php artisan db:seed
 ### Ejecutar un seeder específico: <br><br>
 php artisan db:seed --class=NombreSeeder
+### Crear Trait: <br><br>
+php artisan make:trait NombreTrait
+### Crear componente laravel: <br><br>
+php artisan make:component NombreComponent  
 ## Factories
 ### Crear una nueva factory: <br><br>
 php artisan make:factory NombreFactory
+### Crear una nueva politica: <br><br>
+php artisan make:policy NombrePolicy
 ## Requests
 ### Crear una nueva request: <br><br>
 php artisan make:request NombreRequest
@@ -163,8 +170,12 @@ php artisan make:export NombreModeloExport --model=NombreModelo <br>
 php artisan config:cache
 ### Limpiar la cache de la ruta: <br><br>
 php artisan route:cache
+### Lista de rutas: <br><br>
+php artisan route:list
 ### Limpiar la cache de la vista: <br><br>
 php artisan view:clear
 ### Servidor de Desarrollo
 ### Iniciar el servidor de desarrollo: <br><br>
 php artisan serve
+### Iniciar el servidor de desarrollo en la red local por medio del puerto IPv4: <br><br>
+php artisan serve --host=192.168.0.0 --port=8000     
