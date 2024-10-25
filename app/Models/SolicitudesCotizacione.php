@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Class SolicitudesCotizacione
@@ -24,9 +25,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class SolicitudesCotizacione extends Model
+class SolicitudesCotizacione extends Model implements Auditable
 {
-    
+    use \OwenIt\Auditing\Auditable;
+
     protected $perPage = 20;
 
     protected $table = 'solicitudes_cotizaciones'; 

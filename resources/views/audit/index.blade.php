@@ -30,9 +30,10 @@
                                         <th>No</th>
                                         <th>Tipo de Usuario</th>
                                         <th>Nombre Usuario</th>
+                                        <th>Fecha</th> 
                                         <th>Evento</th>
                                         <th>Tabla</th>
-                                        <th>ID Auditable</th>
+                                        <th>ID</th>
                                         <th>Valores Antiguos</th>
                                         <th>Valores Nuevos</th>
                                         <th>URL</th>
@@ -49,6 +50,7 @@
                                             
                                         <td>{{ class_basename($audit->user_type) }}</td>
                                         <td>{{ optional($audit->user)->name }}</td>
+                                        <td>{{ $audit->created_at->format('d/m/Y H:i:s') }}</td> 
 										<td >{{ $audit->event }}</td>
 										<td >{{ class_basename($audit->auditable_type) }}</td>
 										<td >{{ $audit->auditable_id }}</td>

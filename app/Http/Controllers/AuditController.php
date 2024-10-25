@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Audit;
+use OwenIt\Auditing\Models\Audit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +16,12 @@ class AuditController extends Controller
     public function index(Request $request): View
     {
         $audits = Audit::paginate();
-
+    
+        foreach ($audits as $audit) {
+            $audit->old_values = json_encode($audit->old_values);
+            $audit->new_values = json_encode($audit->new_values);
+        }
+    
         return view('audit.index', compact('audits'))
             ->with('i', ($request->input('page', 1) - 1) * $audits->perPage());
     }

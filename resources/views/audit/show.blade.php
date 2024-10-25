@@ -51,6 +51,10 @@
                             {{ $audit->new_values }}
                         </div>
                         <div class="form-group mb-2 mb20">
+                            <strong>Fecha:</strong>
+                            {{ $audit->created_at->format('d/m/Y H:i:s') }}
+                        </div>
+                        <div class="form-group mb-2 mb20">
                             <strong>URL:</strong>
                             {{ $audit->url }}
                         </div>
