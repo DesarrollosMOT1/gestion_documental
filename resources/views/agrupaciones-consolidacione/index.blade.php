@@ -21,6 +21,7 @@
                     <div class="card-body bg-white">
                         <!-- Filtro de rango de fechas -->
                         <form method="GET" action="{{ route('agrupaciones-consolidaciones.index') }}" class="mb-4">
+                            @csrf
                             <x-filtro-fechas />
                         </form>
 

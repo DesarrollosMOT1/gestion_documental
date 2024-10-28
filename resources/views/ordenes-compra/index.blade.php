@@ -25,6 +25,7 @@
 
                     <div class="card-body bg-white">
                         <form method="GET" action="{{ route('ordenes-compras.index') }}" class="mb-4">
+                            @csrf
                             <x-filtro-fechas />
                         </form>
                         <div class="table-responsive">
