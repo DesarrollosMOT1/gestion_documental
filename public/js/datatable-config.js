@@ -1,19 +1,13 @@
-$(document).ready(function() {
-    // Inicializa DataTables para todas las tablas con la clase 'datatable' que no tengan data-ajax
-    $('.datatable').each(function() {
-        const $table = $(this);
-        const isAjax = $table.data('ajax') !== undefined; // Verifica si hay una URL AJAX definida
-
-        // Configuración básica de DataTables
-        const config = {
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-            "language": {
+function getDataTableConfig(customConfig = {}) {
+    const defaultConfig = {
+        paging: true,
+        lengthChange: false,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true,
+        language: {
             "aria": {
             "sortAscending": "Activar para ordenar la columna de manera ascendente",
             "sortDescending": "Activar para ordenar la columna de manera descendente"
@@ -259,27 +253,35 @@ $(document).ready(function() {
             },
         };
 
-        // Si hay datos AJAX, no se inicializa aquí, será manejado en el archivo auditoriaIndex.js
+    // Retorna la configuración fusionada entre la configuración base y la personalizada
+    return $.extend(true, {}, defaultConfig, customConfig);
+    }
+
+    $(document).ready(function() {
+    // Inicializa DataTables para tablas sin AJAX usando la configuración global por defecto
+    $('.datatable').each(function() {
+        const $table = $(this);
+        const isAjax = $table.data('ajax') !== undefined;
+
+        // Solo inicializa automáticamente si no es AJAX
         if (!isAjax) {
-            // Inicializa DataTable con la configuración
-            $table.DataTable(config);
+            $table.DataTable(getDataTableConfig());
         }
-        });
+    });
 
-        // Funcionalidad de seleccionar/deseleccionar todos
-        $('#select_all').on('click', function() {
-        var rows = $('.datatable').DataTable().rows({ 'search': 'applied' }).nodes();
+    // Funcionalidad de seleccionar/deseleccionar todos
+    $('#select_all').on('click', function() {
+        var rows = $('.datatable').DataTable().rows({ search: 'applied' }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
-        });
+    });
 
-        $('.datatable').on('change', '.select_item', function() {
+    $('.datatable').on('change', '.select_item', function() {
         if (!this.checked) {
             var el = $('#select_all').get(0);
-            if (el && el.checked && ('indeterminate' in el)) {
+            if (el && el.checked && 'indeterminate' in el) {
                 el.indeterminate = true;
             }
         }
     });
-}); 
-
+});
 

@@ -1,7 +1,10 @@
 $(document).ready(function() {
-    const auditTableConfig = {
+    const auditTable = $('#audits'); // Selecciona la tabla
+    const ajaxUrl = auditTable.data('ajax'); // Lee la URL desde el atributo data-ajax
+
+    const auditTableConfig = getDataTableConfig({
         ajax: {
-            url: "{{ route('getAudits') }}", // La URL para los datos AJAX
+            url: ajaxUrl, // Usa la URL definida en la vista
             dataSrc: 'data' // Indica que los datos están dentro de la clave 'data'
         },
         columns: [
@@ -25,9 +28,9 @@ $(document).ready(function() {
                 }
             }
         ],
-        order: [[ 2, "desc" ]] // Ordenar por la fecha
-    };
+        order: [[2, "desc"]] // Ordenar por la fecha
+    });
 
     // Inicializa DataTable para la tabla de auditorías
-    $('#audits').DataTable(auditTableConfig);
+    auditTable.DataTable(auditTableConfig);
 });
