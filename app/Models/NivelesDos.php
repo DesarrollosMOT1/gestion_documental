@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Class NivelesDo
@@ -18,8 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class NivelesDos extends Model
+class NivelesDos extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     
     protected $perPage = 20;
 

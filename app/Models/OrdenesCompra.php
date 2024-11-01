@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Class OrdenesCompra
@@ -18,9 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class OrdenesCompra extends Model
+class OrdenesCompra extends Model implements Auditable
 {
-    
+    use \OwenIt\Auditing\Auditable;
+
     protected $perPage = 20;
 
     /**

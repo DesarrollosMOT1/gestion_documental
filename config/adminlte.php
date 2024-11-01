@@ -323,6 +323,12 @@ return [
             'can' => 'ver_administracion_roles'
         ],
         [
+            'text' => 'Registro de auditoria',
+            'url' => 'audits',
+            'icon' => 'fa fa-check-square',
+            'can' => 'ver_registro_auditoria'
+        ],
+        [
             'text' => 'Permisos',
             'url' => 'permissions',
             'icon' => 'fas fa-fw fa-key',

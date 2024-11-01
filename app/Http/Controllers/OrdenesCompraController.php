@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Traits\VerNivelesPermiso;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrdenesCompraController extends Controller
 {
@@ -79,7 +80,8 @@ class OrdenesCompraController extends Controller
             // Crear la orden de compra
             $ordenCompra = OrdenesCompra::create([
                 'fecha_emision' => $data['fecha_emision'],
-                'id_terceros' => $idTercero
+                'id_terceros' => $idTercero,
+                'id_users' => $data['id_users']
             ]);
     
             // Crear las cotizaciones relacionadas
@@ -116,6 +118,22 @@ class OrdenesCompraController extends Controller
 
         return view('ordenes-compra.show', compact('ordenesCompra'));
     }
+
+    public function exportPdf($id)
+    {
+        $ordenesCompra = OrdenesCompra::with([
+            'tercero',
+            'ordenesCompraCotizaciones.solicitudesElemento.nivelesTres',
+            'ordenesCompraCotizaciones.solicitudesCotizacione.cotizacione',
+            'ordenesCompraCotizaciones.cotizacionesPrecio',
+            'ordenesCompraCotizaciones.consolidacione.solicitudesCompra',
+        ])->findOrFail($id);
+
+        $pdf = PDF::loadView('ordenes-compra.pdf', compact('ordenesCompra'))->setPaper('a4');
+
+        return $pdf->stream("OrdenCompra_{$ordenesCompra->id}.pdf");
+    }
+
 
     /**
      * Show the form for editing the specified resource.

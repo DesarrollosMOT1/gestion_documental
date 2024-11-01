@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Class Area
@@ -17,8 +18,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Area extends Model
+class Area extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+    
     protected $perPage = 2000;
 
     /**

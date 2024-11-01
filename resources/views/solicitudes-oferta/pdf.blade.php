@@ -4,59 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitud de Oferta</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            font-size: 12px;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+    <link href="{{ public_path('css/pdf-styles.css') }}" rel="stylesheet" type="text/css">
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        header img {
-            max-width: 150px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #003366;
-        }
-
-        .info-table, .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .info-table td, .details-table th, .details-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .info-table tr:nth-child(even), .details-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .info-table th, .details-table th {
-            background-color: #003366;
-            color: white;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <header>

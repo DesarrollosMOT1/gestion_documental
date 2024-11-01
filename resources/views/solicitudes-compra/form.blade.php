@@ -19,7 +19,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción">
+            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción" required>
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
 
@@ -90,9 +90,25 @@
                     </tr>
                 </thead>
                 <tbody id="elementsTableBody">
-                    <tr id="noElementsRow">
-                        <td colspan="4" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
-                    </tr>
+                    @if ($elementsWithNames)
+                        @foreach ($elementsWithNames as $index => $element)
+                            <tr id="element-{{ $index }}">
+                                <td>{{ $element['nombre_nivel_tres'] }}</td>
+                                <td>{{ $element['nombre_centro_costo'] }}</td>
+                                <td>{{ $element['cantidad'] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="removeElement({{ $index }})">Eliminar</button>
+                                </td>
+                                <input type="hidden" name="elements[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
+                                <input type="hidden" name="elements[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
+                                <input type="hidden" name="elements[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr id="noElementsRow">
+                            <td colspan="4" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
