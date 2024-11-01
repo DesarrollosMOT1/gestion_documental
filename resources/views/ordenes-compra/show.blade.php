@@ -21,7 +21,7 @@
                             <p><strong>Orden de compra:</strong> #{{ $ordenesCompra->id }}</p>
                             <p><strong>Fecha Emisión:</strong> {{ $ordenesCompra->fecha_emision }}</p>
                             <p><strong>Tercero:</strong> {{ $ordenesCompra->tercero->nombre ?? 'N/A' }}</p>
-                            <p><strong>Tercero:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
+                            <p><strong>Usuario:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
                             <p><strong>NIT:</strong> {{ $ordenesCompra->tercero->nit ?? 'N/A' }}</p>
                             <p><strong>Tipo de Factura:</strong> {{ $ordenesCompra->tercero->tipo_factura ?? 'N/A' }}</p>
                             <a href="{{ route('ordenes-compra.pdf', $ordenesCompra->id) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>

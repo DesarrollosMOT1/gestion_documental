@@ -80,7 +80,8 @@ class OrdenesCompraController extends Controller
             // Crear la orden de compra
             $ordenCompra = OrdenesCompra::create([
                 'fecha_emision' => $data['fecha_emision'],
-                'id_terceros' => $idTercero
+                'id_terceros' => $idTercero,
+                'id_users' => $data['id_users']
             ]);
     
             // Crear las cotizaciones relacionadas
