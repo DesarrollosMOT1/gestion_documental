@@ -51,7 +51,7 @@
                                             @foreach($ordenesCompra->ordenesCompraCotizaciones as $ordenCompraCotizacion)
                                                 <tr>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->cantidad ?? 'N/A' }}</td>
+                                                    <td>{{ $ordenCompraCotizacion->consolidacione->cantidad ?? 'N/A' }}</td>
                                                     <td>{{ number_format($ordenCompraCotizacion->solicitudesCotizacione->precio ?? 0, 2) }}</td>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->tipo ?? 'N/A' }} ({{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->porcentaje ?? 'N/A' }}%)</td>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->descuento ?? 'N/A' }}</td>
