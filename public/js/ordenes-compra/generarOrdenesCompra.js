@@ -42,6 +42,8 @@ const mostrarCotizaciones = (cotizaciones) => {
         tarjeta.innerHTML = generarCotizacionHTML(cotizacion, index);
         formularioOrdenesCompra.appendChild(tarjeta);
     });
+    // Llamar a toggleGenerateButton después de actualizar el contenido
+    toggleGenerateButton(document.querySelectorAll('#formularioOrdenesCompra .card').length > 0);
 };
 
 // Función para generar el HTML de una cotización
@@ -126,4 +128,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Exportar funciones
-export { mostrarCotizaciones, generarCotizacionHTML };
+export { mostrarCotizaciones, generarCotizacionHTML, toggleGenerateButton };

@@ -1,4 +1,4 @@
-import { mostrarCotizaciones, generarCotizacionHTML } from '../ordenes-compra/generarOrdenesCompra.js';
+import { mostrarCotizaciones, generarCotizacionHTML, toggleGenerateButton } from '../ordenes-compra/generarOrdenesCompra.js';
 
 // Estado global
 let cotizacionPendiente = null;
@@ -149,6 +149,8 @@ const obtenerCotizacionesActualizadas = (agrupacionId) => {
         .then(data => {
             if (data.success) {
                 mostrarCotizaciones(data.data);
+                // Llama a toggleGenerateButton para habilitar o deshabilitar el botón según la cantidad de cotizaciones
+                toggleGenerateButton(document.querySelectorAll('#formularioOrdenesCompra .card').length > 0);
             } else {
                 console.error('No se pudieron obtener las cotizaciones actualizadas.');
             }
