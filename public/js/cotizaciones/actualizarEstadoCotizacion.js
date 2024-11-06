@@ -219,8 +219,10 @@ const handleEstadoJefeCheckboxChange = function() {
     const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
     const estadoJefe = this.checked ? 1 : 0;
 
+    const fila = this.closest('tr');
+    
     if (estadoJefe === 1) {
-        const fila = this.closest('tr');
+        // Si se selecciona, deshabilitar los otros en la fila
         fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
             if (otherCheckbox !== this) {
                 otherCheckbox.checked = false;
@@ -228,7 +230,7 @@ const handleEstadoJefeCheckboxChange = function() {
             }
         });
     } else {
-        const fila = this.closest('tr');
+        // Si se deselecciona, volver a habilitar los otros checkboxes en la fila
         fila.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
             otherCheckbox.disabled = false;
         });
