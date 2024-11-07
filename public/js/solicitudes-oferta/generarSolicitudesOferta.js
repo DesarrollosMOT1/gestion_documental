@@ -87,13 +87,15 @@ $(document).ready(function() {
                         <label class="form-label">Elemento: ${elementoNombre}</label>
                         <label class="form-label">Cantidad</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required min="0">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="elementos[${index}][descripcion]" class="form-control" placeholder="Descripción" maxlength="255"></textarea>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
                 </div>
             </div>
         `;
-    }
+    }        
 
     function mostrarError(mensaje) {
         $('#formularioSolicitudOfertaContainer').html(`
