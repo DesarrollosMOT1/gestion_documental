@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Evitar el envío inmediato del formulario
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¿Deseas crear esta consolidación?",
+            text: "¿Deseas crear esta cotizacion?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

@@ -381,6 +381,6 @@
     <script src="{{ asset('js/solicitudes-compra/addElemento.js') }}"></script>
     <script src="{{ asset('js/solicitudes-compra/selectDependiente.js') }}"></script> 
     <script src="{{ asset('js/solicitudes-oferta/generarSolicitudesOferta.js') }}"></script> 
-    <script src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
-    <script src="{{ asset('js/ordenes-compra/generarOrdenesCompra.js') }}"></script>
+    <script type="module" src="{{ asset('js/cotizaciones/actualizarEstadoCotizacion.js') }}"></script>
+    <script type="module" src="{{ asset('js/ordenes-compra/generarOrdenesCompra.js') }}"></script>
 @endpush

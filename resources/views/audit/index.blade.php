@@ -10,7 +10,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span id="card_title">{{ __('Registro de auditoría') }}</span>
+
+                            <span id="card_title">
+                                {{ __('Registro de auditoria') }}
+                            </span>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -18,15 +21,20 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
+
                     <div class="card-body bg-white">
+                        <form method="GET" action="{{ route('audits.index') }}" class="mb-4">
+                            @csrf
+                            <x-filtro-fechas />
+                        </form>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover datatable" data-ajax="{{ route('getAudits') }}" id="audits">
-                                <thead>
+                            <table class="table table-striped table-hover datatable">
+                                <thead class="thead">
                                     <tr>
                                         <th>No</th>
                                         <th>Tipo de Usuario</th>
                                         <th>Nombre Usuario</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha</th> 
                                         <th>Evento</th>
                                         <th>Tabla</th>
                                         <th>ID</th>
@@ -39,6 +47,28 @@
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($audits as $audit)
+                                        <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ class_basename($audit->user_type) }}</td>
+                                        <td>{{ optional($audit->user)->name }}</td>
+                                        <td>{{ $audit->created_at->format('d/m/Y H:i:s') }}</td> 
+										<td>{{ $audit->event }}</td>
+										<td>{{ class_basename($audit->auditable_type) }}</td>
+										<td>{{ $audit->auditable_id }}</td>
+										<td>{{ $audit->old_values }}</td>
+										<td>{{ $audit->new_values }}</td>
+										<td>{{ $audit->url }}</td>
+										<td>{{ $audit->ip_address }}</td>
+										<td>{{ $audit->user_agent }}</td>
+										<td>{{ $audit->tags }}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary " href="{{ route('audits.show', $audit->id) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                        </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -47,7 +77,3 @@
         </div>
     </div>
 @endsection
-
-@push('js')
-    <script src="{{ asset('js/auditoria/auditoriaIndex.js') }}"></script>
-@endpush

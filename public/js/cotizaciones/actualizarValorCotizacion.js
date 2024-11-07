@@ -9,20 +9,31 @@ $(document).ready(function() {
             var cantidad = parseFloat($(this).closest('.card').find('input[name$="[cantidad]"]').val()) || 0;
             var descuento = parseFloat($(this).closest('.card').find('input[name$="[descuento]"]').val()) || 0;
             
-            // Calcular el valor con el descuento aplicado
-            var subtotal = (precio * cantidad);
-            var descuentoAplicado = subtotal * (descuento / 100);
+            // Obtener el porcentaje del impuesto seleccionado
+            var impuestoId = $(this).closest('.card').find('select[name$="[id_impuestos]"]').val();
+            var impuestoPorcentaje = parseFloat($(this).closest('.card').find(`option[value="${impuestoId}"]`).text().match(/\((\d+\.\d+)%\)/)?.[1] || 0) / 100;
 
-            // Restar el descuento al subtotal
-            total += (subtotal - descuentoAplicado);
+            console.log(impuestoPorcentaje)
+            // Calcular el subtotal con cantidad y precio
+            var subtotal = precio * cantidad;
+
+            // Aplicar descuento
+            var descuentoAplicado = subtotal * (descuento / 100);
+            var subtotalConDescuento = subtotal - descuentoAplicado;
+
+            // Calcular el valor del IVA
+            var ivaAplicado = subtotalConDescuento * impuestoPorcentaje;
+
+            // Sumar subtotal con descuento y el IVA al total
+            total += (subtotalConDescuento + ivaAplicado);
         });
 
         // Actualizar el campo de valor con el total calculado
         $('#valor').val(total.toFixed(2));
     }
 
-    // Actualizar el valor total cuando cambie el precio, la cantidad o el descuento de algún elemento
-    $(document).on('input', 'input[name^="elementos"][name$="[precio]"], input[name^="elementos"][name$="[cantidad]"], input[name^="elementos"][name$="[descuento]"]', function() {
+    // Actualizar el valor total cuando cambie el precio, la cantidad, el descuento o el impuesto de algún elemento
+    $(document).on('input change', 'input[name^="elementos"][name$="[precio]"], input[name^="elementos"][name$="[cantidad]"], input[name^="elementos"][name$="[descuento]"], select[name^="elementos"][name$="[id_impuestos]"]', function() {
         actualizarValorTotal();
     });
 

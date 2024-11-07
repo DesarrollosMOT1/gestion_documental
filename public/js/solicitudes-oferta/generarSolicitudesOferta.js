@@ -1,6 +1,40 @@
 $(document).ready(function() {
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+    // Función para contar caracteres en el textarea de descripción
+    function configurarContadorCaracteres() {
+        // Monitorear todos los textareas de descripción
+        $('textarea[name^="elementos"][name$="[descripcion]"]').each(function() {
+            const maxLength = 255;
+            const contador = $(this).next('.contador-caracteres');
+            const textarea = $(this);
+
+            // Inicializar el contador
+            actualizarContador(textarea, contador);
+
+            // Monitorear el evento de entrada
+            textarea.on('input', function() {
+                actualizarContador(textarea, contador);
+            });
+        });
+    }
+
+    // Función para actualizar el contador de caracteres
+    function actualizarContador(textarea, contador) {
+        const maxLength = 255;
+        const currentLength = textarea.val().length;
+        
+        // Actualiza el texto del contador
+        contador.text(`${currentLength} / ${maxLength}`);
+        
+        // Validar si se excede el límite
+        if (currentLength > maxLength) {
+            contador.addClass('text-danger'); // Cambia el color del contador si se excede el límite
+        } else {
+            contador.removeClass('text-danger');
+        }
+    }
+
     // Eventos para los checkboxes de selección
     $('#selected_all').change(function() {
         $('.selected_item:not(:disabled)').prop('checked', $(this).prop('checked'));
@@ -66,6 +100,10 @@ $(document).ready(function() {
         });
 
         $('#formularioSolicitudOfertaContainer').html(html);
+
+        // Llamar a la función para configurar el contador de caracteres
+        configurarContadorCaracteres();
+
         $('.btn-eliminar').on('click', function() {
             $(this).closest('.col-md-6').remove();
             toggleGenerateButton($('#formularioSolicitudOfertaContainer .card').length > 0);
@@ -87,13 +125,16 @@ $(document).ready(function() {
                         <label class="form-label">Elemento: ${elementoNombre}</label>
                         <label class="form-label">Cantidad</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required min="0">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="elementos[${index}][descripcion]" class="form-control" placeholder="Descripción" maxlength="255"></textarea>
+                        <div class="contador-caracteres text-muted">0 / 255</div>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
                 </div>
             </div>
         `;
-    }
+    }     
 
     function mostrarError(mensaje) {
         $('#formularioSolicitudOfertaContainer').html(`

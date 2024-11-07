@@ -95,6 +95,7 @@
                                                 <th>Descuento</th>
                                                 <th>Impuesto</th>
                                                 <th>Precio</th>
+                                                <th>Descripcion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,6 +106,7 @@
                                                     <td>{{ $solicitudCotizacion->descuento }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->consolidacionOferta->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

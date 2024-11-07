@@ -106,6 +106,7 @@
                                                 <th>Solicitud de Compra</th>
                                                 <th>Elemento</th>
                                                 <th>Cantidad Unidad</th>
+                                                <th>Descripcion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,6 +116,7 @@
                                                     <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->cantidad }}</td>
+                                                    <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
