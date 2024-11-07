@@ -42,6 +42,7 @@
                     <th>Precio</th>
                     <th>IVA</th>
                     <th>Descuento</th>
+                    <th>Descripcion</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +53,7 @@
                         <td>{{ number_format($ordenCompraCotizacion->solicitudesCotizacione->precio ?? 0, 2) }}</td>
                         <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->tipo ?? 'N/A' }} ({{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->porcentaje ?? 'N/A' }}%)</td>
                         <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->descuento ?? 'N/A' }}</td>
+                        <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->consolidacionOferta->descripcion ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
             </tbody>

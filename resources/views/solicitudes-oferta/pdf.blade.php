@@ -40,6 +40,7 @@
                     <th>No</th>
                     <th>Elemento</th>
                     <th>Cantidad Unidad</th>
+                    <th>Descripcion</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +49,7 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                         <td>{{ $consolidacion->cantidad }}</td>
+                        <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
             </tbody>

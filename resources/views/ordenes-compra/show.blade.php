@@ -47,6 +47,7 @@
                                                 <th>IVA</th>
                                                 <th>Descuento</th>
                                                 <th>Consolidación</th>
+                                                <th>Descripcion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -58,6 +59,7 @@
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->tipo ?? 'N/A' }} ({{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->porcentaje ?? 'N/A' }}%)</td>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->descuento ?? 'N/A' }}</td>
                                                     <td>{{ $ordenCompraCotizacion->consolidacione->id ?? 'N/A' }}</td>
+                                                    <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->consolidacionOferta->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
