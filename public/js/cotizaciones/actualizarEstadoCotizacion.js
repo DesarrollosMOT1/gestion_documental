@@ -184,6 +184,15 @@ const handleEstadoCheckboxChange = function() {
     const estado = this.checked ? 1 : 0;
     const precio = parseFloat(this.closest('td').querySelector('.badge.bg-info').textContent.replace(/[$,]/g, ''));
 
+    // Verifica si en la misma fila hay un estado-jefe seleccionado
+    const filaActual = this.closest('tr');
+    const estadoJefeSeleccionado = filaActual.querySelector('.estado-jefe-checkbox:checked');
+    if (estadoJefeSeleccionado) {
+        // Si hay un estado-jefe seleccionado, no dejar deseleccionar el estado
+        this.checked = true;
+        return;
+    }
+
     if (estado === 1) {
         const fila = this.closest('tr');
         fila.querySelectorAll('.estado-checkbox').forEach(otherCheckbox => {
