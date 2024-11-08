@@ -21,6 +21,7 @@
                             <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información de la Agrupación</h5>
                         </div>
                         <div class="card-body">
+                            <p><strong>Agrupacion Consolidacion:</strong> #{{ $agrupacionesConsolidacione->id }}</p>
                             <p><strong>Usuario:</strong> {{ $agrupacionesConsolidacione->user->name }}</p>
                             <p><strong>Fecha Consolidacion:</strong> {{ $agrupacionesConsolidacione->fecha_consolidacion }}</p>
                         </div>

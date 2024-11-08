@@ -18,6 +18,7 @@
                             <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información General</h5>
                         </div>
                         <div class="card-body">
+                            <p><strong>Cotizacion:</strong> #{{ $cotizacione->id }}</p>
                             <p><strong>Fecha Cotización:</strong> {{ $cotizacione->fecha_cotizacion }}</p>
                             <p><strong>Usuario:</strong> {{ $cotizacione->user->name }}</p>
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
