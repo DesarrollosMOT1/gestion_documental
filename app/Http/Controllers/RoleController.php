@@ -18,11 +18,14 @@ class RoleController extends Controller
      */
     public function index(Request $request): View
     {
-        $roles = Role::paginate();
-
-        return view('role.index', compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * $roles->perPage());
-    }
+        // Obtener todos los roles sin paginación
+        $roles = Role::get();
+    
+        // Iniciar el contador manualmente en 0
+        $i = 0;
+    
+        return view('role.index', compact('roles', 'i'));
+    }    
 
     /**
      * Show the form for creating a new resource.
