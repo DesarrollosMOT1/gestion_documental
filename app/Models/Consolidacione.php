@@ -81,4 +81,12 @@ class Consolidacione extends Model implements Auditable
     {
         return $this->hasMany(\App\Models\OrdenesCompraCotizacione::class, 'id_consolidaciones', 'id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consolidacionesOfertas()
+    {
+        return $this->hasMany(\App\Models\ConsolidacionesOferta::class, 'id_consolidaciones', 'id');
+    }
 }

@@ -197,7 +197,7 @@ class CotizacioneController extends Controller
                       ->from('ordenes_compra_cotizaciones');
             })
             ->with([
-                'solicitudesCotizacione', 
+                'solicitudesCotizacione.consolidacionOferta',
                 'solicitudesCotizacione.cotizacione.tercero',
                 'agrupacionesConsolidacione', 
                 'consolidacione',
