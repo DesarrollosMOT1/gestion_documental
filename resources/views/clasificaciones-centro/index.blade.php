@@ -5,7 +5,7 @@
 @section('css')
 <style>
     .scrollable-list {
-        max-height: 300px;
+        max-height: 350px;
         overflow-y: auto;
     }
 </style>
