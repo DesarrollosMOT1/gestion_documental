@@ -174,6 +174,8 @@ php artisan route:cache
 php artisan route:list
 ### Limpiar la cache de la vista: <br><br>
 php artisan view:clear
+### herramienta útil para mantener tu aplicación Laravel actualizada y con un buen rendimiento
+php artisan optimize:clear
 ### Servidor de Desarrollo
 ### Iniciar el servidor de desarrollo: <br><br>
 php artisan serve
