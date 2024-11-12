@@ -80,7 +80,8 @@ class CotizacioneController extends Controller
     {
         $consolidaciones = ConsolidacionesOferta::with([
             'solicitudesElemento.nivelesTres', 
-            'solicitudesCompra'
+            'solicitudesCompra',
+            'consolidacione'
         ])->where('id_solicitudes_ofertas', $solicitudesOfertaId)->get();
     
         return response()->json($consolidaciones);
