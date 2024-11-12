@@ -171,16 +171,9 @@ $(document).ready(function() {
         // Validaciones antes de mostrar la alerta
         const elementos = $('#formularioSolicitudOfertaContainer input[name^="elementos"]');
         let valid = true;
-        let cantidadInvalida = false;
+
 
         elementos.each(function() {
-            const cantidad = parseFloat($(this).val());
-            if ($(this).attr('name').includes('cantidad')) {
-                if (isNaN(cantidad) || cantidad < 0) {
-                    cantidadInvalida = true;
-                    return false; // Salir del bucle each
-                }
-            }
             if ($(this).val() === '') {
                 valid = false; // Si algún campo está vacío
             }
@@ -191,15 +184,6 @@ $(document).ready(function() {
                 icon: 'error',
                 title: 'Error',
                 text: 'Todos los campos deben ser completados.',
-            });
-            return;
-        }
-
-        if (cantidadInvalida) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'La cantidad debe ser un número válido y no puede ser menor que 0.',
             });
             return;
         }
