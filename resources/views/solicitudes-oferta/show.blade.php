@@ -115,7 +115,7 @@
                                                     <td>{{ $consolidacion->id }}</td>
                                                     <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $consolidacion->cantidad }}</td>
+                                                    <td>{{ $consolidacion->consolidacione->cantidad ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach

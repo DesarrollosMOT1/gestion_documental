@@ -49,7 +49,7 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
                         <td>{{ $consolidacion->cantidad }}</td>
-                        <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
+                        <td>{{ $consolidacion->consolidacione->cantidad }}</td>
                     </tr>
                 @endforeach
             </tbody>
