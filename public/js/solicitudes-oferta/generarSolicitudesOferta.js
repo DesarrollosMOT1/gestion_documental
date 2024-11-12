@@ -122,19 +122,26 @@ $(document).ready(function() {
                         <input type="hidden" name="elementos[${index}][id_consolidaciones]" value="${consolidacion.id}">
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compras]" value="${consolidacion.id_solicitudes_compras}">
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${consolidacion.id_solicitud_elemento}">
-                        <label class="form-label">Elemento: ${elementoNombre}</label>
-                        <label class="form-label">Cantidad</label>
-                        <input type="number" name="elementos[${index}][cantidad]" class="form-control" placeholder="Cantidad" value="${consolidacion.cantidad}" readonly required min="0">
-                        <label class="form-label">Descripción</label>
-                        <textarea name="elementos[${index}][descripcion]" class="form-control" placeholder="Descripción" maxlength="255"></textarea>
-                        <div class="contador-caracteres text-muted">0 / 255</div>
+                        
+                        <div class="mb-2">
+                            <label class="form-label">Elemento: ${elementoNombre}</label>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Cantidad: ${consolidacion.cantidad}</label>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Descripción</label>
+                            <textarea name="elementos[${index}][descripcion]" class="form-control" placeholder="Descripción" maxlength="255"></textarea>
+                            <div class="contador-caracteres text-muted">0 / 255</div>
+                        </div>
+                        
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
                     </div>
                 </div>
             </div>
         `;
-    }     
+    }       
 
     function mostrarError(mensaje) {
         $('#formularioSolicitudOfertaContainer').html(`
