@@ -38,7 +38,7 @@ class SolicitudesCotizacione extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_consolidaciones_oferta','id_solicitudes_compras', 'id_cotizaciones', 'cantidad', 'descuento', 'id_impuestos', 'id_solicitud_elemento', 'precio'];
+    protected $fillable = ['id_consolidaciones_oferta','id_solicitudes_compras', 'id_cotizaciones', 'descuento', 'id_impuestos', 'id_solicitud_elemento', 'precio'];
 
 
     /**

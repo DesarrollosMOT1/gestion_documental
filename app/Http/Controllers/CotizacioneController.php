@@ -63,7 +63,6 @@ class CotizacioneController extends Controller
             SolicitudesCotizacione::create([
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
                 'id_cotizaciones' => $cotizacion->id,
-                'cantidad' => $elemento['cantidad'],
                 'descuento' => $elemento['descuento'],
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
