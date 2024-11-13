@@ -10,19 +10,23 @@ use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
-
+use App\Traits\PermissionsTrait;
 class RoleController extends Controller
 {
+    use PermissionsTrait;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        $roles = Role::paginate();
-
-        return view('role.index', compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * $roles->perPage());
-    }
+        // Obtener todos los roles sin paginación
+        $roles = Role::get();
+    
+        // Iniciar el contador manualmente en 0
+        $i = 0;
+    
+        return view('role.index', compact('roles', 'i'));
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -32,7 +36,10 @@ class RoleController extends Controller
         $role = new Role();
         $permisos = Permission::all();
 
-        return view('role.create', compact('role', 'permisos'));
+        // Obtener los permisos agrupados desde el trait
+        $permissionsGrouped = $this->getPermissionsGrouped();
+
+        return view('role.create', compact('role', 'permisos', 'permissionsGrouped'));
     }
 
     /**
@@ -44,7 +51,7 @@ class RoleController extends Controller
             'name' => $request->name,
             'guard_name' => 'web' 
         ]);
-        $role->permissions()->sync($request->input('permisos', []));
+        $role->permissions()->sync($request->input('permissions', []));
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return Redirect::route('roles.index')
@@ -68,8 +75,11 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $permisos = Permission::all();
-    
-        return view('role.edit', compact('role', 'permisos'));
+        
+        // Obtener los permisos agrupados desde el trait
+        $permissionsGrouped = $this->getPermissionsGrouped();
+
+        return view('role.edit', compact('role', 'permisos', 'permissionsGrouped'));
     }
 
     /**
@@ -78,7 +88,7 @@ class RoleController extends Controller
     public function update(RoleRequest $request, Role $role): RedirectResponse
     {
         $role->update(['name' => $request->name]);
-        $role->permissions()->sync($request->input('permisos', []));
+        $role->permissions()->sync($request->input('permissions', []));
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     
         return redirect()->route('roles.index')

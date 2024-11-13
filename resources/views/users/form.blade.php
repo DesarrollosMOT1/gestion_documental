@@ -76,14 +76,9 @@
             
                 <div class="form-group">
                     <label>Permisos</label>
-                    @foreach ($permissions as $permission)
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" 
-                                {{ (isset($user) && $user->permissions->contains($permission)) || (is_array(old('permissions')) && in_array($permission->id, old('permissions'))) ? 'checked' : '' }}>
-                            <label class="form-check-label">{{ $permission->name }}</label>
-                        </div>
-                    @endforeach
-                </div>
+                    <!-- Llamada al componente PermissionsAccordion -->
+                    <x-permissions-accordion :permissionsGrouped="$permissionsGrouped" :permissions="$permissions" :role="$user ?? null"/>
+                </div>               
             </div> 
         </div>
     </div>

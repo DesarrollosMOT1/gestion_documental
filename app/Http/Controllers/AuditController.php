@@ -18,18 +18,20 @@ class AuditController extends Controller
         $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->startOfDay()->toDateTimeString());
         $fechaFin = $request->input('fecha_fin', Carbon::now()->endOfDay()->toDateTimeString());
     
-        // Filtrar registros de auditoría en el rango de fechas
-        $audits = Audit::whereBetween('created_at', [$fechaInicio, $fechaFin])
-            ->paginate();
+        // Filtrar registros de auditoría en el rango de fechas, sin paginar
+        $audits = Audit::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
     
+        // Convertir los valores antiguos y nuevos a JSON
         foreach ($audits as $audit) {
             $audit->old_values = json_encode($audit->old_values);
             $audit->new_values = json_encode($audit->new_values);
         }
     
-        return view('audit.index', compact('audits'))
-            ->with('i', ($request->input('page', 1) - 1) * $audits->perPage());
-    }    
+        // Iniciar el contador manualmente en 0
+        $i = 0;
+    
+        return view('audit.index', compact('audits', 'i'));
+    }
 
     /**
      * Display the specified resource.

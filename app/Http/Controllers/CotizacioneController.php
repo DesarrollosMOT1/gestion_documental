@@ -63,7 +63,6 @@ class CotizacioneController extends Controller
             SolicitudesCotizacione::create([
                 'id_solicitudes_compras' => $elemento['id_solicitudes_compras'], 
                 'id_cotizaciones' => $cotizacion->id,
-                'cantidad' => $elemento['cantidad'],
                 'descuento' => $elemento['descuento'],
                 'id_impuestos' => $elemento['id_impuestos'],
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
@@ -81,7 +80,8 @@ class CotizacioneController extends Controller
     {
         $consolidaciones = ConsolidacionesOferta::with([
             'solicitudesElemento.nivelesTres', 
-            'solicitudesCompra'
+            'solicitudesCompra',
+            'consolidacione'
         ])->where('id_solicitudes_ofertas', $solicitudesOfertaId)->get();
     
         return response()->json($consolidaciones);
@@ -197,7 +197,7 @@ class CotizacioneController extends Controller
                       ->from('ordenes_compra_cotizaciones');
             })
             ->with([
-                'solicitudesCotizacione', 
+                'solicitudesCotizacione.consolidacionOferta',
                 'solicitudesCotizacione.cotizacione.tercero',
                 'agrupacionesConsolidacione', 
                 'consolidacione',

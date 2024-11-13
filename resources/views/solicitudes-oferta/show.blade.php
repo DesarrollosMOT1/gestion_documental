@@ -23,7 +23,7 @@
                             <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información de la Solicitud</h5>
                         </div>
                         <div class="card-body">
-                            <p><strong>ID:</strong> {{ $solicitudesOferta->id }}</p>
+                            <p><strong>Solicitud de Oferta:</strong> #{{ $solicitudesOferta->id }}</p>
                             <p><strong>Fecha Solicitud:</strong> {{ $solicitudesOferta->fecha_solicitud_oferta }}</p>
                             <p><strong>Usuario:</strong> {{ $solicitudesOferta->user->name }}</p>
                         </div>
@@ -115,7 +115,7 @@
                                                     <td>{{ $consolidacion->id }}</td>
                                                     <td>{{ $consolidacion->solicitudesCompra->descripcion ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $consolidacion->cantidad }}</td>
+                                                    <td>{{ $consolidacion->consolidacione->cantidad ?? 'N/A' }}</td>
                                                     <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach

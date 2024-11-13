@@ -79,7 +79,6 @@ class SolicitudesOfertaController extends Controller
                 'id_solicitud_elemento' => $elemento['id_solicitud_elemento'],
                 'id_consolidaciones' => $elemento['id_consolidaciones'],
                 'id_solicitudes_ofertas' => $solicitudOferta->id,
-                'cantidad' => $elemento['cantidad'],
                 'descripcion' => $elemento['descripcion']
             ]);
         }

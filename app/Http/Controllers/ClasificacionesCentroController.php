@@ -9,8 +9,7 @@ use App\Http\Requests\ClasificacionesCentroRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Area;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ClasificacionesCentroImport;
+use App\Models\CentrosCosto;
 
 class ClasificacionesCentroController extends Controller
 {
@@ -25,6 +24,12 @@ class ClasificacionesCentroController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * $clasificacionesCentros->perPage());
     }
 
+    public function getCentrosCostos($idCentrosCostos)
+    {
+        $centrosCostos = CentrosCosto::where('id_clasificaciones_centros', $idCentrosCostos)->get();
+        return response()->json($centrosCostos);
+    }
+    
     /**
      * Show the form for creating a new resource.
      */

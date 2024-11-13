@@ -10,10 +10,10 @@ $(document).ready(function() {
         actualizarSolicitudesYElementos();
     });
 
-    $('.form-check-input.select_item').change(function() {
+    $('.datatable tbody').on('change', '.form-check-input.select_item', function() {
         actualizarSolicitudesYElementos();
         toggleGenerateButton();
-    });
+    });    
 
     // Función principal para actualizar las solicitudes y sus elementos
     function actualizarSolicitudesYElementos() {

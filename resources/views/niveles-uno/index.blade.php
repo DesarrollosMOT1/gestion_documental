@@ -2,6 +2,15 @@
 
 @section('title', 'Niveles Jerárquicos')
 
+@section('css')
+<style>
+    .scrollable-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>
+@endsection
+
 @section('content')
 <br>
 <div class="container-fluid">
@@ -39,7 +48,7 @@
                             @if ($message = Session::get('success'))
                                 <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
                             @endif
-                            <div class="list-group" id="nivelesUnoList">
+                            <div class="list-group scrollable-list" id="nivelesUnoList">
                                 @foreach ($nivelesUnos as $nivelUno)
                                     <a href="#" class="list-group-item list-group-item-action" data-id="{{ $nivelUno->id }}">
                                         {{ $nivelUno->nombre }}
@@ -70,7 +79,7 @@
                                 </div>
                                 <br>
                             </form>
-                            <div class="list-group" id="nivelesDosList">
+                            <div class="list-group scrollable-list" id="nivelesDosList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel uno aún.</div>
                             </div>
                         </div>
@@ -92,7 +101,7 @@
                                 </div>
                                 <br>
                             </form>
-                            <div class="list-group" id="nivelesTresList">
+                            <div class="list-group scrollable-list" id="nivelesTresList">
                                 <div class="alert alert-info">No se ha seleccionado ningún nivel dos aún.</div>
                             </div>
                         </div>

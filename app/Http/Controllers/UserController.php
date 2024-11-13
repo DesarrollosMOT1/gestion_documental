@@ -10,9 +10,11 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse; 
 use Illuminate\Support\Facades\Redirect;
+use App\Traits\PermissionsTrait;
 
 class UserController extends Controller
 {
+    use PermissionsTrait;
     public function index()
     {
         $users = User::all();
@@ -22,10 +24,16 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $permissions = Permission::all();
         $areas = Area::all();
-        return view('users.create', compact('roles', 'permissions', 'areas'));
-    }
+        
+        // Obtener los permisos agrupados desde el trait
+        $permissionsGrouped = $this->getPermissionsGrouped();
+        
+        // Obtener los permisos reales
+        $permissions = $this->getPermissions();
+    
+        return view('users.create', compact('roles', 'permissions', 'areas', 'permissionsGrouped'));
+    } 
     
     public function store(UserRequest $request)
     {
@@ -51,8 +59,12 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $permissions = Permission::all();
+        
+        // Obtener los permisos agrupados desde el trait
+        $permissionsGrouped = $this->getPermissionsGrouped();
+    
         $areas = Area::all();
-        return view('users.edit', compact('user', 'roles', 'permissions', 'areas'));
+        return view('users.edit', compact('user', 'roles', 'permissions', 'areas', 'permissionsGrouped'));
     }
     
     public function update(UserRequest $request, User $user)

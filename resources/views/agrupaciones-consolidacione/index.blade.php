@@ -46,10 +46,10 @@
                                             <td>
                                                 <form action="{{ route('agrupaciones-consolidaciones.destroy', $agrupacionesConsolidacione->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('agrupaciones-consolidaciones.show', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('agrupaciones-consolidaciones.edit', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                    {{-- <a class="btn btn-sm btn-success" href="{{ route('agrupaciones-consolidaciones.edit', $agrupacionesConsolidacione->id) }}"><i class="fa fa-fw fa-edit"></i></a> --}}
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i></button>
+                                                    {{-- <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i></button> --}}
                                                 </form>
                                             </td>
                                         </tr>

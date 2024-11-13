@@ -59,8 +59,9 @@ const generarCotizacionHTML = (cotizacion, index) => {
                 <input type="hidden" name="cotizaciones[${index}][id_cotizaciones_precio]" value="${cotizacion.id}">
                 <input type="hidden" name="cotizaciones[${index}][id_consolidaciones]" value="${cotizacion.id_consolidaciones}">
                 <input type="hidden" name="cotizaciones[${index}][id_terceros]" value="${cotizacion.solicitudes_cotizacione.cotizacione.id_terceros}">
+                <p class="card-text"><strong>Descripción:</strong> ${cotizacion.solicitudes_cotizacione.consolidacion_oferta.descripcion || 'N/A'}</p>
                 <p class="card-text"><strong>Precio:</strong> ${cotizacion.solicitudes_cotizacione.precio}</p>
-                <p class="card-text"><strong>Cantidad:</strong> ${cotizacion.solicitudes_cotizacione.cantidad}</p>
+                <p class="card-text"><strong>Cantidad:</strong> ${cotizacion.consolidacione.cantidad}</p>
                 <p class="card-text"><strong>Cotización:</strong> ${cotizacion.solicitudes_cotizacione.cotizacione.nombre}</p>
             </div>
         </div>

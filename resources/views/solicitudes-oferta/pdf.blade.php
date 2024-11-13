@@ -48,7 +48,7 @@
                     <tr>
                         <td>{{ ++$i }}</td>
                         <td>{{ $consolidacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                        <td>{{ $consolidacion->cantidad }}</td>
+                        <td>{{ $consolidacion->consolidacione->cantidad ?? 'N/A' }}</td>
                         <td>{{ $consolidacion->descripcion ?? 'N/A' }}</td>
                     </tr>
                 @endforeach

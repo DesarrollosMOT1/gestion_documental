@@ -5,7 +5,7 @@
             <li class="list-group-item"><strong>ID:</strong> {{ $cotizacionElemento->id }}</li>
             <li class="list-group-item"><strong>Nombre:</strong> {{ $elementoNombre }}</li>
             <li class="list-group-item"><strong>Descripcion:</strong> {{ $cotizacionElemento->consolidacionOferta->descripcion ?? 'N/A' }}</li>
-            <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->cantidad }}</li>
+            <li class="list-group-item"><strong>Cantidad:</strong> {{ $cotizacionElemento->consolidacionOferta->consolidacione->cantidad }}</li>
             <li class="list-group-item"><strong>Precio:</strong> <span class="badge bg-info text-white">${{ number_format($cotizacionElemento->precio, 2) }}</span></li>
             <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}%</li>
             <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
