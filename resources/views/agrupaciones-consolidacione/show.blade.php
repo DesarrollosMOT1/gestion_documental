@@ -252,8 +252,9 @@
     @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
         @foreach($consolidaciones as $consolidacion)
             <x-modal id="editCantidadModal{{ $consolidacion->id }}" title="Editar Cantidad de la solicitud de compra" size="lg">
-                <form method="POST" action="">
+                <form action="{{ route('solicitudes-elemento.updateCantidad', $consolidacion->solicitudesElemento->id) }}" method="POST">
                     @csrf
+                    @method('PATCH')
                     @include('agrupaciones-consolidacione.edit_cantidad', ['consolidacion' => $consolidacion])
                 </form>
             </x-modal>

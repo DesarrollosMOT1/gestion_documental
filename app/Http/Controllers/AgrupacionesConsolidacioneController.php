@@ -359,6 +359,23 @@ class AgrupacionesConsolidacioneController extends Controller
     
         return $historialCotizaciones;
     }    
+    public function updateCantidad(Request $request, $id)
+    {
+        $request->validate([
+            'cantidad' => 'required|integer|min:0|max:1000',
+        ]);
+
+        // Encontrar la solicitud elemento por su ID
+        $solicitudElemento = SolicitudesElemento::findOrFail($id);
+
+        // Actualizar solo el campo 'cantidad'
+        $solicitudElemento->cantidad = $request->input('cantidad');
+        $solicitudElemento->save();
+
+        return redirect()->back()->with('success', 'La cantidad ha sido actualizada exitosamente.');
+    }
+    
+
 
     /**
      * Show the form for editing the specified resource.
