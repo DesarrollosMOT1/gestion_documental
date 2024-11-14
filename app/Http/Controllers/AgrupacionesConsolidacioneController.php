@@ -263,7 +263,8 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres',
-            'consolidaciones.cotizacionesPrecio'
+            'consolidaciones.cotizacionesPrecio',
+            'consolidaciones.solicitudesElemento',
         ])->findOrFail($id);
 
         $this->authorize('view', $agrupacionesConsolidacione);

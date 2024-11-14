@@ -145,7 +145,12 @@
                                                     </div>
                                             </td>
                                             <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
-                                            <td class="bg-success bg-opacity-50 border-dark text-dark">{{ $consolidaciones->first()->cantidad }}</td>
+                                            <td class="bg-success bg-opacity-50 border-dark text-dark text-center">
+                                                {{ $consolidaciones->first()->cantidad }}
+                                                <button type="button" class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#editCantidadModal{{ $consolidaciones->first()->id }}">
+                                                    <i class="fa fa-fw fa-edit"></i>
+                                                </button>
+                                            </td>                                            
                 
                                             @if($cotizacionesPorTercero->isNotEmpty())
                                                 @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
@@ -243,6 +248,17 @@
             <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
         </div>
     </x-modal>
+
+    @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
+        @foreach($consolidaciones as $consolidacion)
+            <x-modal id="editCantidadModal{{ $consolidacion->id }}" title="Editar Cantidad de la solicitud de compra" size="lg">
+                <form method="POST" action="">
+                    @csrf
+                    @include('agrupaciones-consolidacione.edit_cantidad', ['consolidacion' => $consolidacion])
+                </form>
+            </x-modal>
+        @endforeach
+    @endforeach
 
     <!-- Modal para solicitudes-oferta -->
     <x-modal id="solicitudesOfertaModal" title="{{ __('Generar Solicitud Oferta') }}" size="lg">
