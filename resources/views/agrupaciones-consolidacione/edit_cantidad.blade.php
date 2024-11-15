@@ -15,7 +15,7 @@
                         <th scope="row">Cantidad</th>
                         <td>
                             <input type="number" class="form-control @error('cantidad') is-invalid @enderror" 
-                                id="cantidad" name="cantidad" value="{{ old('cantidad', $elementoConsolidado->solicitudesElemento->cantidad) }}">
+                                id="cantidad" name="cantidad[{{ $elementoConsolidado->id }}]" value="{{ old('cantidad', $elementoConsolidado->solicitudesElemento->cantidad) }}">
                             @error('cantidad')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

@@ -361,19 +361,41 @@ class AgrupacionesConsolidacioneController extends Controller
     }    
     public function updateCantidad(Request $request, $id)
     {
+        // Validación condicional dependiendo de si se actualiza una consolidación o elementos consolidados
         $request->validate([
-            'cantidad' => 'required|integer|min:0|max:1000',
+            'cantidad' => 'required',
+            'cantidad.*' => 'required|integer|min:0|max:1000', // Si es un array, se valida cada cantidad
         ]);
-
-        // Encontrar la solicitud elemento por su ID
-        $solicitudElemento = SolicitudesElemento::findOrFail($id);
-
-        // Actualizar solo el campo 'cantidad'
-        $solicitudElemento->cantidad = $request->input('cantidad');
-        $solicitudElemento->save();
-
-        return redirect()->back()->with('success', 'La cantidad ha sido actualizada exitosamente.');
-    }
+    
+        // Si la cantidad es un solo valor (caso de consolidación)
+        if ($request->has('cantidad') && !is_array($request->input('cantidad'))) {
+            $cantidad = $request->input('cantidad');
+    
+            // Encontrar la consolidación y actualizar la cantidad
+            $solicitudElemento = SolicitudesElemento::findOrFail($id);
+            $solicitudElemento->cantidad = $cantidad;
+            $solicitudElemento->save();
+    
+            return redirect()->back()->with('success', 'La cantidad de la consolidación ha sido actualizada exitosamente.');
+        }
+    
+        // Si la cantidad es un array (caso de elementos consolidados)
+        if ($request->has('cantidad') && is_array($request->input('cantidad'))) {
+            // Iterar sobre las cantidades de los elementos consolidados
+            foreach ($request->input('cantidad') as $elementoConsolidadoId => $cantidad) {
+                // Encontrar el elemento consolidado por su ID
+                $elementoConsolidado = ElementosConsolidado::findOrFail($elementoConsolidadoId);
+    
+                // Actualizar la cantidad en el elemento consolidado
+                $elementoConsolidado->solicitudesElemento->cantidad = $cantidad;
+                $elementoConsolidado->solicitudesElemento->save();
+            }
+    
+            return redirect()->back()->with('success', 'Las cantidades de los elementos consolidados han sido actualizadas exitosamente.');
+        }
+    
+        return redirect()->back()->with('error', 'Hubo un problema al actualizar las cantidades.');
+    }        
     
 
 
