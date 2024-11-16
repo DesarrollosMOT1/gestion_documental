@@ -37,6 +37,11 @@ Primero, clona el repositorio de tu proyecto Laravel desde GitHub:
 
 git clone https://github.com/DesarrollosMOT1/gestion_documental.git
 
+### 0. Habilitar la extensión GD y ZIP en PHP
+En C:\xampp\php\php.ini Busca estas líneas y quitar el ";"
+;extension=gd 
+; extension=zip
+
 ## Configuración del Entorno
 ### 1. Instalar Dependencias de Composer
 Asegúrate de tener Composer instalado. Luego, ejecuta el siguiente comando para instalar las dependencias de PHP:<br><br>
