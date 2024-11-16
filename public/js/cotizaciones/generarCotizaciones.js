@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para generar HTML dinámico para los elementos
     const generateElementHtml = (elemento, index, impuestosOptions) => {
         const nivelesTres = elemento.solicitudes_elemento.niveles_tres.nombre;
-        const cantidad = elemento.cantidad;
+        const cantidad = elemento.consolidacione.cantidad;
         return `
             <div class="card mb-3">
                 <div class="card-body">
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="row">
                         <div class="col-md-3">
                             <label for="cantidad_${index}">Cantidad</label>
-                            <input type="number" name="elementos[${index}][cantidad]" id="cantidad_${index}" class="form-control" value="${cantidad}" required>
+                            <input type="number" name="elementos[${index}][cantidad]" id="cantidad_${index}" class="form-control" value="${cantidad}" required readonly>
                             <div class="invalid-feedback">La cantidad es requerida y debe ser un número.</div>
                         </div>
                         <div class="col-md-3">
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault(); // Evitar el envío inmediato del formulario
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¿Deseas crear esta consolidación?",
+            text: "¿Deseas crear esta cotizacion?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

@@ -11,23 +11,10 @@
         <div class="form-group mb-4">
             <label for="permisos">{{ __('Permisos') }}</label>
             <div class="border p-3 rounded">
-                <div class="row">
-                    @foreach ($permisos->chunk(ceil($permisos->count() / 3)) as $chunk)
-                        <div class="col-md-4">
-                            @foreach ($chunk as $permiso)
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" name="permisos[]" 
-                                        value="{{ $permiso->id }}" id="permiso{{ $permiso->id }}"
-                                        {{ (isset($role) && $role->permissions->contains($permiso->id)) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="permiso{{ $permiso->id }}">
-                                        {{ $permiso->name }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
+                <!-- Llamada al componente PermissionsAccordion -->
+                <x-permissions-accordion :permissionsGrouped="$permissionsGrouped" :permissions="$permisos" :role="$role ?? null" />
             </div>
+        </div>
         </div>
     </div>
     <div class="col-md-12 mt-4">

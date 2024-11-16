@@ -30,7 +30,7 @@ class SolicitudesOfertaRequest extends FormRequest
             'elementos.*.id_solicitudes_compras' => 'required|exists:solicitudes_compras,id', // Validar que cada id_solicitudes_compras exista
             'elementos.*.id_solicitud_elemento' => 'required|exists:solicitudes_elementos,id', // Validar que cada id_solicitud_elemento exista
             'elementos.*.id_consolidaciones' => 'required|exists:consolidaciones,id', // Validar que cada id_consolidaciones exista
-            'elementos.*.cantidad' => 'required|numeric|min:1', // Asegurar que la cantidad sea un número positivo
+            'elementos.*.descripcion' => 'nullable|string|max:255',
         ];
     }
 }

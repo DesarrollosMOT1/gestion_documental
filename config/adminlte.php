@@ -392,16 +392,10 @@ return [
                     'icon' => 'fas fa-cogs',
                     'submenu' => [
                         [
-                            'text' => 'Clasificaciones de Centros',
+                            'text' => 'Centros de Costos',
                             'url' => 'clasificaciones-centros',
                             'icon' => 'fas fa-list-alt',
                             'can' => 'ver_clasificaciones_centros'
-                        ],
-                        [
-                            'text' => 'Centros de Costos',
-                            'url' => 'centros-costos',
-                            'icon' => 'fas fa-sitemap',
-                            'can' => 'ver_centros_costos'
                         ],
                         [
                             'text' => 'Referencias de gastos',

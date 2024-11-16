@@ -18,11 +18,13 @@
                             <h5 class="card-title m-0"><i class="fas fa-file-invoice mr-2"></i>Información de la Orden de Compra</h5>
                         </div>
                         <div class="card-body">
+                            <p><strong>Orden de compra:</strong> #{{ $ordenesCompra->id }}</p>
                             <p><strong>Fecha Emisión:</strong> {{ $ordenesCompra->fecha_emision }}</p>
                             <p><strong>Tercero:</strong> {{ $ordenesCompra->tercero->nombre ?? 'N/A' }}</p>
-                            <p><strong>Tercero:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
+                            <p><strong>Usuario:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
                             <p><strong>NIT:</strong> {{ $ordenesCompra->tercero->nit ?? 'N/A' }}</p>
                             <p><strong>Tipo de Factura:</strong> {{ $ordenesCompra->tercero->tipo_factura ?? 'N/A' }}</p>
+                            <a href="{{ route('ordenes-compra.pdf', $ordenesCompra->id) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
                         </div>
                     </div>
                 </div>
@@ -45,17 +47,19 @@
                                                 <th>IVA</th>
                                                 <th>Descuento</th>
                                                 <th>Consolidación</th>
+                                                <th>Descripcion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($ordenesCompra->ordenesCompraCotizaciones as $ordenCompraCotizacion)
                                                 <tr>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->cantidad ?? 'N/A' }}</td>
+                                                    <td>{{ $ordenCompraCotizacion->consolidacione->cantidad ?? 'N/A' }}</td>
                                                     <td>{{ number_format($ordenCompraCotizacion->solicitudesCotizacione->precio ?? 0, 2) }}</td>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->tipo ?? 'N/A' }} ({{ $ordenCompraCotizacion->solicitudesCotizacione->impuesto->porcentaje ?? 'N/A' }}%)</td>
                                                     <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->descuento ?? 'N/A' }}</td>
                                                     <td>{{ $ordenCompraCotizacion->consolidacione->id ?? 'N/A' }}</td>
+                                                    <td>{{ $ordenCompraCotizacion->solicitudesCotizacione->consolidacionOferta->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

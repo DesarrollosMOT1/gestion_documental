@@ -18,6 +18,7 @@
                             <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información General</h5>
                         </div>
                         <div class="card-body">
+                            <p><strong>Solicitud de compra:</strong> #{{ $solicitudesCompra->id }}</p>
                             <p><strong>Fecha Solicitud:</strong> {{ $solicitudesCompra->fecha_solicitud }}</p>
                             <p><strong>Prefijo:</strong> {{ $solicitudesCompra->prefijo }}</p>
                             <p><strong>Descripción:</strong> {{ $solicitudesCompra->descripcion }}</p>

@@ -16,10 +16,13 @@ class PermissionController extends Controller
      */
     public function index(Request $request): View
     {
-        $permissions = Permission::paginate();
-
-        return view('permission.index', compact('permissions'))
-            ->with('i', ($request->input('page', 1) - 1) * $permissions->perPage());
+        // Obtener todos los permisos sin paginación
+        $permissions = Permission::get();
+    
+        // Iniciar el contador manualmente en 0
+        $i = 0;
+    
+        return view('permission.index', compact('permissions', 'i'));
     }
 
     /**

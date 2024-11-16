@@ -18,6 +18,7 @@
                             <h5 class="card-title m-0"><i class="fas fa-info-circle mr-2"></i>Información General</h5>
                         </div>
                         <div class="card-body">
+                            <p><strong>Cotizacion:</strong> #{{ $cotizacione->id }}</p>
                             <p><strong>Fecha Cotización:</strong> {{ $cotizacione->fecha_cotizacion }}</p>
                             <p><strong>Usuario:</strong> {{ $cotizacione->user->name }}</p>
                             <p><strong>Nombre:</strong> {{ $cotizacione->nombre }}</p>
@@ -95,16 +96,18 @@
                                                 <th>Descuento</th>
                                                 <th>Impuesto</th>
                                                 <th>Precio</th>
+                                                <th>Descripcion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($cotizacione->solicitudesCotizaciones as $solicitudCotizacion)
                                                 <tr>
                                                     <td>{{ $solicitudCotizacion->solicitudesElemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $solicitudCotizacion->cantidad }}</td>
+                                                    <td>{{ $solicitudCotizacion->consolidacionOferta->consolidacione->cantidad }}</td>
                                                     <td>{{ $solicitudCotizacion->descuento }}</td>
                                                     <td>{{ $solicitudCotizacion->impuesto->tipo ?? 'N/A' }}</td>
                                                     <td>{{ $solicitudCotizacion->precio ?? 'N/A' }}</td>
+                                                    <td>{{ $solicitudCotizacion->consolidacionOferta->descripcion ?? 'N/A' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

@@ -52,10 +52,10 @@
                                             <td>
                                                 <form action="{{ route('ordenes-compras.destroy', $ordenesCompra->id) }}" class="delete-form" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('ordenes-compras.show', $ordenesCompra->id) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('ordenes-compras.edit', $ordenesCompra->id) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                    {{-- <a class="btn btn-sm btn-success" href="{{ route('ordenes-compras.edit', $ordenesCompra->id) }}"><i class="fa fa-fw fa-edit"></i></a> --}}
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
+                                                    {{-- <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button> --}}
                                                 </form>
                                             </td>
                                         </tr>

@@ -6,12 +6,12 @@
 
     <!--- Mensajes -->
     @include('users.msjs')
-
+    <br>
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-success text-white">
                         <h1 class="text-center">Cambiar Contraseña</h1>
                     </div>
                     <div class="card-body">

@@ -31,7 +31,6 @@ class CotizacioneRequest extends FormRequest
             'fecha_fin_vigencia' => 'required',
             'id_users' => 'required|exists:users,id',
             'elementos' => 'required|array',
-            'elementos.*.cantidad' => 'required|numeric',
             'elementos.*.descuento' => 'nullable|numeric',
             'elementos.*.id_impuestos' => 'required|numeric',
             'elementos.*.precio' => 'required|numeric',

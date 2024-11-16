@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use OwenIt\Auditing\Models\Audit;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 class AuditController extends Controller
 {
@@ -14,36 +14,26 @@ class AuditController extends Controller
      */
     public function index(Request $request): View
     {
-        return view('audit.index');
+        // Rango de fechas por defecto (últimos 14 días)
+        $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->startOfDay()->toDateTimeString());
+        $fechaFin = $request->input('fecha_fin', Carbon::now()->endOfDay()->toDateTimeString());
+    
+        // Filtrar registros de auditoría en el rango de fechas, sin paginar
+        $audits = Audit::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
+    
+        // Convertir los valores antiguos y nuevos a JSON
+        foreach ($audits as $audit) {
+            $audit->old_values = json_encode($audit->old_values);
+            $audit->new_values = json_encode($audit->new_values);
+        }
+    
+        // Iniciar el contador manualmente en 0
+        $i = 0;
+    
+        return view('audit.index', compact('audits', 'i'));
     }
 
     /**
-     * Devuelve los datos de auditoría en formato JSON para DataTables.
-     */
-    public function getAudits(): JsonResponse
-    {
-        $audits = Audit::all()->map(function ($audit) {
-            return [
-                'id' => $audit->id,
-                'user_type' => class_basename($audit->user_type),
-                'user_name' => optional($audit->user)->name,
-                'created_at' => $audit->created_at->format('d/m/Y H:i:s'),
-                'event' => $audit->event,
-                'auditable_type' => class_basename($audit->auditable_type),
-                'auditable_id' => $audit->auditable_id,
-                'old_values' => json_encode($audit->old_values),
-                'new_values' => json_encode($audit->new_values),
-                'url' => $audit->url,
-                'ip_address' => $audit->ip_address,
-                'user_agent' => $audit->user_agent,
-                'tags' => $audit->tags,
-            ];
-        });
-
-        return response()->json(['data' => $audits]);
-    }
-
-        /**
      * Display the specified resource.
      */
     public function show($id): View
