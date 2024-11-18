@@ -180,11 +180,11 @@
                                                             <span class="badge bg-info text-white fs-6 ms-2">
                                                                 ${{ number_format($cotizacionElemento->precio) }}
                                                             </span>
-                                                            @if(!empty($cotizacionPrecio->descripcion))
-                                                                <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
-                                                            @endif
                                                         </div>
                                                         <div class="d-flex align-items-center ms-2">
+                                                            @if(!empty($cotizacionPrecio->descripcion))
+                                                                <i class="fas fa-comment-dots me-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                            @endif
                                                             <!-- Botón para Detalle de Cotización -->
                                                             <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                                 <i class="fas fa-eye"></i>
