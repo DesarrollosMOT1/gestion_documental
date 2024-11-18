@@ -23,26 +23,30 @@
 
                         <div class="form-group mb-2 mb20">
                             <strong>Tipo:</strong>
-                            {{ $movimiento->tipo }}
+                            {{ $movimiento->tipo_nombre }}
                         </div>
                         <div class="form-group mb-2 mb20">
                             <strong>Clase:</strong>
-                            {{ $movimiento->clase }}
+                            {{ $movimiento->clase_nombre }}
                         </div>
                         <div class="form-group mb-2 mb20">
-                            <strong>Almacen:</strong>
-                            {{ $movimiento->almacen }}
+                            <strong>Almacén:</strong>
+                            {{ $movimiento->almacen_nombre }}
+                        </div>
+                        <div class="form-group mb-2 mb20">
+                            <strong>Bodega:</strong>
+                            {{ $movimiento->bodega_nombre }}
                         </div>
                         <div class="form-group mb-2 mb20">
                             <strong>Fecha:</strong>
                             {{ $movimiento->fecha }}
                         </div>
                         <div class="form-group mb-2 mb20">
-                            <strong>Descripcion:</strong>
+                            <strong>Descripción:</strong>
                             {{ $movimiento->descripcion }}
                         </div>
                         <div class="form-group mb-2 mb20">
-                            <strong>fecha de creacion:</strong>
+                            <strong>Fecha de creación:</strong>
                             {{ $movimiento->created_at }}
                         </div>
 
@@ -67,12 +71,12 @@
             <tbody>
                 @foreach ($registros as $registro)
                     <tr>
-                        <td>{{ $registro['producto'] }}</td>
-                        <td>{{ $registro['unidad'] }}</td>
-                        <td>{{ $registro['cantidad'] }}</td>
-                        <td>{{ $registro['tercero'] }}</td>
-                        <td>{{ $registro['motivo'] }}</td>
-                        <td>{{ $registro['detalle_registro'] }}</td>
+                        <td>{{ $registro->producto_nombre }}</td>
+                        <td>{{ $registro->unidad_nombre }}</td>
+                        <td>{{ $registro->cantidad }}</td>
+                        <td>{{ $registro->tercero_nombre }}</td>
+                        <td>{{ $registro->motivo_nombre }}</td>
+                        <td>{{ $registro->detalle_registro }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -22,7 +22,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "ibex/crud-generator": "^2.1",
-        "laravel-lang/common": "^6.3",
+        "laravel-lang/common": "^6.4",
         "laravel-lang/lang": "^15.5",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.31",

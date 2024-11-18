@@ -101,7 +101,7 @@ class TerceroController extends Controller
     public function getAllTerceros(): JsonResponse
     {
         $tercerosTests = DB::table('terceros')
-            ->select('id', 'nombre as name')
+            ->select('nit as id', 'nombre as name')
             ->get();
 
         return response()->json($tercerosTests);

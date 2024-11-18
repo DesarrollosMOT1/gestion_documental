@@ -6,6 +6,7 @@ use App\Http\Requests\MovimientoRequest;
 use App\Models\Movimiento;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -65,11 +66,40 @@ class MovimientoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show($id)
     {
-        $movimiento = Movimiento::find($id);
-        $registros = $movimiento->registros->toArray();
-        // dd($registros);
+        // Consulta del movimiento con todas las relaciones necesarias
+        $movimiento = DB::table('movimientos')
+            ->join('clases_movimientos', 'movimientos.clase', '=', 'clases_movimientos.id')
+            ->join('tipos_movimientos', 'clases_movimientos.tipo', '=', 'tipos_movimientos.id')
+            ->join('almacenes', 'movimientos.almacen', '=', 'almacenes.id')
+            ->join('bodegas', 'almacenes.bodega', '=', 'bodegas.id')
+            ->where('movimientos.id', $id)
+            ->select(
+                'movimientos.*',
+                'clases_movimientos.nombre as clase_nombre',
+                'tipos_movimientos.nombre as tipo_nombre',
+                'almacenes.nombre as almacen_nombre',
+                'bodegas.nombre as bodega_nombre'
+            )
+            ->first();
+
+        // Consulta de los registros asociados con joins para obtener datos adicionales
+        $registros = DB::table('registros')
+            ->join('productos', 'registros.producto', '=', 'productos.codigo_producto')
+            ->join('unidades', 'registros.unidad', '=', 'unidades.id')
+            ->join('terceros', 'registros.tercero', '=', 'terceros.nit')
+            ->join('motivos', 'registros.motivo', '=', 'motivos.id')
+            ->where('registros.movimiento', $id)
+            ->select(
+                'productos.nombre as producto_nombre',
+                'unidades.nombre as unidad_nombre',
+                'registros.cantidad',
+                'terceros.nombre as tercero_nombre',
+                'motivos.nombre as motivo_nombre',
+                'registros.detalle_registro'
+            )
+            ->get();
 
         return view('movimientos.show', compact('movimiento', 'registros'));
     }

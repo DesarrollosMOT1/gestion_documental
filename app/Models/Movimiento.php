@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $created_at
  * @property $updated_at
  * @property Almacenes $Almacenes
- * @property TiposMovimiento $ tiposMovimiento
  * @property ClasesMovimiento $clasesMovimiento
  * @property Registro[] $registros
  *
