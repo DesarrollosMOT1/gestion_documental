@@ -147,9 +147,11 @@
                                             <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
                                             <td class="bg-success bg-opacity-50 border-dark text-dark text-center">
                                                 {{ $consolidaciones->first()->cantidad }}
+                                                @can('editar_consolidacion_estado_jefe')
                                                 <button type="button" class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#editCantidadModal{{ $consolidaciones->first()->id }}">
                                                     <i class="fa fa-fw fa-edit"></i>
                                                 </button>
+                                                @endcan
                                             </td>                                            
                 
                                             @if($cotizacionesPorTercero->isNotEmpty())
