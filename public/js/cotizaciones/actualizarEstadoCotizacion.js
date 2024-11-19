@@ -359,23 +359,35 @@ const aplicarEstadoInicial = () => {
     document.querySelectorAll('.estado-checkbox:checked').forEach(checkbox => {
         const id = checkbox.getAttribute('data-id');
         const idSolicitudElemento = checkbox.getAttribute('data-id-solicitud-elemento');
-        actualizarInterfaz(id, 1, idSolicitudElemento);
+        
+        // Solo actualizar la interfaz visual
+        const row = checkbox.closest('tr');
+        const icono = row.querySelector(`#icono-estado${id}`);
+        
+        // Deshabilitar otros checkboxes en la misma fila
+        row.querySelectorAll('.estado-checkbox').forEach(otherCheckbox => {
+            if (otherCheckbox !== checkbox) {
+                otherCheckbox.disabled = true;
+            }
+        });
+
+        // Actualizar el ícono
+        if (icono) {
+            icono.classList.remove('fa-times-circle', 'text-danger');
+            icono.classList.add('fa-check-circle', 'text-success');
+        }
     });
 
     document.querySelectorAll('tr').forEach(row => {
         const checkedJefe = row.querySelector('.estado-jefe-checkbox:checked');
         if (checkedJefe) {
-            const id = checkedJefe.getAttribute('data-id');
+            // Deshabilitar otros checkboxes de jefe en la misma fila
             row.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
                 if (otherCheckbox !== checkedJefe) {
                     otherCheckbox.checked = false;
                     otherCheckbox.disabled = true || !tienePermiso(otherCheckbox);
                 }
             });
-
-            const idAgrupacion = checkedJefe.getAttribute('data-id-agrupacion');
-            const idConsolidaciones = checkedJefe.getAttribute('data-id-consolidaciones');
-            actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, 1);
         }
         actualizarSelectedItem(row);
     });
