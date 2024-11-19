@@ -46,7 +46,8 @@ const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = nul
         const currentId = checkbox.getAttribute('data-id');
         const row = checkbox.closest('tr');
         const icono = row.querySelector(`#icono-estado${currentId}`);
-        const comentarioIcon = row.querySelector('.fa-comment-dots');
+        const currentCell = checkbox.closest('td');
+        const comentarioContainer = currentCell.querySelector('.d-flex.align-items-center.ms-2');
 
         if (currentId === id) {
             if (estado !== null) {
@@ -56,16 +57,17 @@ const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = nul
                     icono.classList.add('fa-check-circle', 'text-success');
 
                     if (justificacion) {
+                        let comentarioIcon = comentarioContainer.querySelector('.fa-comment-dots.text-primary');
                         if (comentarioIcon) {
                             comentarioIcon.title = justificacion;
                         } else {
                             const nuevoComentarioIcon = document.createElement('i');
-                            nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
+                            nuevoComentarioIcon.className = 'fas fa-comment-dots me-2 text-primary';
                             nuevoComentarioIcon.title = justificacion;
                             nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
 
-                            const precioSpan = checkbox.closest('td').querySelector('.badge.bg-info');
-                            precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon);
+                            // Agregar como el primer hijo
+                            comentarioContainer.prepend(nuevoComentarioIcon);
 
                             new bootstrap.Tooltip(nuevoComentarioIcon);
                         }
@@ -311,18 +313,23 @@ const handleGuardarJustificacionJefe = function() {
         .then(data => {
             if (data.success) {
                 const fila = document.querySelector(`[data-id="${id}"]`).closest('tr');
-                const contenedorJustificacion = fila.querySelector('.d-flex.align-items-center');
-                const comentarioIcon = contenedorJustificacion.querySelector('.fa-comment-dots');
+                const cotizacionCell = fila.querySelector(`td:has(.estado-checkbox[data-id="${id}"])`);
+                const contenedorJustificacion = cotizacionCell.querySelector('.d-flex.align-items-center');
+                let comentarioIcon = contenedorJustificacion.querySelector('.fa-comment-dots');
 
                 if (comentarioIcon) {
                     comentarioIcon.title = justificacion;
+                    comentarioIcon.classList.remove('text-primary');
+                    comentarioIcon.classList.add('text-danger');
                 } else {
                     const nuevoComentarioIcon = document.createElement('i');
                     nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-danger';
                     nuevoComentarioIcon.title = justificacion;
                     nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
 
-                    contenedorJustificacion.insertAdjacentElement('beforeend', nuevoComentarioIcon);
+                    const precioSpan = contenedorJustificacion.querySelector('.badge.bg-info');
+                    precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon);
+                    
                     new bootstrap.Tooltip(nuevoComentarioIcon);
                 }
             }
