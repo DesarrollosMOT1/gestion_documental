@@ -187,6 +187,28 @@ class CotizacioneController extends Controller
         ]);
     }
 
+    public function actualizarJustificacionJefe(Request $request, $id)
+    {
+        $solicitudCotizacion = SolicitudesCotizacione::findOrFail($id);
+        $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
+        $idConsolidaciones = $request->input('id_consolidaciones');
+
+        $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
+            [
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion,
+                'id_consolidaciones' => $idConsolidaciones
+            ],
+            [
+                'justificacion_jefe' => $request->input('justificacion_jefe')
+            ]
+        );
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
     public function getCotizacionesEstadoJefe($agrupacionId): JsonResponse
     {
         // Obtener las cotizaciones_precio que no tengan órdenes de compra creadas

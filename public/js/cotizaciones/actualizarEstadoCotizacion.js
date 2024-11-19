@@ -172,6 +172,18 @@ const handleJustificacionInput = () => {
     }
 };
 
+const handleJustificacionJefeInput = function() {
+    const maxLength = 255;
+    const currentLength = this.value.length;
+    const charCountElement = document.getElementById(`charCountJefe${this.getAttribute('data-id')}`);
+
+    charCountElement.textContent = `${currentLength}/${maxLength} caracteres`;
+
+    if (currentLength > maxLength) {
+        this.value = this.value.substring(0, maxLength);
+    }
+};
+
 const handleEstadoCheckboxChange = function() {
     if (!tienePermiso(this)) {
         this.checked = !this.checked;
@@ -267,6 +279,60 @@ const handleGuardarJustificacion = () => {
     }
 };
 
+const handleGuardarJustificacionJefe = function() {
+    const id = this.getAttribute('data-id');
+    const idAgrupacion = this.getAttribute('data-id-agrupacion');
+    const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
+    const justificacionJefeTexto = document.getElementById(`justificacionJefe${id}`);
+    const justificacionJefeError = document.getElementById(`justificacionJefeError${id}`);
+    const justificacion = justificacionJefeTexto.value.trim();
+
+    if (justificacion === '') {
+        justificacionJefeTexto.classList.add('is-invalid');
+        justificacionJefeError.style.display = 'block';
+    } else {
+        justificacionJefeTexto.classList.remove('is-invalid');
+        justificacionJefeError.style.display = 'none';
+
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        fetch(`/cotizaciones/actualizar-justificacion-jefe/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({
+                id_agrupaciones_consolidaciones: idAgrupacion,
+                id_consolidaciones: idConsolidaciones,
+                justificacion_jefe: justificacion
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const fila = document.querySelector(`[data-id="${id}"]`).closest('tr');
+                const contenedorJustificacion = fila.querySelector('.d-flex.align-items-center');
+                const comentarioIcon = contenedorJustificacion.querySelector('.fa-comment-dots');
+
+                if (comentarioIcon) {
+                    comentarioIcon.title = justificacion;
+                } else {
+                    const nuevoComentarioIcon = document.createElement('i');
+                    nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-danger';
+                    nuevoComentarioIcon.title = justificacion;
+                    nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
+
+                    contenedorJustificacion.insertAdjacentElement('beforeend', nuevoComentarioIcon);
+                    new bootstrap.Tooltip(nuevoComentarioIcon);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar justificación:', error);
+        });
+    }
+};
+
 const handleModalHide = () => {
     justificacionTexto.classList.remove('is-invalid');
     justificacionError.style.display = 'none';
@@ -332,6 +398,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('guardarJustificacion').addEventListener('click', handleGuardarJustificacion);
     justificacionModal._element.addEventListener('hide.bs.modal', handleModalHide);
+
+    document.querySelectorAll('.justificacion-jefe-textarea').forEach(textarea => {
+        textarea.addEventListener('input', handleJustificacionJefeInput);
+    });
+
+    document.querySelectorAll('.guardar-justificacion-jefe').forEach(button => {
+        button.addEventListener('click', handleGuardarJustificacionJefe);
+    });
 
     // Aplicar estado inicial
     aplicarEstadoInicial();
