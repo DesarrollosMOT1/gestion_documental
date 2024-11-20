@@ -10,31 +10,6 @@
             <li class="list-group-item"><strong>Descuento:</strong> {{ $cotizacionElemento->descuento }}%</li>
             <li class="list-group-item"><strong>Impuesto:</strong> {{ $cotizacionElemento->impuesto->nombre ?? 'N/A' }}</li>
             <li class="list-group-item"><strong>Estado:</strong> <span class="badge {{ $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id)->estado == 1 ? 'bg-success' : 'bg-warning text-dark' : 'bg-secondary' }}">{{ $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id) ? $cotizacionElemento->cotizacionesPrecios->firstWhere('id_agrupaciones_consolidaciones', $agrupacion->id)->estado == 1 ? 'Aprobada' : 'Pendiente' : 'Sin Estado' }}</span></li>
-            @can('editar_consolidacion_estado_jefe')
-            <div class="mt-3">
-                <p>Justificación del Jefe:</p>
-                <textarea 
-                    id="justificacionJefe{{ $cotizacionElemento->id }}" 
-                    class="form-control justificacion-jefe-textarea" 
-                    rows="3" 
-                    maxlength="255" 
-                    data-id="{{ $cotizacionElemento->id }}"
-                    data-id-agrupacion="{{ $agrupacion->id }}"
-                    data-id-consolidaciones="{{ $consolidaciones->first()->id }}"
-                >{{ $cotizacionPrecio->justificacion_jefe ?? '' }}</textarea>
-                <small id="charCountJefe{{ $cotizacionElemento->id }}" class="form-text text-muted">0/255 caracteres</small>
-                <div id="justificacionJefeError{{ $cotizacionElemento->id }}" class="invalid-feedback">Por favor, proporcione una justificación.</div>
-                <button 
-                    type="button" 
-                    class="btn btn-primary mt-2 guardar-justificacion-jefe" 
-                    data-id="{{ $cotizacionElemento->id }}"
-                    data-id-agrupacion="{{ $agrupacion->id }}"
-                    data-id-consolidaciones="{{ $consolidaciones->first()->id }}"
-                >
-                    Guardar Justificación
-                </button>
-            </div>
-            @endcan
         </ul>
     </div>
     <div class="col-md-6">

@@ -8,7 +8,7 @@ function updateTableMessage() {
     noElementsRow.style.display = rows.length === 0 ? '' : 'none';
 }
 
-document.getElementById('addElement').addEventListener('click', function () {
+document.getElementById('addElement').addEventListener('click', function() {
     const nivelesTres = document.getElementById('select_niveles_tres');
     const centrosCostos = document.getElementById('select_id_centros_costos');
     const cantidad = document.getElementById('input_cantidad').value;
@@ -40,21 +40,18 @@ document.getElementById('addElement').addEventListener('click', function () {
     const nivelesTresValue = nivelesTres.value;
     const centrosCostosValue = centrosCostos.value;
 
-    // Crear una clave única combinando nivel tres y centro de costos
-    const uniqueKey = `${nivelesTresValue}-${centrosCostosValue}`;
-
-    // Verificar si la combinación ya fue agregada
-    if (nivelesTresSet.has(uniqueKey)) {
+    // Verificar si el nivel tres ya fue agregado
+    if (nivelesTresSet.has(nivelesTresValue)) {
         Swal.fire({
             icon: 'warning',
             title: 'Elemento ya agregado',
-            text: 'Ya existe un elemento con este nivel tres y centro de costo.',
+            text: 'Ya hay un elemento agregado, cambialo',
         });
-        return;
+        return; // Salir de la función si el nivel tres ya existe
     }
 
-    // Agregar la combinación única al Set
-    nivelesTresSet.add(uniqueKey);
+    // Agregar el nivel tres al conjunto
+    nivelesTresSet.add(nivelesTresValue);
 
     // Agregar la fila a la tabla
     createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue);
@@ -91,7 +88,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Eliminar';
     deleteButton.className = 'btn btn-danger';
-    deleteButton.addEventListener('click', () => removeElement(elementIndex, nivelesTresValue, centrosCostosValue));
+    deleteButton.addEventListener('click', () => removeElement(elementIndex));
     cell4.appendChild(deleteButton);
     newRow.appendChild(cell4);
 
@@ -113,18 +110,18 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     tableBody.appendChild(newRow);
 }
 
-function removeElement(index, nivelesTresValue, centrosCostosValue) {
+function removeElement(index) {
     const row = document.getElementById(`element-${index}`);
+    const nivelesTresValue = row.querySelector(`input[name="elements[${index}][id_niveles_tres]"]`).value;
 
-    // Eliminar la combinación única del Set
-    const uniqueKey = `${nivelesTresValue}-${centrosCostosValue}`;
-    nivelesTresSet.delete(uniqueKey);
+    // Eliminar el nivel tres del conjunto
+    nivelesTresSet.delete(nivelesTresValue);
 
     row.remove();
     updateTableMessage();
 }
 
-document.getElementById('submitForm').addEventListener('click', function (event) {
+document.getElementById('submitForm').addEventListener('click', function(event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del botón
 
     const elementsCount = document.querySelectorAll('#elementsTableBody tr:not(#noElementsRow)').length;

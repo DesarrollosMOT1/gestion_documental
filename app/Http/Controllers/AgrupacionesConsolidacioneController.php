@@ -188,20 +188,6 @@ class AgrupacionesConsolidacioneController extends Controller
         // Crear los elementos de solicitud y consolidar
         $elements = $request->input('elements', []);
         foreach ($elements as $element) {
-            // Verificar si ya existe un elemento con el mismo nivel tres y centro de costos en esta solicitud
-            $existingElement = SolicitudesElemento::where('id_niveles_tres', $element['id_niveles_tres'])
-                ->where('id_centros_costos', $element['id_centros_costos'])
-                ->where('id_solicitudes_compra', $solicitudesCompra->id)
-                ->exists();
-    
-            if ($existingElement) {
-                return back()->withErrors([
-                    'error' => 'El elemento con Nivel Tres "' . $element['id_niveles_tres'] . 
-                    '" y Centro de Costos "' . $element['id_centros_costos'] . 
-                    '" ya está agregado en esta solicitud.',
-                ]);
-            }
-    
             // Crear SolicitudesElemento
             $solicitudElemento = $solicitudesCompra->solicitudesElemento()->create([
                 'id_niveles_tres' => $element['id_niveles_tres'],
@@ -256,7 +242,7 @@ class AgrupacionesConsolidacioneController extends Controller
     
         return Redirect::route('agrupaciones-consolidaciones.show', $agrupacion->id)
             ->with('success', 'Solicitud de compra creada y consolidada exitosamente.');
-    }    
+    }
 
 
     /**
@@ -277,8 +263,7 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
             'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres',
-            'consolidaciones.cotizacionesPrecio',
-            'consolidaciones.solicitudesElemento',
+            'consolidaciones.cotizacionesPrecio'
         ])->findOrFail($id);
 
         $this->authorize('view', $agrupacionesConsolidacione);
@@ -373,57 +358,6 @@ class AgrupacionesConsolidacioneController extends Controller
     
         return $historialCotizaciones;
     }    
-    public function updateCantidad(Request $request, $id)
-    {
-        // Validación condicional dependiendo de si se actualiza una consolidación o elementos consolidados
-        $request->validate([
-            'cantidad' => 'required',
-            'cantidad.*' => 'required|integer|min:0|max:1000', // Si es un array, se valida cada cantidad
-        ]);
-    
-        // Si la cantidad es un solo valor (caso de consolidación individual)
-        if ($request->has('cantidad') && !is_array($request->input('cantidad'))) {
-            $cantidad = $request->input('cantidad');
-    
-            // Encontrar la solicitud de elemento y actualizar su cantidad
-            $solicitudElemento = SolicitudesElemento::findOrFail($id);
-            $solicitudElemento->cantidad = $cantidad;
-            $solicitudElemento->save();
-    
-            // Actualizar la cantidad en las consolidaciones asociadas
-            foreach ($solicitudElemento->consolidaciones as $consolidacion) {
-                $consolidacion->cantidad = $cantidad; // Se iguala a la cantidad actualizada del elemento
-                $consolidacion->save();
-            }
-    
-            return redirect()->back()->with('success', 'La cantidad de la consolidación ha sido actualizada exitosamente.');
-        }
-    
-        // Si la cantidad es un array (caso de elementos consolidados)
-        if ($request->has('cantidad') && is_array($request->input('cantidad'))) {
-            foreach ($request->input('cantidad') as $elementoConsolidadoId => $cantidad) {
-                // Encontrar el elemento consolidado por su ID
-                $elementoConsolidado = ElementosConsolidado::findOrFail($elementoConsolidadoId);
-    
-                // Actualizar la cantidad en el elemento consolidado
-                $elementoConsolidado->solicitudesElemento->cantidad = $cantidad;
-                $elementoConsolidado->solicitudesElemento->save();
-    
-                // Recalcular y actualizar la cantidad en la consolidación asociada
-                $consolidacion = $elementoConsolidado->consolidacione;
-                $consolidacion->cantidad = $consolidacion->elementosConsolidados->sum(function ($elem) {
-                    return $elem->solicitudesElemento->cantidad;
-                });
-                $consolidacion->save();
-            }
-    
-            return redirect()->back()->with('success', 'Las cantidades de los elementos consolidados han sido actualizadas exitosamente.');
-        }
-    
-        return redirect()->back()->with('error', 'Hubo un problema al actualizar las cantidades.');
-    }                  
-    
-
 
     /**
      * Show the form for editing the specified resource.

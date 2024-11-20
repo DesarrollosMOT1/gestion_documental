@@ -38,7 +38,7 @@ class CotizacionesPrecio extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_solicitudes_cotizaciones', 'id_agrupaciones_consolidaciones', 'descripcion', 'estado', 'id_consolidaciones', 'estado_jefe', 'justificacion_jefe'];
+    protected $fillable = ['id_solicitudes_cotizaciones', 'id_agrupaciones_consolidaciones', 'descripcion', 'estado', 'id_consolidaciones', 'estado_jefe'];
 
 
     /**
