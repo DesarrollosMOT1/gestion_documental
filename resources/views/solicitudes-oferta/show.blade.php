@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- Modal para crear cotizaciones -->
-                <x-modal id="cotizacionesModal" title="Crear Cotización" size="lg">
+                <x-modal id="cotizacionesModal" title="Crear Cotización" size="xl">
                     <div class="modal-body">
                         <form action="{{ route('cotizaciones.store') }}" method="POST">
                             @csrf
