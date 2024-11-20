@@ -46,7 +46,8 @@ const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = nul
         const currentId = checkbox.getAttribute('data-id');
         const row = checkbox.closest('tr');
         const icono = row.querySelector(`#icono-estado${currentId}`);
-        const comentarioIcon = row.querySelector('.fa-comment-dots');
+        const currentCell = checkbox.closest('td');
+        const comentarioContainer = currentCell.querySelector('.d-flex.align-items-center.ms-2');
 
         if (currentId === id) {
             if (estado !== null) {
@@ -56,16 +57,17 @@ const actualizarInterfaz = (id, estado, idSolicitudElemento, justificacion = nul
                     icono.classList.add('fa-check-circle', 'text-success');
 
                     if (justificacion) {
+                        let comentarioIcon = comentarioContainer.querySelector('.fa-comment-dots.text-primary');
                         if (comentarioIcon) {
                             comentarioIcon.title = justificacion;
                         } else {
                             const nuevoComentarioIcon = document.createElement('i');
-                            nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-primary';
+                            nuevoComentarioIcon.className = 'fas fa-comment-dots me-2 text-primary';
                             nuevoComentarioIcon.title = justificacion;
                             nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
 
-                            const precioSpan = checkbox.closest('td').querySelector('.badge.bg-info');
-                            precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon);
+                            // Agregar como el primer hijo
+                            comentarioContainer.prepend(nuevoComentarioIcon);
 
                             new bootstrap.Tooltip(nuevoComentarioIcon);
                         }
@@ -172,6 +174,18 @@ const handleJustificacionInput = () => {
     }
 };
 
+const handleJustificacionJefeInput = function() {
+    const maxLength = 255;
+    const currentLength = this.value.length;
+    const charCountElement = document.getElementById(`charCountJefe${this.getAttribute('data-id')}`);
+
+    charCountElement.textContent = `${currentLength}/${maxLength} caracteres`;
+
+    if (currentLength > maxLength) {
+        this.value = this.value.substring(0, maxLength);
+    }
+};
+
 const handleEstadoCheckboxChange = function() {
     if (!tienePermiso(this)) {
         this.checked = !this.checked;
@@ -267,6 +281,65 @@ const handleGuardarJustificacion = () => {
     }
 };
 
+const handleGuardarJustificacionJefe = function() {
+    const id = this.getAttribute('data-id');
+    const idAgrupacion = this.getAttribute('data-id-agrupacion');
+    const idConsolidaciones = this.getAttribute('data-id-consolidaciones');
+    const justificacionJefeTexto = document.getElementById(`justificacionJefe${id}`);
+    const justificacionJefeError = document.getElementById(`justificacionJefeError${id}`);
+    const justificacion = justificacionJefeTexto.value.trim();
+
+    if (justificacion === '') {
+        justificacionJefeTexto.classList.add('is-invalid');
+        justificacionJefeError.style.display = 'block';
+    } else {
+        justificacionJefeTexto.classList.remove('is-invalid');
+        justificacionJefeError.style.display = 'none';
+
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        fetch(`/cotizaciones/actualizar-justificacion-jefe/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({
+                id_agrupaciones_consolidaciones: idAgrupacion,
+                id_consolidaciones: idConsolidaciones,
+                justificacion_jefe: justificacion
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const fila = document.querySelector(`[data-id="${id}"]`).closest('tr');
+                const cotizacionCell = fila.querySelector(`td:has(.estado-checkbox[data-id="${id}"])`);
+                const contenedorJustificacion = cotizacionCell.querySelector('.d-flex.align-items-center');
+                let comentarioIcon = contenedorJustificacion.querySelector('.fa-comment-dots');
+
+                if (comentarioIcon) {
+                    comentarioIcon.title = justificacion;
+                    comentarioIcon.classList.remove('text-primary');
+                    comentarioIcon.classList.add('text-danger');
+                } else {
+                    const nuevoComentarioIcon = document.createElement('i');
+                    nuevoComentarioIcon.className = 'fas fa-comment-dots ms-2 text-danger';
+                    nuevoComentarioIcon.title = justificacion;
+                    nuevoComentarioIcon.setAttribute('data-bs-toggle', 'tooltip');
+
+                    const precioSpan = contenedorJustificacion.querySelector('.badge.bg-info');
+                    precioSpan.insertAdjacentElement('afterend', nuevoComentarioIcon);
+                    
+                    new bootstrap.Tooltip(nuevoComentarioIcon);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar justificación:', error);
+        });
+    }
+};
+
 const handleModalHide = () => {
     justificacionTexto.classList.remove('is-invalid');
     justificacionError.style.display = 'none';
@@ -286,23 +359,35 @@ const aplicarEstadoInicial = () => {
     document.querySelectorAll('.estado-checkbox:checked').forEach(checkbox => {
         const id = checkbox.getAttribute('data-id');
         const idSolicitudElemento = checkbox.getAttribute('data-id-solicitud-elemento');
-        actualizarInterfaz(id, 1, idSolicitudElemento);
+        
+        // Solo actualizar la interfaz visual
+        const row = checkbox.closest('tr');
+        const icono = row.querySelector(`#icono-estado${id}`);
+        
+        // Deshabilitar otros checkboxes en la misma fila
+        row.querySelectorAll('.estado-checkbox').forEach(otherCheckbox => {
+            if (otherCheckbox !== checkbox) {
+                otherCheckbox.disabled = true;
+            }
+        });
+
+        // Actualizar el ícono
+        if (icono) {
+            icono.classList.remove('fa-times-circle', 'text-danger');
+            icono.classList.add('fa-check-circle', 'text-success');
+        }
     });
 
     document.querySelectorAll('tr').forEach(row => {
         const checkedJefe = row.querySelector('.estado-jefe-checkbox:checked');
         if (checkedJefe) {
-            const id = checkedJefe.getAttribute('data-id');
+            // Deshabilitar otros checkboxes de jefe en la misma fila
             row.querySelectorAll('.estado-jefe-checkbox').forEach(otherCheckbox => {
                 if (otherCheckbox !== checkedJefe) {
                     otherCheckbox.checked = false;
                     otherCheckbox.disabled = true || !tienePermiso(otherCheckbox);
                 }
             });
-
-            const idAgrupacion = checkedJefe.getAttribute('data-id-agrupacion');
-            const idConsolidaciones = checkedJefe.getAttribute('data-id-consolidaciones');
-            actualizarEstadoCotizacion(id, null, idAgrupacion, idConsolidaciones, null, 1);
         }
         actualizarSelectedItem(row);
     });
@@ -332,6 +417,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('guardarJustificacion').addEventListener('click', handleGuardarJustificacion);
     justificacionModal._element.addEventListener('hide.bs.modal', handleModalHide);
+
+    document.querySelectorAll('.justificacion-jefe-textarea').forEach(textarea => {
+        textarea.addEventListener('input', handleJustificacionJefeInput);
+    });
+
+    document.querySelectorAll('.guardar-justificacion-jefe').forEach(button => {
+        button.addEventListener('click', handleGuardarJustificacionJefe);
+    });
 
     // Aplicar estado inicial
     aplicarEstadoInicial();

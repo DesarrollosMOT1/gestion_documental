@@ -59,6 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('ordenes-compras', App\Http\Controllers\OrdenesCompraController::class)->middleware('can:ver_ordenes_compras');
     Route::resource('entradas', App\Http\Controllers\EntradaController::class)->middleware('can:ver_entrada_inventario');
     Route::resource('audits', App\Http\Controllers\AuditController::class)->except(['create', 'edit', 'delete'])->middleware('can:ver_registro_auditoria');
+    Route::patch('/solicitudes-elemento/{id}/cantidad', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'updateCantidad'])->name('solicitudes-elemento.updateCantidad');
+
 
     // Rutas para agrupaciones y consolidaciones
     Route::post('agrupaciones-consolidacione/{agrupacionesConsolidacioneId}/solicitudes-compra', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'storeSolicitudesCompra'])->name('agrupaciones-consolidacione.storeSolicitudesCompra');
@@ -75,6 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/solicitudes-compras/actualizar-estado/{id}', [App\Http\Controllers\SolicitudesCompraController::class, 'actualizarEstado'])->name('solicitudes-compras.actualizar-estado');
     Route::post('/cotizaciones/actualizar-estado/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarEstado'])->name('cotizaciones.actualizar-estado');
     route::get('api/solicitudes-oferta/{id}/elementos', [App\Http\Controllers\CotizacioneController::class, 'obtenerElementosConsolidaciones']);
+    Route::post('cotizaciones/actualizar-justificacion-jefe/{id}', [App\Http\Controllers\CotizacioneController::class, 'actualizarJustificacionJefe']);
     Route::get('/api/impuestos', [App\Http\Controllers\CotizacioneController::class, 'getImpuestos']);
     Route::get('/cotizaciones-precio/estado-jefe/{agrupacionId}', [App\Http\Controllers\CotizacioneController::class, 'getCotizacionesEstadoJefe']);
     Route::get('/api/centros-costos/{idCentrosCostos}', [App\Http\Controllers\ClasificacionesCentroController::class, 'getCentrosCostos']);

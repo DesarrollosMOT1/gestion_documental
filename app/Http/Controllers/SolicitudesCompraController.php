@@ -127,14 +127,18 @@ class SolicitudesCompraController extends Controller
         $elements = $request->input('elements', []);
         
         foreach ($elements as $element) {
-            // Verificación de duplicados
+            // Verificar si ya existe un elemento con el mismo nivel tres y centro de costos en esta solicitud
             $existingElement = SolicitudesElemento::where('id_niveles_tres', $element['id_niveles_tres'])
                 ->where('id_centros_costos', $element['id_centros_costos'])
                 ->where('id_solicitudes_compra', $solicitudesCompra->id)
                 ->exists();
 
             if ($existingElement) {
-                return back()->withErrors(['error' => 'El elemento con id_niveles_tres ' . $element['id_niveles_tres'] . ' y id_centros_costos ' . $element['id_centros_costos'] . ' ya fue agregado.']);
+                return back()->withErrors([
+                    'error' => 'El elemento con Nivel Tres "' . $element['id_niveles_tres'] . 
+                    '" y Centro de Costos "' . $element['id_centros_costos'] . 
+                    '" ya está agregado en esta solicitud.',
+                ]);
             }
 
             $solicitudesCompra->solicitudesElemento()->create([

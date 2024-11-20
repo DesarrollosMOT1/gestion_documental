@@ -27,6 +27,7 @@ class CotizacionesPrecioRequest extends FormRequest
             'descripcion' => 'nullable|string', // Puede ser opcional
             'estado' => 'nullable|boolean', // Se puede omitir o ser verdadero/falso
             'estado_jefe' => 'nullable|boolean', // Se puede omitir o ser verdadero/falso
+            'justificacion_jefe' => 'nullable|string',
         ];
     }
 }
