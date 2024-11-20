@@ -145,7 +145,14 @@
                                                     </div>
                                             </td>
                                             <td class="font-weight-bold bg-success bg-opacity-50 border-dark text-dark">{{ $elementoNombre }}</td>
-                                            <td class="bg-success bg-opacity-50 border-dark text-dark">{{ $consolidaciones->first()->cantidad }}</td>
+                                            <td class="bg-success bg-opacity-50 border-dark text-dark text-center">
+                                                {{ $consolidaciones->first()->cantidad }}
+                                                @can('editar_consolidacion_estado_jefe')
+                                                <button type="button" class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#editCantidadModal{{ $consolidaciones->first()->id }}">
+                                                    <i class="fa fa-fw fa-edit"></i>
+                                                </button>
+                                                @endcan
+                                            </td>                                            
                 
                                             @if($cotizacionesPorTercero->isNotEmpty())
                                                 @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)
@@ -175,11 +182,14 @@
                                                             <span class="badge bg-info text-white fs-6 ms-2">
                                                                 ${{ number_format($cotizacionElemento->precio) }}
                                                             </span>
-                                                            @if(!empty($cotizacionPrecio->descripcion))
-                                                                <i class="fas fa-comment-dots ms-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                            @if(!empty($cotizacionPrecio->justificacion_jefe))
+                                                                <i class="fas fa-comment-dots ms-2 text-danger" title="{{ $cotizacionPrecio->justificacion_jefe }}" data-bs-toggle="tooltip"></i>
                                                             @endif
                                                         </div>
                                                         <div class="d-flex align-items-center ms-2">
+                                                            @if(!empty($cotizacionPrecio->descripcion))
+                                                                <i class="fas fa-comment-dots me-2 text-primary" title="{{ $cotizacionPrecio->descripcion }}" data-bs-toggle="tooltip"></i>
+                                                            @endif
                                                             <!-- Botón para Detalle de Cotización -->
                                                             <button type="button" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#detalleCotizacionModal{{ $cotizacionElemento->id }}">
                                                                 <i class="fas fa-eye"></i>
@@ -243,6 +253,18 @@
             <button type="button" class="btn btn-primary" id="guardarJustificacion">Guardar</button>
         </div>
     </x-modal>
+
+    @foreach($elementosConsolidados as $elementoNombre => $consolidaciones)
+        @foreach($consolidaciones as $consolidacion)
+            <x-modal id="editCantidadModal{{ $consolidacion->id }}" title="Editar Cantidad de la solicitud de compra" size="lg">
+                <form action="{{ route('solicitudes-elemento.updateCantidad', $consolidacion->solicitudesElemento->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    @include('agrupaciones-consolidacione.edit_cantidad', ['consolidacion' => $consolidacion])
+                </form>
+            </x-modal>
+        @endforeach
+    @endforeach
 
     <!-- Modal para solicitudes-oferta -->
     <x-modal id="solicitudesOfertaModal" title="{{ __('Generar Solicitud Oferta') }}" size="lg">

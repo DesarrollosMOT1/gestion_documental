@@ -127,29 +127,44 @@ class CotizacioneController extends Controller
         $idSolicitudElemento = $solicitudCotizacion->id_solicitud_elemento;
         $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
         $idConsolidaciones = $request->input('id_consolidaciones');  
-
+    
+        // Validar permisos según el campo que se intenta actualizar
+        if ($request->has('estado') || $request->has('justificacion')) {
+            if (!auth()->user()->can('editar_consolidacion_estado')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permiso para editar el estado o la justificación.'
+                ], 403);
+            }
+        }
+    
+        if ($request->has('estado_jefe')) {
+            if (!auth()->user()->can('editar_consolidacion_estado_jefe')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permiso para editar el estado del jefe.'
+                ], 403);
+            }
+        }
+    
         // Preparar los datos a actualizar
         $dataToUpdate = [
             'id_solicitudes_cotizaciones' => $id,
             'id_agrupaciones_consolidaciones' => $idAgrupacion,
             'id_consolidaciones' => $idConsolidaciones
         ];
-
-        // Si estamos actualizando solo estado_jefe, obtenemos el valor actual de 'estado'
+    
+        // Si se está actualizando solo estado_jefe, obtenemos el valor actual de 'estado'
         if ($request->has('estado_jefe') && !$request->has('estado')) {
             $cotizacionExistente = CotizacionesPrecio::where([
                 'id_solicitudes_cotizaciones' => $id,
                 'id_agrupaciones_consolidaciones' => $idAgrupacion,
                 'id_consolidaciones' => $idConsolidaciones
             ])->first();
-
-            if ($cotizacionExistente) {
-                $dataToUpdate['estado'] = $cotizacionExistente->estado;
-            } else {
-                $dataToUpdate['estado'] = 0; // Valor por defecto si no existe
-            }
+    
+            $dataToUpdate['estado'] = $cotizacionExistente ? $cotizacionExistente->estado : 0; // Valor por defecto si no existe
         }
-
+    
         if ($request->has('estado')) {
             $dataToUpdate['estado'] = $request->input('estado');
             
@@ -171,7 +186,8 @@ class CotizacioneController extends Controller
         if ($request->has('justificacion')) {
             $dataToUpdate['descripcion'] = $request->input('justificacion');
         }
-
+    
+        // Actualizar o crear el registro
         $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
             [
                 'id_solicitudes_cotizaciones' => $id,
@@ -180,12 +196,42 @@ class CotizacioneController extends Controller
             ],
             $dataToUpdate
         );
-
+    
         return response()->json([
             'success' => true,
             'idSolicitudElemento' => $idSolicitudElemento
         ]);
-    }
+    }    
+
+    public function actualizarJustificacionJefe(Request $request, $id)
+    {
+        // Verificar si el usuario tiene el permiso
+        if (!auth()->user()->can('editar_consolidacion_estado_jefe')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permiso para realizar esta acción.'
+            ], 403);
+        }
+    
+        $solicitudCotizacion = SolicitudesCotizacione::findOrFail($id);
+        $idAgrupacion = $request->input('id_agrupaciones_consolidaciones');
+        $idConsolidaciones = $request->input('id_consolidaciones');
+    
+        $cotizacionPrecio = CotizacionesPrecio::updateOrCreate(
+            [
+                'id_solicitudes_cotizaciones' => $id,
+                'id_agrupaciones_consolidaciones' => $idAgrupacion,
+                'id_consolidaciones' => $idConsolidaciones
+            ],
+            [
+                'justificacion_jefe' => $request->input('justificacion_jefe')
+            ]
+        );
+    
+        return response()->json([
+            'success' => true
+        ]);
+    }    
 
     public function getCotizacionesEstadoJefe($agrupacionId): JsonResponse
     {
