@@ -34,6 +34,7 @@ trait VerNivelesPermiso
             'ver_nivel_solicitud_compra_sistemas' => 'SISTEMAS',
             'ver_nivel_solicitud_compra_seguridad_salud' => 'SEGURIDAD Y SALUD',
             'ver_nivel_solicitud_compra_dotacion_personal' => 'DOTACION PERSONAL',
+            'ver_nivel_solicitud_compra_logistica' => 'LOGISTICA',
         ];
 
         return $this->nivelesPermitidos($permissions);
@@ -53,6 +54,7 @@ trait VerNivelesPermiso
             'ver_nivel_sistemas' => 'SISTEMAS',
             'ver_nivel_seguridad_salud' => 'SEGURIDAD Y SALUD',
             'ver_nivel_dotacion_personal' => 'DOTACION PERSONAL',
+            'ver_nivel_logistica' => 'LOGISTICA',
         ];
 
         return $this->nivelesPermitidos($permissions);

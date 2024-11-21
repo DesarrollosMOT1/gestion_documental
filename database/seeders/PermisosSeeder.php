@@ -47,7 +47,9 @@ class PermisosSeeder extends Seeder
             'ver_nivel_solicitud_compra_sistemas',
             'ver_nivel_solicitud_compra_seguridad_salud',
             'ver_nivel_solicitud_compra_dotacion_personal',
-            'ver_registro_auditoria'
+            'ver_registro_auditoria',
+            'ver_nivel_solicitud_compra_logistica',
+            'ver_nivel_logistica'
         ];
 
         // Crear los permisos si no existen

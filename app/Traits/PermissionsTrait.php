@@ -20,6 +20,7 @@ trait PermissionsTrait
                 'ver_nivel_utiles_papeleria_fotocopia',
                 'ver_nivel_seguridad_salud',
                 'ver_nivel_dotacion_personal',
+                'ver_nivel_logistica'
             ],
             'Consolidaciones' => [
                 'ver_consolidaciones_jefe',
@@ -53,6 +54,7 @@ trait PermissionsTrait
                 'ver_nivel_solicitud_compra_sistemas',
                 'ver_nivel_solicitud_compra_seguridad_salud',
                 'ver_nivel_solicitud_compra_dotacion_personal',
+                'ver_nivel_solicitud_compra_logistica',
             ],
         ];
     }
