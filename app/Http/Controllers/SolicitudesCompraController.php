@@ -179,6 +179,8 @@ class SolicitudesCompraController extends Controller
             })->findOrFail($id);
         }
     
+        // Verificar la política de acceso
+        $this->authorize('view', $solicitudesCompra);
     
         return view('solicitudes-compra.show', compact('solicitudesCompra', 'nivelesUnoIds'));
     }
