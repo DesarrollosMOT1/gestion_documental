@@ -14,18 +14,17 @@ class SolicitudesCompraPolicy
      */
     public function view(User $user, SolicitudesCompra $solicitudesCompra): bool
     {
-        // Verificar si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado'
-        if ($user->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
-            // Retorna verdadero si el id_users de la solicitud coincide con el ID del usuario autenticado
-            return $solicitudesCompra->id_users === $user->id;
+        // Si la solicitud pertenece al usuario autenticado, permitir acceso
+        if ($solicitudesCompra->id_users === $user->id) {
+            return true;
         }
 
-        // Obtener los niveles uno permitidos según los permisos del usuario
+        // Obtener los niveles uno permitidos para el usuario
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
 
-        // Verificar si la solicitud de compra tiene elementos relacionados con los niveles uno permitidos
-        return collect($solicitudesCompra->solicitudesElemento)->contains(function($solicitud) use ($nivelesUnoIds) {
-            return in_array($solicitud->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds);
+        // Verificar si hay elementos de la solicitud que coincidan con los niveles permitidos
+        return collect($solicitudesCompra->solicitudesElemento)->contains(function ($elemento) use ($nivelesUnoIds) {
+            return in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds);
         });
     }
 }
