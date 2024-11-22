@@ -29,28 +29,20 @@ class SolicitudesCompraController extends Controller
     public function index(Request $request): View
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
-
+    
         // Rango de fechas por defecto (últimos 14 días)
         $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
         $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
     
         $solicitudesComprasQuery = SolicitudesCompra::query();
     
-        // Si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado'
-        if (auth()->user()->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
-            // Filtrar por solicitudes propias y las de los niveles permitidos
-            $solicitudesComprasQuery->where(function($query) use ($nivelesUnoIds) {
-                $query->where('id_users', auth()->user()->id)
-                    ->orWhereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-                        $query->whereIn('id', $nivelesUnoIds);
-                    });
-            });
-        } else {
-            // Si no tiene el permiso, solo filtrar por los niveles permitidos
-            $solicitudesComprasQuery->whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-                $query->whereIn('id', $nivelesUnoIds);
-            });
-        }
+        // Filtrar por solicitudes propias y las de los niveles permitidos
+        $solicitudesComprasQuery->where(function($query) use ($nivelesUnoIds) {
+            $query->where('id_users', auth()->user()->id)
+                ->orWhereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                    $query->whereIn('id', $nivelesUnoIds);
+                });
+        });
     
         // Filtrar por el rango de fechas
         $solicitudesCompras = $solicitudesComprasQuery->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFin])
@@ -62,6 +54,7 @@ class SolicitudesCompraController extends Controller
         return view('solicitudes-compra.index', compact('solicitudesCompras', 'agrupacionesConsolidacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
+     
 
 
     /**
