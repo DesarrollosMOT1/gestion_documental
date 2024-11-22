@@ -40,7 +40,6 @@ class PermisosSeeder extends Seeder
             'ver_centros_costos',
             'ver_terceros',
             'ver_impuestos',
-            'ver_solicitudes_usuario_autentificado',
             'ver_nivel_solicitud_compra_mantenimiento_vehiculo',
             'ver_nivel_solicitud_compra_utiles_papeleria_fotocopia',
             'ver_nivel_solicitud_compra_implementos_aseo_cafeteria',
