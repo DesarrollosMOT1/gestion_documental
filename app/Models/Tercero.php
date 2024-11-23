@@ -12,6 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property $nit
  * @property $tipo_factura
  * @property $nombre
+ * @property $email
  * @property $created_at
  * @property $updated_at
  *
@@ -32,7 +33,7 @@ class Tercero extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nit', 'tipo_factura', 'nombre'];
+    protected $fillable = ['nit', 'tipo_factura', 'nombre', 'email'];
 
 
     /**
