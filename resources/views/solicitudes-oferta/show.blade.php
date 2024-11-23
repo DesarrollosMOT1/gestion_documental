@@ -9,7 +9,7 @@
             <h3 class="m-0">Detalles de la Solicitud de Oferta</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('solicitudes-ofertas.index') }}">Atrás</a>
             <!-- Botón para Crear Cotización -->
-<button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cotizacionesModal">Crear Cotización</button>
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#cotizacionesModal">Crear Cotización</button>
         </div>
         @if ($message = Session::get('success'))
             <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
@@ -38,11 +38,23 @@
                         <div class="card-body">
                             @if($solicitudesOferta->terceros->isNotEmpty())
                                 @foreach($solicitudesOferta->terceros as $tercero)
-                                    <p><strong>NIT:</strong> {{ $tercero->nit }}</p>
-                                    <p><strong>Tipo de factura:</strong> {{ $tercero->tipo_factura ?? 'N/A' }}</p>
-                                    <p><strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}</p>
-                                    <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'terceroId' => $tercero->id]) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
-                                    <hr> <!-- Separador entre terceros -->
+                                    <div class="tercero-card mb-3">
+                                        <p><strong>NIT:</strong> {{ $tercero->nit }}</p>
+                                        <p><strong>Tipo de factura:</strong> {{ $tercero->tipo_factura ?? 'N/A' }}</p>
+                                        <p><strong>Nombre:</strong> {{ $tercero->nombre ?? 'N/A' }}</p>
+                                        <p><strong>Email:</strong> {{ $tercero->email ?? 'N/A' }}</p>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#terceroModal{{ $tercero->id }}">
+                                                <i class="fas fa-envelope"></i> Gestionar Email
+                                            </button>
+                                            <a href="{{ route('solicitudes-ofertas.pdf', ['id' => $solicitudesOferta->id, 'terceroId' => $tercero->id]) }}" 
+                                            target="_blank" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-file-pdf"></i> Ver PDF
+                                            </a>
+                                        </div>
+                                        @include('tercero.tercero-email', ['tercero' => $tercero])
+                                    </div>
+                                    <hr>
                                 @endforeach
                             @else
                                 <p class="text-muted">No hay terceros asociados a esta solicitud de oferta.</p>

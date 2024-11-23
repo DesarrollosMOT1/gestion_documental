@@ -15,6 +15,7 @@ use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Traits\VerNivelesPermiso;
 use Carbon\Carbon;
+use App\Models\Tercero;
 
 class SolicitudesOfertaController extends Controller
 {
@@ -126,7 +127,20 @@ class SolicitudesOfertaController extends Controller
             })->unique('id');
     
         return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion', 'cotizacionesRelacionadas'));
-    }    
+    }
+
+    public function updateTerceroEmail(Request $request, Tercero $tercero)
+    {
+        $request->validate([
+            'email' => 'required|string',
+        ]);
+
+        $tercero->update([
+            'email' => $request->email,
+        ]);
+
+        return back()->with('success', 'Email actualizado exitosamente');
+    }
 
     public function downloadPdf($id, $terceroId)
     {
@@ -138,7 +152,6 @@ class SolicitudesOfertaController extends Controller
         ])->findOrFail($id);
     
         $tercero = $solicitudesOferta->terceros->where('id', $terceroId)->first();
-
     
         if (!$tercero) {
             abort(404, 'Tercero no encontrado.');
