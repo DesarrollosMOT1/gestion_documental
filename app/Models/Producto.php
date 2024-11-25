@@ -15,14 +15,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property $ean
  * @property $created_at
  * @property $updated_at
- *
  * @property Registro[] $registros
- * @package App
+ *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Producto extends Model
 {
-
     protected $perPage = 20;
 
     /**
@@ -60,5 +58,4 @@ class Producto extends Model
     {
         return $this->hasMany(\App\Models\Registro::class, 'codigo_producto', 'producto');
     }
-
 }

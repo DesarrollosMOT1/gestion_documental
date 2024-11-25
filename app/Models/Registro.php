@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Motivo $motivo
  * @property Movimiento $movimiento
  * @property Producto $producto
- * @property Tercero $tercerostest
+ * @property Tercero $tercero
  * @property Unidades $unidades
  *
  * @mixin \Illuminate\Database\Eloquent\Builder
@@ -63,15 +63,15 @@ class Registro extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tercerostest()
+    public function tercero()
     {
-        return $this->belongsTo(\App\Models\Tercerostest::class, 'tercero', 'id');
+        return $this->belongsTo(\App\Models\Tercero::class, 'tercero', 'nit');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function unidades()
+    public function unidad()
     {
         return $this->belongsTo(\App\Models\Unidades::class, 'unidad', 'id');
     }
