@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MovimientoRequest;
 use App\Models\Movimiento;
+use App\Models\Registro;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -17,7 +17,13 @@ class MovimientoController extends Controller
      */
     public function index(Request $request): View
     {
-        $movimientos = Movimiento::paginate();
+        $movimientos = Movimiento::with(['Almacenes', 'tiposMovimiento', 'clasesMovimiento'])->paginate();
+
+        foreach ($movimientos as $movimiento) {
+            $movimiento->clase = $movimiento->clasesMovimiento->nombre;
+            $movimiento->tipo = $movimiento->tiposMovimiento->nombre;
+            $movimiento->almacen = $movimiento->Almacenes->nombre;
+        }
 
         return view('movimientos.index', compact('movimientos'))
             ->with('i', ($request->input('page', 1) - 1) * $movimientos->perPage());
@@ -68,40 +74,40 @@ class MovimientoController extends Controller
      */
     public function show($id)
     {
-        // Consulta del movimiento con todas las relaciones necesarias
-        $movimiento = DB::table('movimientos')
-            ->join('clases_movimientos', 'movimientos.clase', '=', 'clases_movimientos.id')
-            ->join('tipos_movimientos', 'clases_movimientos.tipo', '=', 'tipos_movimientos.id')
-            ->join('almacenes', 'movimientos.almacen', '=', 'almacenes.id')
-            ->join('bodegas', 'almacenes.bodega', '=', 'bodegas.id')
-            ->where('movimientos.id', $id)
-            ->select(
-                'movimientos.*',
-                'clases_movimientos.nombre as clase_nombre',
-                'tipos_movimientos.nombre as tipo_nombre',
-                'almacenes.nombre as almacen_nombre',
-                'bodegas.nombre as bodega_nombre'
-            )
-            ->first();
+        $movimientoObtenido = Movimiento::find($id);
 
-        // Consulta de los registros asociados con joins para obtener datos adicionales
-        $registros = DB::table('registros')
-            ->join('productos', 'registros.producto', '=', 'productos.codigo_producto')
-            ->join('unidades', 'registros.unidad', '=', 'unidades.id')
-            ->join('terceros', 'registros.tercero', '=', 'terceros.nit')
-            ->join('motivos', 'registros.motivo', '=', 'motivos.id')
-            ->where('registros.movimiento', $id)
-            ->select(
-                'productos.nombre as producto_nombre',
-                'unidades.nombre as unidad_nombre',
-                'registros.cantidad',
-                'terceros.nombre as tercero_nombre',
-                'motivos.nombre as motivo_nombre',
-                'registros.detalle_registro'
-            )
-            ->get();
+        $registrosObtenidos = Registro::where('movimiento', $id)->get();
+        $movimientoObtenido = $movimientoObtenido->load([
+            'Almacenes',
+            'tiposMovimiento',
+            'clasesMovimiento',
+        ]);
+        $movimiento = [
+            'id' => $movimientoObtenido->id,
+            'clase_nombre' => $movimientoObtenido->clasesMovimiento->nombre,
+            'tipo_nombre' => $movimientoObtenido->tiposMovimiento->nombre,
+            'almacen_nombre' => $movimientoObtenido->Almacenes->nombre,
+            'fecha' => $movimientoObtenido->fecha,
+            'descripcion' => $movimientoObtenido->descripcion,
+            'created_at' => $movimientoObtenido->created_at,
+        ];
+        $registros = [];
+
+        foreach ($registrosObtenidos as $registro) {
+            $registro = $registro->load(['producto', 'tercero', 'unidad', 'movimiento', 'motivo'])->toArray();
+            $registros[] = [
+                'producto_nombre' => $registro['producto']['nombre'],
+                'unidad_nombre' => $registro['unidad']['nombre'],
+                'cantidad' => $registro['cantidad'],
+                'tercero_nombre' => $registro['tercero']['nombre'],
+                'motivo_nombre' => $registro['motivo']['nombre'],
+                'detalle_registro' => $registro['detalle_registro'],
+            ];
+
+        }
 
         return view('movimientos.show', compact('movimiento', 'registros'));
+
     }
 
     /**
