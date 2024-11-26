@@ -54,13 +54,20 @@
             border-left: 4px solid #4299e1;
             margin: 20px 0;
         }
+        .user-info {
+            margin-left: 15px;
+        }
+
+        .user-info p {
+            margin: 5px 0;
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <!-- Si tienes un logo, puedes agregarlo aquí -->
-            <!-- <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo"> -->
+            <img src="{{ $message->embed(public_path('logo.png')) }}" alt="Logo" class="logo">
             <h1>Solicitud de Oferta</h1>
         </div>
         
@@ -68,20 +75,21 @@
             <p>Estimado/a <strong>{{ $tercero->nombre }}</strong>,</p>
             
             <p>Esperamos que este mensaje le encuentre bien. Nos ponemos en contacto con usted para hacerle llegar una solicitud de oferta para su consideración.</p>
-            
-            <div class="important-info">
-                <p><strong>Detalles de la Solicitud:</strong></p>
-                <ul>
-                    <li>Número de Solicitud: {{ $solicitudOferta->id }}</li>
-                    <li>Fecha de Emisión: {{ $solicitudOferta->fecha_solicitud_oferta }}</li>
-                </ul>
-            </div>
 
             <p>Adjunto a este correo encontrará el documento detallado de la solicitud de oferta en formato PDF. Le agradecemos revisar cuidadosamente todos los requisitos y especificaciones incluidos.</p>
 
             <p>Si tiene alguna pregunta o necesita aclaraciones adicionales, no dude en contactarnos.</p>
 
             <p>Agradecemos de antemano su tiempo y consideración.</p>
+
+            <div class="important-info">
+                <h3>Información de contacto:</h3>
+                <div class="user-info">
+                    <p><strong>Responsable:</strong> {{ $solicitudOferta->user->name }}</p>
+                    <p><strong>Área:</strong> {{ $solicitudOferta->user->area->nombre }}</p>
+                    <p><strong>Correo electrónico:</strong> {{ $solicitudOferta->user->email }}</p>
+                </div>
+            </div>
 
             <p>Cordialmente,</p>
             <p><strong>{{ config('app.name') }}</strong></p>
