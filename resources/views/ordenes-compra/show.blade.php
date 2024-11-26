@@ -9,6 +9,9 @@
             <h3 class="m-0">Orden de Compra</h3>
             <a class="btn btn-primary btn-sm" href="{{ route('ordenes-compras.index') }}">Atrás</a>
         </div>
+        @if ($message = Session::get('success'))
+            <div id="success-message" data-message="{{ $message }}" style="display: none;"></div>
+        @endif
         <div class="card-body">
             <div class="row">
                 <!-- Información de la Orden de Compra -->
@@ -107,7 +110,7 @@
                                                 <div class="card h-100">
                                                     <div class="card-header bg-success">
                                                         <h6 class="m-0">Agrupación Consolidación #{{ $ordenCompraCotizacion->consolidacione->agrupacioneConsolidaciones->pluck('id')->implode('-') }}
-                                                            <a href="{{ route('agrupaciones-consolidaciones.show', $ordenCompraCotizacion->consolidacione->id) }}" target="_blank" class="btn btn-sm btn-warning ms-2">Ir</a>
+                                                            <a href="{{ route('agrupaciones-consolidaciones.show', $ordenCompraCotizacion->consolidacione->agrupacioneConsolidaciones->pluck('id')->implode('-')) }}" target="_blank" class="btn btn-sm btn-warning ms-2">Ir</a>
                                                         </h6>
                                                     </div>
                                                     <div class="card-body">
