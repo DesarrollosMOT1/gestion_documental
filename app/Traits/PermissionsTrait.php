@@ -44,7 +44,6 @@ trait PermissionsTrait
                 'ver_centros_costos',
                 'ver_terceros',
                 'ver_impuestos',
-                'ver_solicitudes_usuario_autentificado',
                 'ver_registro_auditoria',
             ],
             'Niveles de la solicitud de compra' => [

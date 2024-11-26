@@ -15,6 +15,9 @@ use App\Models\SolicitudOfertaTercero;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Traits\VerNivelesPermiso;
 use Carbon\Carbon;
+use App\Models\Tercero;
+use App\Mail\EnviarEmailTercero;
+use Illuminate\Support\Facades\Mail;
 
 class SolicitudesOfertaController extends Controller
 {
@@ -126,7 +129,58 @@ class SolicitudesOfertaController extends Controller
             })->unique('id');
     
         return view('solicitudes-oferta.show', compact('solicitudesOferta', 'cotizacione', 'tercerosSinCotizacion', 'cotizacionesRelacionadas'));
-    }    
+    }
+
+    public function sendEmails(Request $request, $solicitudId, $terceroId)
+    {
+        $solicitudOferta = SolicitudesOferta::findOrFail($solicitudId);
+        $tercero = $solicitudOferta->terceros()->findOrFail($terceroId);
+        
+        // Validar emails
+        $request->validate([
+            'emails' => 'required|string'
+        ]);
+
+        // Separar y limpiar emails
+        $emails = array_map('trim', explode(',', $request->emails));
+        $emails = array_filter($emails, function($email) {
+            return filter_var($email, FILTER_VALIDATE_EMAIL);
+        });
+
+        if (empty($emails)) {
+            return back()->with('error', 'No se proporcionaron correos electrónicos válidos');
+        }
+
+        // Generar PDF
+        $pdf = Pdf::loadView('solicitudes-oferta.pdf', [
+            'solicitudesOferta' => $solicitudOferta,
+            'tercero' => $tercero,
+            'i' => 0
+        ]);
+        
+        // Codificar el contenido del PDF en base64
+        $pdfContent = base64_encode($pdf->output());
+
+        // Enviar emails
+        foreach ($emails as $email) {
+            Mail::to($email)->send(new EnviarEmailTercero($tercero, $solicitudOferta, $pdfContent));
+        }
+
+        return back()->with('success', 'Correos enviados exitosamente');
+    }
+
+    public function updateTerceroEmail(Request $request, Tercero $tercero)
+    {
+        $request->validate([
+            'email' => 'required|string',
+        ]);
+
+        $tercero->update([
+            'email' => $request->email,
+        ]);
+
+        return back()->with('success', 'Email actualizado exitosamente');
+    }
 
     public function downloadPdf($id, $terceroId)
     {
@@ -138,7 +192,6 @@ class SolicitudesOfertaController extends Controller
         ])->findOrFail($id);
     
         $tercero = $solicitudesOferta->terceros->where('id', $terceroId)->first();
-
     
         if (!$tercero) {
             abort(404, 'Tercero no encontrado.');

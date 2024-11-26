@@ -37,6 +37,7 @@ class TerceroRequest extends FormRequest
                 Rule::unique('terceros', 'nombre')->ignore($id),
             ],
             'tipo_factura' => 'required|string',
+            'email' => 'required|string',
         ];
     }
 }

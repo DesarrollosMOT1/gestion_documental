@@ -29,28 +29,20 @@ class SolicitudesCompraController extends Controller
     public function index(Request $request): View
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
-
+    
         // Rango de fechas por defecto (últimos 14 días)
         $fechaInicio = $request->input('fecha_inicio', Carbon::now()->subDays(14)->toDateString());
         $fechaFin = $request->input('fecha_fin', Carbon::now()->toDateString());
     
         $solicitudesComprasQuery = SolicitudesCompra::query();
     
-        // Si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado'
-        if (auth()->user()->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
-            // Filtrar por solicitudes propias y las de los niveles permitidos
-            $solicitudesComprasQuery->where(function($query) use ($nivelesUnoIds) {
-                $query->where('id_users', auth()->user()->id)
-                    ->orWhereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-                        $query->whereIn('id', $nivelesUnoIds);
-                    });
-            });
-        } else {
-            // Si no tiene el permiso, solo filtrar por los niveles permitidos
-            $solicitudesComprasQuery->whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-                $query->whereIn('id', $nivelesUnoIds);
-            });
-        }
+        // Filtrar por solicitudes propias y las de los niveles permitidos
+        $solicitudesComprasQuery->where(function($query) use ($nivelesUnoIds) {
+            $query->where('id_users', auth()->user()->id)
+                ->orWhereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
+                    $query->whereIn('id', $nivelesUnoIds);
+                });
+        });
     
         // Filtrar por el rango de fechas
         $solicitudesCompras = $solicitudesComprasQuery->whereBetween('fecha_solicitud', [$fechaInicio, $fechaFin])
@@ -62,6 +54,7 @@ class SolicitudesCompraController extends Controller
         return view('solicitudes-compra.index', compact('solicitudesCompras', 'agrupacionesConsolidacione'))
             ->with('i', ($request->input('page', 1) - 1) * $solicitudesCompras->perPage());
     }
+     
 
 
     /**
@@ -163,20 +156,23 @@ class SolicitudesCompraController extends Controller
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
-        // Obtener la solicitud de compra con el id especificado
-        $solicitudesCompraQuery = SolicitudesCompra::with([
-            'solicitudesElemento.nivelesTres', 
+        // Obtener la solicitud de compra con sus relaciones
+        $solicitudesCompra = SolicitudesCompra::with([
+            'solicitudesElemento.nivelesTres',
             'solicitudesElemento.centrosCosto'
-        ]);
+        ])->findOrFail($id);
     
-        // Si el usuario tiene el permiso 'ver_solicitudes_usuario_autentificado', verificar que el id_users coincida
-        if (auth()->user()->hasPermissionTo('ver_solicitudes_usuario_autentificado')) {
-            $solicitudesCompra = $solicitudesCompraQuery->where('id_users', auth()->user()->id)->findOrFail($id);
-        } else {
-            // Si no tiene el permiso, verificar si tiene acceso a los niveles permitidos
-            $solicitudesCompra = $solicitudesCompraQuery->whereHas('solicitudesElemento.nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
-                $query->whereIn('id', $nivelesUnoIds);
-            })->findOrFail($id);
+        // Verificar si la solicitud pertenece al usuario autenticado
+        if ($solicitudesCompra->id_users !== auth()->id()) {
+            // Filtrar los elementos de la solicitud por niveles permitidos
+            $solicitudesCompra->solicitudesElemento = $solicitudesCompra->solicitudesElemento->filter(function ($elemento) use ($nivelesUnoIds) {
+                return in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds);
+            });
+    
+            // Si no hay elementos visibles, lanzar un 404
+            if ($solicitudesCompra->solicitudesElemento->isEmpty()) {
+                abort(404, 'No autorizado para acceder a esta solicitud.');
+            }
         }
     
         // Verificar la política de acceso
