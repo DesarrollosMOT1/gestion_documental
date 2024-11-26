@@ -20,14 +20,34 @@
                         <div class="card-body">
                             <p><strong>Orden de compra:</strong> #{{ $ordenesCompra->id }}</p>
                             <p><strong>Fecha Emisión:</strong> {{ $ordenesCompra->fecha_emision }}</p>
-                            <p><strong>Tercero:</strong> {{ $ordenesCompra->tercero->nombre ?? 'N/A' }}</p>
                             <p><strong>Usuario:</strong> {{ $ordenesCompra->user->name ?? 'N/A' }}</p>
-                            <p><strong>NIT:</strong> {{ $ordenesCompra->tercero->nit ?? 'N/A' }}</p>
-                            <p><strong>Tipo de Factura:</strong> {{ $ordenesCompra->tercero->tipo_factura ?? 'N/A' }}</p>
-                            <a href="{{ route('ordenes-compra.pdf', $ordenesCompra->id) }}" target="_blank" class="btn btn-danger btn-sm">Generar PDF para este Tercero <i class="fa fa-file-pdf"></i></a>
+                            
+                            <div class="tercero-card mb-3">
+                                <h6>Información del Tercero</h6>
+                                <p><strong>NIT:</strong> {{ $ordenesCompra->tercero->nit ?? 'N/A' }}</p>
+                                <p><strong>Nombre:</strong> {{ $ordenesCompra->tercero->nombre ?? 'N/A' }}</p>
+                                <p><strong>Tipo de Factura:</strong> {{ $ordenesCompra->tercero->tipo_factura ?? 'N/A' }}</p>
+                                <p><strong>Email:</strong> {{ $ordenesCompra->tercero->email ?? 'N/A' }}</p>
+                                
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#terceroModal{{ $ordenesCompra->tercero->id }}">
+                                        <i class="fas fa-envelope"></i> Gestionar Email
+                                    </button>
+                                    <a href="{{ route('ordenes-compra.pdf', $ordenesCompra->id) }}" 
+                                        target="_blank" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-file-pdf"></i> Ver PDF
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
+                @include('components.email-modal', [
+                    'modelo' => $ordenesCompra,
+                    'tercero' => $ordenesCompra->tercero,
+                    'tipo' => 'orden-compra'
+                ])
 
                 <!-- Elementos de la Orden de Compra -->
                 <div class="col-12 mb-4">

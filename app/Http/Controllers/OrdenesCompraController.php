@@ -12,6 +12,9 @@ use Illuminate\View\View;
 use App\Traits\VerNivelesPermiso;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Tercero;
+use App\Mail\EnviarEmailOrdenCompra;
+use Illuminate\Support\Facades\Mail;
 
 class OrdenesCompraController extends Controller
 {
@@ -117,6 +120,38 @@ class OrdenesCompraController extends Controller
         $this->authorize('view', $ordenesCompra);
 
         return view('ordenes-compra.show', compact('ordenesCompra'));
+    }
+
+    public function sendEmails(Request $request, $id, $terceroId)
+    {
+        $ordenCompra = OrdenesCompra::findOrFail($id);
+        $tercero = Tercero::findOrFail($terceroId);
+        
+        $request->validate([
+            'emails' => 'required|string'
+        ]);
+
+        $emails = array_map('trim', explode(',', $request->emails));
+        $emails = array_filter($emails, function($email) {
+            return filter_var($email, FILTER_VALIDATE_EMAIL);
+        });
+
+        if (empty($emails)) {
+            return back()->with('error', 'No se proporcionaron correos electrónicos válidos');
+        }
+
+        $pdf = PDF::loadView('ordenes-compra.pdf', [
+            'ordenesCompra' => $ordenCompra,
+            'tercero' => $tercero
+        ]);
+        
+        $pdfContent = base64_encode($pdf->output());
+
+        foreach ($emails as $email) {
+            Mail::to($email)->send(new EnviarEmailOrdenCompra($tercero, $ordenCompra, $pdfContent));
+        }
+
+        return back()->with('success', 'Correos enviados exitosamente');
     }
 
     public function exportPdf($id)
