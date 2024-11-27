@@ -31,7 +31,7 @@
             <label for="reset_options" class="form-label">{{ __('Opciones de limpieza de campos') }}</label>
             <select id="reset_options" class="form-control">
                 <option value="all">Limpiar todos los campos</option>
-                <option value="partial">Limpiar sólo cantidad y centro de costos</option>
+                <option value="partial">Limpiar sólo cantidad,centro de costos y descripción</option>
                 <option value="none">No limpiar campos</option>
             </select>
         </div>        
