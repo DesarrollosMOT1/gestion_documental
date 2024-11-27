@@ -30,6 +30,7 @@ class SolicitudesCompraRequest extends FormRequest
             'elements.*.id_niveles_tres' => 'required|exists:niveles_tres,id', // Validación para id_niveles_tres
             'elements.*.id_centros_costos' => 'required|exists:centros_costos,id', // Validación para id_centros_costos
             'elements.*.cantidad' => 'required|integer|min:1|max:1000', // Validación para cantidad
+            'elements.*.descripcion' => 'nullable|string|max:255', // Validación para descripción
         ];
     }    
 }
