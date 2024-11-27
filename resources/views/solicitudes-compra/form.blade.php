@@ -74,6 +74,11 @@
             <input type="number" id="input_cantidad" class="form-control" placeholder="Cantidad Unidad">
         </div>
 
+        <div class="form-group mb-2 mb20">
+            <label for="input_descripcion" class="form-label">{{ __('Descripción') }}</label>
+            <input type="text" id="input_descripcion" class="form-control" placeholder="Descripción">
+        </div>
+
         <button type="button" id="addElement" class="btn btn-secondary mb-3">
             <i class="fas fa-plus"></i> {{ __('Agregar Elemento') }}
         </button>
@@ -86,6 +91,7 @@
                         <th>{{ __('Elemento') }}</th>
                         <th>{{ __('Centro Costo') }}</th>
                         <th>{{ __('Cantidad Unidad') }}</th>
+                        <th>{{ __('Descripción') }}</th>
                         <th>{{ __('Acciones') }}</th>
                     </tr>
                 </thead>
@@ -96,12 +102,14 @@
                                 <td>{{ $element['nombre_nivel_tres'] }}</td>
                                 <td>{{ $element['nombre_centro_costo'] }}</td>
                                 <td>{{ $element['cantidad'] }}</td>
+                                <td>{{ $element['descripcion'] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-danger" onclick="removeElement({{ $index }})">Eliminar</button>
                                 </td>
                                 <input type="hidden" name="elements[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
                                 <input type="hidden" name="elements[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
                                 <input type="hidden" name="elements[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
+                                <input type="hidden" name="elements[{{ $index }}][descripcion]" value="{{ $element['descripcion'] }}">
                             </tr>
                         @endforeach
                     @else
