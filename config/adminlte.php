@@ -314,31 +314,31 @@ return [
             'text' => 'Usuarios',
             'url' => 'users',
             'icon' => 'fas fa-fw fa-users',
-            'can' => 'ver_administracion_usuarios'
+            'can' => 'ver_administracion_usuarios',
         ],
         [
             'text' => 'Roles',
             'url' => 'roles',
             'icon' => 'fas fa-fw fa-user-tag',
-            'can' => 'ver_administracion_roles'
+            'can' => 'ver_administracion_roles',
         ],
         [
             'text' => 'Registro de auditoria',
             'url' => 'audits',
             'icon' => 'fa fa-check-square',
-            'can' => 'ver_registro_auditoria'
+            'can' => 'ver_registro_auditoria',
         ],
         [
             'text' => 'Permisos',
             'url' => 'permissions',
             'icon' => 'fas fa-fw fa-key',
-            'can' => 'ver_administracion_permisos'
+            'can' => 'ver_administracion_permisos',
         ],
         [
             'text' => 'Áreas',
             'url' => 'areas',
             'icon' => 'fas fa-fw fa-building',
-            'can' => 'ver_administracion_areas'
+            'can' => 'ver_administracion_areas',
         ],
         ['header' => 'account_settings'],
         [
@@ -355,37 +355,37 @@ return [
                     'text' => 'Solicitudes de Compras',
                     'url' => 'solicitudes-compras',
                     'icon' => 'fas fa-file-invoice',
-                    'can' => 'ver_solicitudes_compras'
+                    'can' => 'ver_solicitudes_compras',
                 ],
                 [
                     'text' => 'Consolidaciones',
                     'url' => 'agrupaciones-consolidaciones',
                     'icon' => 'fas fa-archive mr-2',
-                    'can' =>'ver_consolidaciones'
+                    'can' => 'ver_consolidaciones',
                 ],
                 [
                     'text' => 'Solicitudes de Ofertas',
                     'url' => 'solicitudes-ofertas',
                     'icon' => 'fas fa-envelope-open-text',
-                    'can' => 'ver_solicitudes_ofertas'
+                    'can' => 'ver_solicitudes_ofertas',
                 ],
                 [
                     'text' => 'Cotizaciones',
                     'url' => 'cotizaciones',
                     'icon' => 'fas fa-file-signature',
-                    'can' => 'ver_cotizaciones'
+                    'can' => 'ver_cotizaciones',
                 ],
                 [
                     'text' => 'Órdenes de Compras',
                     'url' => 'ordenes-compras',
                     'icon' => 'fas fa-file-contract',
-                    'can' => 'ver_ordenes_compras'
+                    'can' => 'ver_ordenes_compras',
                 ],
                 [
                     'text' => 'Entradas a Inventario',
                     'url' => 'entradas',
                     'icon' => 'fas fa-sign-in-alt',
-                    'can' => 'ver_entrada_inventario'
+                    'can' => 'ver_entrada_inventario',
                 ],
                 [
                     'text' => 'Administración',
@@ -395,75 +395,92 @@ return [
                             'text' => 'Centros de Costos',
                             'url' => 'clasificaciones-centros',
                             'icon' => 'fas fa-list-alt',
-                            'can' => 'ver_clasificaciones_centros'
+                            'can' => 'ver_clasificaciones_centros',
                         ],
                         [
                             'text' => 'Referencias de gastos',
                             'url' => 'referencias-gastos',
                             'icon' => 'fas fa-dollar-sign',
-                            'can' => 'ver_referencias_gastos'
+                            'can' => 'ver_referencias_gastos',
                         ],
                         [
                             'text' => 'Niveles Jerárquicos',
                             'url' => 'niveles-unos',
                             'icon' => 'fas fa-layer-group',
-                            'can' => 'ver_niveles_jerarquicos'
+                            'can' => 'ver_niveles_jerarquicos',
                         ],
                         [
                             'text' => 'Terceros',
                             'url' => 'terceros',
                             'icon' => 'fas fa-users',
-                            'can' => 'ver_terceros'
+                            'can' => 'ver_terceros',
                         ],
                         [
                             'text' => 'Impuestos',
                             'url' => 'impuestos',
                             'icon' => 'fas fa-percent',
-                            'can' => 'ver_impuestos'
+                            'can' => 'ver_impuestos',
                         ],
                     ],
                 ],
             ],
         ],
-        ['header' => 'INVENTARIO'],
+        ['header' => 'CROSSDOCKING'],
         [
             'text' => 'Cadena de suministros',
             'icon' => 'fas fa-shopping-cart',
             'submenu' => [
                 [
-                    'text' => 'movimientos',
+                    'text' => 'Movimientos',
                     'url' => 'movimientos',
+                    'icon' => 'fas fa-exchange-alt',
+                    'can' => 'ver_movimientos',
                 ],
                 [
-                    'text' => 'productos',
+                    'text' => 'Productos',
                     'url' => 'productos',
+                    'icon' => 'fas fa-cogs',
+                    'can' => 'ver_productos',
                 ],
                 [
-                    'text' => 'almacenes',
+                    'text' => 'Almacenes',
                     'url' => 'almacenes',
+                    'icon' => 'fas fa-warehouse',
+                    'can' => 'ver_almacenes',
                 ],
                 [
-                    'text' => 'bodegas',
+                    'text' => 'Bodegas',
                     'url' => 'bodegas',
+                    'icon' => 'fas fa-boxes',
+                    'can' => 'ver_bodegas',
                 ],
                 [
-                    'text' => 'clases de movimientos',
+                    'text' => 'Clases de movimientos',
                     'url' => 'clases-movimientos',
+                    'icon' => 'fas fa-arrow-alt-circle-right',
+                    'can' => 'ver_clases_de_movimientos',
                 ],
                 [
-                    'text' => 'tipos de movimientos',
+                    'text' => 'Tipos de movimientos',
                     'url' => 'tipos-movimientos',
+                    'icon' => 'fas fa-random',
+                    'can' => 'ver_tipos_de_movimientos',
                 ],
                 [
-                    'text' => 'unidades',
+                    'text' => 'Unidades',
                     'url' => 'unidades',
+                    'icon' => 'fas fa-cogs',
+                    'can' => 'ver_unidades',
                 ],
                 [
-                    'text' => 'motivos',
+                    'text' => 'Motivos',
                     'url' => 'motivos',
+                    'icon' => 'fas fa-list-alt',
+                    'can' => 'ver_motivos',
                 ],
             ],
         ],
+
     ],
 
     /*
