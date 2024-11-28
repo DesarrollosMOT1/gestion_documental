@@ -78,9 +78,11 @@ document.getElementById('addElement').addEventListener('click', function () {
         $('#select_niveles_tres').val(null).trigger('change');
         $('#select_id_centros_costos').val(null).trigger('change');
         document.getElementById('input_cantidad').value = '';
+        document.getElementById('input_descripcion').value = '';
     } else if (resetOption === 'partial') {
         $('#select_id_centros_costos').val(null).trigger('change');
         document.getElementById('input_cantidad').value = '';
+        document.getElementById('input_descripcion').value = '';
     }
 
     updateTableMessage();
