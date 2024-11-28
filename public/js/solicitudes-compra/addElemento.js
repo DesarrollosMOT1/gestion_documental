@@ -88,6 +88,24 @@ document.getElementById('addElement').addEventListener('click', function () {
     updateTableMessage();
 });
 
+// Función para configurar el contador de caracteres
+function configurarContadorCaracteres() {
+    const descripcionTextarea = document.getElementById('input_descripcion');
+    const contador = document.getElementById('contador_caracteres');
+
+    descripcionTextarea.addEventListener('input', function() {
+        const maxLength = 255;
+        const currentLength = descripcionTextarea.value.length;
+        contador.textContent = `${currentLength} / ${maxLength}`;
+
+        if (currentLength > maxLength) {
+            contador.classList.add('text-danger');
+        } else {
+            contador.classList.remove('text-danger');
+        }
+    });
+}
+
 function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcion) {
     const tableBody = document.getElementById('elementsTableBody');
     const newRow = document.createElement('tr');
@@ -160,3 +178,4 @@ document.getElementById('submitForm').addEventListener('click', function (event)
 });
 
 updateTableMessage();
+configurarContadorCaracteres();
