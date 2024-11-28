@@ -19,8 +19,9 @@
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción" required>
+            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" placeholder="Descripción" required maxlength="255">{{ old('descripcion', $solicitudesCompra?->descripcion) }}</textarea>
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <div id="contador_caracteres_descripcion" class="text-muted">0 / 255</div>
         </div>
 
     </div>

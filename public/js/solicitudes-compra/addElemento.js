@@ -89,13 +89,13 @@ document.getElementById('addElement').addEventListener('click', function () {
 });
 
 // Función para configurar el contador de caracteres
-function configurarContadorCaracteres() {
-    const descripcionTextarea = document.getElementById('input_descripcion');
-    const contador = document.getElementById('contador_caracteres');
+function configurarContadorCaracteres(textareaId, contadorId) {
+    const textarea = document.getElementById(textareaId);
+    const contador = document.getElementById(contadorId);
 
-    descripcionTextarea.addEventListener('input', function() {
-        const maxLength = 255;
-        const currentLength = descripcionTextarea.value.length;
+    textarea.addEventListener('input', function() {
+        const maxLength = textarea.getAttribute('maxlength');
+        const currentLength = textarea.value.length;
         contador.textContent = `${currentLength} / ${maxLength}`;
 
         if (currentLength > maxLength) {
@@ -178,4 +178,5 @@ document.getElementById('submitForm').addEventListener('click', function (event)
 });
 
 updateTableMessage();
-configurarContadorCaracteres();
+configurarContadorCaracteres('input_descripcion', 'contador_caracteres');
+configurarContadorCaracteres('descripcion', 'contador_caracteres_descripcion');
