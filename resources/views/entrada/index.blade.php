@@ -3,7 +3,7 @@
 @section('title', 'Entradas')
 
 @section('content')
-<br>
+    <br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -15,11 +15,12 @@
                                 {{ __('Entradas') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('entradas.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                            <div class="float-right">
+                                <a href="{{ route('entradas.create') }}" class="btn btn-primary btn-sm float-right"
+                                    data-placement="left">
+                                    {{ __('Crear Nuevo') }}
                                 </a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -32,13 +33,13 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Fecha Recepcion Factura</th>
-									<th >Adjunto</th>
-									<th >Numero</th>
-									<th >Id Users</th>
-									<th >Fecha</th>
-									<th >Estado</th>
+
+                                        <th>Fecha Recepcion Factura</th>
+                                        <th>Adjunto</th>
+                                        <th>Numero</th>
+                                        <th>Id Users</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
 
                                         <th></th>
                                     </tr>
@@ -47,21 +48,27 @@
                                     @foreach ($entradas as $entrada)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $entrada->fecha_recepcion_factura }}</td>
-										<td >{{ $entrada->adjunto }}</td>
-										<td >{{ $entrada->numero }}</td>
-										<td >{{ $entrada->id_users }}</td>
-										<td >{{ $entrada->fecha }}</td>
-										<td >{{ $entrada->estado }}</td>
+
+                                            <td>{{ $entrada->fecha_recepcion_factura }}</td>
+                                            <td>{{ $entrada->adjunto }}</td>
+                                            <td>{{ $entrada->numero }}</td>
+                                            <td>{{ $entrada->id_users }}</td>
+                                            <td>{{ $entrada->fecha }}</td>
+                                            <td>{{ $entrada->estado }}</td>
 
                                             <td>
-                                                <form action="{{ route('entradas.destroy', $entrada->id) }}" class="delete-form" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('entradas.show', $entrada->id) }}"><i class="fa fa-fw fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('entradas.edit', $entrada->id) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form action="{{ route('entradas.destroy', $entrada->id) }}"
+                                                    class="delete-form" method="POST">
+                                                    <a class="btn btn-sm btn-primary "
+                                                        href="{{ route('entradas.show', $entrada->id) }}"><i
+                                                            class="fa fa-fw fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-success"
+                                                        href="{{ route('entradas.edit', $entrada->id) }}"><i
+                                                            class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                            class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -71,7 +78,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $entradas->withQueryString()->links() !!}
             </div>
         </div>
     </div>

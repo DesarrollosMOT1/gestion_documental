@@ -3,14 +3,14 @@
 
         <div class="form-group mb-2 mb20">
             <label for="tipoSelect" class="form-label">{{ __('Tipo de Movimiento') }}</label>
-            <select id="tipoSelect" name="tipo" onchange="fetchClases(this.value)" class="form-control">
+            <select id="tipoSelect" name="tipo" onchange="fetchClases(this.value)" class="form-control select2">
                 <option value="">Seleccione un tipo de movimiento</option>
             </select>
             {!! $errors->first('tipo', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <div class="form-group mb-2 mb20">
             <label for="claseSelect" class="form-label">{{ __('Clase de Movimiento') }}</label>
-            <select id="claseSelect" name="clase" class="form-control">
+            <select id="claseSelect" name="clase" class="form-control select2">
                 <option value="">Seleccione una clase de movimiento</option>
             </select>
             {!! $errors->first('clase', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}

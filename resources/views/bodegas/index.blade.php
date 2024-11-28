@@ -4,11 +4,6 @@
     Bodegas
 @endsection
 
-@section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
-
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -54,19 +49,18 @@
                                             <td>{{ $bodega->nombre }}</td>
                                             <td>{{ $bodega->direccion }}</td>
                                             <td>
-                                                <form action="{{ route('bodegas.destroy', $bodega->id) }}" method="POST">
+                                                <form action="{{ route('bodegas.destroy', $bodega->id) }}" method="POST"
+                                                    class="delete-form">
                                                     <a class="btn btn-sm btn-primary"
                                                         href="{{ route('bodegas.show', $bodega->id) }}">
-                                                        <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
+                                                        <i class="fa fa-fw fa-eye"></i> </a>
                                                     <a class="btn btn-sm btn-success"
                                                         href="{{ route('bodegas.edit', $bodega->id) }}">
-                                                        <i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}</a>
+                                                        <i class="fa fa-fw fa-edit"></i> </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault();
-                                                        confirm('¿Está seguro de eliminar?') ? this.closest('form').submit() : false;">
-                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                            class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -76,7 +70,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $bodegas->withQueryString()->links() !!}
             </div>
         </div>
     </div>

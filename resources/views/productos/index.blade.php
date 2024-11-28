@@ -58,21 +58,19 @@
                                             <td>{{ $producto->ean }}</td>
                                             <td>
                                                 <form action="{{ route('productos.destroy', $producto->codigo_producto) }}"
-                                                    method="POST">
+                                                    method="POST" class="delete-form">
                                                     <a class="btn btn-sm btn-primary"
                                                         href="{{ route('productos.show', $producto->codigo_producto) }}">
-                                                        <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}
+                                                        <i class="fa fa-fw fa-eye"></i>
                                                     </a>
                                                     <a class="btn btn-sm btn-success"
                                                         href="{{ route('productos.edit', $producto->codigo_producto) }}">
-                                                        <i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}
+                                                        <i class="fa fa-fw fa-edit"></i>
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
-                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                            class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -82,7 +80,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $productos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

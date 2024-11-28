@@ -3,10 +3,7 @@
 @section('template_title')
     {{ $unidad->nombre ?? __('Mostrar') . ' ' . __('Unidad') }}
 @endsection
-@section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
+
 @section('content')
     <section class="content container-fluid">
         <div class="row">
