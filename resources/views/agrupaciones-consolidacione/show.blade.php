@@ -317,6 +317,7 @@
                                 <th>Elemento</th>
                                 <th>Cantidad Unidad</th>
                                 <th>Centro Costo</th>
+                                <th>Descripción Elemento</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -329,6 +330,7 @@
                                     <td>{{ $elementoConsolidado->solicitudesElemento->nivelesTres->nombre }}</td>
                                     <td>{{ $elementoConsolidado->solicitudesElemento->cantidad }}</td>
                                     <td>{{ $elementoConsolidado->solicitudesElemento->centrosCosto->nombre }}</td>
+                                    <td>{{ $elementoConsolidado->solicitudesElemento->descripcion_elemento }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

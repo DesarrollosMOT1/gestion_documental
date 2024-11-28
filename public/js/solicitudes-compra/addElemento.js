@@ -13,6 +13,7 @@ document.getElementById('addElement').addEventListener('click', function () {
     const centrosCostos = document.getElementById('select_id_centros_costos');
     const cantidad = document.getElementById('input_cantidad').value;
     const resetOption = document.getElementById('reset_options').value;
+    const descripcionElemento = document.getElementById('input_descripcion').value;
 
     // Validar que los campos no estén vacíos
     if (!cantidad || nivelesTres.value === 'Seleccione una opción' || centrosCostos.value === 'Seleccione una opción' ||
@@ -21,6 +22,16 @@ document.getElementById('addElement').addEventListener('click', function () {
             icon: 'error',
             title: 'Campos incompletos',
             text: 'Por favor, complete todos los campos antes de agregar un elemento.',
+        });
+        return;
+    }
+
+    // Validación de longitud de la descripción
+    if (descripcionElemento.length > 255) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Descripción demasiado larga',
+            text: 'La descripción no puede tener más de 255 caracteres.',
         });
         return;
     }
@@ -57,7 +68,7 @@ document.getElementById('addElement').addEventListener('click', function () {
     nivelesTresSet.add(uniqueKey);
 
     // Agregar la fila a la tabla
-    createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue);
+    createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcionElemento);
     elementIndex++;
 
     // Lógica para limpiar campos basada en la opción seleccionada
@@ -67,20 +78,40 @@ document.getElementById('addElement').addEventListener('click', function () {
         $('#select_niveles_tres').val(null).trigger('change');
         $('#select_id_centros_costos').val(null).trigger('change');
         document.getElementById('input_cantidad').value = '';
+        document.getElementById('input_descripcion').value = '';
     } else if (resetOption === 'partial') {
         $('#select_id_centros_costos').val(null).trigger('change');
         document.getElementById('input_cantidad').value = '';
+        document.getElementById('input_descripcion').value = '';
     }
 
     updateTableMessage();
 });
 
-function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue) {
+// Función para configurar el contador de caracteres
+function configurarContadorCaracteres(textareaId, contadorId) {
+    const textarea = document.getElementById(textareaId);
+    const contador = document.getElementById(contadorId);
+
+    textarea.addEventListener('input', function() {
+        const maxLength = textarea.getAttribute('maxlength');
+        const currentLength = textarea.value.length;
+        contador.textContent = `${currentLength} / ${maxLength}`;
+
+        if (currentLength > maxLength) {
+            contador.classList.add('text-danger');
+        } else {
+            contador.classList.remove('text-danger');
+        }
+    });
+}
+
+function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcionElemento) {
     const tableBody = document.getElementById('elementsTableBody');
     const newRow = document.createElement('tr');
     newRow.id = `element-${elementIndex}`;
     
-    const cellData = [nivelesTresText, centrosCostosText, cantidad];
+    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcionElemento || ''];
     cellData.forEach(text => {
         const cell = document.createElement('td');
         cell.textContent = text;
@@ -99,7 +130,8 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     const hiddenInputs = [
         { name: `elements[${elementIndex}][id_niveles_tres]`, value: nivelesTresValue },
         { name: `elements[${elementIndex}][id_centros_costos]`, value: centrosCostosValue },
-        { name: `elements[${elementIndex}][cantidad]`, value: cantidad }
+        { name: `elements[${elementIndex}][cantidad]`, value: cantidad },
+        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento || '' } // Asegúrate de que siempre tenga un valor
     ];
     
     hiddenInputs.forEach(({ name, value }) => {
@@ -146,3 +178,5 @@ document.getElementById('submitForm').addEventListener('click', function (event)
 });
 
 updateTableMessage();
+configurarContadorCaracteres('input_descripcion', 'contador_caracteres');
+configurarContadorCaracteres('descripcion', 'contador_caracteres_descripcion');

@@ -139,6 +139,7 @@ class SolicitudesCompraController extends Controller
                 'id_centros_costos' => $element['id_centros_costos'],
                 'cantidad' => $element['cantidad'],
                 'estado' => $element['estado'] ?? null,
+                'descripcion_elemento' => $element['descripcion_elemento'] ?? '',
                 'id_solicitudes_compra' => $solicitudesCompra->id,
             ]);
         }

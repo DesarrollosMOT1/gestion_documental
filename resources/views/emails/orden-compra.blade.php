@@ -10,31 +10,26 @@
     <div class="container">
         <div class="header">
             <img src="{{ $message->embed(public_path('logo.png')) }}" alt="Logo" class="logo">
-            <h1>Solicitud de Oferta</h1>
+            <h1>Orden de Compra</h1>
         </div>
         
         <div class="content">
             <p>Estimado/a <strong>{{ $tercero->nombre }}</strong>,</p>
             
-            <p>Esperamos que este mensaje le encuentre bien. Nos ponemos en contacto con usted para hacerle llegar una solicitud de oferta para su consideración.</p>
+            <p>Nos complace enviarle la orden de compra #{{ $ordenCompra->id }} para su procesamiento.</p>
 
-            <p>Adjunto a este correo encontrará el documento detallado de la solicitud de oferta en formato PDF. Le agradecemos revisar cuidadosamente todos los requisitos y especificaciones incluidos.</p>
-
-            <p>Si tiene alguna pregunta o necesita aclaraciones adicionales, no dude en contactarnos.</p>
-
-            <p>Agradecemos de antemano su tiempo y consideración.</p>
+            <p>Adjunto encontrará el documento detallado de la orden de compra en formato PDF.</p>
 
             <div class="important-info">
                 <h3>Información de contacto:</h3>
                 <div class="user-info">
-                    <p><strong>Responsable:</strong> {{ $solicitudOferta->user->name }}</p>
-                    <p><strong>Área:</strong> {{ $solicitudOferta->user->area->nombre }}</p>
-                    <p><strong>Correo electrónico:</strong> {{ $solicitudOferta->user->email }}</p>
+                    <p><strong>Responsable:</strong> {{ $ordenCompra->user->name }}</p>
+                    <p><strong>Área:</strong> {{ $ordenCompra->user->area->nombre }}</p>
+                    <p><strong>Correo electrónico:</strong> {{ $ordenCompra->user->email }}</p>
                 </div>
             </div>
 
             <p>Cordialmente,</p>
-            <p><strong>{{ config('app.name') }}</strong></p>
         </div>
 
         <div class="footer">
