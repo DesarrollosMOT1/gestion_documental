@@ -69,7 +69,7 @@
                                                         {{ $elemento->centrosCosto->nombre ?? 'N/A' }}
                                                     </td>
                                                     <td>{{ $elemento->cantidad }}</td>
-                                                    <td>{{ $elemento->descripcion }}</td>
+                                                    <td>{{ $elemento->descripcion_elemento }}</td>
                                                     <td>
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" 

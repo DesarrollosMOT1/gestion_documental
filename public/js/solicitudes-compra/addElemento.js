@@ -13,7 +13,7 @@ document.getElementById('addElement').addEventListener('click', function () {
     const centrosCostos = document.getElementById('select_id_centros_costos');
     const cantidad = document.getElementById('input_cantidad').value;
     const resetOption = document.getElementById('reset_options').value;
-    const descripcion = document.getElementById('input_descripcion').value;
+    const descripcionElemento = document.getElementById('input_descripcion').value;
 
     // Validar que los campos no estén vacíos
     if (!cantidad || nivelesTres.value === 'Seleccione una opción' || centrosCostos.value === 'Seleccione una opción' ||
@@ -27,7 +27,7 @@ document.getElementById('addElement').addEventListener('click', function () {
     }
 
     // Validación de longitud de la descripción
-    if (descripcion.length > 255) {
+    if (descripcionElemento.length > 255) {
         Swal.fire({
             icon: 'error',
             title: 'Descripción demasiado larga',
@@ -68,7 +68,7 @@ document.getElementById('addElement').addEventListener('click', function () {
     nivelesTresSet.add(uniqueKey);
 
     // Agregar la fila a la tabla
-    createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcion);
+    createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcionElemento);
     elementIndex++;
 
     // Lógica para limpiar campos basada en la opción seleccionada
@@ -106,12 +106,12 @@ function configurarContadorCaracteres() {
     });
 }
 
-function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcion) {
+function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, nivelesTresValue, centrosCostosValue, descripcionElemento) {
     const tableBody = document.getElementById('elementsTableBody');
     const newRow = document.createElement('tr');
     newRow.id = `element-${elementIndex}`;
     
-    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcion];
+    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcionElemento];
     cellData.forEach(text => {
         const cell = document.createElement('td');
         cell.textContent = text;
@@ -131,7 +131,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
         { name: `elements[${elementIndex}][id_niveles_tres]`, value: nivelesTresValue },
         { name: `elements[${elementIndex}][id_centros_costos]`, value: centrosCostosValue },
         { name: `elements[${elementIndex}][cantidad]`, value: cantidad },
-        { name: `elements[${elementIndex}][descripcion]`, value: descripcion }
+        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento }
     ];
     
     hiddenInputs.forEach(({ name, value }) => {

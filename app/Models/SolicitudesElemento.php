@@ -36,7 +36,7 @@ class SolicitudesElemento extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_niveles_tres', 'id_solicitudes_compra', 'id_centros_costos', 'cantidad', 'estado', 'descripcion'];
+    protected $fillable = ['id_niveles_tres', 'id_solicitudes_compra', 'id_centros_costos', 'cantidad', 'estado', 'descripcion_elemento'];
 
 
     /**

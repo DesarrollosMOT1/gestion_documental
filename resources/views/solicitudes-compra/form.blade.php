@@ -104,17 +104,17 @@
                                 <td class="align-middle text-break">{{ $element['nombre_centro_costo'] }}</td>
                                 <td class="align-middle text-center">{{ $element['cantidad'] }}</td>
                                 <td class="align-middle">
-                                    <div class="text-break">{{ $element['descripcion'] }}</div>
+                                    <div class="text-break">{{ $element['descripcion_elemento'] }}</div> <!-- Cambiado a 'descripcion_elemento' -->
                                 </td>
                                 <td class="align-middle text-center">
                                     <button type="button" class="btn btn-danger btn-sm" onclick="removeElement({{ $index }})">
                                         <i class="fas fa-trash"></i> Eliminar
                                     </button>
                                 </td>
-                                <input type="hidden" name="elements[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
-                                <input type="hidden" name="elements[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
-                                <input type="hidden" name="elements[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
-                                <input type="hidden" name="elements[{{ $index }}][descripcion]" value="{{ $element['descripcion'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][descripcion_elemento]" value="{{ $element['descripcion_elemento'] }}"> <!-- Cambiado a 'descripcion_elemento' -->
                             </tr>
                         @endforeach
                     @else
