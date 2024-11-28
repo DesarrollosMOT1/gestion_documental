@@ -207,7 +207,7 @@ class AgrupacionesConsolidacioneController extends Controller
                 'id_niveles_tres' => $element['id_niveles_tres'],
                 'id_centros_costos' => $element['id_centros_costos'],
                 'cantidad' => $element['cantidad'],
-                'descripcion' => $element['descripcion'] ?? null,
+                'descripcion_elemento' => $element['descripcion_elemento'] ?? null,
                 'estado' => 1,
                 'id_solicitudes_compra' => $solicitudesCompra->id,
             ]);

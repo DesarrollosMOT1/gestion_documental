@@ -53,6 +53,12 @@
                             <input type="text" class="form-control" value="{{ $elementoConsolidado->solicitudesElemento->centrosCosto->codigo_mekano }}" readonly>
                         </td>
                     </tr>
+                    <tr>
+                        <th scope="row">Descripción Elemento</th>
+                        <td>
+                            <input type="text" class="form-control" value="{{ $elementoConsolidado->solicitudesElemento->descripcion_elemento }}" readonly>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -114,6 +120,12 @@
                 <th scope="row">Código Centro de Costo</th>
                 <td>
                     <input type="text" class="form-control" value="{{ $consolidacion->solicitudesElemento->centrosCosto->codigo_mekano }}" readonly>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Descripción Elemento</th>
+                <td>
+                    <input type="text" class="form-control" value="{{ $consolidacion->solicitudesElemento->descripcion_elemento }}" readonly>
                 </td>
             </tr>
         </tbody>
