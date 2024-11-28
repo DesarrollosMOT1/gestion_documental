@@ -111,7 +111,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     const newRow = document.createElement('tr');
     newRow.id = `element-${elementIndex}`;
     
-    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcionElemento];
+    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcionElemento || ''];
     cellData.forEach(text => {
         const cell = document.createElement('td');
         cell.textContent = text;
@@ -131,7 +131,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
         { name: `elements[${elementIndex}][id_niveles_tres]`, value: nivelesTresValue },
         { name: `elements[${elementIndex}][id_centros_costos]`, value: centrosCostosValue },
         { name: `elements[${elementIndex}][cantidad]`, value: cantidad },
-        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento }
+        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento || '' } // Asegúrate de que siempre tenga un valor
     ];
     
     hiddenInputs.forEach(({ name, value }) => {
