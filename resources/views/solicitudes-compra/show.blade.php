@@ -64,7 +64,10 @@
                                             @foreach($solicitudesCompra->solicitudesElemento as $elemento)
                                                 <tr>
                                                     <td>{{ $elemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $elemento->centrosCosto->nombre ?? 'N/A' }}</td>
+                                                    <td>
+                                                        {{ $elemento->centrosCosto->codigo_mekano ?? 'N/A' }} - 
+                                                        {{ $elemento->centrosCosto->nombre ?? 'N/A' }}
+                                                    </td>
                                                     <td>{{ $elemento->cantidad }}</td>
                                                     <td>{{ $elemento->descripcion }}</td>
                                                     <td>
