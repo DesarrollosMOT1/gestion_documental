@@ -19,8 +19,9 @@
 
         <div class="form-group mb-2 mb20">
             <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
-            <input type="text" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" value="{{ old('descripcion', $solicitudesCompra?->descripcion) }}" id="descripcion" placeholder="Descripción" required>
+            <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" placeholder="Descripción" required maxlength="255">{{ old('descripcion', $solicitudesCompra?->descripcion) }}</textarea>
             {!! $errors->first('descripcion', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+            <div id="contador_caracteres_descripcion" class="text-muted">0 / 255</div>
         </div>
 
     </div>
@@ -31,7 +32,7 @@
             <label for="reset_options" class="form-label">{{ __('Opciones de limpieza de campos') }}</label>
             <select id="reset_options" class="form-control">
                 <option value="all">Limpiar todos los campos</option>
-                <option value="partial">Limpiar sólo cantidad y centro de costos</option>
+                <option value="partial">Limpiar sólo cantidad,centro de costos y descripción</option>
                 <option value="none">No limpiar campos</option>
             </select>
         </div>        
@@ -74,39 +75,52 @@
             <input type="number" id="input_cantidad" class="form-control" placeholder="Cantidad Unidad">
         </div>
 
+        <div class="form-group mb-2 mb20">
+            <label for="input_descripcion" class="form-label">{{ __('Descripción') }}</label>
+            <textarea id="input_descripcion" class="form-control" placeholder="Descripción (opcional)" maxlength="255"></textarea>
+            <div id="contador_caracteres" class="text-muted">0 / 255</div>
+        </div>
+
         <button type="button" id="addElement" class="btn btn-secondary mb-3">
             <i class="fas fa-plus"></i> {{ __('Agregar Elemento') }}
         </button>
 
         <!-- Tabla para mostrar los elementos agregados -->
         <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-striped table-bordered">
+                <thead class="table-light">
                     <tr>
-                        <th>{{ __('Elemento') }}</th>
-                        <th>{{ __('Centro Costo') }}</th>
-                        <th>{{ __('Cantidad Unidad') }}</th>
-                        <th>{{ __('Acciones') }}</th>
+                        <th class="align-middle" style="min-width: 150px">{{ __('Elemento') }}</th>
+                        <th class="align-middle" style="min-width: 150px">{{ __('Centro Costo') }}</th>
+                        <th class="align-middle" style="min-width: 120px">{{ __('Cantidad Unidad') }}</th>
+                        <th class="align-middle" style="min-width: 300px">{{ __('Descripción') }}</th>
+                        <th class="align-middle" style="min-width: 100px">{{ __('Acciones') }}</th>
                     </tr>
                 </thead>
                 <tbody id="elementsTableBody">
                     @if ($elementsWithNames)
                         @foreach ($elementsWithNames as $index => $element)
                             <tr id="element-{{ $index }}">
-                                <td>{{ $element['nombre_nivel_tres'] }}</td>
-                                <td>{{ $element['nombre_centro_costo'] }}</td>
-                                <td>{{ $element['cantidad'] }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" onclick="removeElement({{ $index }})">Eliminar</button>
+                                <td class="align-middle text-break">{{ $element['nombre_nivel_tres'] }}</td>
+                                <td class="align-middle text-break">{{ $element['nombre_centro_costo'] }}</td>
+                                <td class="align-middle text-center">{{ $element['cantidad'] }}</td>
+                                <td class="align-middle">
+                                    <div class="text-break">{{ $element['descripcion_elemento'] }}</div> <!-- Cambiado a 'descripcion_elemento' -->
                                 </td>
-                                <input type="hidden" name="elements[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
-                                <input type="hidden" name="elements[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
-                                <input type="hidden" name="elements[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
+                                <td class="align-middle text-center">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeElement({{ $index }})">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </td>
+                                <input type="hidden" name="elementos[{{ $index }}][id_niveles_tres]" value="{{ $element['id_niveles_tres'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][id_centros_costos]" value="{{ $element['id_centros_costos'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][cantidad]" value="{{ $element['cantidad'] }}">
+                                <input type="hidden" name="elementos[{{ $index }}][descripcion_elemento]" value="{{ $element['descripcion_elemento'] }}"> <!-- Cambiado a 'descripcion_elemento' -->
                             </tr>
                         @endforeach
                     @else
                         <tr id="noElementsRow">
-                            <td colspan="4" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
+                            <td colspan="5" class="text-center text-muted">{{ __('No hay elementos agregados') }}</td>
                         </tr>
                     @endif
                 </tbody>

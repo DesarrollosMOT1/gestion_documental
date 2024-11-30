@@ -56,6 +56,7 @@
                                                 <th>Elemento</th>
                                                 <th>Centro de Costos</th>
                                                 <th>Cantidad Unidad</th>
+                                                <th>Descripción</th>
                                                 <th>Estado</th>
                                             </tr>
                                         </thead>
@@ -63,14 +64,18 @@
                                             @foreach($solicitudesCompra->solicitudesElemento as $elemento)
                                                 <tr>
                                                     <td>{{ $elemento->nivelesTres->nombre ?? 'N/A' }}</td>
-                                                    <td>{{ $elemento->centrosCosto->nombre ?? 'N/A' }}</td>
+                                                    <td>
+                                                        {{ $elemento->centrosCosto->codigo_mekano ?? 'N/A' }} - 
+                                                        {{ $elemento->centrosCosto->nombre ?? 'N/A' }}
+                                                    </td>
                                                     <td>{{ $elemento->cantidad }}</td>
+                                                    <td>{{ $elemento->descripcion_elemento }}</td>
                                                     <td>
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox" class="form-check-input estado-checkbox" 
-                                                                   data-id="{{ $elemento->id }}" 
-                                                                   {{ $elemento->estado ? 'checked' : '' }} 
-                                                                   @if(!in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds)) disabled @endif>
+                                                                data-id="{{ $elemento->id }}" 
+                                                                {{ $elemento->estado ? 'checked' : '' }} 
+                                                                @if(!in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds)) disabled @endif>
                                                         </div>
                                                     </td>
                                                 </tr>

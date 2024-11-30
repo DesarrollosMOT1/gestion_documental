@@ -59,9 +59,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('entradas', App\Http\Controllers\EntradaController::class)->middleware('can:ver_entrada_inventario');
     Route::resource('audits', App\Http\Controllers\AuditController::class)->except(['create', 'edit', 'delete'])->middleware('can:ver_registro_auditoria');
     Route::patch('/solicitudes-elemento/{id}/cantidad', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'updateCantidad'])->name('solicitudes-elemento.updateCantidad');
-    Route::patch('/terceros/{tercero}/email', [App\Http\Controllers\SolicitudesOfertaController::class, 'updateTerceroEmail'])
-        ->name('terceros.updateEmail');
-    Route::post('/solicitudes-ofertas/{solicitudId}/terceros/{terceroId}/send-emails', [App\Http\Controllers\SolicitudesOfertaController::class, 'sendEmails'])->name('solicitudes-ofertas.send-emails');
+    Route::patch('/terceros/{tercero}/email', [App\Http\Controllers\SolicitudesOfertaController::class, 'updateTerceroEmail'])->name('terceros.updateEmail');
+    Route::post('/solicitudes-ofertas/{id}/terceros/{terceroId}/send-emails', [App\Http\Controllers\SolicitudesOfertaController::class, 'sendEmails'])->name('solicitudes-oferta.send-emails');
+    Route::post('/ordenes-compra/{id}/tercero/{terceroId}/send-emails', [App\Http\Controllers\OrdenesCompraController::class, 'sendEmails'])->name('orden-compra.send-emails');
 
     // Rutas para agrupaciones y consolidaciones
     Route::post('agrupaciones-consolidacione/{agrupacionesConsolidacioneId}/solicitudes-compra', [App\Http\Controllers\AgrupacionesConsolidacioneController::class, 'storeSolicitudesCompra'])->name('agrupaciones-consolidacione.storeSolicitudesCompra');

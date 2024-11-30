@@ -52,7 +52,11 @@
                                                 <i class="fa fa-file-pdf"></i> Ver PDF
                                             </a>
                                         </div>
-                                        @include('tercero.tercero-email', ['tercero' => $tercero])
+                                        @include('components.email-modal', [
+                                            'modelo' => $solicitudesOferta,
+                                            'tercero' => $tercero,
+                                            'tipo' => 'solicitudes-oferta'
+                                        ])
                                     </div>
                                     <hr>
                                 @endforeach
