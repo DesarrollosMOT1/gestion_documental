@@ -4,10 +4,6 @@
     Clases Movimientos
 @endsection
 
-@section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -22,8 +18,8 @@
                             </span>
 
                             <div class="float-right">
-                                <a href="{{ route('clases-movimientos.create') }}"
-                                    class="btn btn-primary btn-sm float-right" data-placement="left">
+                                <a href="{{ route('clases-movimientos.create') }}" class="btn btn-primary btn-sm float-right"
+                                    data-placement="left">
                                     {{ __('Crear Nuevo') }}
                                 </a>
                             </div>
@@ -59,19 +55,17 @@
                                             <td>
                                                 <form
                                                     action="{{ route('clases-movimientos.destroy', $clasesMovimiento->id) }}"
-                                                    method="POST">
+                                                    method="POST" class="delete-form">
                                                     <a class="btn btn-sm btn-primary"
                                                         href="{{ route('clases-movimientos.show', $clasesMovimiento->id) }}"><i
-                                                            class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
+                                                            class="fa fa-fw fa-eye"></i> </a>
                                                     <a class="btn btn-sm btn-success"
                                                         href="{{ route('clases-movimientos.edit', $clasesMovimiento->id) }}"><i
-                                                            class="fa fa-fw fa-edit"></i> {{ __('Editar') }}</a>
+                                                            class="fa fa-fw fa-edit"></i> </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('¿Está seguro de eliminar?') ? this.closest('form').submit() : false;">
-                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                            class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -81,7 +75,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $clasesMovimientos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

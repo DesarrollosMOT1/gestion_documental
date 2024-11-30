@@ -15,17 +15,16 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property $email
  * @property $created_at
  * @property $updated_at
- *
  * @property Cotizacione[] $cotizaciones
  * @property OrdenesCompra[] $ordenesCompras
  * @property SolicitudOfertaTercero[] $solicitudOfertaTerceros
- * @package App
+ *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Tercero extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    
+
     protected $perPage = 2000;
 
     /**
@@ -35,7 +34,6 @@ class Tercero extends Model implements Auditable
      */
     protected $fillable = ['nit', 'tipo_factura', 'nombre', 'email'];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -43,7 +41,7 @@ class Tercero extends Model implements Auditable
     {
         return $this->hasMany(\App\Models\Cotizacione::class, 'id', 'id_terceros');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -51,7 +49,7 @@ class Tercero extends Model implements Auditable
     {
         return $this->hasMany(\App\Models\OrdenesCompra::class, 'id', 'id_terceros');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -59,5 +57,9 @@ class Tercero extends Model implements Auditable
     {
         return $this->hasMany(\App\Models\SolicitudOfertaTercero::class, 'id', 'tercero_id');
     }
-    
+
+    public function registros()
+    {
+        return $this->hasMany(\App\Models\Registro::class, 'nit', 'tercero');
+    }
 }

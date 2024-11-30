@@ -17,18 +17,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property $detalle_registro
  * @property $created_at
  * @property $updated_at
- *
  * @property Motivo $motivo
  * @property Movimiento $movimiento
  * @property Producto $producto
- * @property Tercerostest $tercerostest
+ * @property Tercero $tercero
  * @property Unidades $unidades
- * @package App
+ *
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Registro extends Model
 {
-
     protected $perPage = 20;
 
     /**
@@ -37,7 +35,6 @@ class Registro extends Model
      * @var array<int, string>
      */
     protected $fillable = ['producto', 'tercero', 'unidad', 'movimiento', 'cantidad', 'motivo', 'detalle_registro'];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -66,17 +63,16 @@ class Registro extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tercerostest()
+    public function tercero()
     {
-        return $this->belongsTo(\App\Models\Tercerostest::class, 'tercero', 'id');
+        return $this->belongsTo(\App\Models\Tercero::class, 'tercero', 'nit');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function unidades()
+    public function unidad()
     {
         return $this->belongsTo(\App\Models\Unidades::class, 'unidad', 'id');
     }
-
 }

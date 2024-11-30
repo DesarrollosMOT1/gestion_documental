@@ -25,7 +25,7 @@
     </div>
 
     <!-- Modal para agregar productos -->
-    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registroModal" aria-labelledby="productoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

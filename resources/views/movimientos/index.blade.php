@@ -4,10 +4,6 @@
     Movimientos
 @endsection
 
-@section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -62,7 +58,7 @@
                                             <td>
                                                 <a class="btn btn-sm btn-primary"
                                                     href="{{ route('movimientos.show', $movimiento->id) }}">
-                                                    <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}</a>
+                                                    <i class="fa fa-fw fa-eye"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -71,7 +67,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $movimientos->withQueryString()->links() !!}
             </div>
         </div>
     </div>

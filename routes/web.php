@@ -20,7 +20,6 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-
 // Rutas protegidas por el middleware 'auth'
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -85,25 +84,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/centros-costos/{idCentrosCostos}', [App\Http\Controllers\ClasificacionesCentroController::class, 'getCentrosCostos']);
 
     //cadena de suministros
-    Route::post('equivalencias/store-array/{unidadId}', [EquivalenciaController::class, 'storeEquivalencia'])->name('equivalencias.store-array');
-    Route::post('equivalencias/store-request-equivalencia', [EquivalenciaController::class, 'storeRequestEquivalencia'])->name('equivalencias.store-request-equivalencia');
-    Route::post('registros/store-array/{movimientoId}', [RegistroController::class, 'storeArray'])->name('registros.store-array');
-    Route::get('clases-movimientos/get-all-by-typeid/{typeId}', [ClasesMovimientoController::class, 'getAllClasesMovimientobyTipo'])->name('clases-movimientos.get-all-by-typeid');
-    Route::get('productos/get-all', [ProductoController::class, 'getAllProductos'])->name('productos.get-all');
-    Route::get('almacenes/get-all', [AlmacenesController::class, 'getAllAlmacenes'])->name('almacenes.get-all');
-    Route::get('bodegas/get-all', [BodegaController::class, 'getAllBodegas'])->name('bodegas.get-all');
-    Route::get('motivos/get-all', [MotivoController::class, 'getAllMotivos'])->name('motivos.get-all');
-    Route::get('terceros-api/get-all', [TerceroController::class, 'getAllTerceros'])->name('terceros-api.get-all');
-    Route::get('tipos-movimientos/get-all', [TiposMovimientoController::class, 'getAllTiposMovimiento'])->name('tipos-movimientos.get-all');
-    Route::get('unidades/get-all', [UnidadeController::class, 'getAllUnidades'])->name('unidades.get-all');
-    Route::resource('almacenes', AlmacenesController::class);
-    Route::resource('bodegas', BodegaController::class);
-    Route::resource('clases-movimientos', ClasesMovimientoController::class);
-    Route::resource('tipos-movimientos', TiposMovimientoController::class);
-    Route::resource('unidades', UnidadeController::class);
-    Route::resource('productos', ProductoController::class);
-    Route::resource('motivos', MotivoController::class);
-    Route::resource('movimientos', MovimientoController::class);
-    Route::apiResource('registros', RegistroController::class);
-    Route::apiResource('equivalencias', EquivalenciaController::class);
+    Route::post('equivalencias/store-array/{unidadId}', [EquivalenciaController::class, 'storeEquivalencia'])->name('equivalencias.store-array')->middleware('can:ver_unidades');
+    Route::post('equivalencias/store-request-equivalencia', [EquivalenciaController::class, 'storeRequestEquivalencia'])->name('equivalencias.store-request-equivalencia')->middleware('can:ver_unidades');
+    Route::post('registros/store-array/{movimientoId}', [RegistroController::class, 'storeArray'])->name('registros.store-array')->middleware('can:ver_movimientos');
+    Route::get('clases-movimientos/get-all-by-typeid/{typeId}', [ClasesMovimientoController::class, 'getAllClasesMovimientobyTipo'])->name('clases-movimientos.get-all-by-typeid')->middleware('can:ver_movimientos');
+    Route::get('productos/get-all', [ProductoController::class, 'getAllProductos'])->name('productos.get-all')->middleware('can:ver_productos');
+    Route::get('almacenes/get-all', [AlmacenesController::class, 'getAllAlmacenes'])->name('almacenes.get-all')->middleware('can:ver_almacenes');
+    Route::get('bodegas/get-all', [BodegaController::class, 'getAllBodegas'])->name('bodegas.get-all')->middleware('can:ver_bodegas');
+    Route::get('motivos/get-all', [MotivoController::class, 'getAllMotivos'])->name('motivos.get-all')->middleware('can:ver_motivos');
+    Route::get('terceros-api/get-all', [TerceroController::class, 'getAllTerceros'])->name('terceros-api.get-all')->middleware('can:ver_terceros');
+    Route::get('tipos-movimientos/get-all', [TiposMovimientoController::class, 'getAllTiposMovimiento'])->name('tipos-movimientos.get-all')->middleware('can:ver_tipos_de_movimientos');
+    Route::get('unidades/get-all', [UnidadeController::class, 'getAllUnidades'])->name('unidades.get-all')->middleware('can:ver_unidades');
+    Route::resource('almacenes', AlmacenesController::class)->middleware('can:ver_almacenes');
+    Route::resource('bodegas', BodegaController::class)->middleware('can:ver_bodegas');
+    Route::resource('clases-movimientos', ClasesMovimientoController::class)->middleware('can:ver_clases_de_movimientos');
+    Route::resource('tipos-movimientos', TiposMovimientoController::class)->middleware('can:ver_tipos_de_movimientos');
+    Route::resource('unidades', UnidadeController::class)->middleware('can:ver_unidades');
+    Route::resource('productos', ProductoController::class)->middleware('can:ver_productos');
+    Route::resource('motivos', MotivoController::class)->middleware('can:ver_motivos');
+    Route::resource('movimientos', MovimientoController::class)->middleware('can:ver_movimientos');
+    Route::apiResource('registros', RegistroController::class)->middleware('can:ver_movimientos');
+    Route::apiResource('equivalencias', EquivalenciaController::class)->middleware('can:ver_unidades');
 });

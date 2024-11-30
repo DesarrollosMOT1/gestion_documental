@@ -4,10 +4,6 @@
     Unidades
 @endsection
 
-@section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.foundation.min.css">
-@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -52,17 +48,16 @@
                                             <td>{{ $unidad->id }}</td>
                                             <td>{{ $unidad->nombre }}</td>
                                             <td>
-                                                <form action="{{ route('unidades.destroy', $unidad->id) }}" method="POST">
+                                                <form action="{{ route('unidades.destroy', $unidad->id) }}" method="POST"
+                                                    class="delete-form">
                                                     <a class="btn btn-sm btn-primary"
                                                         href="{{ route('unidades.show', $unidad->id) }}">
-                                                        <i class="fa fa-fw fa-eye"></i> {{ __('Mostrar') }}
+                                                        <i class="fa fa-fw fa-eye"></i>
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('¿esta seguro de querer borrar esta unidad?') ? this.closest('form').submit() : false;">
-                                                        <i class="fa fa-fw fa-trash"></i> {{ __('Eliminar') }}
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                            class="fa fa-fw fa-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -72,7 +67,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $unidades->withQueryString()->links() !!}
             </div>
         </div>
     </div>
