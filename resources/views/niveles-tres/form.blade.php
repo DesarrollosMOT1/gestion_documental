@@ -38,7 +38,7 @@
                 <option value="">{{ __('Seleccione una unidad') }}</option>
                 @foreach($unidades as $unidad)
                     <option value="{{ $unidad->id }}" {{ old('unidad_id', $nivelesTre?->unidad_id) == $unidad->id ? 'selected' : '' }}>
-                        {{ $unidad->nombre }}
+                        {{ $unidad->nombre_completo }}
                     </option>
                 @endforeach
             </select>

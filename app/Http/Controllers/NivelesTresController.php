@@ -34,7 +34,20 @@ class NivelesTresController extends Controller
         $nivelesTre = new NivelesTres();
         $nivelesDos = NivelesDos::all();
         $referenciasGastos = ReferenciasGasto::all();
-        $unidades = Unidades::all();
+        
+        // Modificar la obtención de unidades
+        $unidadesModel = new Unidades();
+        $unidades = Unidades::all()->map(function($unidad) use ($unidadesModel) {
+            $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
+            $equivalenciasTexto = collect($equivalencias['equivalencias'])
+                ->map(function($eq) {
+                    return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
+                })
+                ->implode(', ');
+                
+            $unidad->nombre_completo = $unidad->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
+            return $unidad;
+        });
         
         return view('niveles-tres.create', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
@@ -68,7 +81,20 @@ class NivelesTresController extends Controller
         $nivelesTre = NivelesTres::find($id);
         $nivelesDos = NivelesDos::all();
         $referenciasGastos = ReferenciasGasto::all();
-        $unidades = Unidades::all();
+        
+        // Obtención de unidades
+        $unidadesModel = new Unidades();
+        $unidades = Unidades::all()->map(function($unidad) use ($unidadesModel) {
+            $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
+            $equivalenciasTexto = collect($equivalencias['equivalencias'])
+                ->map(function($eq) {
+                    return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
+                })
+                ->implode(', ');
+                
+            $unidad->nombre_completo = $unidad->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
+            return $unidad;
+        });
         
         return view('niveles-tres.edit', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
