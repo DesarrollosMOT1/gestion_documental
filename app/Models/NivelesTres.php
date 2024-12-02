@@ -34,7 +34,7 @@ class NivelesTres extends Model implements Auditable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombre', 'id_niveles_dos', 'id_referencias_gastos', 'inventario'];
+    protected $fillable = ['nombre', 'id_niveles_dos', 'id_referencias_gastos', 'inventario', 'unidad_id'];
 
 
     /**
@@ -60,5 +60,9 @@ class NivelesTres extends Model implements Auditable
     {
         return $this->hasMany(\App\Models\SolicitudesElemento::class, 'id', 'id_niveles_tres');
     }
-    
+
+    public function unidades()
+    {
+        return $this->belongsToMany(\App\Models\Unidades::class, 'nivel_tres_unidades', 'nivel_tres_id', 'unidad_id');
+    }
 }

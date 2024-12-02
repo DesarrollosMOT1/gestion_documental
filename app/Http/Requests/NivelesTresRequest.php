@@ -30,9 +30,10 @@ class NivelesTresRequest extends FormRequest
                 'string',
                 Rule::unique('niveles_tres', 'nombre')->ignore($id),
             ],
-            'id_niveles_dos' => 'required',
-            'id_referencias_gastos' => 'required|string',
+            'id_niveles_dos' => 'required|exists:niveles_dos,id',
+            'id_referencias_gastos' => 'required|exists:referencias_gastos,id',
             'inventario' => 'nullable|boolean',
+            'unidad_id' => 'nullable|exists:unidades,id',
         ];
     }
 }

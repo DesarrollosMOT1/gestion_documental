@@ -88,4 +88,9 @@ class Unidades extends Model
             'equivalencias' => $equivalenciasCadena,
         ];
     }
+
+    public function nivelTres()
+    {
+        return $this->hasOne(NivelesTres::class, 'unidad_id');
+    }
 }
