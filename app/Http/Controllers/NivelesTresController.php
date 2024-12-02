@@ -12,7 +12,7 @@ use App\Models\NivelesDos;
 use App\Models\ReferenciasGasto;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\NivelesTresImport;
-
+use App\Models\Unidades;
 class NivelesTresController extends Controller
 {
     /**
@@ -32,10 +32,11 @@ class NivelesTresController extends Controller
     public function create(): View
     {
         $nivelesTre = new NivelesTres();
-        $nivelesDos = NivelesDos::all(); // Obtener todos los niveles dos
-        $referenciasGastos = ReferenciasGasto::all(); // Obtener todas las referencias de gastos
-    
-        return view('niveles-tres.create', compact('nivelesTre', 'nivelesDos', 'referenciasGastos'));
+        $nivelesDos = NivelesDos::all();
+        $referenciasGastos = ReferenciasGasto::all();
+        $unidades = Unidades::all();
+        
+        return view('niveles-tres.create', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
 
     /**
@@ -65,12 +66,12 @@ class NivelesTresController extends Controller
     public function edit($id): View
     {
         $nivelesTre = NivelesTres::find($id);
-        $nivelesDos = NivelesDos::all(); // Obtener todos los niveles dos
-        $referenciasGastos = ReferenciasGasto::all(); // Obtener todas las referencias de gastos
-    
-        return view('niveles-tres.edit', compact('nivelesTre', 'nivelesDos', 'referenciasGastos'));
+        $nivelesDos = NivelesDos::all();
+        $referenciasGastos = ReferenciasGasto::all();
+        $unidades = Unidades::all();
+        
+        return view('niveles-tres.edit', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
-
     /**
      * Update the specified resource in storage.
      */

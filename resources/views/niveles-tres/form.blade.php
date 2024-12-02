@@ -31,6 +31,19 @@
             </select>
             {!! $errors->first('id_referencias_gastos', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
+        <!-- Añadir el nuevo select de unidades aquí -->
+        <div class="form-group mb-2 mb20">
+            <label for="unidad_id" class="form-label">{{ __('Unidad') }}</label>
+            <select name="unidad_id" class="form-control select2 @error('unidad_id') is-invalid @enderror" id="unidad_id">
+                <option value="">{{ __('Seleccione una unidad') }}</option>
+                @foreach($unidades as $unidad)
+                    <option value="{{ $unidad->id }}" {{ old('unidad_id', $nivelesTre?->unidad_id) == $unidad->id ? 'selected' : '' }}>
+                        {{ $unidad->nombre }}
+                    </option>
+                @endforeach
+            </select>
+            {!! $errors->first('unidad_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+        </div>
         <!-- Checkbox de Inventario -->
         <div class="form-group mb-2 mb20">
             <label for="inventario" class="form-label">{{ __('Inventario') }}</label>
