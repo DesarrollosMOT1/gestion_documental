@@ -63,6 +63,6 @@ class NivelesTres extends Model implements Auditable
 
     public function unidades()
     {
-        return $this->belongsToMany(\App\Models\Unidades::class, 'nivel_tres_unidades', 'nivel_tres_id', 'unidad_id');
+        return $this->belongsTo(\App\Models\Unidades::class, 'unidad_id' ,'id');
     }
 }

@@ -98,8 +98,19 @@ class SolicitudesCompraController extends Controller
     public function getNivelesTres($idNivelDos)
     {
         $nivelesTres = NivelesTres::where('id_niveles_dos', $idNivelDos)
-            ->select('id', 'nombre', 'inventario')
-            ->get();
+            ->with('unidades')
+            ->select('id', 'nombre', 'inventario', 'unidad_id')
+            ->get()
+            ->map(function ($nivelTres) {
+                return [
+                    'id' => $nivelTres->id,
+                    'nombre' => $nivelTres->nombre,
+                    'inventario' => $nivelTres->inventario,
+                    'unidad_id' => $nivelTres->unidad_id,
+                    'unidad_nombre' => $nivelTres->unidades?->nombre ?? null, // Corrección aquí
+                ];
+            });
+    
         return response()->json($nivelesTres);
     }
 
