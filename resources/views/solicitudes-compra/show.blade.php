@@ -55,7 +55,8 @@
                                             <tr>
                                                 <th>Elemento</th>
                                                 <th>Centro de Costos</th>
-                                                <th>Cantidad Unidad</th>
+                                                <th>Cantidad</th>
+                                                <th>Unidad</th>
                                                 <th>Descripción</th>
                                                 <th>Estado</th>
                                             </tr>
@@ -68,7 +69,20 @@
                                                         {{ $elemento->centrosCosto->codigo_mekano ?? 'N/A' }} - 
                                                         {{ $elemento->centrosCosto->nombre ?? 'N/A' }}
                                                     </td>
-                                                    <td>{{ $elemento->cantidad }}</td>
+                                                    <td>{{ number_format($elemento->cantidad) }}</td>
+                                                    <td>
+                                                        @if(isset($elemento->unidad_info))
+                                                            {{ $elemento->unidad_info['nombre'] }}
+                                                            @if($elemento->unidad_info['equivalencias'])
+                                                                <br>
+                                                                <small class="text-muted">
+                                                                    ({{ $elemento->unidad_info['equivalencias'] }})
+                                                                </small>
+                                                            @endif
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $elemento->descripcion_elemento }}</td>
                                                     <td>
                                                         <div class="form-check form-switch">

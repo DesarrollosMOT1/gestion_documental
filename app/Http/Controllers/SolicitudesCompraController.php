@@ -180,29 +180,47 @@ class SolicitudesCompraController extends Controller
     public function show($id): View
     {
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
-    
+        $unidadesModel = new Unidades();
+
         // Obtener la solicitud de compra con sus relaciones
         $solicitudesCompra = SolicitudesCompra::with([
-            'solicitudesElemento.nivelesTres',
+            'solicitudesElemento.nivelesTres.unidades',
             'solicitudesElemento.centrosCosto'
         ])->findOrFail($id);
-    
-        // Verificar si la solicitud pertenece al usuario autenticado
+
+        // Agregar las equivalencias a cada elemento
+        $solicitudesCompra->solicitudesElemento->each(function ($elemento) use ($unidadesModel) {
+            if ($elemento->nivelesTres && $elemento->nivelesTres->unidades) {
+                $equivalencias = $unidadesModel->obtenerEquivalencias($elemento->nivelesTres->unidades->id);
+                $equivalenciasTexto = collect($equivalencias['equivalencias'])
+                    ->map(function($eq) use ($elemento) {
+                        $cantidadCalculada = $elemento->cantidad * $eq['cantidad'];
+                        $cantidadFormateada = number_format($cantidadCalculada, 2);
+                        $cantidadFormateada = rtrim(rtrim($cantidadFormateada, '0'), '.');
+                        return "{$cantidadFormateada} {$eq['unidad_equivalente']}";
+                    })
+                    ->implode(', ');
+
+                $elemento->unidad_info = [
+                    'nombre' => $elemento->nivelesTres->unidades->nombre,
+                    'equivalencias' => $equivalenciasTexto
+                ];
+            }
+        });
+
+        // Resto del código de verificación...
         if ($solicitudesCompra->id_users !== auth()->id()) {
-            // Filtrar los elementos de la solicitud por niveles permitidos
             $solicitudesCompra->solicitudesElemento = $solicitudesCompra->solicitudesElemento->filter(function ($elemento) use ($nivelesUnoIds) {
                 return in_array($elemento->nivelesTres->nivelesDos->nivelesUno->id, $nivelesUnoIds);
             });
-    
-            // Si no hay elementos visibles, lanzar un 404
+
             if ($solicitudesCompra->solicitudesElemento->isEmpty()) {
                 abort(404, 'No autorizado para acceder a esta solicitud.');
             }
         }
-    
-        // Verificar la política de acceso
+
         $this->authorize('view', $solicitudesCompra);
-    
+
         return view('solicitudes-compra.show', compact('solicitudesCompra', 'nivelesUnoIds'));
     }
     
