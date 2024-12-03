@@ -17,6 +17,7 @@ use App\Models\SolicitudesElemento;
 use App\Traits\VerNivelesPermiso;
 use App\Traits\GenerarPrefijo;
 use App\Traits\ObtenerCentrosCostos;
+use App\Models\Unidades;
 
 
 class SolicitudesCompraController extends Controller
@@ -97,17 +98,32 @@ class SolicitudesCompraController extends Controller
 
     public function getNivelesTres($idNivelDos)
     {
+        $unidadesModel = new Unidades();
+        
         $nivelesTres = NivelesTres::where('id_niveles_dos', $idNivelDos)
             ->with('unidades')
             ->select('id', 'nombre', 'inventario', 'unidad_id')
             ->get()
-            ->map(function ($nivelTres) {
+            ->map(function ($nivelTres) use ($unidadesModel) {
+                // Obtener equivalencias si existe unidad
+                $unidadInfo = null;
+                if ($nivelTres->unidad_id && $nivelTres->unidades) {
+                    $equivalencias = $unidadesModel->obtenerEquivalencias($nivelTres->unidad_id);
+                    $equivalenciasTexto = collect($equivalencias['equivalencias'])
+                        ->map(function($eq) {
+                            return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
+                        })
+                        ->implode(', ');
+                    
+                    $unidadInfo = $nivelTres->unidades->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
+                }
+    
                 return [
                     'id' => $nivelTres->id,
                     'nombre' => $nivelTres->nombre,
                     'inventario' => $nivelTres->inventario,
                     'unidad_id' => $nivelTres->unidad_id,
-                    'unidad_nombre' => $nivelTres->unidades?->nombre ?? null, // Corrección aquí
+                    'unidad_nombre' => $unidadInfo,
                 ];
             });
     
