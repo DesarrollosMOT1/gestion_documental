@@ -117,10 +117,23 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     const equivalencias = JSON.parse(selectedOption.dataset.equivalencias || '[]');
     
     // Calcular equivalencias
-    const equivalenciasCalculadas = equivalencias.map(eq => ({
-        unidad: eq.unidad_equivalente,
-        cantidad: (parseFloat(cantidad) * parseFloat(eq.cantidad)).toFixed(2)
-    }));
+    const equivalenciasCalculadas = equivalencias.map(eq => {
+        const cantidadCalculada = parseFloat(cantidad) * parseFloat(eq.cantidad);
+        // Redondear a 2 decimales y eliminar decimales si son cero
+        const cantidadFormateada = Number(cantidadCalculada.toFixed(2))
+            .toString()
+            .replace(/\.?0+$/, '');
+        
+        return {
+            unidad: eq.unidad_equivalente,
+            cantidad: cantidadFormateada
+        };
+    });
+    
+    // Formatear la cantidad principal también
+    const cantidadPrincipalFormateada = Number(parseFloat(cantidad).toFixed(2))
+        .toString()
+        .replace(/\.?0+$/, '');
     
     // Crear texto de equivalencias
     const equivalenciasTexto = equivalenciasCalculadas.length > 0 
@@ -128,7 +141,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
         : '';
     
     // Crear las celdas de la tabla
-    const cantidadConEquivalencias = `${cantidad} ${unidadPrincipal} ${equivalenciasTexto}`;
+    const cantidadConEquivalencias = `${cantidadPrincipalFormateada} ${unidadPrincipal} ${equivalenciasTexto}`;
     
     const cellData = [nivelesTresText, centrosCostosText, cantidadConEquivalencias, descripcionElemento || ''];
     
