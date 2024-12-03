@@ -9,9 +9,11 @@ function fetchNivel(url, targetSelect, callback) {
         .then(data => {
             let options = '<option selected>Seleccione una opción</option>';
             data.forEach(function(item) {
-                options += `<option value="${item.id}" data-inventario="${item.inventario}">${item.nombre}</option>`;
+                const additionalData = item.unidad_nombre ? 
+                    `data-unidad="${item.unidad_nombre}"` : '';
+                options += `<option value="${item.id}" data-inventario="${item.inventario}" ${additionalData}>${item.nombre}</option>`;
             });
-            $(targetSelect).html(options).trigger('change'); // Actualiza el select y dispara el evento change
+            $(targetSelect).html(options).trigger('change');
             if (callback) callback(data);
         })
         .catch(error => {
@@ -24,60 +26,57 @@ function initializeSelects() {
     const selectNivelesDos = $('#select_niveles_dos');
     const selectNivelesTres = $('#select_niveles_tres');
     const selectCentrosCostos = $('#select_id_centros_costos');
+    const selectUnidad = $('#select_unidad');
 
     // Inicializar Select2 en los selects dependientes
-    selectNivelesUno.select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Seleccione una opción',
-        allowClear: true
-    });
-
-    selectNivelesDos.select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Seleccione una opción',
-        allowClear: true
-    });
-
-    selectNivelesTres.select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Seleccione una opción',
-        allowClear: true
-    });
-
-    selectCentrosCostos.select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Seleccione una opción',
-        allowClear: true
+    [selectNivelesUno, selectNivelesDos, selectNivelesTres, selectCentrosCostos, selectUnidad].forEach(select => {
+        select.select2({
+            theme: 'bootstrap-5',
+            placeholder: 'Seleccione una opción',
+            allowClear: true
+        });
     });
 
     selectNivelesUno.on('change', function() {
         const idNivelUno = this.value;
         fetchNivel(`/api/niveles-dos/${idNivelUno}`, selectNivelesDos[0]);
+        // Resetear selects dependientes
+        selectNivelesTres.html('<option selected>Seleccione una opción</option>').trigger('change');
+        selectUnidad.html('<option selected>Sin nivel tres seleccionado</option>').trigger('change');
     });
 
     selectNivelesDos.on('change', function() {
         const idNivelDos = this.value;
         fetchNivel(`/api/niveles-tres/${idNivelDos}`, selectNivelesTres[0], handleNivelTresChange);
+        // Resetear unidad
+        selectUnidad.html('<option selected>Sin nivel tres seleccionado</option>').trigger('change');
     });
 
     function handleNivelTresChange() {
         selectNivelesTres.on('change', function() {
             const selectedOption = $(this).find(':selected');
             const isInventario = selectedOption.data('inventario') === 1;
+            const unidadNombre = selectedOption.data('unidad');
     
-            // Si el inventario está marcado
+            // Actualizar select de unidad
+            if (selectedOption.val() === 'Seleccione una opción') {
+                selectUnidad.html('<option selected>Sin nivel tres seleccionado</option>').trigger('change');
+            } else if (unidadNombre) {
+                selectUnidad.html(`<option selected>${unidadNombre}</option>`).trigger('change');
+            } else {
+                selectUnidad.html('<option selected>Este elemento no tiene una unidad relacionada</option>').trigger('change');
+            }
+    
+            // Manejar centro de costos basado en inventario
             if (isInventario) {
-                // Busca el centro de costo con codigo_mekano igual a 11011
                 let centroCostoMekano = $('#select_id_centros_costos option').filter(function() {
                     return $(this).text().includes('11011');
                 });
     
                 if (centroCostoMekano.length > 0) {
-                    // Selecciona el centro de costo con el código Mekano 11011
                     selectCentrosCostos.val(centroCostoMekano.val()).trigger('change').prop('disabled', true);
                 }
             } else {
-                // Habilita el select si el inventario no está marcado
                 selectCentrosCostos.prop('disabled', false).trigger('change');
             }
         });

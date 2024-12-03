@@ -61,6 +61,13 @@
         </div>        
 
         <div class="form-group mb-2 mb20">
+            <label for="select_unidad" class="form-label">{{ __('Unidad') }}</label>
+            <select id="select_unidad" class="form-control" disabled>
+                <option selected>Sin nivel tres seleccionado</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-2 mb20">
             <label for="select_id_centros_costos" class="form-label">{{ __('Centros Costos') }}</label>
             <select id="select_id_centros_costos" class="form-control select2">
                 <option selected>Seleccione una opción</option>
