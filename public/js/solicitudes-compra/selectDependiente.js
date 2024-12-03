@@ -9,9 +9,13 @@ function fetchNivel(url, targetSelect, callback) {
         .then(data => {
             let options = '<option selected>Seleccione una opción</option>';
             data.forEach(function(item) {
-                const additionalData = item.unidad_nombre ? 
-                    `data-unidad="${item.unidad_nombre}"` : '';
-                options += `<option value="${item.id}" data-inventario="${item.inventario}" ${additionalData}>${item.nombre}</option>`;
+                const equivalenciasData = JSON.stringify(item.equivalencias || []);
+                const additionalData = `
+                    data-unidad="${item.unidad_nombre || ''}"
+                    data-inventario="${item.inventario}"
+                    data-equivalencias='${equivalenciasData}'
+                `;
+                options += `<option value="${item.id}" ${additionalData}>${item.nombre}</option>`;
             });
             $(targetSelect).html(options).trigger('change');
             if (callback) callback(data);
@@ -20,7 +24,6 @@ function fetchNivel(url, targetSelect, callback) {
             console.error('Ha habido un problema con su operación de recuperación:', error);
         });
 }
-
 function initializeSelects() {
     const selectNivelesUno = $('#select_niveles_uno');
     const selectNivelesDos = $('#select_niveles_dos');

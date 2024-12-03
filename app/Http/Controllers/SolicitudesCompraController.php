@@ -105,17 +105,13 @@ class SolicitudesCompraController extends Controller
             ->select('id', 'nombre', 'inventario', 'unidad_id')
             ->get()
             ->map(function ($nivelTres) use ($unidadesModel) {
-                // Obtener equivalencias si existe unidad
                 $unidadInfo = null;
+                $equivalenciasData = [];
+                
                 if ($nivelTres->unidad_id && $nivelTres->unidades) {
                     $equivalencias = $unidadesModel->obtenerEquivalencias($nivelTres->unidad_id);
-                    $equivalenciasTexto = collect($equivalencias['equivalencias'])
-                        ->map(function($eq) {
-                            return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
-                        })
-                        ->implode(', ');
-                    
-                    $unidadInfo = $nivelTres->unidades->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
+                    $unidadInfo = $nivelTres->unidades->nombre;
+                    $equivalenciasData = $equivalencias['equivalencias'];
                 }
     
                 return [
@@ -124,6 +120,7 @@ class SolicitudesCompraController extends Controller
                     'inventario' => $nivelTres->inventario,
                     'unidad_id' => $nivelTres->unidad_id,
                     'unidad_nombre' => $unidadInfo,
+                    'equivalencias' => $equivalenciasData
                 ];
             });
     

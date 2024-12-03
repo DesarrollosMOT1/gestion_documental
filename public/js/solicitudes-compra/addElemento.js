@@ -111,17 +111,40 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
     const newRow = document.createElement('tr');
     newRow.id = `element-${elementIndex}`;
     
-    const cellData = [nivelesTresText, centrosCostosText, cantidad, descripcionElemento || ''];
+    // Obtener la información de equivalencias del select actual
+    const selectedOption = document.querySelector('#select_niveles_tres option:checked');
+    const unidadPrincipal = selectedOption.dataset.unidad;
+    const equivalencias = JSON.parse(selectedOption.dataset.equivalencias || '[]');
+    
+    // Calcular equivalencias
+    const equivalenciasCalculadas = equivalencias.map(eq => ({
+        unidad: eq.unidad_equivalente,
+        cantidad: (parseFloat(cantidad) * parseFloat(eq.cantidad)).toFixed(2)
+    }));
+    
+    // Crear texto de equivalencias
+    const equivalenciasTexto = equivalenciasCalculadas.length > 0 
+        ? `(${equivalenciasCalculadas.map(eq => `${eq.cantidad} ${eq.unidad}`).join(', ')})`
+        : '';
+    
+    // Crear las celdas de la tabla
+    const cantidadConEquivalencias = `${cantidad} ${unidadPrincipal} ${equivalenciasTexto}`;
+    
+    const cellData = [nivelesTresText, centrosCostosText, cantidadConEquivalencias, descripcionElemento || ''];
+    
     cellData.forEach(text => {
         const cell = document.createElement('td');
-        cell.textContent = text;
+        cell.className = 'align-middle';
+        cell.innerHTML = `<div class="text-break">${text}</div>`;
         newRow.appendChild(cell);
     });
 
+    // Agregar botón de eliminar
     const cell4 = document.createElement('td');
+    cell4.className = 'align-middle text-center';
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Eliminar';
-    deleteButton.className = 'btn btn-danger';
+    deleteButton.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
+    deleteButton.className = 'btn btn-danger btn-sm';
     deleteButton.addEventListener('click', () => removeElement(elementIndex, nivelesTresValue, centrosCostosValue));
     cell4.appendChild(deleteButton);
     newRow.appendChild(cell4);
@@ -131,7 +154,7 @@ function createRow(elementIndex, nivelesTresText, centrosCostosText, cantidad, n
         { name: `elements[${elementIndex}][id_niveles_tres]`, value: nivelesTresValue },
         { name: `elements[${elementIndex}][id_centros_costos]`, value: centrosCostosValue },
         { name: `elements[${elementIndex}][cantidad]`, value: cantidad },
-        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento || '' } // Asegúrate de que siempre tenga un valor
+        { name: `elements[${elementIndex}][descripcion_elemento]`, value: descripcionElemento || '' }
     ];
     
     hiddenInputs.forEach(({ name, value }) => {
