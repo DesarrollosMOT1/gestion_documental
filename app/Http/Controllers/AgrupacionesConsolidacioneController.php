@@ -23,6 +23,7 @@ use App\Traits\VerNivelesPermiso;
 use App\Traits\GenerarPrefijo;
 use App\Traits\ObtenerCentrosCostos;
 use App\Models\NivelesTres;
+use App\Models\Unidades;
 
 
 class AgrupacionesConsolidacioneController extends Controller
@@ -122,11 +123,11 @@ class AgrupacionesConsolidacioneController extends Controller
     public function getElementosMultiple(Request $request)
     {
         $solicitudes = $request->input('solicitudes', []);
-        
+        $unidadesModel = new Unidades();
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
     
         // Obtener los elementos filtrados por nivel uno permitido, estado y que no tengan consolidaciones
-        $elementos = SolicitudesElemento::with('nivelesTres')
+        $elementos = SolicitudesElemento::with(['nivelesTres.unidades'])
             ->whereIn('id_solicitudes_compra', $solicitudes)
             ->where('estado', '1')
             ->whereHas('nivelesTres.nivelesDos.nivelesUno', function($query) use ($nivelesUnoIds) {
@@ -140,7 +141,22 @@ class AgrupacionesConsolidacioneController extends Controller
                 $query->select('id_solicitud_elemento')
                     ->from('elementos_consolidados');
             })
-            ->get();
+            ->get()
+            ->map(function ($elemento) use ($unidadesModel) {
+                $unidadInfo = null;
+                $equivalenciasData = [];
+                
+                if ($elemento->nivelesTres->unidad_id && $elemento->nivelesTres->unidades) {
+                    $equivalencias = $unidadesModel->obtenerEquivalencias($elemento->nivelesTres->unidades->id);
+                    $unidadInfo = $elemento->nivelesTres->unidades->nombre;
+                    $equivalenciasData = $equivalencias['equivalencias'];
+                }
+    
+                return array_merge($elemento->toArray(), [
+                    'unidad_info' => $unidadInfo,
+                    'equivalencias' => $equivalenciasData
+                ]);
+            });
     
         return response()->json($elementos);
     }    

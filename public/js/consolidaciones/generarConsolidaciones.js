@@ -80,21 +80,19 @@ $(document).ready(function() {
     // Actualizar el formulario de consolidación con los elementos obtenidos
     function actualizarFormularioConsolidacion(data) {
         let html = `<input type="hidden" name="agrupacion_id" value="${agrupacionId}">`;
-    
-        // Crear un objeto para consolidar los elementos por nivel_tres
         const elementosConsolidados = {};
     
-        // Recorrer los elementos y agrupar por nivel_tres
         data.forEach(function(elemento) {
             const nivelTresId = elemento.niveles_tres.id;
     
             if (!elementosConsolidados[nivelTresId]) {
-                // Si el nivel_tres aún no existe, crear un nuevo grupo
                 elementosConsolidados[nivelTresId] = {
                     id: elemento.id,
                     id_solicitudes_compra: elemento.id_solicitudes_compra,
                     nivel_tres_nombre: elemento.niveles_tres.nombre,
                     cantidad: elemento.cantidad,
+                    unidad_info: elemento.unidad_info,
+                    equivalencias: elemento.equivalencias,
                     elementos_originales: [{
                         id_solicitud_elemento: elemento.id,
                         id_solicitudes_compra: elemento.id_solicitudes_compra,
@@ -102,7 +100,6 @@ $(document).ready(function() {
                     }]
                 };
             } else {
-                // Si ya existe, sumar la cantidad y agregar a elementos_originales
                 elementosConsolidados[nivelTresId].cantidad += elemento.cantidad;
                 elementosConsolidados[nivelTresId].elementos_originales.push({
                     id_solicitud_elemento: elemento.id,
@@ -141,20 +138,34 @@ $(document).ready(function() {
             `;
         });
     
-        // Si el elemento fue consolidado (porque su cantidad fue sumada), añadimos las clases y texto correspondientes.
         const consolidadoClass = elemento.elementos_originales.length > 1 ? 'bg-warning' : '';
         const consolidadoTexto = elemento.elementos_originales.length > 1 ? '<span class="badge bg-warning">Consolidado</span>' : '';
+    
+        // Calcular equivalencias
+        let equivalenciasTexto = '';
+        if (elemento.unidad_info && elemento.equivalencias) {
+            const equivalenciasCalculadas = elemento.equivalencias.map(eq => {
+                const cantidadCalculada = elemento.cantidad * parseFloat(eq.cantidad);
+                return `${cantidadCalculada} ${eq.unidad_equivalente}`;
+            }).join(', ');
+            
+            if (equivalenciasCalculadas) {
+                equivalenciasTexto = ` (${equivalenciasCalculadas})`;
+            }
+        }
     
         return `
             <div class="col-md-6 col-lg-4">
                 <div class="card p-2 mb-3 ${consolidadoClass}">
                     <div class="card-body">
-                        ${consolidadoTexto} <!-- Muestra el texto "Consolidado" si es necesario -->
+                        ${consolidadoTexto}
                         <input type="hidden" name="elementos[${index}][id_solicitud_elemento]" value="${elemento.id}">
                         <input type="hidden" name="elementos[${index}][id_solicitudes_compra]" value="${elemento.id_solicitudes_compra}">
                         <label class="form-label">Elemento: ${elemento.nivel_tres_nombre}</label>
-                        <label class="form-label">Cantidad Unidad:</label>
+                        <label class="form-label">Cantidad:</label>
                         <input type="number" name="elementos[${index}][cantidad]" class="form-control cantidad" placeholder="Cantidad" value="${elemento.cantidad}" required readonly>
+                        <label class="form-label mt-2">Unidad: ${elemento.unidad_info || 'Sin unidad'}${equivalenciasTexto}</label>
+                        </label>
                         <input type="hidden" name="elementos[${index}][estado]" value="0">
                         ${elementosOriginalesHTML}
                         <button type="button" class="btn btn-danger btn-eliminar mt-2"><i class="fa fa-fw fa-trash"></i></button>
