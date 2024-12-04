@@ -15,6 +15,20 @@ document.getElementById('addElement').addEventListener('click', function () {
     const resetOption = document.getElementById('reset_options').value;
     const descripcionElemento = document.getElementById('input_descripcion').value;
 
+    // Obtener la unidad del nivel tres seleccionado
+    const selectedOption = nivelesTres.options[nivelesTres.selectedIndex];
+    const unidadNombre = selectedOption.dataset.unidad;
+
+    // Validar que tenga una unidad relacionada
+    if (!unidadNombre) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se puede agregar el elemento porque no tiene una unidad relacionada.',
+        });
+        return;
+    }
+
     // Validar que los campos no estén vacíos
     if (!cantidad || nivelesTres.value === 'Seleccione una opción' || centrosCostos.value === 'Seleccione una opción' ||
         nivelesTres.value === '' || centrosCostos.value === '') {
