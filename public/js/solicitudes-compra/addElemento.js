@@ -209,7 +209,20 @@ function removeElement(index, nivelesTresValue, centrosCostosValue) {
 document.getElementById('submitForm').addEventListener('click', function (event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del botón
 
+    const descripcionGeneral = document.getElementById('descripcion').value.trim();
     const elementsCount = document.querySelectorAll('#elementsTableBody tr:not(#noElementsRow)').length;
+
+    // Validar que la descripción general no esté vacía
+    if (!descripcionGeneral) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Descripción vacía',
+            text: 'El campo de descripción de la información general no puede estar vacío.',
+        });
+        return; // Salir de la función si la descripción está vacía
+    }
+
+    // Validar que haya al menos un elemento agregado
     if (elementsCount === 0) {
         Swal.fire({
             icon: 'error',
