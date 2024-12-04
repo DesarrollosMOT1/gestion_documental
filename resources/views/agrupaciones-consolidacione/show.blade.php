@@ -84,7 +84,7 @@
                     <table class="table table-hover table-bordered table-striped border-dark">
                         <thead class="table-light">
                             <tr>
-                                <th colspan="4" class="bg-success bg-opacity-50 text-center border-dark text-dark">Consolidaciones</th>
+                                <th colspan="5" class="bg-success bg-opacity-50 text-center border-dark text-dark">Consolidaciones</th>
                                 <th colspan="{{ count($cotizacionesPorTercero) }}" class="text-center border-dark">Terceros con cotizaciones vigentes</th>
                             </tr>
                             <tr>
@@ -96,6 +96,7 @@
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">Acciones</th>
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">Elemento</th>
                                 <th class="bg-success bg-opacity-50 border-dark text-dark">Cant</th>
+                                <th class="bg-success bg-opacity-50 border-dark text-dark">Unidad</th>
                                 @foreach($cotizacionesPorTercero->keys() as $tercero)
                                     @php
                                         $cotizaciones = $cotizacionesPorTercero->get($tercero);
@@ -152,7 +153,20 @@
                                                     <i class="fa fa-fw fa-edit"></i>
                                                 </button>
                                                 @endcan
-                                            </td>                                            
+                                            </td>   
+                                            <td class="bg-success bg-opacity-50 border-dark text-dark">
+                                                @if(isset($consolidaciones->first()->unidad_info))
+                                                    {{ $consolidaciones->first()->unidad_info['nombre'] }}
+                                                    @if($consolidaciones->first()->unidad_info['equivalencias'])
+                                                        <br>
+                                                        <small class="text-muted">
+                                                            ({{ $consolidaciones->first()->unidad_info['equivalencias'] }})
+                                                        </small>
+                                                    @endif
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>                                         
                 
                                             @if($cotizacionesPorTercero->isNotEmpty())
                                                 @foreach($cotizacionesPorTercero as $tercero => $cotizaciones)

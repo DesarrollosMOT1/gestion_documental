@@ -281,8 +281,8 @@ class AgrupacionesConsolidacioneController extends Controller
      */
     public function show($id): View
     {
+        $unidadesModel = new Unidades();
         $agrupacion = AgrupacionesConsolidacione::findOrFail($id);
-
         $ordenesCompra = new OrdenesCompra();
     
         // Llamar al nuevo método que encapsula la lógica de la solicitud de compra
@@ -290,13 +290,41 @@ class AgrupacionesConsolidacioneController extends Controller
     
         $agrupacionesConsolidacione = AgrupacionesConsolidacione::with([
             'consolidaciones.solicitudesCompra.user',
-            'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres',
+            'consolidaciones.solicitudesCompra.solicitudesElemento.nivelesTres.unidades', // Agregamos unidades
             'consolidaciones.solicitudesCompra.solicitudesCotizaciones',
             'consolidaciones.elementosConsolidados.solicitudesCompra',
-            'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres',
+            'consolidaciones.elementosConsolidados.solicitudesElemento.nivelesTres.unidades', // Agregamos unidades
             'consolidaciones.cotizacionesPrecio',
-            'consolidaciones.solicitudesElemento',
+            'consolidaciones.solicitudesElemento.nivelesTres.unidades',
         ])->findOrFail($id);
+    
+        // Agregar información de unidades y equivalencias a cada consolidación
+        $agrupacionesConsolidacione->consolidaciones->each(function ($consolidacion) use ($unidadesModel) {
+            if ($consolidacion->solicitudesElemento->nivelesTres->unidades) {
+                $unidad = $consolidacion->solicitudesElemento->nivelesTres->unidades;
+                $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
+                
+                // Incluir la unidad principal en las equivalencias
+                $equivalenciasTexto = collect($equivalencias['equivalencias'])
+                    ->map(function($eq) use ($consolidacion) {
+                        $cantidadCalculada = $consolidacion->cantidad * $eq['cantidad'];
+                        $cantidadFormateada = number_format($cantidadCalculada, 2);
+                        $cantidadFormateada = rtrim(rtrim($cantidadFormateada, '0'), '.');
+                        return "{$cantidadFormateada} {$eq['unidad_equivalente']}";
+                    })
+                    ->implode(', ');
+        
+                // Si no hay equivalencias, mostrar al menos la unidad principal
+                if (empty($equivalenciasTexto)) {
+                    $equivalenciasTexto = "{$consolidacion->cantidad} {$unidad->nombre}";
+                }
+        
+                $consolidacion->unidad_info = [
+                    'nombre' => $unidad->nombre,
+                    'equivalencias' => $equivalenciasTexto
+                ];
+            }
+        });
 
         $this->authorize('view', $agrupacionesConsolidacione);
     
