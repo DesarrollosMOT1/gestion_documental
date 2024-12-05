@@ -18,11 +18,12 @@ use App\Traits\VerNivelesPermiso;
 use App\Traits\GenerarPrefijo;
 use App\Traits\ObtenerCentrosCostos;
 use App\Models\Unidades;
+use App\Traits\UnidadesEquivalentesTrait;
 
 
 class SolicitudesCompraController extends Controller
 {
-    use VerNivelesPermiso, GenerarPrefijo, ObtenerCentrosCostos ;
+    use VerNivelesPermiso, GenerarPrefijo, ObtenerCentrosCostos, UnidadesEquivalentesTrait;
     /**
      * Display a listing of the resource.
      */
@@ -105,22 +106,15 @@ class SolicitudesCompraController extends Controller
             ->select('id', 'nombre', 'inventario', 'unidad_id')
             ->get()
             ->map(function ($nivelTres) use ($unidadesModel) {
-                $unidadInfo = null;
-                $equivalenciasData = [];
+                $equivalencias = $unidadesModel->obtenerEquivalencias($nivelTres->unidad_id);
                 
-                if ($nivelTres->unidad_id && $nivelTres->unidades) {
-                    $equivalencias = $unidadesModel->obtenerEquivalencias($nivelTres->unidad_id);
-                    $unidadInfo = $nivelTres->unidades->nombre;
-                    $equivalenciasData = $equivalencias['equivalencias'];
-                }
-    
                 return [
                     'id' => $nivelTres->id,
                     'nombre' => $nivelTres->nombre,
                     'inventario' => $nivelTres->inventario,
                     'unidad_id' => $nivelTres->unidad_id,
-                    'unidad_nombre' => $unidadInfo,
-                    'equivalencias' => $equivalenciasData
+                    'unidad_nombre' => $nivelTres->unidades ? $nivelTres->unidades->nombre : null,
+                    'equivalencias' => $equivalencias ? $equivalencias['equivalencias'] : []
                 ];
             });
     
@@ -188,25 +182,11 @@ class SolicitudesCompraController extends Controller
             'solicitudesElemento.centrosCosto'
         ])->findOrFail($id);
 
-        // Agregar las equivalencias a cada elemento
-        $solicitudesCompra->solicitudesElemento->each(function ($elemento) use ($unidadesModel) {
-            if ($elemento->nivelesTres && $elemento->nivelesTres->unidades) {
-                $equivalencias = $unidadesModel->obtenerEquivalencias($elemento->nivelesTres->unidades->id);
-                $equivalenciasTexto = collect($equivalencias['equivalencias'])
-                    ->map(function($eq) use ($elemento) {
-                        $cantidadCalculada = $elemento->cantidad * $eq['cantidad'];
-                        $cantidadFormateada = number_format($cantidadCalculada, 2);
-                        $cantidadFormateada = rtrim(rtrim($cantidadFormateada, '0'), '.');
-                        return "{$cantidadFormateada} {$eq['unidad_equivalente']}";
-                    })
-                    ->implode(', ');
-
-                $elemento->unidad_info = [
-                    'nombre' => $elemento->nivelesTres->unidades->nombre,
-                    'equivalencias' => $equivalenciasTexto
-                ];
-            }
-        });
+        // Agregar las equivalencias a cada elemento usando el método del trait
+        $solicitudesCompra->solicitudesElemento = $this->procesarUnidadesElementos(
+            $solicitudesCompra->solicitudesElemento, 
+            $unidadesModel
+        );
 
         // Resto del código de verificación...
         if ($solicitudesCompra->id_users !== auth()->id()) {

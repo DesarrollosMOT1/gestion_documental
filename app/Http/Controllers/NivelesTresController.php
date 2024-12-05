@@ -13,8 +13,11 @@ use App\Models\ReferenciasGasto;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\NivelesTresImport;
 use App\Models\Unidades;
+use App\Traits\UnidadesEquivalentesTrait;
+
 class NivelesTresController extends Controller
 {
+    use UnidadesEquivalentesTrait;
     /**
      * Display a listing of the resource.
      */
@@ -37,17 +40,7 @@ class NivelesTresController extends Controller
         
         // Modificar la obtención de unidades
         $unidadesModel = new Unidades();
-        $unidades = Unidades::all()->map(function($unidad) use ($unidadesModel) {
-            $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
-            $equivalenciasTexto = collect($equivalencias['equivalencias'])
-                ->map(function($eq) {
-                    return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
-                })
-                ->implode(', ');
-                
-            $unidad->nombre_completo = $unidad->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
-            return $unidad;
-        });
+        $unidades = $this->prepararUnidadesConEquivalencias($unidadesModel);
         
         return view('niveles-tres.create', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
@@ -84,17 +77,7 @@ class NivelesTresController extends Controller
         
         // Obtención de unidades
         $unidadesModel = new Unidades();
-        $unidades = Unidades::all()->map(function($unidad) use ($unidadesModel) {
-            $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
-            $equivalenciasTexto = collect($equivalencias['equivalencias'])
-                ->map(function($eq) {
-                    return "{$eq['cantidad']} {$eq['unidad_equivalente']}";
-                })
-                ->implode(', ');
-                
-            $unidad->nombre_completo = $unidad->nombre . ($equivalenciasTexto ? " ($equivalenciasTexto)" : '');
-            return $unidad;
-        });
+        $unidades = $this->prepararUnidadesConEquivalencias($unidadesModel);
         
         return view('niveles-tres.edit', compact('nivelesTre', 'nivelesDos', 'referenciasGastos', 'unidades'));
     }
