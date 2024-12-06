@@ -24,11 +24,12 @@ use App\Traits\GenerarPrefijo;
 use App\Traits\ObtenerCentrosCostos;
 use App\Models\NivelesTres;
 use App\Models\Unidades;
+use App\Traits\UnidadesEquivalentesTrait;
 
 
 class AgrupacionesConsolidacioneController extends Controller
 {
-    use VerNivelesPermiso, GenerarPrefijo, ObtenerCentrosCostos;
+    use VerNivelesPermiso, GenerarPrefijo, ObtenerCentrosCostos, UnidadesEquivalentesTrait;
 
     /**
      * Display a listing of the resource.
@@ -125,8 +126,7 @@ class AgrupacionesConsolidacioneController extends Controller
         $solicitudes = $request->input('solicitudes', []);
         $unidadesModel = new Unidades();
         $nivelesUnoIds = $this->obtenerNivelesPermitidos();
-    
-        // Obtener los elementos filtrados por nivel uno permitido, estado y que no tengan consolidaciones
+
         $elementos = SolicitudesElemento::with(['nivelesTres.unidades'])
             ->whereIn('id_solicitudes_compra', $solicitudes)
             ->where('estado', '1')
@@ -141,25 +141,13 @@ class AgrupacionesConsolidacioneController extends Controller
                 $query->select('id_solicitud_elemento')
                     ->from('elementos_consolidados');
             })
-            ->get()
-            ->map(function ($elemento) use ($unidadesModel) {
-                $unidadInfo = null;
-                $equivalenciasData = [];
-                
-                if ($elemento->nivelesTres->unidad_id && $elemento->nivelesTres->unidades) {
-                    $equivalencias = $unidadesModel->obtenerEquivalencias($elemento->nivelesTres->unidades->id);
-                    $unidadInfo = $elemento->nivelesTres->unidades->nombre;
-                    $equivalenciasData = $equivalencias['equivalencias'];
-                }
-    
-                return array_merge($elemento->toArray(), [
-                    'unidad_info' => $unidadInfo,
-                    'equivalencias' => $equivalenciasData
-                ]);
-            });
-    
-        return response()->json($elementos);
-    }    
+            ->get();
+
+        // Usar el método del trait para procesar los elementos
+        $elementosProcesados = $this->procesarElementosMultiples($elementos, $unidadesModel);
+
+        return response()->json($elementosProcesados);
+    } 
 
 
     public function crearSolicitudCompra(): array
@@ -298,33 +286,8 @@ class AgrupacionesConsolidacioneController extends Controller
             'consolidaciones.solicitudesElemento.nivelesTres.unidades',
         ])->findOrFail($id);
     
-        // Agregar información de unidades y equivalencias a cada consolidación
-        $agrupacionesConsolidacione->consolidaciones->each(function ($consolidacion) use ($unidadesModel) {
-            if ($consolidacion->solicitudesElemento->nivelesTres->unidades) {
-                $unidad = $consolidacion->solicitudesElemento->nivelesTres->unidades;
-                $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
-                
-                // Incluir la unidad principal en las equivalencias
-                $equivalenciasTexto = collect($equivalencias['equivalencias'])
-                    ->map(function($eq) use ($consolidacion) {
-                        $cantidadCalculada = $consolidacion->cantidad * $eq['cantidad'];
-                        $cantidadFormateada = number_format($cantidadCalculada, 2);
-                        $cantidadFormateada = rtrim(rtrim($cantidadFormateada, '0'), '.');
-                        return "{$cantidadFormateada} {$eq['unidad_equivalente']}";
-                    })
-                    ->implode(', ');
-        
-                // Si no hay equivalencias, mostrar al menos la unidad principal
-                if (empty($equivalenciasTexto)) {
-                    $equivalenciasTexto = "{$consolidacion->cantidad} {$unidad->nombre}";
-                }
-        
-                $consolidacion->unidad_info = [
-                    'nombre' => $unidad->nombre,
-                    'equivalencias' => $equivalenciasTexto
-                ];
-            }
-        });
+        // Usar el método del trait para procesar las consolidaciones
+        $this->procesarUnidadesConsolidaciones($agrupacionesConsolidacione->consolidaciones, $unidadesModel);
 
         $this->authorize('view', $agrupacionesConsolidacione);
     

@@ -108,4 +108,57 @@ trait UnidadesEquivalentesTrait
             return $unidad;
         });
     }
+
+    protected function procesarUnidadesConsolidaciones($consolidaciones, $unidadesModel)
+    {
+        return $consolidaciones->each(function ($consolidacion) use ($unidadesModel) {
+            if (!$consolidacion->solicitudesElemento?->nivelesTres?->unidades) {
+                return;
+            }
+
+            $unidad = $consolidacion->solicitudesElemento->nivelesTres->unidades;
+            $equivalencias = $unidadesModel->obtenerEquivalencias($unidad->id);
+            
+            // Formatear equivalencias con la cantidad de la consolidación
+            $equivalenciasTexto = $this->formatearEquivalencias(
+                $equivalencias['equivalencias'], 
+                $consolidacion->cantidad
+            );
+
+            // Si no hay equivalencias, mostrar al menos la unidad principal
+            if (empty($equivalenciasTexto)) {
+                $equivalenciasTexto = "{$consolidacion->cantidad} {$unidad->nombre}";
+            }
+
+            $consolidacion->unidad_info = [
+                'nombre' => $unidad->nombre,
+                'equivalencias' => $equivalenciasTexto
+            ];
+        });
+    }
+
+    protected function procesarElementosMultiples($elementos, $unidadesModel)
+    {
+        return $elementos->map(function ($elemento) use ($unidadesModel) {
+            $unidadInfo = null;
+            $equivalenciasData = [];
+            
+            if ($elemento->nivelesTres?->unidades) {
+                $equivalencias = $unidadesModel->obtenerEquivalencias($elemento->nivelesTres->unidades->id);
+                $unidadInfo = [
+                    'nombre' => $elemento->nivelesTres->unidades->nombre,
+                    'equivalencias' => $this->formatearEquivalencias(
+                        $equivalencias['equivalencias'],
+                        $elemento->cantidad
+                    )
+                ];
+                $equivalenciasData = $equivalencias['equivalencias'];
+            }
+
+            return array_merge($elemento->toArray(), [
+                'unidad_info' => $unidadInfo,
+                'equivalencias' => $equivalenciasData
+            ]);
+        });
+    }
 }
